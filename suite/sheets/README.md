@@ -6,21 +6,43 @@ of the Frappe product family.
 
 ## Features
 
-- Formula engine with ~100 functions (`SUM`, `VLOOKUP`, `IF`, `COUNTIF`, …)
+**Formulas & data**
+- ~100 functions (`SUM`, `VLOOKUP`, `IF`, `COUNTIF`, …)
 - Cross-sheet references
+- Smart fill (pattern detection on drag-fill)
+- Data validation (lists, numeric ranges, text length)
+- Named ranges
 - Sort, filter, find & replace
+
+**Formatting**
+- Bold, italic, underline, strikethrough
+- Font family / size, text & fill color, vertical alignment
+- Number formats (currency, percentage, custom)
+- Conditional formatting
 - Frozen rows & columns
 - Merged cells, cell borders
+
+**Charts & analysis**
+- Inline charts (bar, line, pie, scatter, area)
+- Pivot tables
+
+**Sheets & workbook**
 - Multi-sheet workbooks with tab drag-to-reorder
-- CSV import / export
-- Cell-level formatting: bold, italic, underline, strikethrough,
-  font family / size, text & fill color, vertical alignment, number formats
-- Hyperlinks
+- Hyperlinks, cell comments / notes
+- Split-text helper
+- Zoom in / out, hide / unhide rows and columns
+- CSV / XLSX import, CSV / XLSX / PDF export
+
+**Collaboration**
+- Real-time multi-user editing (Yjs-backed)
+- Live presence avatars and remote cursors
+- Version history with cell-level provenance
+
+**Productivity**
 - Undo / redo, copy / cut / paste, paste-special (values / formats / formulas)
 - `Cmd+K` command palette, keyboard-shortcut help (`?`)
-- Formula reference picker: click or arrow-keys to insert refs while typing
+- Formula reference picker — click or arrow-keys to insert refs while typing
   formulas (range pick with `Shift + arrow`)
-- Zoom in / out, hide / unhide columns and rows
 
 ## Install
 
@@ -28,7 +50,7 @@ Requires Frappe Framework 15 or 16.
 
 ```bash
 cd $PATH_TO_YOUR_BENCH
-bench get-app https://github.com/asif-mulani/frappe-sheets-next --branch main
+bench get-app https://github.com/frappe/sheets --branch main
 bench --site $YOUR_SITE install-app sheets
 ```
 
@@ -38,12 +60,12 @@ After install, open the app from the Frappe desk app-switcher, or visit
 ## Frappe Cloud
 
 Add this repo URL as a custom app on your Frappe Cloud bench. The frontend
-assets are pre-built and committed to `sheets/public/` so no Node
-build runs on Cloud — see [BUILD.md](./BUILD.md) for the release workflow.
+assets are pre-built and committed to `sheets/public/` so no Node build runs
+on Cloud — see [BUILD.md](./BUILD.md) for the release workflow.
 
 ## Contributing
 
-This app uses `pre-commit` for code formatting and linting. Please
+This app uses `pre-commit` for formatting and linting. Please
 [install pre-commit](https://pre-commit.com/#installation) and enable it for
 this repository:
 
@@ -54,16 +76,25 @@ pre-commit install
 
 Pre-commit runs ruff, eslint, prettier, and pyupgrade.
 
+End-to-end tests run on every push via Playwright against a real Frappe
+backend in CI. To run them locally:
+
+```bash
+cd frontend
+npm run test:e2e:install   # one-time chromium download
+npm run test:e2e           # requires a bench up at http://localhost:8000
+```
+
 ## Current limitations
 
-- **Single-user editing.** Concurrent edits from multiple users overwrite each
-  other (last write wins). Multi-user collaboration is on the roadmap.
-- **JSON-blob persistence.** Each sheet is stored as one JSON document.
-  Comfortable up to ~50k populated cells; expect degradation past that.
+- **JSON-blob persistence.** Each sheet is stored as a single gzip-compressed
+  JSON document with a 30 MB uncompressed cap. Save latency scales with
+  workbook size — fine for the tens of thousands of populated cells most
+  workbooks use; large workbooks (hundreds of thousands of cells) start to
+  feel the round-trip. Cell-level persistence is on the roadmap.
 - **Desktop only.** Mobile / tablet show a "please open on desktop" message —
   the canvas grid has no touch handlers yet.
-- **5 MB cap** per workbook (enforced at API + DocType level).
 
 ## License
 
-MIT — see [license.txt](./license.txt).
+GNU AGPL v3 — see [license.txt](./license.txt).
