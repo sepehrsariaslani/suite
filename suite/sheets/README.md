@@ -1,4 +1,4 @@
-# Frappe Sheets
+# Frappe Spreadsheet
 
 A spreadsheet app for Frappe — Google-Sheets-style grid built with Vue 3 and
 HTML Canvas. Designed to fit the Espresso design system used across the rest
@@ -50,18 +50,18 @@ Requires Frappe Framework 15 or 16.
 
 ```bash
 cd $PATH_TO_YOUR_BENCH
-bench get-app https://github.com/frappe/sheets --branch main
-bench --site $YOUR_SITE install-app sheets
+bench get-app https://github.com/frappe/spreadsheet --branch main
+bench --site $YOUR_SITE install-app spreadsheet
 ```
 
 After install, open the app from the Frappe desk app-switcher, or visit
-`https://<your-site>/sheets` directly.
+`https://<your-site>/spreadsheet` directly.
 
 ## Frappe Cloud
 
 Add this repo URL as a custom app on your Frappe Cloud bench. The frontend
-assets are pre-built and committed to `sheets/public/` so no Node build runs
-on Cloud — see [BUILD.md](./BUILD.md) for the release workflow.
+assets are pre-built and committed to `spreadsheet/public/` so no Node build
+runs on Cloud — see [BUILD.md](./BUILD.md) for the release workflow.
 
 ## Contributing
 
@@ -70,7 +70,7 @@ This app uses `pre-commit` for formatting and linting. Please
 this repository:
 
 ```bash
-cd apps/sheets
+cd apps/spreadsheet
 pre-commit install
 ```
 

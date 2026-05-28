@@ -2,7 +2,7 @@
 
 Frappe Cloud does **not** run `npm install` or `npm run build` for this app.
 The pre-built frontend assets need to be in
-`sheets/public/sheets/` before every push that
+`spreadsheet/public/spreadsheet/` before every push that
 includes frontend changes.
 
 ## Local release workflow
@@ -10,21 +10,21 @@ includes frontend changes.
 ```bash
 cd frontend
 npm install            # first time only / after package.json changes
-npm run build          # writes to ../sheets/public/sheets/
+npm run build          # writes to ../spreadsheet/public/spreadsheet/
 cd ..
 
 # Sanity check — these should all exist:
-ls sheets/public/sheets/
+ls spreadsheet/public/spreadsheet/
 #   index.html  index.js  index.css  Inter.var.woff2  Inter-Italic.var.woff2  ...
 
 # Commit the rebuilt assets alongside any source changes:
-git add sheets/public/sheets/
+git add spreadsheet/public/spreadsheet/
 git commit -m "build: rebuild frontend assets"
 git push
 ```
 
 Frappe Cloud picks up the new commit and serves those files via the
-`/assets/sheets/sheets/` URL prefix.
+`/assets/spreadsheet/spreadsheet/` URL prefix.
 
 ## Why pre-built?
 
