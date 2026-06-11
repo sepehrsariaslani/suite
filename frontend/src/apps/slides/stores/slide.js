@@ -8,7 +8,7 @@ import {
 	presentationTheme,
 } from '@/apps/slides/stores/presentation'
 import { resetFocus } from '@/apps/slides/stores/element'
-import { saveChanges, isDirty, markDirty } from '@/apps/slides/stores/saving'
+import { saveChanges, dirty, markDirty } from '@/apps/slides/stores/saving'
 import { commandHistory } from '@/apps/slides/stores/historyMeta'
 import { generateUniqueId, cloneObj } from '@/apps/slides/utils/helpers'
 import { router } from '@/apps/slides/router'
@@ -112,7 +112,7 @@ const changeSlide = async (index, focus = true) => {
 
 const resetAndSave = async () => {
 	await resetFocus()
-	if (!isDirty.value) {
+	if (!dirty.value) {
 		toast.info('No changes to save')
 		return
 	}

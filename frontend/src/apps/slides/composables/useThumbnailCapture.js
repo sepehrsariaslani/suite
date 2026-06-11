@@ -5,7 +5,7 @@ import { call } from 'frappe-ui'
 import { presentationDoc, unsyncedPresentationRecord, inReadonlyMode } from '@/apps/slides/stores/presentation'
 import { slides } from '@/apps/slides/stores/slide'
 import { focusElementId } from '@/apps/slides/stores/element'
-import { isDirty, isSaving } from '@/apps/slides/stores/saving'
+import { dirty, isSaving } from '@/apps/slides/stores/saving'
 import { captureDOM } from '@/apps/slides/utils/domToWebp'
 
 const DEBOUNCE_MS = 5000
@@ -40,7 +40,7 @@ export const useThumbnailCapture = (thumbnailCapture, hasOngoingInteraction) => 
 			return false
 		}
 		if (unsyncedPresentationRecord.value.deleted) return false
-		if (!navigator.onLine || isDirty.value || isSaving.value) return false
+		if (!navigator.onLine || dirty.value || isSaving.value) return false
 		if (hasOngoingInteraction.value || focusElementId.value != null) return false
 		return true
 	}
