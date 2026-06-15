@@ -41,5 +41,6 @@ suite.mail.patches.create_archive_mailbox
 suite.mail.patches.configure_mail_settings
 suite.mail.patches.configure_mail_cluster
 suite.mail.patches.configure_mail_server
+suite.mail.patches.configure_inbound_outbound_log
 # --- calendar ---
 # (no patches)
