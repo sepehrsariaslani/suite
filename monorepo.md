@@ -36,7 +36,7 @@ re-litigate during execution.
 | D10 | Cutover           | **Big-bang** (single cutover)                                 | On empty `suite.localhost`; rollback = reinstall. Clone rehearsal now optional, not mandatory.                                                                                            |
 | D11 | Plan scope        | **Structural migration only**                                 | Notifications / billing / storage analytics / permission layer / admin console are a **separate follow-on spec** (see §11).                                                               |
 | D12 | App identity      | `app_name = suite`, title "Frappe Suite", repo `frappe/suite` | —                                                                                                                                                                                         |
-| D13 | Git history       | Preserve via `git subtree` per app                            | Fall back to plain copy + single import commit if subtree snags the workflow.                                                                                                             |
+| D13 | Git history       | Preserve via `git subtree` per app                            | **RESOLVED 2026-06-16:** ported via plain copy, then restored full History+Blame with a content-bearing fast-forward append (`G→M→P`, no force-push). See `HISTORY-GRAFT.md`. |
 
 ---
 
@@ -176,8 +176,14 @@ Phases are gated — do not start a phase until the previous gate is green.
 >
 > - **Phases 0–5: ✅ DONE.** Backend relocated, shared `hooks.py`/`modules.txt`/etc.
 >   consolidated, empty `suite.localhost` cut over (`installed_apps=['frappe','suite']`),
->   all 7 frontends ported into one Vite 8 + Vue 3.5 + frappe-ui `1.0.0-beta.9` SPA, and
->   every app's git history grafted under `src/apps/<app>/`.
+>   all 7 frontends ported into one Vite 8 + Vue 3.5 + frappe-ui `1.0.0-beta.9` SPA.
+> - **History/blame regraft: ✅ DONE (2026-06-16).** All 7 apps' original per-file
+>   authorship now shows in GitHub's **History *and* Blame UI** (not just `--follow`).
+>   Landed as a **content-bearing fast-forward append** (`G→M→P`, new `develop` tip
+>   `4e5219a86`, byte-identical to the prior tip `3f9e986cc`, **no force-push**). The
+>   earlier `-s ours` grafts are superseded. Full method + verification in
+>   `HISTORY-GRAFT.md`; per-app blame confirmed to reach original authors (incl. the
+>   `mail→client` / `writer→frappe_writer` split modules via git rename detection).
 > - **Phase 6: 🔄 IN PROGRESS.** Runtime-verified on `suite.localhost:8004` (logged in):
 >   **Drive, Writer, Slides, Sheets, Meet + launcher** render, `suite.*` method paths
 >   resolve, relocated assets serve. Fixes landed this pass:
