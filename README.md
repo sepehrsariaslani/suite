@@ -4,7 +4,14 @@
 
 **Drive · Slides · Writer · Sheets · Meet · Mail · Calendar — in one app.**
 
+<kbd>
+<img width="1268" height="780" alt="Screenshot 2026-06-16 at 19 10 57" src="https://github.com/user-attachments/assets/20e2d1c2-caae-43ee-9eb8-ed6a27ad9917" />
+</kbd>
+
+
 </div>
+
+<br>
 
 > ⚠️ **Work in progress.** Frappe Suite is the consolidation of seven standalone
 > Frappe apps into a single installable app with one unified frontend. The merge is
