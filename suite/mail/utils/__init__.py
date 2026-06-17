@@ -829,9 +829,9 @@ def generate_uuid_style_hash(input_str: str) -> str:
 
 
 def get_mail_app_path() -> str:
-	"""Returns the path to the Mail app directory."""
+	"""Returns the path to the Suite app directory."""
 
-	return os.path.join(get_bench_path(), "apps/mail")
+	return os.path.join(get_bench_path(), "apps/suite")
 
 
 def get_messages_directory() -> str:
