@@ -35,6 +35,12 @@ dependencies = [
     "ansible-runner~=2.4.1",
 ]
 
+[deploy.dependencies.apt]
+packages = [
+    "ffmpeg",   # drive: video thumbnails/transcode
+    "ansible",  # mail: stalwart provisioning (ansible-runner)
+]
+
 [build-system]
 requires = ["flit_core >=3.4,<4"]
 build-backend = "flit_core.buildapi"
