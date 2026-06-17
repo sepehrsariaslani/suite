@@ -4,6 +4,7 @@ import { createResource } from 'frappe-ui'
 
 import { getSessionUser, useSessionStore } from '@/boot/session'
 import router from '@/apps/mail/router'
+import { raiseToast } from '@/apps/mail/utils'
 import { userStore } from '@/apps/mail/stores/user'
 
 export const sessionStore = defineStore('mail-session', () => {
@@ -42,5 +43,32 @@ export const sessionStore = defineStore('mail-session', () => {
 		onSuccess: (data) => (document.querySelector("link[rel='icon']").href = data.favicon),
 	})
 
-	return { isLoggedIn: computed(() => session.isLoggedIn), login, logout, branding }
+	// Called when a request fails with an auth/permission error. Returns true if the session
+	// is actually gone (so the caller can swallow the error and avoid a duplicate toast),
+	// false if the session is still alive — i.e. a genuine PermissionError that should surface
+	// normally. Frappe resets the user_id cookie to Guest on a dead session, so the cookie is
+	// the discriminator. Signs out + notifies + redirects once; later concurrent calls just
+	// report handled.
+	const handleSessionExpired = (): boolean => {
+		// Still logged in — this is a real permission error, not a logout.
+		if (getSessionUser()) return false
+
+		if (session.user) {
+			session.user = null
+			userResource.reset()
+			mailboxes.reset()
+			raiseToast(__('You have been signed out. Please sign in again.'), 'error')
+			if (router.currentRoute.value.name !== 'mail-login') router.replace({ name: 'mail-login' })
+		}
+
+		return true
+	}
+
+	return {
+		isLoggedIn: computed(() => session.isLoggedIn),
+		login,
+		logout,
+		branding,
+		handleSessionExpired,
+	}
 })
