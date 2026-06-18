@@ -110,6 +110,21 @@ export const userStore = defineStore('mail-user', () => {
 
 	const domains = createResource({ url: 'suite.mail.api.admin.get_enabled_domains' })
 
+	// Clear all user/account state so the next sign-in starts from a clean slate. Without
+	// resetting accountId, resolveAccount() would see the resolved account as unchanged and skip
+	// setAccount(), so the per-account resources (mailboxes, etc.) would never re-fetch until a
+	// full page reload.
+	const reset = () => {
+		accountId.value = ''
+		userResource.reset()
+		mailboxes.reset()
+		addressBooks.reset()
+		identities.reset()
+		blockedAddresses.reset()
+		sieveScripts.reset()
+		domains.reset()
+	}
+
 	return {
 		accountId,
 		account,
@@ -122,5 +137,6 @@ export const userStore = defineStore('mail-user', () => {
 		domains,
 		sieveScripts,
 		blockedAddresses,
+		reset,
 	}
 })

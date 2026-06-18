@@ -306,8 +306,6 @@ fixtures = [
 	{"dt": "Presentation", "filters": [["is_template", "=", "1"]]},
 	# meet
 	{"dt": "Role", "filters": [["role_name", "like", "Meet %"]]},
-	# mail
-	{"dt": "Role", "filters": [["role_name", "in", ["Mail Admin"]]]},
 ]
 
 # ============================================================================
