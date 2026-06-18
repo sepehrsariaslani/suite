@@ -3,6 +3,7 @@ import type { RouteLocationNormalized, RouteRecordRaw, Router } from 'vue-router
 import { createResource } from 'frappe-ui'
 
 import { router, setEditorAccess, setPreviousRoute } from '@/apps/slides/router'
+import SlidesShell from '@/apps/slides/SlidesShell.vue'
 
 /**
  * Slides route module — mounted by the suite router under the '/slides' prefix.
@@ -15,6 +16,8 @@ import { router, setEditorAccess, setPreviousRoute } from '@/apps/slides/router'
  * EditorNew -> slides-editor-new, PresentationEditor -> slides-editor,
  * Slideshow -> slides-slideshow, NotPermitted -> slides-not-permitted.
  */
+
+let currentEditorAccess = 'none'
 
 const withPresentationProps = (route: RouteLocationNormalized) => {
   const slide = parseInt(route.query.slide as string)
@@ -30,39 +33,45 @@ const withPresentationProps = (route: RouteLocationNormalized) => {
 export const routes: RouteRecordRaw[] = [
   {
     path: '',
-    name: 'slides-home',
-    component: () => import('@/apps/slides/pages/Home.vue'),
-  },
-  {
-    path: 'presentation/new',
-    name: 'slides-editor-new',
-    component: () => import('@/apps/slides/pages/PresentationEditor.vue'),
-    props: withPresentationProps,
-  },
-  {
-    path: 'presentation/:presentationId/:slug?',
-    name: 'slides-editor',
-    component: () => import('@/apps/slides/pages/PresentationEditor.vue'),
-    props: withPresentationProps,
-  },
-  {
-    path: 'presentation/view/:presentationId/:slug?',
-    redirect: (route: RouteLocationNormalized) => ({
-      name: 'slides-editor',
-      params: route.params,
-      query: route.query,
-    }),
-  },
-  {
-    path: 'slideshow/:presentationId/:slug?',
-    name: 'slides-slideshow',
-    component: () => import('@/apps/slides/pages/Slideshow.vue'),
-    props: withPresentationProps,
-  },
-  {
-    path: 'not-permitted',
-    name: 'slides-not-permitted',
-    component: () => import('@/apps/slides/pages/errorPages/NotPermitted.vue'),
+    component: SlidesShell,
+    children: [
+      {
+        path: '',
+        name: 'slides-home',
+        component: () => import('@/apps/slides/pages/Home.vue'),
+      },
+      {
+        path: 'presentation/new',
+        name: 'slides-editor-new',
+        component: () => import('@/apps/slides/pages/PresentationEditor.vue'),
+        props: withPresentationProps,
+      },
+      {
+        path: 'presentation/:presentationId/:slug?',
+        name: 'slides-editor',
+        component: () => import('@/apps/slides/pages/PresentationEditor.vue'),
+        props: withPresentationProps,
+      },
+      {
+        path: 'presentation/view/:presentationId/:slug?',
+        redirect: (route: RouteLocationNormalized) => ({
+          name: 'slides-editor',
+          params: route.params,
+          query: route.query,
+        }),
+      },
+      {
+        path: 'slideshow/:presentationId/:slug?',
+        name: 'slides-slideshow',
+        component: () => import('@/apps/slides/pages/Slideshow.vue'),
+        props: withPresentationProps,
+      },
+      {
+        path: 'not-permitted',
+        name: 'slides-not-permitted',
+        component: () => import('@/apps/slides/pages/errorPages/NotPermitted.vue'),
+      },
+    ],
   },
 ]
 
@@ -75,8 +84,6 @@ export default routes
 /* and gate the editor route on the per-presentation access level. Installed   */
 /* once, the first time this module is loaded (see bottom of file).            */
 /* -------------------------------------------------------------------------- */
-
-let currentEditorAccess = 'none'
 
 const getEditorAccess = async (presentationId: string) => {
   try {

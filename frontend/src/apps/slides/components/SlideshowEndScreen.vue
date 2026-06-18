@@ -24,6 +24,7 @@
 </template>
 
 <script setup>
+import { Button } from 'frappe-ui'
 const emit = defineEmits(['restartSlideShow'])
 </script>
 
