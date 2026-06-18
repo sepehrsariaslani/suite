@@ -168,7 +168,7 @@ def get_presentations() -> list[dict]:
 
 
 @frappe.whitelist()
-def update_slide_attachments(parent: str, slide: str):
+def update_slide_attachments(parent: str, slide: dict | str):
 	slide = json.loads(slide) if isinstance(slide, str) else slide
 
 	elements_data = slide.get("elements") or "[]"
