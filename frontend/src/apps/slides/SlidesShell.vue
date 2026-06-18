@@ -12,7 +12,7 @@ import { toast } from 'frappe-ui'
 import { Wifi, WifiOff } from 'lucide-vue-next'
 import { saveCurrentState } from '@/apps/slides/stores/saving'
 
-const isOnline = ref(false)
+const isOnline = ref(navigator?.onLine ?? true)
 
 const handleOffline = () => {
   isOnline.value = false
