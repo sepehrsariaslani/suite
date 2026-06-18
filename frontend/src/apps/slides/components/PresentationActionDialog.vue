@@ -38,7 +38,7 @@
 <script setup>
 import { ref, watch, nextTick, useTemplateRef } from 'vue'
 
-import { Dialog, FormControl, call } from 'frappe-ui'
+import { Button, Dialog, FormControl, call } from 'frappe-ui'
 
 import { deletePresentation, updatePresentationTitle } from '@/apps/slides/stores/presentation'
 

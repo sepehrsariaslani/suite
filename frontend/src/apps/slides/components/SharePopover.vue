@@ -39,7 +39,7 @@
 
 <script setup>
 import { ref } from 'vue'
-import { Popover, Switch, call, toast } from 'frappe-ui'
+import { Button, Popover, Switch, call, toast } from 'frappe-ui'
 import { presentationId, isPublicPresentation } from '@/apps/slides/stores/presentation'
 import { resetFocus } from '@/apps/slides/stores/element'
 import { copyToClipboard } from '@/apps/slides/stores/copyPaste'

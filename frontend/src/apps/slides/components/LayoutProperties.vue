@@ -73,6 +73,7 @@
 
 <script setup>
 import { computed } from 'vue'
+import { Button } from 'frappe-ui'
 
 import Forward from '@/apps/slides/icons/Forward.vue'
 import Backward from '@/apps/slides/icons/Backward.vue'

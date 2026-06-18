@@ -69,7 +69,7 @@
 
 <script setup>
 import { inject } from 'vue'
-import { Select, Checkbox, toast } from 'frappe-ui'
+import { Button, Select, Checkbox, toast } from 'frappe-ui'
 
 import { slides, slideIndex, currentSlide } from '@/apps/slides/stores/slide'
 import { sectionClasses, sectionTitleClasses, fieldLabelClasses } from '@/apps/slides/utils/constants'

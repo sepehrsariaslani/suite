@@ -97,7 +97,7 @@
 import { ref, unref, computed, useTemplateRef, watch } from 'vue'
 import { useElementBounding, useEyeDropper } from '@vueuse/core'
 
-import { Popover, Input } from 'frappe-ui'
+import { Button, Popover, Input } from 'frappe-ui'
 
 import { copyToClipboard } from '@/apps/slides/stores/copyPaste'
 import EyeDropper from '@/apps/slides/icons/EyeDropper.vue'
