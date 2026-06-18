@@ -109,9 +109,8 @@
 </template>
 <script setup>
 import { formatSize, base2BlockSize, COLOR_MAP, formatPercent } from '@/apps/drive/utils/format'
-import { Tooltip, TabButtons, Button} from 'frappe-ui'
-import { getIconUrl } from '@/apps/drive/utils/getIconUrl'
-import { openEntity, MIME_LIST_MAP } from '@/apps/drive/utils/files'
+import { Tooltip, TabButtons, Button } from 'frappe-ui'
+import { getIconUrl, openEntity, MIME_LIST_MAP } from '@/apps/drive/utils/files'
 import { createResource } from 'frappe-ui'
 import { ref, watch } from 'vue'
 import { useRoute } from 'vue-router'

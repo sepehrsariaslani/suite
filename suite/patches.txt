@@ -17,6 +17,7 @@ suite.drive.patches.new_writer #3
 suite.drive.patches.turn_on_flat_disk
 suite.drive.patches.add_modified_field
 suite.drive.patches.add_drive_user_role
+suite.drive.patches.add_search_index
 # --- slides ---
 suite.slides.doctype.presentation.patches.sanitize_attachment_urls
 suite.slides.doctype.presentation.patches.move_attachments_to_private_folder

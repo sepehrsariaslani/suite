@@ -50,13 +50,12 @@ import {
   Avatar,
   Tooltip,
 } from 'frappe-ui'
-import { getThumbnailUrl } from '@/apps/drive/utils/getIconUrl'
 import store from '@/apps/drive/store'
 import { useRoute } from 'vue-router'
 import { computed, h, ref, watch, useTemplateRef } from 'vue'
 import ContextMenu from '@/apps/drive/components/ContextMenu.vue'
 import CustomListRow from './CustomListRow.vue'
-import { openEntity, isModKey, getLink } from '@/apps/drive/utils/files'
+import { openEntity, isModKey, getLink, getThumbnailUrl } from '@/apps/drive/utils/files'
 import { formatDate } from '@/apps/drive/utils/format'
 import {
   WRITER_CONTENT_DOCTYPE,

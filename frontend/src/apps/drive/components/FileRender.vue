@@ -14,13 +14,14 @@
 </template>
 <script setup>
 import { Button } from 'frappe-ui'
-import MSOfficePreview from '@/apps/drive/components/FileTypePreview/MSOfficePreview.vue'
-import ImagePreview from '@/apps/drive/components/FileTypePreview/ImagePreview.vue'
-import PDFPreview from './FileTypePreview/PDFPreview.vue'
-import VideoPreview from './FileTypePreview/VideoPreview.vue'
-import TextPreview from './FileTypePreview/TextPreview.vue'
-import AudioPreview from '@/apps/drive/components/FileTypePreview/AudioPreview.vue'
-import { computed } from 'vue'
+import { computed, defineAsyncComponent } from 'vue'
+
+const MSOfficePreview = defineAsyncComponent(() => import('@/apps/drive/components/FileTypePreview/MSOfficePreview.vue'))
+const ImagePreview = defineAsyncComponent(() => import('@/apps/drive/components/FileTypePreview/ImagePreview.vue'))
+const PDFPreview = defineAsyncComponent(() => import('./FileTypePreview/PDFPreview.vue'))
+const VideoPreview = defineAsyncComponent(() => import('./FileTypePreview/VideoPreview.vue'))
+const TextPreview = defineAsyncComponent(() => import('./FileTypePreview/TextPreview.vue'))
+const AudioPreview = defineAsyncComponent(() => import('@/apps/drive/components/FileTypePreview/AudioPreview.vue'))
 import LucideAlertCircle from '~icons/lucide/alert-circle'
 import { diskSettings } from '@/apps/drive/resources/permissions'
 import store from '@/apps/drive/store'

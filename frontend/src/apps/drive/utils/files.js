@@ -12,10 +12,44 @@ import {
 } from '@/apps/drive/resources/files'
 import { getTeams, getPublicTeams } from '@/apps/drive/resources/files'
 import { set } from 'idb-keyval'
-import slugify from 'slugify'
 import { toast } from '@/apps/drive/utils/toasts.js'
 import { useFileUpload, toast as nToast } from 'frappe-ui'
 import emitter from '@/apps/drive/emitter'
+
+import folderIcon from '@icons/folder.svg'
+import imageIcon from '@icons/image.svg'
+import pdfIcon from '@icons/pdf.svg'
+import photoshopIcon from '@icons/photoshop.svg'
+import codeIcon from '@icons/code.svg'
+import sketchIcon from '@icons/sketch.svg'
+import markdownIcon from '@icons/markdown.svg'
+import textIcon from '@icons/text.svg'
+import documentIcon from '@icons/document.svg'
+import spreadsheetIcon from '@icons/spreadsheet.svg'
+import presentationIcon from '@icons/presentation.svg'
+import audioIcon from '@icons/audio.svg'
+import videoIcon from '@icons/video.svg'
+import applicationIcon from '@icons/application.svg'
+import archiveIcon from '@icons/archive.svg'
+import unknownIcon from '@icons/unknown.svg'
+
+const FILE_ICONS = {
+  Folder: folderIcon,
+  Image: imageIcon,
+  PDF: pdfIcon,
+  Photoshop: photoshopIcon,
+  Code: codeIcon,
+  Sketch: sketchIcon,
+  Markdown: markdownIcon,
+  Text: textIcon,
+  Document: documentIcon,
+  Spreadsheet: spreadsheetIcon,
+  Presentation: presentationIcon,
+  Audio: audioIcon,
+  Video: videoIcon,
+  Application: applicationIcon,
+  Archive: archiveIcon,
+}
 
 export const WRITER_CONTENT_DOCTYPE = 'Writer Document'
 export const PRESENTATION_CONTENT_DOCTYPE = 'Presentation'
@@ -323,6 +357,20 @@ export const setBreadCrumbs = (entity) => {
   store.commit('setBreadcrumbs', res)
 }
 
+export function getIconUrl(file_type) {
+  return FILE_ICONS[file_type] ?? unknownIcon
+}
+
+// `src` is the thumbnail (images/videos/PDFs) or the icon; `fallback` is the icon.
+export function getThumbnailUrl({ name, file_type, thumbnail, external }, view = 'list') {
+  const fallback = getIconUrl(file_type ?? 'Presentation')
+  let src = ''
+  if (external) src = view !== 'list' ? thumbnail : ''
+  else if (['Image', 'Video', 'PDF'].includes(file_type))
+    src = `/api/method/drive.api.files.get_thumbnail?entity_name=${name}`
+  return { src: src || fallback, fallback }
+}
+
 export const MIME_LIST_MAP = {
   Folder: [],
   Image: [
@@ -452,11 +500,13 @@ export function enterFullScreen() {
 }
 
 function slugger(file_name) {
-  return slugify(file_name.split('.').join(' '), {
-    lower: true,
-    trim: true,
-    remove: /[^\w\s\']|_/,
-  })
+  return file_name
+    .split('.')
+    .join(' ')
+    .toLowerCase()
+    .trim()
+    .replace(/[^\w\s']|_/g, '')
+    .replace(/\s+/g, '-')
 }
 
 function getLinkStem(entity) {

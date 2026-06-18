@@ -39,7 +39,7 @@
   </div>
 </template>
 <script setup>
-import { getIconUrl } from '@/apps/drive/utils/getIconUrl'
+import { getIconUrl } from '@/apps/drive/utils/files'
 
 defineProps({
   title: {
