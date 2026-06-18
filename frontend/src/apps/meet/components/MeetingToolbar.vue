@@ -18,7 +18,7 @@
 				<Button
 					@click="$emit('toggle-microphone')"
 					variant="solid"
-					size="2xl"
+					size="lg"
 					class="!rounded-full p-0 !bg-opacity-90 hover:!bg-opacity-100 transition-all duration-200 hover:scale-105 active:scale-95"
 					:class="{
 						'!bg-[#e54e17] hover:!bg-[#e54e17]': !isMicOn,
@@ -36,7 +36,7 @@
 				<Button
 					@click="$emit('toggle-camera')"
 					variant="solid"
-					size="2xl"
+					size="lg"
 					class="!rounded-full p-0 !bg-opacity-90 hover:!bg-opacity-100 transition-all duration-200 hover:scale-105 active:scale-95"
 					:class="{
 						'!bg-[#e54e17] hover:!bg-[#e54e17]': !isCameraOn,
@@ -55,7 +55,7 @@
 					v-if="canScreenShare()"
 					@click="$emit('toggle-screen-share')"
 					variant="solid"
-					size="2xl"
+					size="lg"
 					class="!rounded-full p-0 !bg-opacity-90 hover:!bg-opacity-100 transition-all duration-200 hover:scale-105 active:scale-95"
 					:class="{
 						'!bg-[#e54e17] hover:!bg-[#e54e17]': isScreenSharing,
@@ -81,7 +81,7 @@
 						<Button
 							variant="solid"
 							theme="gray"
-							size="2xl"
+							size="lg"
 							class="!rounded-full p-0 !bg-opacity-90 hover:!bg-opacity-100 transition-all duration-200 hover:scale-105 active:scale-95"
 							:class="{
 								'!bg-gray-800 hover:!bg-gray-800': isReactionPickerOpen,
@@ -101,7 +101,7 @@
 					<Button
 						@click="$emit('toggle-chat')"
 						variant="solid"
-						size="2xl"
+						size="lg"
 						theme="gray"
 						class="!rounded-full p-0 !bg-opacity-90 hover:!bg-opacity-100 transition-all duration-200 hover:scale-105 active:scale-95"
 						:class="{
@@ -131,7 +131,7 @@
 					<Button
 						@click="$emit('toggle-people')"
 						variant="solid"
-						size="2xl"
+						size="lg"
 						theme="gray"
 						class="!rounded-full p-0 !bg-opacity-90 hover:!bg-opacity-100 transition-all duration-200 hover:scale-105 active:scale-95"
 						:class="{
@@ -158,7 +158,7 @@
 							<Button
 								variant="solid"
 								theme="gray"
-								size="2xl"
+								size="lg"
 								class="!rounded-full p-0 !bg-opacity-90 hover:!bg-opacity-100 transition-all duration-200 hover:scale-105 active:scale-95"
 								title="More options"
 								data-testid="toolbar-more"
@@ -176,7 +176,7 @@
 					@click="$emit('end-call')"
 					variant="solid"
 					theme="red"
-					size="2xl"
+					size="lg"
 					class="!rounded-full p-0 !bg-opacity-90 hover:!bg-opacity-100 transition-all duration-200 hover:scale-105 active:scale-95 !bg-red-600 hover:!bg-red-500"
 					title="End Call"
 					data-testid="toolbar-end-call"

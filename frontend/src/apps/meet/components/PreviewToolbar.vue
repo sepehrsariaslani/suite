@@ -17,7 +17,7 @@
 				<Button
 					@click="$emit('toggle-microphone')"
 					variant="solid"
-					size="2xl"
+					size="lg"
 					class="!rounded-full p-0 !bg-opacity-90 hover:!bg-opacity-100 transition-all duration-200 hover:scale-105 active:scale-95"
 					:class="{
 						'!bg-[#e54e17] hover:!bg-[#e54e17]': !isMicOn,
@@ -35,7 +35,7 @@
 					@click="$emit('toggle-camera')"
 					variant="solid"
 					theme="gray"
-					size="2xl"
+					size="lg"
 					class="!rounded-full p-0 !bg-opacity-90 hover:!bg-opacity-100 transition-all duration-200 hover:scale-105 active:scale-95"
 					:class="{
 						'!bg-[#e54e17] hover:!bg-[#e54e17]': !isCameraOn,
@@ -54,7 +54,7 @@
 					@click="showSettingsDialog = true"
 					variant="solid"
 					theme="gray"
-					size="2xl"
+					size="lg"
 					class="!rounded-full p-0 !bg-opacity-90 hover:!bg-opacity-100 transition-all duration-200 hover:scale-105 active:scale-95"
 					title="Settings"
 				>
