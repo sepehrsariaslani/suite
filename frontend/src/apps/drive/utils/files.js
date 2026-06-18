@@ -367,7 +367,7 @@ export function getThumbnailUrl({ name, file_type, thumbnail, external }, view =
   let src = ''
   if (external) src = view !== 'list' ? thumbnail : ''
   else if (['Image', 'Video', 'PDF'].includes(file_type))
-    src = `/api/method/drive.api.files.get_thumbnail?entity_name=${name}`
+    src = `/api/method/suite.drive.api.files.get_thumbnail?entity_name=${name}`
   return { src: src || fallback, fallback }
 }
 
