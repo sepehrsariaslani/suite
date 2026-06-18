@@ -43,5 +43,6 @@ suite.mail.patches.configure_mail_settings
 suite.mail.patches.configure_mail_cluster
 suite.mail.patches.configure_mail_server
 suite.mail.patches.migrate_outgoing_settings_to_account
+suite.mail.patches.migrate_data_store_to_lmdb
 # --- calendar ---
 # (no patches)
