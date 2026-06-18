@@ -17,6 +17,7 @@ const frappeBackendUrl = `http://${defaultSite}:${webserverPort}`
 export default defineConfig(({ mode }) => ({
   define: {
     __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: 'false',
+    __SOCKETIO_PORT__: JSON.stringify(commonSiteConfig.socketio_port || 9000),
   },
   // Served by Frappe at /assets/suite/frontend/ (build output lands in
   // ../suite/public/frontend -> exposed as /assets/suite/frontend).
