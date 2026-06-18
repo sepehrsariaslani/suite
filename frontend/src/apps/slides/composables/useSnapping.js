@@ -1,503 +1,315 @@
-import { ref, reactive, computed } from 'vue'
+import { reactive, computed, watch } from 'vue'
 import { selectionBounds, currentSlide, slideBounds } from '../stores/slide'
 import { activeElementIds, pairElementId } from '../stores/element'
+import { getElementDiv } from '../stores/elementRegistry'
 
-export const useSnapping = (target, parent, currentResizer, hasOngoingInteraction) => {
-	// element wrt slide center
-	const slideCenterAlignmentKeys = ['centerX', 'centerY', 'startX', 'startY', 'endX', 'endY']
+export const useSnapping = (selectionRef, currentResizer, hasOngoingInteraction) => {
+	const RELEASE_FACTOR = 1.25
 
-	// element wrt other elements
-	const matchedAlignmentKeys = ['left', 'right', 'top', 'bottom']
+	// the edges / centers a rect can align by
+	const X_LINES = ['left', 'right', 'centerX']
+	const Y_LINES = ['top', 'bottom', 'centerY']
 
-	const initDiffs = () => {
-		const makeNullMap = (keys) => {
-			const map = {}
-			keys.forEach((k) => (map[k] = null))
-			return map
-		}
+	// every [selection line, neighbour line] pair can align
+	const X_ALIGNMENTS = [
+		['left', 'left'],
+		['left', 'right'],
+		['right', 'left'],
+		['right', 'right'],
+		['centerX', 'centerX'],
+	]
+	const Y_ALIGNMENTS = [
+		['top', 'top'],
+		['top', 'bottom'],
+		['bottom', 'top'],
+		['bottom', 'bottom'],
+		['centerY', 'centerY'],
+	]
 
-		return {
-			slideCenter: makeNullMap(slideCenterAlignmentKeys),
-			matched: makeNullMap(matchedAlignmentKeys),
-		}
-	}
+	const isSnapping = () => selectionRef.value && hasOngoingInteraction.value
 
-	const diffs = reactive(initDiffs())
-	const prevDiffs = reactive(initDiffs())
-	const resistanceMap = reactive({
-		centerX: false,
-		centerY: false,
-		left: false,
-		right: false,
-		top: false,
-		bottom: false,
-	})
+	const neighbourRects = new Map()
 
-	const getPointMap = (key) => {
-		if (key == 'centerY') {
-			return {
-				left: 'startX',
-				right: 'endX',
-				def: 'centerX',
-			}
-		}
+	// for all neighbous, the rects don't change during gesture
+	// so cache them in the start until gesture ends
+	const cacheNeighbourRects = () => {
+		neighbourRects.clear()
 
-		return {
-			top: 'startY',
-			bottom: 'endY',
-			def: 'centerY',
-		}
-	}
+		currentSlide.value?.elements.forEach((element) => {
+			if (activeElementIds.value.includes(element.id)) return
 
-	const getPointForVisibilityKey = (key) => {
-		const pointMap = getPointMap(key)
+			const div = getElementDiv(element.id)
+			if (!div) return
 
-		let point = pointMap.def
-
-		if (mode.value == 'dragging' || !currentResizer.value) return point
-
-		point =
-			pointMap[Object.keys(pointMap).find((key) => currentResizer.value.includes(key))] ||
-			point
-
-		return point
-	}
-
-	const visibilityMap = computed(() => {
-		if (!hasOngoingInteraction.value) return {}
-
-		const keys = ['centerX', 'centerY', 'left', 'right', 'top', 'bottom']
-
-		const map = {}
-		keys.forEach((key) => {
-			let diff
-
-			if (key == 'centerY') {
-				const point = getPointForVisibilityKey(key)
-				diff = getDiffsForAxis('slideCenterY', point).diff
-			} else if (key == 'centerX') {
-				const point = getPointForVisibilityKey(key)
-				diff = getDiffsForAxis('slideCenterX', point).diff
-			} else {
-				diff = diffs.matched[key]
-			}
-			const threshold = getDynamicThresholds(key).threshold
-
-			map[key] = diff !== null && Math.abs(diff) < threshold
-		})
-
-		return map
-	})
-
-	const mode = ref(null)
-
-	const getGuideForDirection = (direction) => {
-		const guideMap = {
-			slideCenterY: 'centerX',
-			slideCenterX: 'centerY',
-		}
-		return guideMap[direction] || direction
-	}
-
-	const getSlideCenter = (axis) => {
-		let slideStart, slideSize
-
-		if (axis == 'Y') {
-			slideStart = slideBounds.left
-			slideSize = slideBounds.width
-		} else {
-			slideStart = slideBounds.top
-			slideSize = slideBounds.height
-		}
-
-		return slideStart + slideSize / 2
-	}
-
-	const getElementCenter = (axis) => {
-		if (!target.value) return
-		let elementStart, elementSize, slideStart
-
-		if (axis == 'Y') {
-			elementStart = selectionBounds.left
-			elementSize = selectionBounds.width
-			slideStart = slideBounds.left
-		} else {
-			elementStart = selectionBounds.top
-			elementSize = selectionBounds.height
-			slideStart = slideBounds.top
-		}
-
-		elementStart = elementStart * slideBounds.scale + slideStart
-		elementSize *= slideBounds.scale
-
-		return elementStart + elementSize / 2
-	}
-
-	const getDiffFromCenter = (axis) => {
-		if (!target.value) return
-
-		const slideCenter = getSlideCenter(axis)
-		const elementCenter = getElementCenter(axis)
-
-		return slideCenter - elementCenter
-	}
-
-	const updateDiffsRelativeToSlide = () => {
-		if (!target.value) return
-
-		diffs.slideCenter.centerX = getDiffFromCenter('Y')
-		diffs.slideCenter.centerY = getDiffFromCenter('X')
-
-		if (mode.value == 'dragging') return
-
-		diffs.slideCenter.startX =
-			getDiffFromCenter('Y') + (selectionBounds.width * slideBounds.scale) / 2
-		diffs.slideCenter.endX =
-			getDiffFromCenter('Y') - (selectionBounds.width * slideBounds.scale) / 2
-
-		diffs.slideCenter.startY =
-			getDiffFromCenter('X') + (selectionBounds.height * slideBounds.scale) / 2
-		diffs.slideCenter.endY =
-			getDiffFromCenter('X') - (selectionBounds.height * slideBounds.scale) / 2
-	}
-
-	const canElementPair = (diffsFromElement) => {
-		if (!diffsFromElement) return false
-
-		return Object.entries(diffsFromElement).some(([direction, diff]) => {
-			const threshold = getDynamicThresholds(direction).threshold
-			return diff !== null && Math.abs(diff) < threshold
+			const r = div.getBoundingClientRect()
+			neighbourRects.set(element.id, {
+				left: r.left,
+				right: r.right,
+				top: r.top,
+				bottom: r.bottom,
+				centerX: (r.left + r.right) / 2,
+				centerY: (r.top + r.bottom) / 2,
+			})
 		})
 	}
 
-	const getActiveElementBounds = () => {
+	watch(hasOngoingInteraction, (ongoing) => {
+		if (ongoing) return cacheNeighbourRects()
+		neighbourRects.clear()
+		clearSnap()
+	})
+
+	// pan / zoom moves the cached rects on screen — resnapshot
+	watch(
+		() => [slideBounds.left, slideBounds.top, slideBounds.scale],
+		() => isSnapping() && cacheNeighbourRects(),
+	)
+
+	const toScreenRect = (rect) => {
 		const scale = slideBounds.scale
+		const left = slideBounds.left + rect.left * scale
+		const top = slideBounds.top + rect.top * scale
+		const right = left + rect.width * scale
+		const bottom = top + rect.height * scale
+		return {
+			left,
+			top,
+			right,
+			bottom,
+			centerX: (left + right) / 2,
+			centerY: (top + bottom) / 2,
+		}
+	}
 
-		const bounds = Object.fromEntries(
-			Object.entries(selectionBounds).map(([key, value]) => [key, value * scale]),
+	const getSlideCenter = () => ({
+		x: slideBounds.left + slideBounds.width / 2,
+		y: slideBounds.top + slideBounds.height / 2,
+	})
+
+	const getThreshold = () => {
+		const height = selectionBounds.height * slideBounds.scale * 0.1
+		const min = height > 50 ? height / 6 : height / 5
+		const max = height > 50 ? height / 4 : height / 3
+		return Math.max(min, Math.min(max, height))
+	}
+
+	const getMovingLine = (axis) => {
+		const handle = currentResizer.value || ''
+		if (axis === 'x')
+			return handle.includes('left') ? 'left' : handle.includes('right') ? 'right' : null
+		return handle.includes('top') ? 'top' : handle.includes('bottom') ? 'bottom' : null
+	}
+
+	// a candidate snap: the selection's `selectionLine` (e.g. its left edge or
+	// centerX) could land on a `guideLine` belonging to `source`. it stores:
+	//   key    — unique per candidate, so the hysteresis can re-find it
+	//   source — 'slide' | 'element' (what the guide belongs to)
+	//   line   — the guide line: where SnapGuides draws and what we align onto
+	//   offset — px to move the selection so its line lands on the guide
+	const createAlignment = (
+		source,
+		selectionLine,
+		guideLine,
+		guidePosition,
+		selectionPosition,
+	) => ({
+		key: `${source}:${guideLine}:${selectionLine}`,
+		source,
+		line: guideLine,
+		offset: guidePosition - selectionPosition,
+	})
+
+	const getNeighbourAlignmentsForDrag = (selectionScreenRect, neighbour) => {
+		const make = ([selectionLine, guideLine]) =>
+			createAlignment(
+				'element',
+				selectionLine,
+				guideLine,
+				neighbour[guideLine],
+				selectionScreenRect[selectionLine],
+			)
+		return {
+			x: X_ALIGNMENTS.map(make),
+			y: Y_ALIGNMENTS.map(make),
+		}
+	}
+
+	const getNeighbourAlignmentsForResize = (selectionScreenRect, neighbour) => {
+		const movingX = getMovingLine('x')
+		const movingY = getMovingLine('y')
+		const make = (selectionLine, guideLine) =>
+			createAlignment(
+				'element',
+				selectionLine,
+				guideLine,
+				neighbour[guideLine],
+				selectionScreenRect[selectionLine],
+			)
+		return {
+			x: movingX ? X_LINES.map((guideLine) => make(movingX, guideLine)) : [],
+			y: movingY ? Y_LINES.map((guideLine) => make(movingY, guideLine)) : [],
+		}
+	}
+
+	const getSlideAlignmentsForDrag = (selectionScreenRect) => {
+		const center = getSlideCenter()
+		const x = createAlignment(
+			'slide',
+			'centerX',
+			'centerX',
+			center.x,
+			selectionScreenRect.centerX,
 		)
+		const y = createAlignment(
+			'slide',
+			'centerY',
+			'centerY',
+			center.y,
+			selectionScreenRect.centerY,
+		)
+		return { x: [x], y: [y] }
+	}
+
+	const getSlideAlignmentsForResize = (selectionScreenRect) => {
+		const center = getSlideCenter()
+
+		// one candidate if this axis is resizing, otherwise none
+		const centerCandidates = (movingLine, guideLine, slideCenter) => {
+			if (!movingLine) return []
+			const selectionPosition = selectionScreenRect[movingLine]
+			return [createAlignment('slide', movingLine, guideLine, slideCenter, selectionPosition)]
+		}
 
 		return {
-			left: bounds.left + slideBounds.left,
-			right: bounds.left + bounds.width + slideBounds.left,
-			top: bounds.top + slideBounds.top,
-			bottom: bounds.top + bounds.height + slideBounds.top,
+			x: centerCandidates(getMovingLine('x'), 'centerX', center.x),
+			y: centerCandidates(getMovingLine('y'), 'centerY', center.y),
 		}
 	}
 
-	const getDiffFromElement = (element) => {
-		if (activeElementIds.value.includes(element.id)) return
+	const getSlideAlignments = (selectionScreenRect, mode) => {
+		if (mode === 'drag') return getSlideAlignmentsForDrag(selectionScreenRect)
+		if (mode === 'resize') return getSlideAlignmentsForResize(selectionScreenRect)
+		return { x: [], y: [] }
+	}
 
-		const elementDiv = document.querySelector(`[data-index="${element.id}"]`)
-		if (!elementDiv || !target.value) return
+	const getNeighbourAlignmentsBuilder = (mode) => {
+		if (mode === 'drag') return getNeighbourAlignmentsForDrag
+		if (mode === 'resize') return getNeighbourAlignmentsForResize
+		return null
+	}
 
-		const elementBounds = elementDiv.getBoundingClientRect()
-		const activeBounds = getActiveElementBounds()
+	// first neighbour with any alignment in range becomes the pair (highlighted)
+	const getNeighbourAlignments = (selectionScreenRect, mode) => {
+		const buildAlignments = getNeighbourAlignmentsBuilder(mode)
+		if (!buildAlignments) return null
 
-		return {
-			left: activeBounds.left - elementBounds.left,
-			right: activeBounds.right - elementBounds.right,
-			top: activeBounds.top - elementBounds.top,
-			bottom: activeBounds.bottom - elementBounds.bottom,
+		const limit = getThreshold()
+		for (const [id, neighbour] of neighbourRects) {
+			const aligned = buildAlignments(selectionScreenRect, neighbour)
+			const inRange = [...aligned.x, ...aligned.y].some((a) => Math.abs(a.offset) < limit)
+			if (inRange) {
+				pairElementId.value = id
+				return aligned
+			}
 		}
-	}
-
-	const pairElement = (id, diffFromElement) => {
-		if (!diffFromElement) return
-
-		pairElementId.value = id
-
-		Object.entries(diffFromElement).forEach(([direction, diff]) => {
-			diffs.matched[direction] = diff
-		})
-	}
-
-	const unpairElement = () => {
 		pairElementId.value = null
-
-		const resetDiffs = () => {
-			return ['left', 'right', 'top', 'bottom'].reduce((map, direction) => {
-				map[direction] = null
-				return map
-			}, {})
-		}
-
-		Object.assign(diffs.matched, resetDiffs())
-		Object.assign(prevDiffs.matched, resetDiffs())
-		Object.assign(resistanceMap, resetDiffs())
+		return null
 	}
 
-	const updateDiffsRelativeToPairedElement = () => {
-		currentSlide.value.elements.forEach((element) => {
-			const diffFromElement = getDiffFromElement(element)
-
-			const canPair = canElementPair(diffFromElement)
-			const isPaired = pairElementId.value == element.id
-
-			if (canPair) pairElement(element.id, diffFromElement)
-			else if (isPaired) unpairElement()
-		})
+	// what each axis is snapped to, or null. each entry is an alignment object:
+	//   { key, source: 'slide' | 'element', line, offset }
+	const activeSnap = reactive({ x: null, y: null })
+	const clearSnap = () => {
+		activeSnap.x = null
+		activeSnap.y = null
 	}
 
-	const updateDiffs = () => {
-		if (!target.value) return
+	// stay on the current alignment until it leaves the release window,
+	// otherwise take the nearest one within the threshold
+	const chooseAlignment = (axis, alignments) => {
+		const limit = getThreshold()
+		const current = activeSnap[axis]
+		const held = current && alignments.find((a) => a.key === current.key)
+		if (held && Math.abs(held.offset) < limit * RELEASE_FACTOR) return held
 
-		// sync previous diffs
-		Object.entries(diffs).forEach(([key, value]) => {
-			Object.entries(value).forEach(([direction, diff]) => {
-				prevDiffs[key][direction] = diff
-			})
-		})
-
-		updateDiffsRelativeToSlide()
-
-		updateDiffsRelativeToPairedElement()
+		const inRange = alignments.filter((a) => Math.abs(a.offset) < limit)
+		inRange.sort((a, b) => Math.abs(a.offset) - Math.abs(b.offset))
+		return inRange[0] || null
 	}
 
-	const getDynamicMargin = (axis) => {
-		if (['centerX', 'centerY'].includes(axis)) {
-			return selectionBounds.width * slideBounds.scale * 0.1
-		}
-		return selectionBounds.height * slideBounds.scale * 0.05
+	// records what the axis snapped to and returns how far to move it (slide units).
+	// shouldSnap is false for an aspect-locked axis (e.g. media height)
+	const getSnapOffsetForAxis = (axis, alignments, shouldSnap) => {
+		const chosen = shouldSnap ? chooseAlignment(axis, alignments) : null
+		activeSnap[axis] = chosen
+		return (chosen ? chosen.offset : 0) / slideBounds.scale
 	}
 
-	const getDynamicThresholds = (axis) => {
-		const scaleFactor = 0.1
-		const scaledHeight = selectionBounds.height * slideBounds.scale * scaleFactor
-
-		const isCenterAxis = ['centerX', 'centerY'].includes(axis)
-
-		let minThreshold, maxThreshold, maxResistanceThreshold
-
-		if (isCenterAxis) {
-			minThreshold = scaledHeight > 50 ? scaledHeight / 6 : scaledHeight / 5
-			maxThreshold = scaledHeight > 50 ? scaledHeight / 4 : scaledHeight / 3
-			maxResistanceThreshold = 5
-		} else {
-			minThreshold = scaledHeight > 50 ? scaledHeight / 6 : scaledHeight / 5
-			maxThreshold = scaledHeight > 50 ? scaledHeight / 4 : scaledHeight / 3
-			maxResistanceThreshold = 3
-		}
-
+	const mergeCandidates = (slide, neighbour) => {
+		const neighbourCandidates = neighbour ?? { x: [], y: [] }
 		return {
-			threshold: Math.max(minThreshold, Math.min(maxThreshold, scaledHeight)),
-			resistance_threshold: Math.max(
-				1,
-				Math.min(maxResistanceThreshold, scaledHeight * 0.15),
-			),
+			x: [...slide.x, ...neighbourCandidates.x],
+			y: [...slide.y, ...neighbourCandidates.y],
 		}
 	}
 
-	const getDiffsForAxis = (axis, point) => {
-		let diff, prevDiff
-
-		if (['slideCenterY', 'slideCenterX'].includes(axis)) {
-			diff = diffs.slideCenter[point]
-			prevDiff = prevDiffs.slideCenter[point]
-		} else if (['left', 'right', 'top', 'bottom'].includes(axis)) {
-			diff = diffs.matched[axis]
-			prevDiff = prevDiffs.matched[axis]
-		}
-
-		return { diff, prevDiff }
+	const getSnapCandidates = (selectionScreenRect, mode) => {
+		const slide = getSlideAlignments(selectionScreenRect, mode)
+		const neighbour = getNeighbourAlignments(selectionScreenRect, mode)
+		return mergeCandidates(slide, neighbour)
 	}
 
-	const getThresholdsAndMargin = (axis) => {
-		return {
-			...getDynamicThresholds(axis),
-			margin: getDynamicMargin(axis),
-		}
+	const snapForDrag = (rect) => {
+		if (!isSnapping()) return rect
+
+		const selectionScreenRect = toScreenRect(rect)
+		const candidates = getSnapCandidates(selectionScreenRect, 'drag')
+
+		const dx = getSnapOffsetForAxis('x', candidates.x, true)
+		const dy = getSnapOffsetForAxis('y', candidates.y, true)
+
+		const left = rect.left + dx
+		const top = rect.top + dy
+
+		return { ...rect, left, top }
 	}
 
-	const handleSnapMovement = (axis, point) => {
-		const isMovingAway = () => {
-			if (diff == null || prevDiff == null) return false
+	// apply the offset to the moving edge, the opposite edge stays put
+	const applyOffsetToMovingEdges = (rect, dx, dy) => {
+		const handle = currentResizer.value || ''
+		const snapped = { ...rect }
 
-			// If current diff is greater, element is moving away
-			const currDiffGreater = Math.abs(diff) >= Math.abs(prevDiff)
-
-			// If element just snapped, the prev diff is the threshold point
-			const justSnapped = Math.abs(Math.abs(prevDiff) - threshold) < margin
-
-			return currDiffGreater || justSnapped
+		if (handle.includes('left')) {
+			snapped.left += dx
+			snapped.width -= dx
+		} else if (handle.includes('right')) {
+			snapped.width += dx
 		}
 
-		const getSnapOffset = () => {
-			// check for threshold + / - margin
-			const canSnap = Math.abs(Math.abs(diff) - threshold) < margin
-			if (canSnap && !movingAway) {
-				return diff
-			}
-			return 0
+		if (handle.includes('top')) {
+			snapped.top += dy
+			snapped.height -= dy
+		} else if (handle.includes('bottom')) {
+			snapped.height += dy
 		}
 
-		const limitResistanceToOneSide = (activeGuide) => {
-			const resizer = currentResizer.value || ''
-
-			const oppositeGuides = {
-				left: 'right',
-				right: 'left',
-				top: 'bottom',
-				bottom: 'top',
-			}
-
-			Object.entries(oppositeGuides).forEach(([side, opposite]) => {
-				if (resizer.includes(side)) {
-					resistanceMap[opposite] = false
-					resistanceMap['centerX'] = false
-					resistanceMap['centerY'] = false
-				}
-			})
-		}
-
-		const setResistanceMap = () => {
-			const guide = getGuideForDirection(axis)
-			const withinResistanceRange = movingAway && Math.abs(diff) < resistance_threshold
-			resistanceMap[guide] = diff !== null && withinResistanceRange
-
-			limitResistanceToOneSide(guide)
-		}
-
-		const setResizeSnapOffsets = () => {
-			const resizer = currentResizer.value || ''
-			const snapOffset = getSnapOffset()
-
-			if (axis == 'right' && resizer.includes('right')) {
-				offsetX = 0
-				offsetWidth = -snapOffset
-			} else if (axis == 'left' && resizer.includes('left')) {
-				offsetX = snapOffset
-				offsetWidth = snapOffset
-			} else if (axis == 'bottom' && resizer.includes('bottom')) {
-				offsetY = 0
-				offsetWidth = -snapOffset
-			} else if (axis == 'top' && resizer.includes('top')) {
-				offsetY = snapOffset
-				offsetWidth = snapOffset
-			}
-		}
-
-		const setDragSnapOffsets = () => {
-			const snapOffset = getSnapOffset()
-			if (['slideCenterY', 'left', 'right'].includes(axis)) {
-				offsetX = snapOffset
-			} else if (['slideCenterX', 'top', 'bottom'].includes(axis)) {
-				offsetY = snapOffset
-			}
-		}
-
-		const { diff, prevDiff } = getDiffsForAxis(axis, point)
-
-		const { threshold, resistance_threshold, margin } = getThresholdsAndMargin(axis)
-
-		const movingAway = isMovingAway()
-
-		setResistanceMap()
-
-		let offsetX = 0
-		let offsetY = 0
-		let offsetWidth = 0
-
-		if (mode.value == 'resizing') {
-			setResizeSnapOffsets()
-		} else {
-			setDragSnapOffsets()
-		}
-
-		return {
-			offsetX: offsetX,
-			offsetY: offsetY,
-			offsetWidth: offsetWidth,
-		}
+		return snapped
 	}
 
-	const getCenterOffsets = () => {
-		let pointX = 'centerX',
-			pointY = 'centerY'
+	const snapForResize = (rect, { axes = ['x', 'y'] } = {}) => {
+		if (!isSnapping()) return rect
 
-		const resizer = currentResizer.value || ''
+		const selectionScreenRect = toScreenRect(rect)
+		const candidates = getSnapCandidates(selectionScreenRect, 'resize')
 
-		if (mode.value == 'resizing') {
-			if (resizer.includes('left')) pointX = 'startX'
-			else if (resizer.includes('right')) pointX = 'endX'
+		const dx = getSnapOffsetForAxis('x', candidates.x, axes.includes('x'))
+		const dy = getSnapOffsetForAxis('y', candidates.y, axes.includes('y'))
 
-			if (resizer.includes('top')) pointY = 'startY'
-			else if (resizer.includes('bottom')) pointY = 'endY'
-		}
-
-		const { offsetX, offsetWidth } = handleSnapMovement('slideCenterX', pointX)
-
-		const { offsetY, offsetWidth: offsetWidthY } = handleSnapMovement('slideCenterY', pointY)
-
-		return {
-			centerOffsetX: offsetX,
-			centerOffsetWidth: offsetWidth + offsetWidthY,
-			centerOffsetY: offsetY,
-		}
+		return applyOffsetToMovingEdges(rect, dx, dy)
 	}
 
-	const getOffset = (axis) => {
-		let start, end
+	// what SnapGuides draws per axis
+	const activeGuides = computed(() => ({ x: activeSnap.x, y: activeSnap.y }))
 
-		if (axis == 'X') {
-			start = 'left'
-			end = 'right'
-		} else {
-			start = 'top'
-			end = 'bottom'
-		}
-
-		const dragEnd =
-			mode.value == 'dragging' &&
-			Math.abs(diffs.matched[end]) < Math.abs(diffs.matched[start])
-		const resizeEnd =
-			mode.value == 'resizing' && currentResizer.value?.includes(end.toLowerCase())
-
-		if (dragEnd || resizeEnd) {
-			return handleSnapMovement(end)
-		}
-
-		return handleSnapMovement(start)
-	}
-
-	const getPairedOffsets = () => {
-		const { offsetX, offsetWidth } = getOffset('X')
-		const { offsetY, offsetWidth: offsetWidthY } = getOffset('Y')
-
-		return {
-			pairedOffsetX: offsetX,
-			pairedOffsetY: offsetY,
-			pairedOffsetWidth: offsetWidth + offsetWidthY,
-		}
-	}
-
-	const getSnapDelta = () => {
-		if (!target.value) return
-
-		const { centerOffsetX, centerOffsetY, centerOffsetWidth } = getCenterOffsets()
-
-		const { pairedOffsetX, pairedOffsetY, pairedOffsetWidth } = getPairedOffsets()
-
-		return {
-			x: centerOffsetX - pairedOffsetX || 0,
-			y: centerOffsetY - pairedOffsetY || 0,
-			width: centerOffsetWidth + pairedOffsetWidth || 0,
-		}
-	}
-
-	const handleSnapping = (interaction = 'dragging') => {
-		mode.value = interaction
-
-		// update diffs based on current position
-		updateDiffs()
-
-		// return delta to apply for closest snap
-		return getSnapDelta()
-	}
-
-	return {
-		visibilityMap,
-		resistanceMap,
-		handleSnapping,
-	}
+	return { activeGuides, snapForDrag, snapForResize }
 }

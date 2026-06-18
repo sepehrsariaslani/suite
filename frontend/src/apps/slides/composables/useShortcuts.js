@@ -34,6 +34,8 @@ import {
 	performPreviousStep,
 } from '@/apps/slides/stores/slideshow'
 
+import { markDirty } from '@/apps/slides/stores/saving'
+
 import { isCmdOrCtrl } from '@/apps/slides/utils/helpers'
 
 const { toggleNavigationPanel } = useNavigationPanel()
@@ -111,6 +113,8 @@ export const useShortcuts = (inReadonlyMode, inSlideShowMode) => {
 			element.left += dx
 			element.top += dy
 		})
+
+		markDirty()
 	}
 
 	const handleElementShortcuts = (e) => {

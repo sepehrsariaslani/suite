@@ -3,6 +3,7 @@ import { Editor } from '@tiptap/vue-3'
 import { extensions } from '@/apps/slides/stores/tiptapSetup'
 import { TextSelection } from 'prosemirror-state'
 import { commandHistory } from '@/apps/slides/stores/historyMeta'
+import { markDirty } from '@/apps/slides/stores/saving'
 import { activeElement } from '@/apps/slides/stores/element'
 import { editElementCommand } from '@/apps/slides/stores/commands'
 import { currentSlide } from '@/apps/slides/stores/slide'
@@ -57,6 +58,7 @@ export const useTextEditor = () => {
 
 	const updateElementContent = (editor) => {
 		activeElement.value.content = editor.getHTML()
+		markDirty()
 	}
 
 	const handleOnTransaction = (editor, transaction) => {
@@ -89,6 +91,8 @@ export const useTextEditor = () => {
 				property: 'content',
 				oldValue: contentHistory.value,
 				newValue: editor.getHTML(),
+				// saving on blur must not pull selection back to this element
+				skipJumpOnExecute: true,
 			}),
 		)
 	}

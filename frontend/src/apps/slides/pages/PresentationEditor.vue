@@ -122,7 +122,7 @@ import {
 } from '@/apps/slides/stores/historyMeta'
 
 import { useShortcuts } from '@/apps/slides/composables/useShortcuts'
-import { saveChanges, saveCurrentState, isDirty } from '@/apps/slides/stores/saving'
+import { saveChanges, saveCurrentState, dirty } from '@/apps/slides/stores/saving'
 import { inSlideShowMode, startSlideShow } from '@/apps/slides/stores/slideshow'
 import { Layout } from 'lucide-vue-next'
 import { useCommandHistory } from '@/apps/slides/composables/useCommandHistory'
@@ -209,7 +209,7 @@ const updateUnsyncedRecord = () => {
 }
 
 const handleBeforeUnload = (e) => {
-	if (isDirty.value) {
+	if (dirty.value) {
 		e.preventDefault()
 		e.returnValue = ''
 	}

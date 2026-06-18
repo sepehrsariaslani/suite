@@ -11,6 +11,8 @@ import {
 } from './slide'
 import { useTextEditor } from '@/apps/slides/composables/useTextEditor'
 
+import { getElementDiv } from './elementRegistry'
+import { markDirty } from './saving'
 import { generateUniqueId, cloneObj } from '../utils/helpers'
 import { guessTextColorFromBackground } from '../utils/color'
 import { presentationId } from './presentation'
@@ -676,9 +678,10 @@ const resetFocus = () => {
 }
 
 const getElementPosition = (elementId) => {
-	const elementRect = document
-		.querySelector(`[data-index="${elementId}"]`)
-		.getBoundingClientRect()
+	const elementDiv = getElementDiv(elementId)
+	if (!elementDiv) return { left: 0, top: 0, right: 0, bottom: 0 }
+
+	const elementRect = elementDiv.getBoundingClientRect()
 
 	const elementLeft = (elementRect.left - slideBounds.left) / slideBounds.scale
 	const elementTop = (elementRect.top - slideBounds.top) / slideBounds.scale
@@ -694,8 +697,16 @@ const getElementPosition = (elementId) => {
 }
 
 const getElementLayoutPosition = (element) => {
-	const elementDiv = document.querySelector(`[data-index="${element.id}"]`)
-	if (!elementDiv) return getElementPosition(element.id)
+	const elementDiv = getElementDiv(element.id)
+	// no rendered node yet: fall back to the element's stored bounds
+	if (!elementDiv) {
+		return {
+			left: element.left,
+			top: element.top,
+			right: element.left + (element.width || 0),
+			bottom: element.top + (element.height || 0),
+		}
+	}
 
 	return {
 		left: element.left,
@@ -720,11 +731,12 @@ const isWithinOverlappingBounds = (outer, inner) => {
 	return withinWidth && withinHeight
 }
 
-const addFixedWidthToElement = (deltaWidth) => {
-	const elementDiv = document.querySelector(`[data-index="${activeElement.value.id}"]`)
+const addFixedWidthToElement = () => {
+	const elementDiv = getElementDiv(activeElement.value.id)
 	if (elementDiv) {
 		const rect = elementDiv.getBoundingClientRect()
-		activeElement.value.width = rect.width
+		activeElement.value.width = rect.width / slideBounds.scale
+		markDirty()
 	}
 }
 
@@ -749,12 +761,16 @@ const updateElementContent = (element) => {
 				slideId: currentSlide.value.clientId,
 				elementIds: [element.id],
 				commands: refCommands,
+				// runs while blurring away from the element, must not steal selection
+				skipJumpOnExecute: true,
 			}),
 		)
 	}
 
 	element.content = updatedHTML
 	editorOldText = currentText
+
+	markDirty()
 }
 
 const blurAndSaveContent = (element) => {

@@ -6,7 +6,6 @@
 			:element="element"
 			:mode="mode"
 			:elementOffset="elementOffset"
-			@clearTimeouts="$emit('clearTimeouts')"
 			:transitionStyles="transitionStyles"
 		/>
 	</div>
@@ -23,6 +22,8 @@ import ShapeElement from '@/apps/slides/components/ShapeElement.vue'
 import { activeElementIds } from '@/apps/slides/stores/element'
 
 import { slideBounds } from '@/apps/slides/stores/slide'
+
+import { rotationDelta } from '@/apps/slides/composables/useRotator'
 
 const props = defineProps({
 	mode: {
@@ -41,13 +42,7 @@ const props = defineProps({
 		type: Object,
 		default: () => ({}),
 	},
-	rotationDelta: {
-		type: Number,
-		default: 0,
-	},
 })
-
-const emit = defineEmits(['clearTimeouts'])
 
 const getElementKey = (element) => {
 	const id = element.refId || element.id
@@ -69,9 +64,6 @@ const elementStyle = computed(() => {
 	const offsetWidth = isActive.value ? props.elementOffset.width : 0
 	const offsetHeight = isActive.value ? props.elementOffset.height : 0
 
-	const elementLeft = element.value.left + offsetLeft
-	const elementTop = element.value.top + offsetTop
-
 	let elementWidth = element.value.width
 	if (elementWidth) {
 		elementWidth = `${elementWidth + offsetWidth}px`
@@ -89,21 +81,32 @@ const elementStyle = computed(() => {
 	}
 
 	const elementRotation = element.value.rotation || 0
+
+	// only the active editor element tracks the live rotation delta —
+	// inactive elements never read it, so they don't re-render per frame
 	const rotation =
-		isActive.value && isRotatable.value
-			? elementRotation + props.rotationDelta
+		isActive.value && isRotatable.value && props.mode == 'editor'
+			? elementRotation + rotationDelta.value
 			: elementRotation
+
+	// the transient gesture offset rides on the transform (compositor-only,
+	// no layout) while left/top hold the committed position; it must come
+	// first so it shifts the element in slide axes, before rotation/centering
+	const offsetTransform =
+		offsetLeft || offsetTop ? `translate(${offsetLeft}px, ${offsetTop}px)` : ''
+
+	const transform = [offsetTransform, getTransform(rotation)].filter(Boolean).join(' ')
 
 	return {
 		position: 'absolute',
 		width: elementWidth,
 		height: elementHeight,
-		left: `${elementLeft}px`,
-		top: `${elementTop}px`,
+		left: `${element.value.left}px`,
+		top: `${element.value.top}px`,
 		outline: props.highlight ? `#70B6F092 solid ${2 / slideBounds.scale}px` : 'none',
 		boxSizing: 'border-box',
 		zIndex: element.value.zIndex,
-		transform: getTransform(rotation),
+		transform: transform,
 		transformOrigin: getTransformOrigin(),
 		minWidth: element.value.type == 'text' ? '2px' : '',
 	}
