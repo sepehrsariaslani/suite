@@ -2,6 +2,7 @@ import fs from 'fs'
 import path from 'path'
 
 import vue from '@vitejs/plugin-vue'
+import { noiseSuppressionAudioWorkletVitePlugin } from '@workadventure/noise-suppression/vite'
 import frappeui from 'frappe-ui/vite'
 import { defineConfig } from 'vite'
 
@@ -23,6 +24,7 @@ export default defineConfig(({ mode }) => ({
   // ../suite/public/frontend -> exposed as /assets/suite/frontend).
   base: mode === 'production' ? '/assets/suite/frontend/' : '/',
   plugins: [
+    noiseSuppressionAudioWorkletVitePlugin(),
     frappeui({
       // frappe-ui/vite wires the dev proxy to the local bench, injects the
       // CSRF/boot data, and emits the Jinja-templated index html.
