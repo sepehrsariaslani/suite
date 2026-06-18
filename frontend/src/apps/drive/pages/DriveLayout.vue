@@ -32,7 +32,6 @@ import { initSocket } from '@/apps/drive/socket'
 import { FrappeUIProvider } from 'frappe-ui'
 import { useRoute } from 'vue-router'
 import { setupTheme } from '@/apps/drive/utils/setupTheme'
-import 'access-key-label-polyfill'
 import '@/apps/drive/index.css'
 
 // The standalone main.ts provided these via `app.provide`. Provide them from the

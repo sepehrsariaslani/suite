@@ -1937,11 +1937,6 @@ abbrev@1:
   resolved "https://registry.yarnpkg.com/abbrev/-/abbrev-1.1.1.tgz#f8f2c887ad10bf67f634f005b6987fed3179aac8"
   integrity sha512-nne9/IiQ/hzIhY6pdDnbBtz7DjPTKrY00P/zvPSm5pOFkl6xuGrGnXn/VtTNNfNtAfZ9/1RtehkszU9qcTii0Q==
 
-access-key-label-polyfill@^1.0.0:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/access-key-label-polyfill/-/access-key-label-polyfill-1.0.2.tgz#0d7e29c8beedba9eca692e5e4191fc272273aea1"
-  integrity sha512-wXIkDJlR6SPn25Bn6It1/wqdSSYbzqDA8vTqSwxayfkzrkpPcUsPE2xNL9OJk48v7O+PJZ4nmDvw7w6eC3ldlg==
-
 acorn@^8.14.1, acorn@^8.15.0, acorn@^8.16.0:
   version "8.17.0"
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-8.17.0.tgz#1785adb84faf8d8add10369b93826fc2bd08f1fe"

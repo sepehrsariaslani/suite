@@ -5,7 +5,6 @@ from functools import wraps
 from pathlib import Path
 
 import frappe
-from bs4 import BeautifulSoup
 from pypika import Field, functions as fn
 import mimemapper
 
@@ -139,6 +138,17 @@ FILE_FIELDS = [
     "attached_to_doctype",
     "attached_to_name",
 ]
+
+
+def hide_storage_key(row):
+    """Blank file_url unless the client needs it as a real URL.
+
+    For managed files it's the raw storage key, which leaks the owner's path;
+    only Link/Presentation/site files use it client-side.
+    """
+    if row.get("file_type") not in ("Link", "Presentation") and not is_site_file(row):
+        row["file_url"] = None
+    return row
 
 
 def get_home_folder(team):
@@ -368,37 +378,12 @@ def create_drive_file(
     drive_file = frappe.get_doc(values)
     drive_file.flags.file_created = True
     drive_file.insert(ignore_permissions=True)
-    path = entity_path if isinstance(entity_path, str) else entity_path(drive_file)
+    path = entity_path(drive_file) if callable(entity_path) else entity_path
     drive_file.file_url = str(path) if path else ""
     drive_file.save(ignore_permissions=True)
     if owner:
         drive_file.db_set("owner", owner, update_modified=False)
     return drive_file
-
-
-def extract_mentions(content):
-    soup = BeautifulSoup(content, "html.parser")
-    mentions = []
-    for span in soup.find_all("span", class_="mention", attrs={"data-type": "mention"}):
-        data_id = span.get("data-id")
-        if data_id:
-            mentions.append(data_id)
-    return mentions
-
-
-def strip_comment_spans(html: str) -> str:
-    """
-    Remove only <span> tags with a data-comment-id attribute.
-    Keeps their inner content.
-    """
-    soup = BeautifulSoup(html, "html.parser")
-
-    for span in soup.find_all("span", attrs={"data-comment-id": True}):
-        span.unwrap()
-    for span in soup.find_all("img"):
-        span.unwrap()
-
-    return str(soup)
 
 
 @frappe.whitelist()
@@ -503,3 +488,32 @@ def get_upload_path(team_path, file_name):
     if not os.path.exists(uploads_path):
         uploads_path.mkdir()
     return uploads_path / file_name
+
+
+@default_team
+def create_file(
+    title="Untitled",
+    parent=None,
+    path=None,
+    mime_type=None,
+    file_type=None,
+    content_doctype=None,
+    content_docname=None,
+    team=None,
+):
+    """Convenience wrapper for external apps (e.g. Slides, Writer) to create a Drive file."""
+    if not parent:
+        parent = get_home_folder(team).name
+    else:
+        team = frappe.db.get_value("File", parent, "team")
+
+    return create_drive_file(
+        team,
+        title,
+        parent,
+        file_type or "Unknown",
+        lambda _: path,
+        mime_type=mime_type,
+        content_doctype=content_doctype,
+        content_docname=content_docname,
+    )

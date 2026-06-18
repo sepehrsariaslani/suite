@@ -460,7 +460,7 @@ import EmojiPicker from '@/apps/drive/components/EmojiPicker.vue'
 import UserTooltip from '@/apps/drive/components/UserTooltip.vue'
 import { dynamicList } from '@/apps/drive/utils/files'
 import TeamSelector from '@/apps/drive/components/TeamSelector.vue'
-import { LucideRefreshCcw } from 'lucide-vue-next'
+import LucideRefreshCcw from '~icons/lucide/refresh-ccw'
 
 const route = useRoute()
 const tabIndex = ref(0)
