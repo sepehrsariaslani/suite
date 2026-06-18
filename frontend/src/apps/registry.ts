@@ -15,6 +15,7 @@ import mailLogo from '@/assets/app-logos/mail.svg'
 import meetLogo from '@/assets/app-logos/meet.png'
 import sheetsLogo from '@/assets/app-logos/sheets.svg'
 import slidesLogo from '@/assets/app-logos/slides.svg'
+import suiteLogo from '@/assets/app-logos/suite.svg'
 import writerLogo from '@/assets/app-logos/writer.png'
 
 export interface SuiteApp {
@@ -30,6 +31,8 @@ export interface SuiteApp {
   /** Imported, build-fingerprinted brand-logo URL. */
   logo: string
 }
+
+export const SUITE_LOGO = suiteLogo
 
 export const SUITE_APPS: SuiteApp[] = [
   { id: 'drive', name: 'Drive', prefix: '/drive', description: 'Files & folders', icon: 'HardDrive', logo: driveLogo },

@@ -1,10 +1,11 @@
 import {
   createRouter,
   createWebHistory,
+  type RouteLocationNormalizedLoaded,
   type RouteRecordRaw,
 } from 'vue-router'
 
-import { SUITE_APPS } from '@/apps/registry'
+import { SUITE_APPS, SUITE_LOGO } from '@/apps/registry'
 import { useSessionStore } from '@/boot/session'
 
 /**
@@ -37,13 +38,16 @@ const appRouteLoaders: Record<string, () => Promise<{ routes: RouteRecordRaw[] }
   calendar: () => import('@/apps/calendar/routes'),
 }
 
+const SUITE_FAVICON = SUITE_LOGO
+let currentFaviconScope: string | undefined
+
 // Placeholder record per app: matches the prefix + everything under it and
 // carries `meta.appId`. `beforeEach` swaps it for the real routes on first hit.
 const placeholderGroups: RouteRecordRaw[] = SUITE_APPS.map((app) => ({
   path: `${app.prefix}/:pathMatch(.*)*`,
   name: `${app.id}-placeholder`,
   component: () => import('@/shell/AppContainer.vue'),
-  meta: { appId: app.id },
+  meta: { appId: app.id, title: `Frappe ${app.name}`, favicon: app.logo },
 }))
 
 const routes: RouteRecordRaw[] = [
@@ -55,13 +59,14 @@ const routes: RouteRecordRaw[] = [
     path: '/suite',
     name: 'suite-launcher',
     component: () => import('@/shell/LauncherView.vue'),
-    meta: { isShell: true },
+    meta: { isShell: true, title: 'Frappe Suite', favicon: SUITE_FAVICON },
   },
   ...placeholderGroups,
   {
     path: '/:pathMatch(.*)*',
     name: 'not-found',
     component: () => import('@/shell/NotFoundView.vue'),
+    meta: { title: 'Frappe Suite', favicon: SUITE_FAVICON },
   },
 ]
 
@@ -91,7 +96,7 @@ async function ensureAppRoutesLoaded(appId: string): Promise<void> {
   router.addRoute({
     path: app.prefix,
     component: () => import('@/shell/AppContainer.vue'),
-    meta: { appId },
+    meta: { appId, title: `Frappe ${app.name}`, favicon: app.logo },
     children: mod.routes,
   })
 
@@ -121,5 +126,46 @@ router.beforeEach(async (to) => {
 
   return true
 })
+
+router.afterEach((to) => {
+  setDocumentTitle(to)
+  setFavicon(to)
+})
+
+function setDocumentTitle(to: RouteLocationNormalizedLoaded) {
+  const title = to.meta.title
+  if (typeof title === 'string' && title) {
+    document.title = title
+  }
+}
+
+function setFavicon(to: RouteLocationNormalizedLoaded) {
+  const favicon = to.meta.favicon
+  if (typeof favicon !== 'string' || !favicon) return
+
+  const scope = (to.meta.appId as string | undefined) ?? 'suite'
+  if (scope === currentFaviconScope) return
+
+  const icon = getFaviconElement()
+  icon.href = favicon
+  icon.type = getFaviconType(favicon)
+  currentFaviconScope = scope
+}
+
+function getFaviconElement() {
+  let icon = document.querySelector<HTMLLinkElement>("link[rel='icon']")
+  if (!icon) {
+    icon = document.createElement('link')
+    icon.rel = 'icon'
+    document.head.appendChild(icon)
+  }
+  return icon
+}
+
+function getFaviconType(favicon: string) {
+  if (favicon.includes('.svg')) return 'image/svg+xml'
+  if (favicon.includes('.png')) return 'image/png'
+  return 'image/x-icon'
+}
 
 export default router
