@@ -52,6 +52,8 @@ export const useResizer = () => {
 		e.preventDefault()
 		e.stopImmediatePropagation()
 
+		if (!e.buttons) return stopResize(e)
+
 		lastX = e.clientX
 		lastY = e.clientY
 
