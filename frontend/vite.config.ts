@@ -1,13 +1,17 @@
+import fs from 'fs'
 import path from 'path'
 
 import vue from '@vitejs/plugin-vue'
 import frappeui from 'frappe-ui/vite'
 import { defineConfig } from 'vite'
 
-// Backend Frappe site (suite.localhost) is served on port 8004 during dev.
-// Mirror the per-app frappe-ui/vite proxy conventions so /api, /assets, /files,
-// socket.io etc. are forwarded to the running bench.
-const FRAPPE_BACKEND_PORT = 8004
+const benchRoot = path.resolve(__dirname, '../../..')
+const commonSiteConfig = JSON.parse(
+  fs.readFileSync(path.join(benchRoot, 'sites/common_site_config.json'), 'utf-8'),
+)
+const defaultSite = commonSiteConfig.default_site || 'localhost'
+const webserverPort = commonSiteConfig.webserver_port || 8000
+const frappeBackendUrl = `http://${defaultSite}:${webserverPort}`
 
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => ({
@@ -62,15 +66,15 @@ export default defineConfig(({ mode }) => ({
   },
   server: {
     port: 8085,
-    allowedHosts: ['suite.localhost'],
+    allowedHosts: [defaultSite, 'suite.localhost'],
     proxy: {
       // Fallback explicit proxy in case frappeProxy autodetection misses the
-      // port; forward the Frappe API surface to the bench on :8004.
-      '^/(app|api|assets|files|private|method)': {
-        target: `http://suite.localhost:${FRAPPE_BACKEND_PORT}`,
+      // port; forward the Frappe API surface to the bench webserver port.
+      '^/(app|api|assets|files|private|method|website_script\\.js)': {
+        target: frappeBackendUrl,
         ws: true,
         changeOrigin: true,
-        router: () => `http://suite.localhost:${FRAPPE_BACKEND_PORT}`,
+        router: () => frappeBackendUrl,
       },
     },
     fs: {
