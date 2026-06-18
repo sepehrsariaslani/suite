@@ -43,7 +43,7 @@ import {
 import { Button, Dropdown, createResource, toast } from 'frappe-ui'
 
 import { downloadUrlAsFile, raisePromiseToast, raiseToast } from '@/apps/mail/utils'
-import { useScreenSize, useUndo } from '@/apps/mail/utils/composables'
+import { useBlockSender, useScreenSize, useUndo } from '@/apps/mail/utils/composables'
 import { userStore } from '@/apps/mail/stores/user'
 
 import type { ComposeMailData, Identity, Mail } from '@/apps/mail/types'
@@ -81,6 +81,7 @@ const route = useRoute()
 const router = useRouter()
 const { account, mailboxes, mailboxIds, identities, blockedAddresses } = userStore()
 const { setUndoAction, undo } = useUndo()
+const { promptBlockSenders } = useBlockSender()
 const user = inject('$user')
 
 const primaryActions = (mail: Mail): MailAction[] => [
@@ -251,7 +252,13 @@ const markAsSpam = createResource({
 })
 
 const handleMarkAsSpam = (spam: boolean, isUndo = false) => {
-	const action = () => markAsSpam.submit({ spam }).then(() => reloadMails(isUndo))
+	const action = () =>
+		markAsSpam.submit({ spam }).then(() => {
+			reloadMails(isUndo)
+			// After marking as Junk, offer to block the sender (not when re-junking via an undo of
+			// Mark as Not Junk). Blocking then clears the undo set below.
+			if (spam && !isUndo) promptBlockSenders([mail.from_email])
+		})
 	const successMessage = spam ? __('Mail marked as Junk.') : __('Mail marked as Not Junk.')
 
 	if (isUndo) return raisePromiseToast(action, __('Undoing...'), successMessage)
