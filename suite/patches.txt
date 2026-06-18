@@ -9,6 +9,7 @@ suite.drive.patches.integrate_with_framework
 # --- mail ---
 execute:frappe.db.delete("Mail Cluster Store")
 
+suite.mail.patches.capture_user_outgoing_settings
 [post_model_sync]
 # --- drive ---
 suite.drive.patches.folder_size #3
@@ -41,5 +42,6 @@ suite.mail.patches.create_archive_mailbox
 suite.mail.patches.configure_mail_settings
 suite.mail.patches.configure_mail_cluster
 suite.mail.patches.configure_mail_server
+suite.mail.patches.migrate_outgoing_settings_to_account
 # --- calendar ---
 # (no patches)
