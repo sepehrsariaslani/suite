@@ -113,8 +113,9 @@ router.beforeEach(async (to) => {
   const appId = to.meta.appId as string | undefined
   if (appId && !registeredApps.has(appId)) {
     await ensureAppRoutesLoaded(appId)
-    // Re-resolve now that the real routes exist.
-    return { path: to.fullPath, replace: true }
+    // Re-resolve now that the real routes exist without replacing the previous
+    // page in browser history.
+    return to.fullPath
   }
 
   // 2. Auth gate (shell launcher + every app require a logged-in user).
