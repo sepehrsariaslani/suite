@@ -327,7 +327,6 @@ ALLOWED_PATHS = [
 	"/api/method/frappe.integrations.oauth2.approve",
 	"/api/method/frappe.integrations.oauth2.get_token",
 	"/api/method/frappe.integrations.oauth2.openid_profile",
-	"/api/method/frappe.integrations.oauth2_logins.login_via_frappe",
 	"/api/method/frappe.website.doctype.web_page_view.web_page_view.make_view_log",
 	"/api/method/ping",
 	"/api/method/login",
@@ -341,10 +340,14 @@ ALLOWED_PATHS = [
 ]
 
 ALLOWED_WILDCARD_PATHS = [
-	# drive
+	"/api/method/frappe.integrations.oauth2_logins.",
+	"/api/method/suite.mail.api.",
+	"/api/method/suite.calendar.api.",
+	"/api/method/suite.meet.api.",
 	"/api/method/suite.drive.api.",
-	# writer
 	"/api/method/suite.writer.api.",
+	"/api/method/suite.slides.api.",
+	"/api/method/suite.sheets.api.",
 ]
 
 DENIED_PATHS = []
