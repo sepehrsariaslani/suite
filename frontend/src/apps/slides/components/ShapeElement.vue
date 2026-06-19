@@ -73,6 +73,15 @@
 				:filter="shadow.hasShadow ? `url(#${shadowFilterId})` : null"
 			/>
 
+			<polygon
+				v-else-if="element.shapeType == 'diamond'"
+				:points="diamondPoints"
+				:fill="element.fillColor"
+				:stroke="element.strokeColor"
+				:stroke-width="`${element.strokeWidth}px`"
+				:filter="shadow.hasShadow ? `url(#${shadowFilterId})` : null"
+			/>
+
 			<g v-else-if="element.shapeType == 'line'">
 				<line
 					v-if="element.strokeWidth < 10"
@@ -139,6 +148,14 @@ const inReadonlyMode = inject('inReadonlyMode', ref(false))
 const inSlideShowMode = inject('inSlideShowMode', ref(false))
 
 const isLine = computed(() => element.value?.shapeType === 'line')
+
+const diamondPoints = computed(() => {
+	const w = (element.value?.width ?? 0) + (props.elementOffset.width ?? 0)
+	const h = (element.value?.height ?? 0) + (props.elementOffset.height ?? 0)
+	const sw = (element.value?.strokeWidth ?? 0) / 2
+	return `${w / 2},${sw} ${w - sw},${h / 2} ${w / 2},${h - sw} ${sw},${h / 2}`
+})
+
 const canHaveText = computed(() => !isLine.value)
 const hasText = computed(() => !!element.value?.content)
 const isEditable = computed(() => focusElementId.value === element.value?.id)
