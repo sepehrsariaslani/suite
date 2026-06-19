@@ -118,33 +118,10 @@ const getShapeDefaults = (shapeType) => {
 			borderRadius = 0
 			elementShapeType = 'rectangle'
 			break
-		case 'rounded rectangle':
-			width = 300
-			height = 200
-			strokeColor = '#7C7C7CFF'
-			strokeWidth = 2
-			borderRadius = 20
-			elementShapeType = 'rectangle'
-			break
-		case 'square':
-			width = 300
-			height = 300
-			strokeColor = '#7C7C7CFF'
-			strokeWidth = 2
-			borderRadius = 0
-			elementShapeType = 'rectangle'
-			break
-		case 'rounded square':
-			width = 300
-			height = 300
-			strokeColor = '#7C7C7CFF'
-			strokeWidth = 2
-			borderRadius = 20
-			elementShapeType = 'rectangle'
-			break
+		case 'oval':
 		case 'circle':
 			width = 300
-			height = 300
+			height = 200
 			strokeColor = '#7C7C7CFF'
 			strokeWidth = 2
 			borderRadius = 0
@@ -153,27 +130,15 @@ const getShapeDefaults = (shapeType) => {
 		case 'line':
 			width = 300
 			height = 1
-			strokeColor = guessTextColorFromBackground(currentSlide.value.background)
+			strokeColor = guessTextColorFromBackground(currentSlide.value?.background)
 			strokeWidth = 1
 			borderRadius = 0
 			elementShapeType = 'line'
 			break
-		case 'line with arrows':
-			width = 300
-			height = 1
-			strokeColor = guessTextColorFromBackground(currentSlide.value.background)
-			strokeWidth = 1
-			borderRadius = 0
-			elementShapeType = 'line'
-			markerStart = true
-			markerEnd = true
-			break
-
-		// TODO: add default styles for other shapes
-		// TODO: cleanup code here, maybe move constants to separate file
+		// diamond, triangle, pentagon: not yet implemented
 	}
 
-	const fillColor = guessTextColorFromBackground(currentSlide.value.background)
+	const fillColor = guessTextColorFromBackground(currentSlide.value?.background)
 
 	return {
 		width,
@@ -215,6 +180,8 @@ const addShapeElement = async (shapeType, bounds = null) => {
 		markerStart,
 		markerEnd,
 	} = getShapeDefaults(shapeType)
+
+	if (!elementShapeType) return
 
 	const slideWidth = slideBounds.width / slideBounds.scale
 	const slideHeight = slideBounds.height / slideBounds.scale

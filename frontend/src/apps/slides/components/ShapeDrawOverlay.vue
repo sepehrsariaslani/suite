@@ -20,9 +20,7 @@ const { isDrawing, shiftLocked, drawRect, startPoint, endPoint, startDrawing, ca
 
 const MIN_SIZE = 10
 
-const isLine = computed(
-	() => pendingShapeType.value === 'line' || pendingShapeType.value === 'line with arrows',
-)
+const isLine = computed(() => pendingShapeType.value === 'line')
 
 const snapTo45 = (p1, p2) => {
 	const dx = p2.x - p1.x
@@ -37,8 +35,7 @@ const activeEndPoint = computed(() =>
 )
 
 const previewBorderRadius = computed(() => {
-	if (pendingShapeType.value === 'circle') return '50%'
-	if (['rounded rectangle', 'rounded square'].includes(pendingShapeType.value)) return '8px'
+	if (pendingShapeType.value === 'oval') return '50%'
 	return '0'
 })
 
