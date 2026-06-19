@@ -76,7 +76,7 @@ import { Avatar, Button, Dropdown, Sidebar, SidebarItem, createResource } from '
 
 import { FOLDER_ICON_COLOR_MAP } from '@/apps/mail/constants'
 import { getIcon, toTitleCase } from '@/apps/mail/utils'
-import { useScreenSize, useSidebar } from '@/apps/mail/utils/composables'
+import { useScreenSize, useSettings, useSidebar } from '@/apps/mail/utils/composables'
 import { sessionStore } from '@/apps/mail/stores/session'
 import { userStore } from '@/apps/mail/stores/user'
 import MailLogo from '@/apps/mail/components/Icons/MailLogo.vue'
@@ -121,7 +121,7 @@ const apps = createResource({
 	transform: (data) => data.filter((app) => app.name !== 'mail'),
 })
 
-const showSettings = ref(false)
+const { showSettings } = useSettings()
 const showFolderModal = ref(false)
 const selectedMailbox = ref()
 const showDeleteMailbox = ref(false)

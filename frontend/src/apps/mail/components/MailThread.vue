@@ -215,15 +215,29 @@
 									<Alert
 										v-if="blockedAddresses.data.includes(mail.from_email)"
 										:title="__('This sender is blocked')"
-										:description="
-											__(
-												`{0} is currently on your block list. You won't receive new messages from this source until you unblock them.`,
-												[mail.from_name || mail.from_email],
-											)
-										"
 										class="mb-4"
 										:dismissable="false"
 									>
+										<template #description>
+											<p class="text-ink-gray-6 prose-sm">
+												{{
+													__('{0} is currently on your', [
+														mail.from_name || mail.from_email,
+													])
+												}}
+												<button
+													type="button"
+													class="hover:text-ink-gray-8 underline"
+													@click="openSettings(__('Block List'))"
+												>
+													{{ __('block list') }}</button
+												>{{
+													__(
+														". You won't receive new messages from this source until you unblock them.",
+													)
+												}}
+											</p>
+										</template>
 										<template #footer>
 											<div class="col-span-full">
 												<Button
@@ -240,11 +254,11 @@
 										v-if="hasHtmlContent(mail.html_body)"
 										:content="mail.html_body"
 									/>
-									<pre
+
+									<LinkifiedText
 										v-else
-										class="whitespace-pre-wrap break-words pt-4 font-sans text-base !leading-5 sm:text-sm"
-										>{{ mail.html_body || mail.text_body }}</pre
-									>
+										:text="suite.mail.html_body || mail.text_body"
+									/>
 
 									<div
 										v-if="filteredAttachments(mail).length"
@@ -347,13 +361,14 @@ import {
 	raiseToast,
 	shouldIgnoreKeypress,
 } from '@/apps/mail/utils'
-import { useScreenSize, useTheme } from '@/apps/mail/utils/composables'
+import { useScreenSize, useSettings, useTheme } from '@/apps/mail/utils/composables'
 import { userStore } from '@/apps/mail/stores/user'
 import AttachmentCapsule from '@/apps/mail/components/AttachmentCapsule.vue'
 import AttachmentViewer from '@/apps/mail/components/AttachmentViewer.vue'
 import ComposeMailEditor from '@/apps/mail/components/ComposeMailEditor.vue'
 import EmailContent from '@/apps/mail/components/EmailContent.vue'
 import NoMails from '@/apps/mail/components/Icons/NoMails.vue'
+import LinkifiedText from '@/apps/mail/components/LinkifiedText.vue'
 import MailActions from '@/apps/mail/components/MailActions.vue'
 import MailDate from '@/apps/mail/components/MailDate.vue'
 import MailDetails from '@/apps/mail/components/MailDetails.vue'
@@ -389,6 +404,7 @@ const emit = defineEmits([
 ])
 
 const { isMobile } = useScreenSize()
+const { openSettings } = useSettings()
 const dayjs = inject('$dayjs')
 const user = inject('$user')
 const store = userStore()
