@@ -67,16 +67,6 @@ export default defineConfig(({ mode }) => ({
   server: {
     port: 8085,
     allowedHosts: [defaultSite, 'suite.localhost'],
-    proxy: {
-      // Fallback explicit proxy in case frappeProxy autodetection misses the
-      // port; forward the Frappe API surface to the bench webserver port.
-      '^/(app|api|assets|files|private|method|website_script\\.js)': {
-        target: frappeBackendUrl,
-        ws: true,
-        changeOrigin: true,
-        router: () => frappeBackendUrl,
-      },
-    },
     fs: {
       // Meet imports socketio_port from sites/common_site_config.json (outside
       // the frontend root); allow the bench + frappe-ui source paths.
