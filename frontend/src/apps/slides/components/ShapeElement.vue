@@ -205,10 +205,9 @@ const textOverlayStyles = computed(() => ({
 }))
 
 const handleDoubleClick = (e) => {
+	e.stopPropagation()
 	if (inSlideShowMode.value || inReadonlyMode.value || !canHaveText.value || isEditable.value)
 		return
-
-	e.stopPropagation()
 	activeElementIds.value = [element.value.id]
 	focusElementId.value = element.value.id
 }
