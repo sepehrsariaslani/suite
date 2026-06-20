@@ -14,7 +14,7 @@ import { useTextEditor } from '@/apps/slides/composables/useTextEditor'
 import { getElementDiv } from './elementRegistry'
 import { markDirty } from './saving'
 import { generateUniqueId, cloneObj } from '../utils/helpers'
-import { guessTextColorFromBackground } from '../utils/color'
+import { guessTextColorFromBackground, guessShapeColorsFromBackground } from '../utils/color'
 import { presentationId } from './presentation'
 import { getCommandsToInitElementRefId, getCommandsToUpdateElementRefId } from './transition'
 import { commandHistory } from './historyMeta'
@@ -96,7 +96,7 @@ const getInitialShapeTextContent = (shapeElement) => {
 	return getElementContent({
 		textAlign: 'center',
 		lineHeight: 1.5,
-		fontSize: 28,
+		fontSize: 20,
 		fontFamily: 'Inter',
 		color: guessTextColorFromBackground(shapeElement.fillColor || '#ffffff'),
 		letterSpacing: 0,
@@ -109,11 +109,13 @@ const getShapeDefaults = (shapeType) => {
 	let markerStart = false
 	let markerEnd = false
 
+	const { fillColor, strokeColor: defaultStrokeColor } = guessShapeColorsFromBackground(currentSlide.value?.background)
+
 	switch (shapeType) {
 		case 'rectangle':
 			width = 300
 			height = 200
-			strokeColor = '#7C7C7CFF'
+			strokeColor = defaultStrokeColor
 			strokeWidth = 2
 			borderRadius = 0
 			elementShapeType = 'rectangle'
@@ -122,7 +124,7 @@ const getShapeDefaults = (shapeType) => {
 		case 'circle':
 			width = 300
 			height = 200
-			strokeColor = '#7C7C7CFF'
+			strokeColor = defaultStrokeColor
 			strokeWidth = 2
 			borderRadius = 0
 			elementShapeType = 'circle'
@@ -132,7 +134,7 @@ const getShapeDefaults = (shapeType) => {
 		case 'pentagon':
 			width = 300
 			height = 300
-			strokeColor = '#7C7C7CFF'
+			strokeColor = defaultStrokeColor
 			strokeWidth = 2
 			borderRadius = 0
 			elementShapeType = shapeType
@@ -140,14 +142,12 @@ const getShapeDefaults = (shapeType) => {
 		case 'line':
 			width = 300
 			height = 1
-			strokeColor = guessTextColorFromBackground(currentSlide.value?.background)
+			strokeColor = defaultStrokeColor
 			strokeWidth = 1
 			borderRadius = 0
 			elementShapeType = 'line'
 			break
 	}
-
-	const fillColor = guessTextColorFromBackground(currentSlide.value?.background)
 
 	return {
 		width,

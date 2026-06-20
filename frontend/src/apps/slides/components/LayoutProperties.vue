@@ -80,6 +80,7 @@ import Backward from '@/apps/slides/icons/Backward.vue'
 import SendToBack from '@/apps/slides/icons/SendToBack.vue'
 import BringToFront from '@/apps/slides/icons/BringToFront.vue'
 import CollapsibleSection from '@/apps/slides/components/controls/CollapsibleSection.vue'
+import NumberInput from '@/apps/slides/components/controls/NumberInput.vue'
 
 import { selectionBounds, currentSlide } from '@/apps/slides/stores/slide'
 import {
