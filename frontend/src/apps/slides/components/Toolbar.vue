@@ -1,6 +1,6 @@
 <template>
 	<div
-		class="absolute bottom-10 left-[calc(50%-128px)] flex h-10 items-center justify-center gap-1 rounded-lg bg-white p-1 shadow-xl"
+		class="absolute bottom-10 left-[calc(50%-128px)] z-10 flex h-10 items-center justify-center gap-1 rounded-lg bg-white p-1 shadow-xl"
 		@wheel="handleScrollBarWheelEvent"
 	>
 		<Tooltip text="Text" :hover-delay="0.7">
@@ -30,7 +30,7 @@
 			</FileUploader>
 		</Tooltip>
 
-		<ShapesPopover />
+		<ShapesDropdown />
 
 		<div class="h-6 border-l"></div>
 
@@ -57,7 +57,7 @@ import { isPublicPresentation, presentationId } from '@/apps/slides/stores/prese
 import { addTextElement, addMediaElement } from '@/apps/slides/stores/element'
 import { allowedImageFileTypes } from '@/apps/slides/utils/constants'
 
-import ShapesPopover from '@/apps/slides/components/ShapesPopover.vue'
+import ShapesDropdown from '@/apps/slides/components/ShapesDropdown.vue'
 
 import { handleScrollBarWheelEvent } from '@/apps/slides/utils/helpers'
 

@@ -15,6 +15,12 @@ export const guessTextColorFromBackground = (colorString) => {
 	return textColor
 }
 
+export const guessShapeColorsFromBackground = (colorString) => {
+	return isBackgroundColorDark(colorString)
+		? { fillColor: '#323232FF', strokeColor: '#F5F5F5FF' }
+		: { fillColor: '#EEEEEEFF', strokeColor: '#595959FF' }
+}
+
 export const getColorAndOpacity = (colorString = '#000000ff') => {
 	if (!colorString?.startsWith('#') || colorString.length !== 9) {
 		return {

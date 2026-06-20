@@ -11,7 +11,7 @@
 		stroke-linejoin="round"
 		class="lucide lucide-send-to-back-icon lucide-send-to-back"
 	>
-		<rect x="6.5" y="6.5" width="11" height="11" rx="2" fill="#e6e6e6" />
+		<rect x="6.5" y="6.5" width="11" height="11" rx="2" fill="#737373" />
 		<rect x="14" y="14" width="8" height="8" rx="2" fill="white" />
 		<rect x="2" y="2" width="8" height="8" rx="2" fill="white" />
 	</svg>

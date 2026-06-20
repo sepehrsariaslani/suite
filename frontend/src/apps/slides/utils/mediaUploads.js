@@ -1,7 +1,6 @@
 import { FileUploadHandler, toast, call } from 'frappe-ui'
 
 import { presentationId, isPublicPresentation, presentationDoc } from '../stores/presentation'
-import { currentSlide } from '../stores/slide'
 import { addMediaElement, replaceMediaElement } from '../stores/element'
 
 import { session } from '@/apps/slides/stores/session'

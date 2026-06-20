@@ -43,7 +43,7 @@ const props = defineProps({
 const { currentResizer, startResize } = inject('resizer', {})
 
 const showRotateHandle = computed(() => {
-	return ['rectangle', 'circle', 'image'].includes(props.elementType)
+	return !['line', 'text', 'video'].includes(props.elementType)
 })
 
 const isResizeHandleVisible = (resizer) => {
@@ -53,7 +53,7 @@ const isResizeHandleVisible = (resizer) => {
 
 const resizeHandles = computed(() => {
 	let directions = []
-	if (['rectangle', 'circle'].includes(props.elementType)) {
+	if (['rectangle', 'oval'].includes(props.elementType)) {
 		directions = [
 			'left',
 			'right',
