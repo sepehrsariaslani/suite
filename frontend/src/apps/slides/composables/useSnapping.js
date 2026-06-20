@@ -224,6 +224,8 @@ export const useSnapping = (selectionRef, currentResizer, hasOngoingInteraction)
 		activeSnap.y = null
 	}
 
+	const CENTER_LINES = new Set(['centerX', 'centerY'])
+
 	// stay on the current alignment until it leaves the release window,
 	// otherwise take the nearest one within the threshold
 	const chooseAlignment = (axis, alignments) => {
@@ -233,7 +235,13 @@ export const useSnapping = (selectionRef, currentResizer, hasOngoingInteraction)
 		if (held && Math.abs(held.offset) < limit * RELEASE_FACTOR) return held
 
 		const inRange = alignments.filter((a) => Math.abs(a.offset) < limit)
-		inRange.sort((a, b) => Math.abs(a.offset) - Math.abs(b.offset))
+		inRange.sort((a, b) => {
+			const da = Math.abs(a.offset)
+			const db = Math.abs(b.offset)
+			if (da !== db) return da - db
+
+			return (CENTER_LINES.has(a.line) ? 0 : 1) - (CENTER_LINES.has(b.line) ? 0 : 1)
+		})
 		return inRange[0] || null
 	}
 
