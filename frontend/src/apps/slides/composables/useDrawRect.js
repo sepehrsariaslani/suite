@@ -66,6 +66,7 @@ export function useDrawRect() {
 
 	const cancelDrawing = () => {
 		endCallback = null
+		isShiftLocked.value = false
 		endDrawing()
 	}
 
