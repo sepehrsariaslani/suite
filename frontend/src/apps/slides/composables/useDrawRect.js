@@ -4,7 +4,7 @@ import { slideBounds } from '@/apps/slides/stores/slide'
 // Shared rect-drawing logic used by MarqueeOverlay and ShapeDrawOverlay
 export function useDrawRect() {
 	const isDrawing = ref(false)
-	const shiftLocked = ref(false)
+	const isShiftLocked = ref(false)
 	const drawRect = reactive({ left: 0, top: 0, width: 0, height: 0 })
 	const startPoint = reactive({ x: 0, y: 0 })
 	const endPoint = reactive({ x: 0, y: 0 })
@@ -24,7 +24,7 @@ export function useDrawRect() {
 		endPoint.y = y
 		const dx = x - startX
 		const dy = y - startY
-		if (shiftLocked.value) {
+		if (isShiftLocked.value) {
 			const size = Math.min(Math.abs(dx), Math.abs(dy))
 			drawRect.left = dx >= 0 ? startX : startX - size
 			drawRect.top = dy >= 0 ? startY : startY - size
@@ -64,20 +64,18 @@ export function useDrawRect() {
 		document.addEventListener('mouseup', endDrawing)
 	}
 
-	// cancel without firing onEnd
-	const cancel = () => {
+	const cancelDrawing = () => {
 		endCallback = null
 		endDrawing()
 	}
 
 	return {
 		isDrawing,
-		shiftLocked,
+		isShiftLocked,
 		drawRect,
 		startPoint,
 		endPoint,
-		toSlideCoords,
 		startDrawing,
-		cancel,
+		cancelDrawing,
 	}
 }

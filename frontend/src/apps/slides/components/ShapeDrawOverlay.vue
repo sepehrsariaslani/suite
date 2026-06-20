@@ -15,7 +15,7 @@ import { pendingShapeType, addShapeElement } from '@/apps/slides/stores/element'
 import { slideBounds } from '@/apps/slides/stores/slide'
 import { useDrawRect } from '@/apps/slides/composables/useDrawRect'
 
-const { isDrawing, shiftLocked, drawRect, startPoint, endPoint, startDrawing, cancel } =
+const { isDrawing, isShiftLocked, drawRect, startPoint, endPoint, startDrawing, cancelDrawing } =
 	useDrawRect()
 
 const MIN_SIZE = 10
@@ -31,7 +31,7 @@ const snapTo45 = (p1, p2) => {
 }
 
 const activeEndPoint = computed(() =>
-	shiftLocked.value && isLine.value ? snapTo45(startPoint, endPoint) : endPoint,
+	isShiftLocked.value && isLine.value ? snapTo45(startPoint, endPoint) : endPoint,
 )
 
 const previewBorderRadius = computed(() => {
@@ -89,7 +89,7 @@ const previewStyles = computed(() => {
 
 const handleMouseDown = (e) => {
 	startDrawing(e, (rect, start, end) => {
-		if (shiftLocked.value && isLine.value) end = snapTo45(start, end)
+		if (isShiftLocked.value && isLine.value) end = snapTo45(start, end)
 		const bounds = isLine.value ? { x1: start.x, y1: start.y, x2: end.x, y2: end.y } : rect
 		const isBigEnough = isLine.value
 			? Math.hypot(end.x - start.x, end.y - start.y) >= MIN_SIZE
@@ -101,15 +101,15 @@ const handleMouseDown = (e) => {
 }
 
 const handleKeyDown = (e) => {
-	if (e.key === 'Shift' && isDrawing.value) shiftLocked.value = true
+	if (e.key === 'Shift' && isDrawing.value) isShiftLocked.value = true
 	if (e.key === 'Escape' && pendingShapeType.value) {
-		cancel()
+		cancelDrawing()
 		pendingShapeType.value = null
 	}
 }
 
 const handleKeyUp = (e) => {
-	if (e.key === 'Shift') shiftLocked.value = false
+	if (e.key === 'Shift') isShiftLocked.value = false
 }
 
 onMounted(() => {
@@ -119,6 +119,6 @@ onMounted(() => {
 onBeforeUnmount(() => {
 	document.removeEventListener('keydown', handleKeyDown)
 	document.removeEventListener('keyup', handleKeyUp)
-	cancel()
+	cancelDrawing()
 })
 </script>

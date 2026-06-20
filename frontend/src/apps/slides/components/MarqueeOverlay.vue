@@ -23,7 +23,7 @@ const emit = defineEmits(['setIsSelecting'])
 
 const SELECTION_START_THRESHOLD = 4
 
-const { isDrawing, drawRect, toSlideCoords, startDrawing, cancel } = useDrawRect()
+const { isDrawing, drawRect, startDrawing, cancelDrawing } = useDrawRect()
 
 const marqueeStyles = computed(() => ({
 	position: 'absolute',
@@ -189,6 +189,6 @@ onMounted(() => {
 onBeforeUnmount(() => {
 	cancelSelectionIntent?.()
 	document.removeEventListener('mousedown', handleMouseDown)
-	cancel()
+	cancelDrawing()
 })
 </script>
