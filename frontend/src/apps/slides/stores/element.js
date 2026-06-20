@@ -128,12 +128,14 @@ const getShapeDefaults = (shapeType) => {
 			elementShapeType = 'circle'
 			break
 		case 'diamond':
+		case 'triangle':
+		case 'pentagon':
 			width = 300
 			height = 300
 			strokeColor = '#7C7C7CFF'
 			strokeWidth = 2
 			borderRadius = 0
-			elementShapeType = 'diamond'
+			elementShapeType = shapeType
 			break
 		case 'line':
 			width = 300
@@ -143,7 +145,6 @@ const getShapeDefaults = (shapeType) => {
 			borderRadius = 0
 			elementShapeType = 'line'
 			break
-		// triangle, pentagon: not yet implemented
 	}
 
 	const fillColor = guessTextColorFromBackground(currentSlide.value?.background)

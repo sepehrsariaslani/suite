@@ -39,6 +39,13 @@ const previewBorderRadius = computed(() => {
 	return '0'
 })
 
+const PREVIEW_CLIP_PATHS = {
+	diamond: 'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)',
+	triangle: 'polygon(50% 0%, 100% 100%, 0% 100%)',
+	pentagon: 'polygon(50% 0%, 100% 38%, 81% 100%, 19% 100%, 0% 38%)',
+}
+const previewClipPath = computed(() => PREVIEW_CLIP_PATHS[pendingShapeType.value] ?? null)
+
 const linePreviewStyles = computed(() => {
 	const { x: x1, y: y1 } = startPoint
 	const { x: x2, y: y2 } = activeEndPoint.value
@@ -73,6 +80,7 @@ const previewStyles = computed(() => {
 		backgroundColor: '#70b6f025',
 		outline: `#70B6F092 solid ${0.1 / slideBounds.scale}px`,
 		borderRadius: previewBorderRadius.value,
+		clipPath: previewClipPath.value,
 		boxSizing: 'border-box',
 		zIndex: 10001,
 		pointerEvents: 'none',

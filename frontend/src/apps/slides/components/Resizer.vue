@@ -43,7 +43,7 @@ const props = defineProps({
 const { currentResizer, startResize } = inject('resizer', {})
 
 const showRotateHandle = computed(() => {
-	return ['rectangle', 'circle', 'image'].includes(props.elementType)
+	return props.elementType !== 'line'
 })
 
 const isResizeHandleVisible = (resizer) => {

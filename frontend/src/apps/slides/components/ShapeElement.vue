@@ -74,8 +74,8 @@
 			/>
 
 			<polygon
-				v-else-if="element.shapeType == 'diamond'"
-				:points="diamondPoints"
+				v-else-if="isPolygon"
+				:points="polygonPoints"
 				:fill="element.fillColor"
 				:stroke="element.strokeColor"
 				:stroke-width="`${element.strokeWidth}px`"
@@ -149,11 +149,27 @@ const inSlideShowMode = inject('inSlideShowMode', ref(false))
 
 const isLine = computed(() => element.value?.shapeType === 'line')
 
-const diamondPoints = computed(() => {
+const POLYGON_SIDES = { diamond: 4, triangle: 3, pentagon: 5 }
+const isPolygon = computed(() => element.value?.shapeType in POLYGON_SIDES)
+
+const polygonPoints = computed(() => {
+	const sides = POLYGON_SIDES[element.value?.shapeType]
+	if (!sides) return ''
+
 	const w = (element.value?.width ?? 0) + (props.elementOffset.width ?? 0)
 	const h = (element.value?.height ?? 0) + (props.elementOffset.height ?? 0)
 	const sw = (element.value?.strokeWidth ?? 0) / 2
-	return `${w / 2},${sw} ${w - sw},${h / 2} ${w / 2},${h - sw} ${sw},${h / 2}`
+
+	const pts = Array.from({ length: sides }, (_, k) => {
+		const a = -Math.PI / 2 + (k * 2 * Math.PI) / sides
+		return [Math.cos(a), Math.sin(a)]
+	})
+	const xMin = Math.min(...pts.map(([x]) => x)), xMax = Math.max(...pts.map(([x]) => x))
+	const yMin = Math.min(...pts.map(([, y]) => y)), yMax = Math.max(...pts.map(([, y]) => y))
+
+	return pts
+		.map(([x, y]) => `${sw + ((x - xMin) / (xMax - xMin)) * (w - 2 * sw)},${sw + ((y - yMin) / (yMax - yMin)) * (h - 2 * sw)}`)
+		.join(' ')
 })
 
 const canHaveText = computed(() => !isLine.value)
