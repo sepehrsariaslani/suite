@@ -127,7 +127,7 @@ const getShapeDefaults = (shapeType) => {
 			strokeColor = defaultStrokeColor
 			strokeWidth = 2
 			borderRadius = 0
-			elementShapeType = 'circle'
+			elementShapeType = 'oval'
 			break
 		case 'diamond':
 		case 'triangle':

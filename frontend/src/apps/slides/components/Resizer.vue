@@ -53,7 +53,7 @@ const isResizeHandleVisible = (resizer) => {
 
 const resizeHandles = computed(() => {
 	let directions = []
-	if (['rectangle', 'circle'].includes(props.elementType)) {
+	if (['rectangle', 'oval'].includes(props.elementType)) {
 		directions = [
 			'left',
 			'right',

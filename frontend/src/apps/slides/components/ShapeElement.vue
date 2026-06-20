@@ -1,5 +1,5 @@
 <template>
-	<div style="position: relative; width: 100%; height: 100%" @dblclick="handleDoubleClick">
+	<div :style="wrapperStyles" @dblclick="handleDoubleClick">
 		<svg :style="shapeStyles">
 			<defs v-if="hasMarkers || shadow.hasShadow">
 				<filter
@@ -62,7 +62,7 @@
 			/>
 
 			<ellipse
-				v-else-if="element.shapeType == 'circle'"
+				v-else-if="element.shapeType == 'oval'"
 				cx="50%"
 				cy="50%"
 				:rx="'calc(50% - ' + element.strokeWidth / 2 + 'px)'"
@@ -108,7 +108,6 @@
 
 		<div
 			v-if="canHaveText && (isEditable || hasText)"
-			class="shape-text-overlay"
 			:style="textOverlayStyles"
 			@mousedown.stop
 		>
@@ -147,6 +146,12 @@ const element = defineModel('element', {
 const inReadonlyMode = inject('inReadonlyMode', ref(false))
 const inSlideShowMode = inject('inSlideShowMode', ref(false))
 
+const wrapperStyles = {
+	position: 'relative',
+	width: '100%',
+	height: '100%',
+}
+
 const isLine = computed(() => element.value?.shapeType === 'line')
 
 const POLYGON_SIDES = { diamond: 4, triangle: 3, pentagon: 5 }
@@ -156,30 +161,53 @@ const polygonPoints = computed(() => {
 	const sides = POLYGON_SIDES[element.value?.shapeType]
 	if (!sides) return ''
 
-	const w = (element.value?.width ?? 0) + (props.elementOffset.width ?? 0)
-	const h = (element.value?.height ?? 0) + (props.elementOffset.height ?? 0)
-	const sw = (element.value?.strokeWidth ?? 0) / 2
+	const width = (element.value?.width ?? 0) + (props.elementOffset.width ?? 0)
+	const height = (element.value?.height ?? 0) + (props.elementOffset.height ?? 0)
+	const strokeInset = (element.value?.strokeWidth ?? 0) / 2
 
-	const pts = Array.from({ length: sides }, (_, k) => {
-		const a = -Math.PI / 2 + (k * 2 * Math.PI) / sides
-		return [Math.cos(a), Math.sin(a)]
+	// Unit-circle vertices evenly spaced, starting from the top (-π/2)
+	const unitVertices = Array.from({ length: sides }, (_, k) => {
+		const angle = -Math.PI / 2 + (k * 2 * Math.PI) / sides
+		return { x: Math.cos(angle), y: Math.sin(angle) }
 	})
-	const xMin = Math.min(...pts.map(([x]) => x)), xMax = Math.max(...pts.map(([x]) => x))
-	const yMin = Math.min(...pts.map(([, y]) => y)), yMax = Math.max(...pts.map(([, y]) => y))
 
-	return pts
-		.map(([x, y]) => `${sw + ((x - xMin) / (xMax - xMin)) * (w - 2 * sw)},${sw + ((y - yMin) / (yMax - yMin)) * (h - 2 * sw)}`)
+	const xMin = Math.min(...unitVertices.map((v) => v.x))
+	const xMax = Math.max(...unitVertices.map((v) => v.x))
+	const yMin = Math.min(...unitVertices.map((v) => v.y))
+	const yMax = Math.max(...unitVertices.map((v) => v.y))
+
+	const scaleX = (x) => strokeInset + ((x - xMin) / (xMax - xMin)) * (width - 2 * strokeInset)
+	const scaleY = (y) => strokeInset + ((y - yMin) / (yMax - yMin)) * (height - 2 * strokeInset)
+
+	return unitVertices
+		.map((v) => `${scaleX(v.x)},${scaleY(v.y)}`)
 		.join(' ')
 })
 
 const canHaveText = computed(() => !isLine.value)
 const hasText = computed(() => !!element.value?.content)
 const isEditable = computed(() => focusElementId.value === element.value?.id)
-const textOverlayStyles = computed(() => ({ pointerEvents: isEditable.value ? 'all' : 'none' }))
+
+const TEXT_OVERLAY_BASE = {
+	position: 'absolute',
+	inset: '0',
+	display: 'flex',
+	flexDirection: 'column',
+	justifyContent: 'center',
+	overflow: 'hidden',
+	padding: '8px',
+	boxSizing: 'border-box',
+}
+
+const textOverlayStyles = computed(() => ({
+	...TEXT_OVERLAY_BASE,
+	pointerEvents: isEditable.value ? 'all' : 'none',
+}))
 
 const handleDoubleClick = (e) => {
 	if (inSlideShowMode.value || inReadonlyMode.value || !canHaveText.value || isEditable.value)
 		return
+
 	e.stopPropagation()
 	activeElementIds.value = [element.value.id]
 	focusElementId.value = element.value.id
@@ -208,16 +236,3 @@ const shapeStyles = computed(() => {
 	}
 })
 </script>
-
-<style>
-.shape-text-overlay {
-	position: absolute;
-	inset: 0;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	overflow: hidden;
-	padding: 8px;
-	box-sizing: border-box;
-}
-</style>

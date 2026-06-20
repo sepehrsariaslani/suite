@@ -123,6 +123,10 @@ const parseElements = (value) => {
 			const lh = el.editorMetadata.lineHeight
 			el.lineHeight = lh
 		}
+		if (el.type === 'shape' && el.shapeType === 'circle') {
+			// 'circle' was renamed to 'oval' to match the display name
+			el.shapeType = 'oval'
+		}
 		return el
 	})
 
