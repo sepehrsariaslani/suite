@@ -10,6 +10,7 @@ suite.drive.patches.integrate_with_framework
 execute:frappe.db.delete("Mail Cluster Store")
 
 suite.mail.patches.capture_user_outgoing_settings
+suite.mail.patches.rebuild_rate_limit_unique_constraint
 [post_model_sync]
 # --- drive ---
 suite.drive.patches.folder_size #3
