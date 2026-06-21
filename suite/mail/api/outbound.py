@@ -11,7 +11,7 @@ from werkzeug.utils import secure_filename
 from suite.mail.api.auth import validate_user
 from suite.client.doctype.mail_queue.mail_queue import MailQueue
 from suite.mail.utils import get_config, get_messages_directory
-from suite.mail.utils.logger.outbound import get_outbound_logger
+from suite.mail.utils.logger import get_outbound_logger
 from suite.mail.utils.rate_limiter import dynamic_rate_limit
 from suite.mail.utils.user import get_user_personal_account
 

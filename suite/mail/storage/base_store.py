@@ -5,7 +5,7 @@ from typing import ClassVar
 
 from frappe.utils import random_string
 
-from suite.mail.utils.logger.storage import get_storage_logger
+from suite.mail.utils.logger import get_storage_logger
 
 
 class BaseStore:

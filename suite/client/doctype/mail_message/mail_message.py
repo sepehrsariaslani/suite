@@ -40,7 +40,7 @@ from suite.mail.utils import (
 from suite.mail.utils.dt import convert_to_utc, parse_iso_datetime, to_iso8601_z
 from suite.mail.utils.email_parser import EmailParser
 from suite.mail.utils.lock import acquire_lock, release_lock
-from suite.mail.utils.logger.push import get_push_logger
+from suite.mail.utils.logger import get_push_logger
 from suite.mail.utils.user import get_account_emails, get_sync_state, update_sync_state
 from suite.mail.utils.validation import has_permission_for_user
 
