@@ -69,7 +69,7 @@ const resizeHandles = computed(() => {
 	} else if (props.elementType === 'text') {
 		directions = ['text-left', 'text-right']
 	} else {
-		directions = ['top-left', 'top-right', 'bottom-left', 'bottom-right']
+		directions = ['left', 'right', 'top', 'bottom', 'top-left', 'top-right', 'bottom-left', 'bottom-right']
 	}
 
 	return directions.map((direction) => ({

@@ -161,8 +161,10 @@ const polygonPoints = computed(() => {
 	const sides = POLYGON_SIDES[element.value?.shapeType]
 	if (!sides) return ''
 
-	const width = (element.value?.width ?? 0) + (props.elementOffset.width ?? 0)
-	const height = (element.value?.height ?? 0) + (props.elementOffset.height ?? 0)
+	const offsetWidth = isActive.value ? (props.elementOffset.width ?? 0) : 0
+	const offsetHeight = isActive.value ? (props.elementOffset.height ?? 0) : 0
+	const width = (element.value?.width ?? 0) + offsetWidth
+	const height = (element.value?.height ?? 0) + offsetHeight
 	const strokeInset = (element.value?.strokeWidth ?? 0) / 2
 
 	// Unit-circle vertices evenly spaced, starting from the top (-π/2)
@@ -186,6 +188,7 @@ const polygonPoints = computed(() => {
 
 const canHaveText = computed(() => !isLine.value)
 const hasText = computed(() => !!element.value?.content)
+const isActive = computed(() => activeElementIds.value.includes(element.value?.id))
 const isEditable = computed(() => focusElementId.value === element.value?.id)
 
 const TEXT_OVERLAY_BASE = {
