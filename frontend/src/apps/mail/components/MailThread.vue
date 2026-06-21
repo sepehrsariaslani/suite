@@ -268,10 +268,7 @@
 											<span class="text-ink-gray-5 text-sm">
 												{{
 													__('{0} attachments', [
-														String(
-															filteredAttachments(mail)
-																.length,
-														),
+														String(filteredAttachments(mail).length),
 													])
 												}}
 											</span>
@@ -280,9 +277,7 @@
 												:icon="Download"
 												:label="__('Download all')"
 												:tooltip="__('Download all')"
-												:loading="
-													downloadingZipMail === mail.name
-												"
+												:loading="downloadingZipMail === mail.name"
 												@click.stop.prevent="
 													downloadAttachmentsAsZip(mail)
 												"
@@ -379,6 +374,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { ChevronDown, Download, Forward, Reply, ReplyAll } from 'lucide-vue-next'
 import { Alert, Avatar, Badge, Button, createResource } from 'frappe-ui'
 
+import { getAttachmentsZipUrl } from '@/apps/mail/resources'
 import {
 	downloadUrlAsFile,
 	extractQuotedContent,
@@ -390,7 +386,6 @@ import {
 	raiseToast,
 	shouldIgnoreKeypress,
 } from '@/apps/mail/utils'
-import { getAttachmentsZipUrl } from '@/apps/mail/resources'
 import { useScreenSize, useSettings, useTheme } from '@/apps/mail/utils/composables'
 import { userStore } from '@/apps/mail/stores/user'
 import AttachmentCapsule from '@/apps/mail/components/AttachmentCapsule.vue'

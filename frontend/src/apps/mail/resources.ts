@@ -2,6 +2,7 @@ import { createResource } from 'frappe-ui'
 
 import { raiseToast } from '@/apps/mail/utils'
 import { userStore } from '@/apps/mail/stores/user'
+
 import type { Attachment } from '@/apps/mail/types'
 
 const store = userStore()
