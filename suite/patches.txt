@@ -45,5 +45,6 @@ suite.mail.patches.configure_mail_server
 suite.mail.patches.configure_inbound_outbound_log
 suite.mail.patches.migrate_outgoing_settings_to_account
 suite.mail.patches.migrate_data_store_to_lmdb
+suite.mail.patches.configure_exchange_log
 # --- calendar ---
 # (no patches)
