@@ -37,7 +37,7 @@
 						:modelValue="activeElement.strokeWidth"
 						@update:modelValue="(val) => setProperty('strokeWidth', val)"
 						suffix="px"
-						:rangeStart="0.5"
+						:rangeStart="activeElement.shapeType === 'line' ? 0.5 : 0"
 						:rangeEnd="50"
 						:rangeStep="0.5"
 					/>
