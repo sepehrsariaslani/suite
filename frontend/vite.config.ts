@@ -6,6 +6,24 @@ import { noiseSuppressionAudioWorkletVitePlugin } from '@workadventure/noise-sup
 import frappeui from 'frappe-ui/vite'
 import { defineConfig } from 'vite'
 
+// Emits the slides-scoped service worker to suite/www so Frappe serves it at the
+// origin root ('/service-worker.js'). Root scope is required for it to intercept
+// slides' /api/method/suite.slides.* requests. Build-only (no SW in dev to avoid
+// HMR/caching conflicts); the stamped timestamp makes each build a new SW so the
+// browser picks up updates. Slides-only: reads/writes only the slides SW file.
+const emitSlidesServiceWorker = () => ({
+  name: 'slides-service-worker',
+  apply: 'build' as const,
+  async writeBundle() {
+    const swSource = path.resolve(__dirname, 'src/apps/slides/service-worker.js')
+    const swOutput = path.resolve(__dirname, '../suite/www/service-worker.js')
+    const source = fs.readFileSync(swSource, 'utf-8')
+    const stamped = source.replace(/__BUILD_TIMESTAMP__/g, Date.now().toString())
+    fs.mkdirSync(path.dirname(swOutput), { recursive: true })
+    fs.writeFileSync(swOutput, stamped)
+  },
+})
+
 const benchRoot = path.resolve(__dirname, '../../..')
 const commonSiteConfig = JSON.parse(
   fs.readFileSync(path.join(benchRoot, 'sites/common_site_config.json'), 'utf-8'),
@@ -40,6 +58,7 @@ export default defineConfig(({ mode }) => ({
       },
     }),
     vue(),
+    emitSlidesServiceWorker(),
   ],
   resolve: {
     alias: {

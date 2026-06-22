@@ -1,6 +1,4 @@
 const MEDIA_CACHE_NAME = 'slides-media'
-const version = '__BUILD_TIMESTAMP__'
-const ASSET_CACHE_NAME = `slides-assets-v${version}`
 const API_CACHE_NAME = 'slides-api'
 
 const MAX_AGE = 24 * 60 * 60 * 1000 // 1 day
@@ -39,24 +37,8 @@ const cleanupOldMediaCache = async () => {
     )
 }
 
-const cleanupOldAssetCache = async () => {
-    const cacheNames = await caches.keys()
-    await Promise.all(
-        cacheNames.map((cacheName) => {
-            if (cacheName.startsWith('slides-assets') && cacheName !== ASSET_CACHE_NAME) {
-                return caches.delete(cacheName)
-            }
-        }),
-    )
-}
-
-const cleanupOldCaches = () => {
-    cleanupOldAssetCache()
-    cleanupOldMediaCache()
-}
-
 const handleSWActivate = async () => {
-    cleanupOldCaches()
+    cleanupOldMediaCache()
     // this takes control of all client pages that are already open
     await self.clients.claim()
 }
@@ -77,21 +59,18 @@ const getModifiedResponse = (response) => {
     })
 }
 
-const isMedia = (url) => {
-    return (
-        url.pathname.startsWith('/private/files/') ||
-        url.pathname.startsWith('/api/method/slides.api.file.get_media_file')
-    )
-}
-const isAsset = (url) => url.pathname.startsWith('/assets/') || url.pathname.startsWith('/slides/')
-const isAPI = (url) =>
-    url.pathname.startsWith('/api/method/frappe.client.') ||
-    url.pathname.startsWith('/api/method/slides.slides.')
+// Slides-only matchers. `/assets/` (shared SPA bundle) is never matched.
+// Media is either the slides-namespaced proxy (non-owner/public viewers) or a
+// /private/files/ request tagged with the `slides_media` marker that
+// getAttachmentUrl() adds for the owner — so we cache slides' own files without
+// ever touching another app's /private/files/ traffic (Drive, Mail, ...).
+const isMedia = (url) =>
+    url.pathname.startsWith('/api/method/suite.slides.api.file.get_media_file') ||
+    (url.pathname.startsWith('/private/files/') && url.searchParams.has('slides_media'))
+const isAPI = (url) => url.pathname.startsWith('/api/method/suite.slides.')
 
 const getCacheObject = async (type) => {
     switch (type) {
-        case 'asset':
-            return await caches.open(ASSET_CACHE_NAME)
         case 'media':
             return await caches.open(MEDIA_CACHE_NAME)
         case 'api':
@@ -125,6 +104,7 @@ const getResponseForRequest = async (request, type) => {
     const cache = await getCacheObject(type)
 
     if (type === 'api') {
+        // network-first: keep API data fresh, fall back to cache only offline
         try {
             await fetchAndCache(request, type, cache)
         } catch {
@@ -134,6 +114,7 @@ const getResponseForRequest = async (request, type) => {
         }
     }
 
+    // media (and the revalidated api response): cache-first
     const cached = await cache.match(request)
     if (cached) return cached
     return await fetchAndCache(request, type, cache)
@@ -141,7 +122,6 @@ const getResponseForRequest = async (request, type) => {
 
 const getRequestType = (url) => {
     if (isMedia(url)) return 'media'
-    if (isAsset(url)) return 'asset'
     if (isAPI(url)) return 'api'
     return 'other'
 }
@@ -153,7 +133,9 @@ const handleSWFetch = async (event) => {
     if (request.method !== 'GET' || url.origin !== self.location.origin) return
 
     const requestType = getRequestType(url)
-    const isAffectedByCache = ['media', 'asset', 'api'].includes(requestType)
+    const isAffectedByCache = ['media', 'api'].includes(requestType)
+    // Not a slides request -> do nothing, let the browser fetch it normally.
+    // This is what keeps the other 6 apps completely unaffected.
     if (!isAffectedByCache) return
 
     const response = getResponseForRequest(request, requestType)
