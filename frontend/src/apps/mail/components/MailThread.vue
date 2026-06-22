@@ -689,7 +689,7 @@ const unblockEmailAddress = createResource({
 	url: 'suite.mail.api.mail.unblock_email_addresses',
 	makeParams: (email) => ({ account: store.account, emails: [email] }),
 	onSuccess: () => {
-		raiseToast(__('Email address unblocked.'))
+		raiseToast(__('Sender unblocked.'))
 		blockedAddresses.reload()
 	},
 })
