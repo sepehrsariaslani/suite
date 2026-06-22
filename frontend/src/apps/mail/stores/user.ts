@@ -41,7 +41,7 @@ export const userStore = defineStore('mail-user', () => {
 		mailboxes.fetch()
 		addressBooks.fetch()
 		identities.fetch()
-		blockedAddresses.fetch()
+		screenedAddresses.fetch()
 		sieveScripts.fetch()
 	}
 
@@ -96,10 +96,12 @@ export const userStore = defineStore('mail-user', () => {
 		cache: ['identities', accountId.value],
 	})
 
-	const blockedAddresses = createResource({
-		url: 'suite.mail.api.mail.get_blocked_addresses',
+	// Screened senders for the account: each is `{ email, action }` where action is 'Reject'
+	// (discard incoming mail) or 'Spam' (file it into the Spam folder).
+	const screenedAddresses = createResource({
+		url: 'suite.mail.api.mail.get_screened_addresses',
 		makeParams: () => ({ account: account.value }),
-		cache: ['blockedAddresses', accountId.value],
+		cache: ['screenedAddresses', accountId.value],
 	})
 
 	const sieveScripts = createResource({
@@ -120,7 +122,7 @@ export const userStore = defineStore('mail-user', () => {
 		mailboxes.reset()
 		addressBooks.reset()
 		identities.reset()
-		blockedAddresses.reset()
+		screenedAddresses.reset()
 		sieveScripts.reset()
 		domains.reset()
 	}
@@ -136,7 +138,7 @@ export const userStore = defineStore('mail-user', () => {
 		identities,
 		domains,
 		sieveScripts,
-		blockedAddresses,
+		screenedAddresses,
 		reset,
 	}
 })

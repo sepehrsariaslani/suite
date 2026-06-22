@@ -324,8 +324,7 @@ ignore_links_on_delete = [
 	"Server Deployment",
 	# Client
 	"Account Settings",
-	"Blocked Email Address",
-	"Junk Email Address",
+	"Screened Email Address",
 	"Mail Exchange",
 	"Mail Queue",
 	"Mail Signature",

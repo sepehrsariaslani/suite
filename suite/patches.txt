@@ -48,5 +48,6 @@ suite.mail.patches.migrate_outgoing_settings_to_account
 suite.mail.patches.migrate_data_store_to_lmdb
 suite.mail.patches.backfill_blocked_email_account_id
 suite.mail.patches.configure_exchange_log
+suite.mail.patches.migrate_to_screened_email_address
 # --- calendar ---
 # (no patches)

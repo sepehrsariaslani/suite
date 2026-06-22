@@ -1,7 +1,7 @@
 // Copyright (c) 2026, Frappe Technologies Pvt. Ltd. and contributors
 // For license information, please see license.txt
 
-frappe.listview_settings['Junk Email Address'] = {
+frappe.listview_settings['Screened Email Address'] = {
 	refresh: (listview) => {
 		set_account_options(listview)
 	},
@@ -15,7 +15,7 @@ function set_account_options(listview) {
 	if (!user) return
 
 	frappe.call({
-		method: 'suite.mail.jmap.get_user_accounts',
+		method: 'mail.jmap.get_user_accounts',
 		args: {
 			user: user,
 		},
