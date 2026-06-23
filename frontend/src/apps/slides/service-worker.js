@@ -85,7 +85,11 @@ const addCacheEntry = async (type, cache, request, response) => {
 const fetchAndCache = async (request, type, cache) => {
 	const response = await fetch(request)
 	if (response.ok && response.status === 200) {
-		await addCacheEntry(type, cache, request, response)
+		try {
+			await addCacheEntry(type, cache, request, response)
+		} catch (err) {
+			console.warn('Slides SW cache write failed:', err)
+		}
 	}
 	return response
 }
