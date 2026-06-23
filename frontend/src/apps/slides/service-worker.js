@@ -1,6 +1,8 @@
 const MEDIA_CACHE_NAME = 'slides-media'
 const API_CACHE_NAME = 'slides-api'
 
+const CACHE_NAMES = { media: MEDIA_CACHE_NAME, api: API_CACHE_NAME }
+
 const MAX_AGE = 24 * 60 * 60 * 1000 // 1 day
 
 self.addEventListener('install', () => {
@@ -38,7 +40,7 @@ const cleanupOldMediaCache = async () => {
 }
 
 const handleSWActivate = async () => {
-    cleanupOldMediaCache()
+    await cleanupOldMediaCache()
     // this takes control of all client pages that are already open
     await self.clients.claim()
 }
@@ -59,21 +61,14 @@ const getModifiedResponse = (response) => {
     })
 }
 
+// These matchers mirror the URL contract owned by utils/mediaUploads.js: the
+// `slides_media` marker (SLIDES_MEDIA_PARAM) on owner /private/files/ requests
+// and the suite.slides.* proxy path. A service worker can't import app modules,
+// so keep these in sync with mediaUploads.js if either changes.
 const isMedia = (url) =>
     url.pathname.startsWith('/api/method/suite.slides.api.file.get_media_file') ||
     (url.pathname.startsWith('/private/files/') && url.searchParams.has('slides_media'))
 const isAPI = (url) => url.pathname.startsWith('/api/method/suite.slides.')
-
-const getCacheObject = async (type) => {
-    switch (type) {
-        case 'media':
-            return await caches.open(MEDIA_CACHE_NAME)
-        case 'api':
-            return await caches.open(API_CACHE_NAME)
-        default:
-            return null
-    }
-}
 
 const addCacheEntry = async (type, cache, request, response) => {
     if (type === 'media') {
@@ -95,24 +90,27 @@ const fetchAndCache = async (request, type, cache) => {
     return response
 }
 
-const getResponseForRequest = async (request, type) => {
-    const cache = await getCacheObject(type)
-
-    if (type === 'api') {
-        // network-first: keep API data fresh, fall back to cache only offline
-        try {
-            await fetchAndCache(request, type, cache)
-        } catch {
-            const cached = await cache.match(request)
-            if (cached) return cached
-            throw new Error('No cached response available')
-        }
+// network-first: serve the live response (preserving its real headers) and fall
+// back to cache only when the network is unavailable
+const networkFirst = async (request, cache) => {
+    try {
+        return await fetchAndCache(request, 'api', cache)
+    } catch {
+        const cached = await cache.match(request)
+        if (cached) return cached
+        throw new Error('No cached response available')
     }
+}
 
-    // media (and the revalidated api response): cache-first
+const cacheFirst = async (request, type, cache) => {
     const cached = await cache.match(request)
     if (cached) return cached
-    return await fetchAndCache(request, type, cache)
+    return fetchAndCache(request, type, cache)
+}
+
+const getResponseForRequest = async (request, type) => {
+    const cache = await caches.open(CACHE_NAMES[type])
+    return type === 'api' ? networkFirst(request, cache) : cacheFirst(request, type, cache)
 }
 
 const getRequestType = (url) => {

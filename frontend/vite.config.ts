@@ -9,13 +9,11 @@ import { defineConfig } from 'vite'
 const emitSlidesServiceWorker = () => ({
   name: 'slides-service-worker',
   apply: 'build' as const,
-  async writeBundle() {
+  writeBundle() {
     const swSource = path.resolve(__dirname, 'src/apps/slides/service-worker.js')
     const swOutput = path.resolve(__dirname, '../suite/www/service-worker.js')
-    const source = fs.readFileSync(swSource, 'utf-8')
-    const stamped = source.replace(/__BUILD_TIMESTAMP__/g, Date.now().toString())
     fs.mkdirSync(path.dirname(swOutput), { recursive: true })
-    fs.writeFileSync(swOutput, stamped)
+    fs.copyFileSync(swSource, swOutput)
   },
 })
 
