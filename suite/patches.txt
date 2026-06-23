@@ -50,5 +50,6 @@ suite.mail.patches.migrate_data_store_to_lmdb
 suite.mail.patches.backfill_blocked_email_account_id
 suite.mail.patches.configure_exchange_log
 suite.mail.patches.backfill_junk_email_account_id
+suite.mail.patches.backfill_mailbox_settings_account_id
 # --- calendar ---
 # (no patches)
