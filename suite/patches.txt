@@ -11,6 +11,7 @@ execute:frappe.db.delete("Mail Cluster Store")
 
 suite.mail.patches.capture_user_outgoing_settings
 suite.mail.patches.rebuild_rate_limit_unique_constraint
+suite.mail.patches.refactor_account_settings
 [post_model_sync]
 # --- drive ---
 suite.drive.patches.folder_size #3
@@ -48,5 +49,12 @@ suite.mail.patches.migrate_outgoing_settings_to_account
 suite.mail.patches.migrate_data_store_to_lmdb
 suite.mail.patches.backfill_blocked_email_account_id
 suite.mail.patches.configure_exchange_log
+suite.mail.patches.backfill_junk_email_account_id
+suite.mail.patches.backfill_mailbox_settings_account_id
+suite.mail.patches.backfill_mail_exchange_account_id
+suite.mail.patches.backfill_mail_sync_history_account_id
+suite.mail.patches.backfill_mail_queue_account_id
+suite.mail.patches.clear_legacy_user_scoped_stores
+suite.mail.patches.clear_legacy_blob_store_layout
 # --- calendar ---
 # (no patches)
