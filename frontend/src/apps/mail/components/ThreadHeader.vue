@@ -109,7 +109,7 @@ import {
 import { Button, Dropdown, Tooltip } from 'frappe-ui'
 
 import { FOLDER_ICON_COLOR_MAP } from '@/apps/mail/constants'
-import { getIcon } from '@/apps/mail/utils'
+import { getIcon, getMailboxName } from '@/apps/mail/utils'
 import { useScreenSize } from '@/apps/mail/utils/composables'
 import { userStore } from '@/apps/mail/stores/user'
 
@@ -270,7 +270,7 @@ const getMailboxOption = (
 	mailbox: MailboxData,
 	emitName: 'moveThread' | 'addThreadToMailbox' | 'removeThreadFromMailbox',
 ) => ({
-	label: mailbox._name,
+	label: getMailboxName(mailbox),
 	icon: h(Icon, { name: getIcon(mailbox), class: FOLDER_ICON_COLOR_MAP[mailbox.color!] }),
 	onClick: () => emit(emitName, mailbox.id),
 })

@@ -3,6 +3,7 @@ import { defineStore } from 'pinia'
 import { createResource } from 'frappe-ui'
 
 import router from '@/apps/mail/router'
+import { SCREENING_MAILBOX_NAME } from '@/apps/mail/constants'
 
 import type { UserAccount, UserResource } from '@/apps/mail/types'
 
@@ -67,9 +68,6 @@ export const userStore = defineStore('mail-user', () => {
 		makeParams: () => ({ account: account.value }),
 		cache: ['mailboxes', accountId.value],
 	})
-
-	// The Screening mailbox is a plain named folder (no JMAP role), created server-side as "Screening".
-	const SCREENING_MAILBOX_NAME = 'Screening'
 
 	const mailboxIds = computed(() => {
 		const ids: Record<MailboxRole | 'screening', string> = {
