@@ -68,8 +68,11 @@ export const userStore = defineStore('mail-user', () => {
 		cache: ['mailboxes', accountId.value],
 	})
 
+	// The Screening mailbox is a plain named folder (no JMAP role), created server-side as "Screening".
+	const SCREENING_MAILBOX_NAME = 'Screening'
+
 	const mailboxIds = computed(() => {
-		const ids: Record<MailboxRole, string> = {
+		const ids: Record<MailboxRole | 'screening', string> = {
 			inbox: '',
 			sent: '',
 			drafts: '',
@@ -77,22 +80,14 @@ export const userStore = defineStore('mail-user', () => {
 			junk: '',
 			archive: '',
 			important: '',
+			screening: '',
 		}
-		mailboxes.data?.forEach((m: { role?: MailboxRole; id: string }) => {
+		mailboxes.data?.forEach((m: { role?: MailboxRole; _name?: string; id: string }) => {
 			if (m.role) ids[m.role] = m.id
+			else if (m._name === SCREENING_MAILBOX_NAME) ids.screening = m.id
 		})
 		return ids
 	})
-
-	// The Screening mailbox is a plain named folder (no JMAP role), created server-side as "Screening".
-	const SCREENING_MAILBOX_NAME = 'Screening'
-	const screeningMailboxId = computed(
-		() =>
-			mailboxes.data?.find(
-				(m: { role?: string; _name?: string }) =>
-					!m.role && m._name === SCREENING_MAILBOX_NAME,
-			)?.id || '',
-	)
 
 	const addressBooks = createResource({
 		url: 'suite.mail.api.contacts.get_address_books',
@@ -144,7 +139,6 @@ export const userStore = defineStore('mail-user', () => {
 		userResource,
 		mailboxes,
 		mailboxIds,
-		screeningMailboxId,
 		addressBooks,
 		identities,
 		domains,
