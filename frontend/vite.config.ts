@@ -6,11 +6,6 @@ import { noiseSuppressionAudioWorkletVitePlugin } from '@workadventure/noise-sup
 import frappeui from 'frappe-ui/vite'
 import { defineConfig } from 'vite'
 
-// Emits the slides-scoped service worker to suite/www so Frappe serves it at the
-// origin root ('/service-worker.js'). Root scope is required for it to intercept
-// slides' /api/method/suite.slides.* requests. Build-only (no SW in dev to avoid
-// HMR/caching conflicts); the stamped timestamp makes each build a new SW so the
-// browser picks up updates. Slides-only: reads/writes only the slides SW file.
 const emitSlidesServiceWorker = () => ({
   name: 'slides-service-worker',
   apply: 'build' as const,

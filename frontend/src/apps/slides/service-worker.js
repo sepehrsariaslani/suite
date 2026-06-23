@@ -59,11 +59,6 @@ const getModifiedResponse = (response) => {
     })
 }
 
-// Slides-only matchers. `/assets/` (shared SPA bundle) is never matched.
-// Media is either the slides-namespaced proxy (non-owner/public viewers) or a
-// /private/files/ request tagged with the `slides_media` marker that
-// getAttachmentUrl() adds for the owner — so we cache slides' own files without
-// ever touching another app's /private/files/ traffic (Drive, Mail, ...).
 const isMedia = (url) =>
     url.pathname.startsWith('/api/method/suite.slides.api.file.get_media_file') ||
     (url.pathname.startsWith('/private/files/') && url.searchParams.has('slides_media'))
@@ -134,8 +129,6 @@ const handleSWFetch = async (event) => {
 
     const requestType = getRequestType(url)
     const isAffectedByCache = ['media', 'api'].includes(requestType)
-    // Not a slides request -> do nothing, let the browser fetch it normally.
-    // This is what keeps the other 6 apps completely unaffected.
     if (!isAffectedByCache) return
 
     const response = getResponseForRequest(request, requestType)
