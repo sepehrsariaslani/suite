@@ -171,6 +171,7 @@ permission_query_conditions = {
 	"Junk Email Address": "suite.client.doctype.junk_email_address.junk_email_address.get_permission_query_condition",
 	"Mail Exchange": "suite.client.doctype.mail_exchange.mail_exchange.get_permission_query_condition",
 	"Mail Queue": "suite.client.doctype.mail_queue.mail_queue.get_permission_query_condition",
+	"Mail Sync History": "suite.client.doctype.mail_sync_history.mail_sync_history.get_permission_query_condition",
 	"Mailbox Settings": "suite.client.doctype.mailbox_settings.mailbox_settings.get_permission_query_condition",
 	"User Settings": "suite.client.doctype.user_settings.user_settings.get_permission_query_condition",
 }
@@ -200,6 +201,7 @@ has_permission = {
 	"Junk Email Address": "suite.client.doctype.junk_email_address.junk_email_address.has_permission",
 	"Mail Exchange": "suite.client.doctype.mail_exchange.mail_exchange.has_permission",
 	"Mail Queue": "suite.client.doctype.mail_queue.mail_queue.has_permission",
+	"Mail Sync History": "suite.client.doctype.mail_sync_history.mail_sync_history.has_permission",
 	"Mailbox": "suite.client.doctype.mailbox.mailbox.has_permission",
 	"Mailbox Settings": "suite.client.doctype.mailbox_settings.mailbox_settings.has_permission",
 	"Participant Identity": "suite.client.doctype.participant_identity.participant_identity.has_permission",
