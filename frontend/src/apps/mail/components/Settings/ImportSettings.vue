@@ -64,7 +64,7 @@ import { raiseToast } from '@/apps/mail/utils'
 import { useChunkedUpload } from '@/apps/mail/utils/useChunkedUpload'
 import { userStore } from '@/apps/mail/stores/user'
 
-const { account, mailboxes } = userStore()
+const { accountId, mailboxes } = userStore()
 
 const user = inject('$user')
 const socket = inject('$socket')
@@ -126,7 +126,7 @@ watch(
 
 const createMailImport = createResource({
 	url: 'suite.mail.api.account.create_mail_import',
-	makeParams: () => ({ account, ...mailImport }),
+	makeParams: () => ({ account_id: accountId, ...mailImport }),
 	onSuccess: () => ongoingImport.reload(),
 })
 
