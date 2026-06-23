@@ -58,9 +58,9 @@ export const userStore = defineStore('mail-user', () => {
 		auto: true,
 	})
 
-	const account = computed(
-		() => userResource.data?.accounts?.find((a) => a.id === accountId.value)?.name,
-	)
+	// The logged-in user (the user component of every account handle is always the session user).
+	// Exposed so callers can rebuild a `user:account_id` virtual-doctype document name when needed.
+	const user = computed(() => userResource.data?.name)
 
 	const mailboxes = createResource({
 		url: 'suite.mail.api.mail.get_mailboxes',
@@ -127,7 +127,7 @@ export const userStore = defineStore('mail-user', () => {
 
 	return {
 		accountId,
-		account,
+		user,
 		resolveAccount,
 		userResource,
 		mailboxes,
