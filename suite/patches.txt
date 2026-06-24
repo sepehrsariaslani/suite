@@ -49,5 +49,6 @@ suite.mail.patches.migrate_data_store_to_lmdb
 suite.mail.patches.backfill_blocked_email_account_id
 suite.mail.patches.configure_exchange_log
 suite.mail.patches.migrate_to_screened_email_address
+suite.mail.patches.regenerate_screening_sieve_with_local_domains
 # --- calendar ---
 # (no patches)
