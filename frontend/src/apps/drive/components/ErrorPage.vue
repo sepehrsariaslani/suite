@@ -33,6 +33,7 @@
 <script setup>
 import { Button } from 'frappe-ui'
 import store from '@/apps/drive/store'
+import { setPageBreadcrumbs } from '@/apps/drive/data/breadcrumbs'
 import router from '@/apps/drive/router'
 import { watchEffect } from 'vue'
 import LucideFileUser from '~icons/lucide/file-user'
@@ -52,6 +53,6 @@ watchEffect(() => {
   ) {
     goToLogin()
   }
-  store.commit('setBreadcrumbs', [])
+  setPageBreadcrumbs([])
 })
 </script>

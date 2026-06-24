@@ -2,6 +2,10 @@ import type { RouteRecordRaw } from 'vue-router'
 import { createResource } from 'frappe-ui'
 
 import store from '@/apps/drive/store'
+import {
+  pageBreadcrumbs,
+  setPageBreadcrumbs,
+} from '@/apps/drive/data/breadcrumbs'
 import { translate } from '@/apps/drive/resources/files'
 import { setupTheme } from '@/apps/drive/utils/setupTheme'
 
@@ -26,11 +30,10 @@ import { setupTheme } from '@/apps/drive/utils/setupTheme'
 
 const manageBreadcrumbs = (to: any) => {
   if (
-    store.state.breadcrumbs[store.state.breadcrumbs.length - 1]?.name !==
+    pageBreadcrumbs.value[pageBreadcrumbs.value.length - 1]?.name !==
     to.params.entityName
   ) {
-    store.state.breadcrumbs.splice(1)
-    store.state.breadcrumbs.push({ loading: true })
+    setPageBreadcrumbs({ loading: true, name: to.params.entityName })
   }
 }
 
@@ -38,7 +41,7 @@ const setRootBreadCrumb = (to: any) => {
   if (store.getters.isLoggedIn) {
     document.title = __(String(to.name).replace(/^drive-/, ''))
     if (to.name !== 'drive-Team')
-      store.commit('setBreadcrumbs', [
+      setPageBreadcrumbs([
         {
           label: __(String(to.name).replace(/^drive-/, '')),
           name: to.name,

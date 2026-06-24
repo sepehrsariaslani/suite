@@ -26,6 +26,7 @@ import BottomBar from '@/apps/drive/components/BottomBar.vue'
 import FileUploader from '@/apps/drive/components/FileUploader.vue'
 import store from '@/apps/drive/store'
 import { ref, computed, onMounted, provide } from 'vue'
+import { sidebarCollapsed } from '@/apps/drive/data/prefs'
 import { onKeyDown } from '@vueuse/core'
 import emitter from '@/apps/drive/emitter'
 import { initSocket } from '@/apps/drive/socket'
@@ -91,9 +92,9 @@ onKeyDown((e) => {
     }
     if (e.shiftKey) {
       if (e.key == 'ArrowRight') {
-        store.commit('setSidebarCollapsed', false)
+        sidebarCollapsed.value = false
       } else if (e.key == 'ArrowLeft') {
-        store.commit('setSidebarCollapsed', true)
+        sidebarCollapsed.value = true
         e.preventDefault()
       }
     }

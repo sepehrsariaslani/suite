@@ -39,6 +39,10 @@ plus legacy redirects. **`isPublic`** (guest-shared links): `drive-Signup`, `g`,
   `suite.drive.utils.*`.
 
 ## Known / deferred (please review)
+- **`routes.ts` hardcoded `/drive/` prefix in `beforeEnter` redirects:** two guards
+  build redirect paths as string literals (`/drive/${letter}/…` and `/drive/g/…`) instead
+  of using named-route objects. These work today but will break silently if the mount prefix
+  ever changes. Should be converted to `{ name: 'drive-Folder', params: {…} }` etc.
 - **Global error-suppression removed:** the standalone re-set the global fetcher to
   swallow errors where `err.messages[0]` existed. Dropped (can't override the shared
   fetcher). Resources that relied on silent swallowing may now surface toasts/console
@@ -48,6 +52,10 @@ plus legacy redirects. **`isPublic`** (guest-shared links): `drive-Signup`, `g`,
   SVGs were relocated into `suite/public/drive/images/icons/` (served at `/assets/suite/...`)
   so the suite is self-contained once the standalone `drive` app is removed. (Drive fonts
   used by Writer were likewise moved to `suite/public/drive/fonts/`.)
+- **Vuex → composables migration — known breakages (acceptable until fixed):**
+  - **File preview prev/next:** only works when navigating from a folder list (relies on
+    in-memory `currentFolder.entities` from GenericPage). Direct links to a file won't have
+    siblings.
 
 ## Verify (Phase 6)
 Log in at `suite.localhost:8004/drive`. Confirm: file/folder listing + navigation;

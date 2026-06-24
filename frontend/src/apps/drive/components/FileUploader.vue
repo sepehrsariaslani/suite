@@ -3,8 +3,9 @@
 </template>
 <script setup>
 import { ref, onMounted, onBeforeUnmount, inject, watch } from 'vue'
-import store from '@/apps/drive/store'
 import { useRoute } from 'vue-router'
+import store from '@/apps/drive/store'
+import { currentFolder } from '@/apps/drive/data/currentFolder'
 import Dropzone from 'dropzone'
 import { storageBar } from '@/apps/drive/resources/files'
 
@@ -123,7 +124,7 @@ onMounted(() => {
     },
     addRemoveLinks: true,
     accept: function (file, done) {
-      file.team = store.state.currentFolder.team || ''
+      file.team = currentFolder.value.team || ''
       if (file.size == 0) {
         done('Empty files will not be uploaded.')
       } else {
@@ -152,7 +153,7 @@ onMounted(() => {
   })
 
   dropzone.value.on('addedfile', function (file) {
-    file.parent = store.state.currentFolder.name
+    file.parent = currentFolder.value.name
     emitter.emit('refresh')
     store.commit('addUpload', {
       uuid: file.upload.uuid,

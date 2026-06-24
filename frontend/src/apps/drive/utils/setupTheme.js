@@ -34,7 +34,7 @@ export async function setupTheme() {
   if (import.meta.env.DEV) {
     if (store.getters.isLoggedIn) {
       const boot = await frappeRequest({
-        url: 'suite.drive.www.drive.get_context_for_dev',
+        url: '/api/method/suite.drive.www.drive.get_context_for_dev',
         method: 'POST',
       })
       applyTheme(boot?.desk_theme || 'Light')

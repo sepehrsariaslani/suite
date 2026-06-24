@@ -255,7 +255,7 @@ after_app_install = "suite.suite_core.boot.after_app_install"
 extend_bootinfo = "suite.suite_core.boot.extend_bootinfo"
 
 # drive — custom upload + after_request middleware (single definers)
-after_upload_file = "suite.drive.overrides.file.after_upload_file"
+after_file_upload = "suite.drive.overrides.file.after_file_upload"
 after_request = "suite.drive.api.product.after_request"
 
 # ============================================================================
