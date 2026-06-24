@@ -1,12 +1,12 @@
 <template>
-	<div class="bg-surface-base sticky top-0 flex items-center border-b p-2.5 sm:px-5">
+	<div class="bg-surface-white sticky top-0 flex items-center border-b py-2.5 sm:px-3.5">
 		<Button
 			variant="ghost"
 			class="mr-2 shrink-0"
-			@click="$router.push({ name: 'mail-mailbox', params: { mailbox }, query: route.query })"
+			@click="$router.push({ name: 'Mailbox', params: { mailbox }, query: route.query })"
 		>
 			<template #icon>
-				<ChevronLeft class="text-ink-gray-7 icon" />
+				<ChevronLeft class="icon" />
 			</template>
 		</Button>
 		<template v-if="thread?.length">
@@ -183,7 +183,7 @@ const threadActions = computed((): Action[] => [
 				thread.map((m) => m.id),
 				false,
 			),
-		icon: h(Star, { class: 'fill-ink-amber-5 text-ink-amber-5 stroke-ink-amber-5' }),
+		icon: h(Star, { class: 'fill-ink-amber-2 text-ink-amber-2 stroke-ink-amber-2' }),
 		condition: () => thread.every((m) => m.flagged),
 	},
 	{
