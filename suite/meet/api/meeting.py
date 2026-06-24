@@ -31,7 +31,7 @@ def _generate_sfu_token(
 ) -> str:
 	"""Generate a JWT token for SFU authentication."""
 	sfu_config = get_sfu_config()
-	secret = sfu_config.get("sfu_secret") or frappe.conf.get("secret_key")
+	secret = sfu_config.get("sfu_secret")
 	if not secret:
 		frappe.throw(_("SFU secret not configured"))
 
@@ -50,6 +50,17 @@ def _generate_sfu_token(
 
 def _get_codec_strategy() -> str:
 	return frappe.get_cached_doc("Sae Settings").codec_strategy or "svc"
+
+
+def _user_payload(meeting, user) -> tuple[str, str | None, bool, bool]:
+	"""Return (fullname, avatar, is_host, is_cohost) for a signed-in user."""
+	fullname, avatar = frappe.db.get_value("User", user, ["full_name", "user_image"]) or (
+		user,
+		None,
+	)
+	is_host = meeting.owner == user
+	is_cohost = meeting.is_host_or_cohost(user) and not is_host
+	return fullname, avatar, is_host, is_cohost
 
 
 @frappe.whitelist()
@@ -90,13 +101,7 @@ def get_sfu_connection_details(meeting_id: str) -> dict:
 
 	sfu_config = get_sfu_config()
 
-	user_fullname, user_avatar = frappe.db.get_value("User", user, ["full_name", "user_image"]) or (
-		user,
-		None,
-	)
-
-	is_host = meeting.owner == user
-	is_cohost = meeting.is_host_or_cohost(user) and not is_host
+	user_fullname, user_avatar, is_host, is_cohost = _user_payload(meeting, user)
 
 	auth_token = _generate_sfu_token(
 		user_id=user,
@@ -253,12 +258,7 @@ def refresh_sfu_token(meeting_id: str) -> dict:
 	if frappe.session.user not in meeting.get_members():
 		frappe.throw(_("Not a meeting member"))
 
-	user_fullname, user_avatar = frappe.db.get_value(
-		"User", frappe.session.user, ["full_name", "user_image"]
-	) or (frappe.session.user, None)
-
-	is_host = meeting.owner == frappe.session.user
-	is_cohost = meeting.is_host_or_cohost(frappe.session.user) and not is_host
+	user_fullname, user_avatar, is_host, is_cohost = _user_payload(meeting, frappe.session.user)
 
 	auth_token = _generate_sfu_token(
 		user_id=frappe.session.user,
@@ -472,7 +472,7 @@ def get_guest_sfu_connection_details(meeting_id: str, guest_token: str) -> dict:
 	Validates the guest token and returns SFU URL/port.
 	"""
 	sfu_config = get_sfu_config()
-	secret = sfu_config.get("sfu_secret") or frappe.conf.get("secret_key")
+	secret = sfu_config.get("sfu_secret")
 	if not secret:
 		frappe.throw(_("SFU secret not configured"))
 
@@ -552,5 +552,3 @@ def check_meeting_access(meeting_id: str) -> dict:
 		return {"allow_guest": allow_guest, "host_only_chat": bool(meeting.host_only_chat)}
 	except frappe.DoesNotExistError:
 		frappe.throw(_("Meeting not found"))
-	except Exception as e:
-		frappe.throw(str(e))
