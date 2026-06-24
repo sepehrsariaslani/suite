@@ -152,6 +152,19 @@ export const routes: RouteRecordRaw[] = [
 				props: true,
 			},
 			{
+				path: 'calendar-exchanges',
+				name: 'mail-calendar-exchanges',
+				component: () => import('@/apps/mail/pages/CalendarExchangesView.vue'),
+				meta: { noLayout: true },
+			},
+			{
+				path: 'calendar-exchanges/:id',
+				name: 'mail-calendar-exchange',
+				component: () => import('@/apps/mail/pages/CalendarExchangeView.vue'),
+				meta: { noLayout: true },
+				props: true,
+			},
+			{
 				path: 'dashboard',
 				redirect: { name: 'mail-domains' },
 				meta: { isDashboard: true },

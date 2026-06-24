@@ -46,7 +46,7 @@ import { downloadUrlAsFile, raisePromiseToast, raiseToast } from '@/apps/mail/ut
 import { useBlockSender, useScreenSize, useUndo } from '@/apps/mail/utils/composables'
 import { userStore } from '@/apps/mail/stores/user'
 
-import type { ComposeMailData, Identity, Mail, ScreenedAddress } from '@/apps/mail/types'
+import type { ComposeMailData, Identity, Mail } from '@/apps/mail/types'
 
 const {
 	mailbox,
@@ -79,17 +79,10 @@ const emit = defineEmits(['setFlagged', 'syncUnseen'])
 const { isMobile } = useScreenSize()
 const route = useRoute()
 const router = useRouter()
-const store = userStore()
-const { account, mailboxes, mailboxIds, identities, screenedAddresses } = store
+const { accountId, mailboxes, mailboxIds, identities, blockedAddresses } = userStore()
 const { setUndoAction, undo } = useUndo()
 const { promptBlockSenders, willJunkSenders } = useBlockSender()
 const user = inject('$user')
-
-// A sender is "blocked" when screened with the Reject action (their mail is discarded).
-const isSenderBlocked = (email: string) =>
-	screenedAddresses.data?.some(
-		(a: ScreenedAddress) => a.email === email && a.action === 'Reject',
-	)
 
 const primaryActions = (mail: Mail): MailAction[] => [
 	{
@@ -201,32 +194,18 @@ const moreActions = (mail: Mail): GroupedAction[] => [
 				condition: () => !mail.draft,
 			},
 			{
-				label: __('Accept Sender'),
-				onClick: () => handleScreenSender('Accepted'),
-				icon: CircleCheck,
-				condition: () => mailbox === store.mailboxIds.screening,
-			},
-			{
-				label: __('Reject Sender'),
-				onClick: () => handleScreenSender('Reject'),
-				icon: Ban,
-				condition: () => mailbox === store.mailboxIds.screening,
-			},
-			{
 				label: __('Block Sender'),
 				onClick: () => handleBlockAddress(true),
 				icon: Ban,
 				condition: () =>
-					mailbox !== store.mailboxIds.screening &&
 					!identities.data.some((i: Identity) => i.email === mail.from_email) &&
-					!isSenderBlocked(mail.from_email),
+					!blockedAddresses.data?.includes(mail.from_email),
 			},
 			{
 				label: __('Unblock Sender'),
 				onClick: () => handleBlockAddress(false),
 				icon: LockOpen,
-				condition: () =>
-					mailbox !== store.mailboxIds.screening && isSenderBlocked(mail.from_email),
+				condition: () => blockedAddresses.data?.includes(mail.from_email),
 			},
 		],
 	},
@@ -269,7 +248,7 @@ const downloadEmail = createResource({
 
 const markAsSpam = createResource({
 	url: 'suite.mail.api.mail.set_mails_spam_status',
-	makeParams: ({ spam }: { spam: boolean }) => ({ account, ids: [mail.id], spam }),
+	makeParams: ({ spam }: { spam: boolean }) => ({ account_id: accountId, ids: [mail.id], spam }),
 })
 
 const handleMarkAsSpam = (spam: boolean, isUndo = false) => {
@@ -304,7 +283,7 @@ const handleMarkAsSpam = (spam: boolean, isUndo = false) => {
 const moveMail = createResource({
 	url: 'suite.mail.api.mail.move_mails',
 	makeParams: (mailbox: string) => ({
-		account,
+		account_id: accountId,
 		ids: [mail.id],
 		mailbox,
 		clear_junk: mail.junk === 1 && mailbox !== mailboxIds.junk,
@@ -346,7 +325,7 @@ const handleDeleteMail = () =>
 
 const setMailsSeen = createResource({
 	url: 'suite.mail.api.mail.set_mails_seen',
-	makeParams: ({ ids }: { ids: string[] }) => ({ account, ids, seen: false }),
+	makeParams: ({ ids }: { ids: string[] }) => ({ account_id: accountId, ids, seen: false }),
 	onSuccess: (ids: string[]) => {
 		raiseToast(__('{0} marked as unread.', [ids.length === 1 ? __('Mail') : __('Mails')]))
 		router.push({
@@ -368,44 +347,21 @@ const handleMarkUnreadFromHere = () => {
 	if (ids.length) setMailsSeen.submit({ ids })
 }
 
-// Screening-folder decisions: accept the sender (let future mail in, move this one to Inbox) or
-// reject them (discard future mail, move this one to Trash). The sieve regenerates from the list.
-const screenSender = createResource({
-	url: 'suite.mail.api.mail.screen_email_address',
-	makeParams: ({ action }: { action: string }) => ({ account, email: mail.from_email, action }),
-})
-
-const handleScreenSender = (action: 'Accepted' | 'Reject') => {
-	const accepted = action === 'Accepted'
-	const target = accepted ? mailboxIds.inbox : mailboxIds.trash
-	const run = async () => {
-		await screenSender.submit({ action })
-		screenedAddresses.reload()
-		await moveMail.submit(target)
-		reloadMails()
-	}
-	raisePromiseToast(
-		run,
-		accepted ? __('Accepting sender...') : __('Rejecting sender...'),
-		accepted ? __('Sender accepted.') : __('Sender rejected.'),
-	)
-}
-
 const blockEmailAddress = createResource({
-	url: 'suite.mail.api.mail.screen_email_address',
-	makeParams: () => ({ account, email: mail.from_email, action: 'Reject' }),
+	url: 'suite.mail.api.mail.block_email_address',
+	makeParams: () => ({ account_id: accountId, email: mail.from_email }),
 })
 
 const unblockEmailAddress = createResource({
-	url: 'suite.mail.api.mail.unscreen_email_addresses',
-	makeParams: () => ({ account, emails: [mail.from_email] }),
+	url: 'suite.mail.api.mail.unblock_email_addresses',
+	makeParams: () => ({ account_id: accountId, emails: [mail.from_email] }),
 })
 
 const handleBlockAddress = (block: boolean, isUndo = false) => {
 	const action = () =>
 		(block ? blockEmailAddress : unblockEmailAddress)
 			.submit()
-			.then(() => screenedAddresses.reload())
+			.then(() => blockedAddresses.reload())
 	const successMessage = block ? __('Sender blocked.') : __('Sender unblocked.')
 
 	if (isUndo) return raisePromiseToast(action, __('Undoing...'), successMessage)
