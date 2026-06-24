@@ -1,10 +1,5 @@
-import { ref, computed } from 'vue'
-import {
-	presentationDoc,
-	presentationId,
-	hasStateChanged,
-	savePresentationDoc,
-} from '@/apps/slides/stores/presentation'
+import { ref } from 'vue'
+import { presentationId, savePresentationDoc } from '@/apps/slides/stores/presentation'
 import { slides } from '@/apps/slides/stores/slide'
 import { cloneObj } from '@/apps/slides/utils/helpers'
 
@@ -86,14 +81,16 @@ const getPresentationFromLocalDB = async (id) => {
 	})
 }
 
-const isDirty = computed(() => {
-	if (!presentationDoc.value || !slides.value) return false
+// explicit dirty flag set by every mutation path
+const dirty = ref(false)
 
-	const original = JSON.parse(JSON.stringify(presentationDoc.value.slides || []))
-	const current = JSON.parse(JSON.stringify(slides.value || []))
+const markDirty = () => {
+	dirty.value = true
+}
 
-	return hasStateChanged(original, current)
-})
+const markClean = () => {
+	dirty.value = false
+}
 
 const isSaving = ref(false)
 
@@ -142,6 +139,10 @@ const saveCurrentState = async () => {
 			dirty: true,
 		})
 
+		// changes are persisted locally (and queued for sync), so the editor
+		// state is no longer ahead of storage
+		markClean()
+
 		// if offline, do not attempt to sync to server
 		if (!navigator.onLine) return
 
@@ -153,8 +154,8 @@ const saveCurrentState = async () => {
 }
 
 const saveChanges = async () => {
-	if (!isDirty.value) return
+	if (!dirty.value) return
 	await saveCurrentState()
 }
 
-export { saveCurrentState, saveChanges, isDirty, isSaving }
+export { saveCurrentState, saveChanges, isSaving, dirty, markDirty, markClean }

@@ -2,38 +2,31 @@
 	<div ref="slideContainer" class="flex size-full" @dragenter="showOverlay">
 		<!-- when mounting place slide directly in the center of the visible container -->
 		<!-- 1/2 width of viewport + 1/2 width of offset caused due to thinner navigation panel -->
-		<div
-			ref="slideRef"
-			:style="slideStyles"
-			:class="slideClasses"
-			@contextmenu.prevent
-			@dblclick="handleSlideDoubleClick"
-		>
+		<div ref="slideRef" :style="slideStyles" :class="slideClasses" @contextmenu.prevent>
 			<SelectionBox
 				ref="selectionBox"
 				v-if="!inReadonlyMode"
 				:isDragging
-				:rotationDelta="rotationDelta"
+				:elementOffset
 				@mousedown="(e) => handleMouseDown(e)"
-				@setIsSelecting="(val) => (isSelecting = val)"
 			/>
 
-			<SnapGuides
-				:ongoingInteraction="hasOngoingInteraction"
-				:visibilityMap="visibilityMap"
-			/>
+			<MarqueeOverlay v-if="!inReadonlyMode" @setIsSelecting="(val) => (isSelecting = val)" />
+
+			<ShapeDrawOverlay v-if="!inReadonlyMode" />
+
+			<SnapGuides :ongoingInteraction="hasOngoingInteraction" :activeGuides="activeGuides" />
 
 			<SlideElement
 				v-for="element in currentSlide?.elements"
 				:key="`editor-${element.id}`"
+				:ref="(comp) => registerElementDiv(element.id, comp?.$el)"
 				mode="editor"
 				:element
 				:elementOffset
-				:rotationDelta="rotationDelta"
 				:data-index="element.id"
 				:highlight="highlightElement(element)"
 				@mousedown="(e) => handleMouseDown(e, element)"
-				@clearTimeouts="clearTimeouts"
 			/>
 		</div>
 		<DropTargetOverlay v-show="mediaDragOver" @hideOverlay="hideOverlay" />
@@ -60,6 +53,8 @@ import { useResizeObserver } from '@vueuse/core'
 
 import SnapGuides from '@/apps/slides/components/SnapGuides.vue'
 import SelectionBox from '@/apps/slides/components/SelectionBox.vue'
+import MarqueeOverlay from '@/apps/slides/components/MarqueeOverlay.vue'
+import ShapeDrawOverlay from '@/apps/slides/components/ShapeDrawOverlay.vue'
 import SlideElement from '@/apps/slides/components/SlideElement.vue'
 import DropTargetOverlay from '@/apps/slides/components/DropTargetOverlay.vue'
 import OverflowContentOverlay from '@/apps/slides/components/OverflowContentOverlay.vue'
@@ -81,12 +76,14 @@ import {
 	setEditableState,
 	duplicateElements,
 	activeElements,
-	addTextElement,
+	cropSelectionToFitContent,
 } from '@/apps/slides/stores/element'
 
 import { commandHistory } from '@/apps/slides/stores/historyMeta'
 
 import { handleCopy, handlePaste } from '@/apps/slides/stores/copyPaste'
+
+import { registerElementDiv, getElementDiv } from '@/apps/slides/stores/elementRegistry'
 
 import { useDragAndDrop } from '@/apps/slides/composables/useDragAndDrop'
 import { useResizer } from '@/apps/slides/composables/useResizer'
@@ -96,6 +93,14 @@ import { useSnapping } from '@/apps/slides/composables/useSnapping'
 import { editElementCommand, batchCommand } from '@/apps/slides/stores/commands'
 
 import { isCmdOrCtrl } from '@/apps/slides/utils/helpers'
+import {
+	getResizedBox,
+	getResizedLine,
+	getResizedTextBox,
+	getRotatedBoundingBox,
+	isAspectLocked,
+	getMinSizeForElement,
+} from '@/apps/slides/utils/resize'
 
 const props = defineProps({
 	highlight: Boolean,
@@ -111,7 +116,7 @@ const selectionBoxRef = useTemplateRef('selectionBox')
 
 const { isDragging, positionDelta, startDragging } = useDragAndDrop()
 
-const { isResizing, dimensionDelta, currentResizer, resizeCursor, startResize } = useResizer()
+const { isResizing, pointerDelta, currentResizer, resizeCursor, startResize } = useResizer()
 
 const { isRotating, rotationDelta, startRotate, resetRotation } = useRotator()
 
@@ -119,9 +124,8 @@ const hasOngoingInteraction = computed(
 	() => isDragging.value || isResizing.value || isRotating.value,
 )
 
-const { visibilityMap, resistanceMap, handleSnapping } = useSnapping(
+const { activeGuides, snapForDrag, snapForResize } = useSnapping(
 	selectionBoxRef,
-	slideRef,
 	currentResizer,
 	hasOngoingInteraction,
 )
@@ -177,13 +181,6 @@ const hideOverlay = () => {
 	mediaDragOver.value = false
 }
 
-let dragTimeout, clickTimeout
-
-const clearTimeouts = () => {
-	clearTimeout(dragTimeout)
-	clearTimeout(clickTimeout)
-}
-
 const triggerSelection = (e, id) => {
 	if (id) {
 		if (!activeElementIds.value.includes(id)) {
@@ -200,11 +197,9 @@ const triggerSelection = (e, id) => {
 }
 
 const handleMouseUp = (e, id) => {
-	clearTimeouts()
-
 	pairElementId.value = null
 
-	if (!isDragging.value) clickTimeout = setTimeout(() => triggerSelection(e, id), 200)
+	if (!isDragging.value) triggerSelection(e, id)
 }
 
 const triggerDrag = (e, id) => {
@@ -221,13 +216,51 @@ const triggerDrag = (e, id) => {
 		if (id && !isMultiSelect && activeElementIds.value[0] !== id) {
 			activeElementIds.value = [id]
 			focusElementId.value = null
+
+			// the selection watcher will crop async — too late for the drag
+			// anchor below, so fit the bounds to this element now
+			cropSelectionToFitContent([id])
+		}
+
+		// anchor synchronously: the drag math must never depend on watcher
+		// flush order or on a previous gesture's state
+		dragStartBounds = {
+			left: selectionBounds.left,
+			top: selectionBounds.top,
 		}
 	}
 }
 
+const DRAG_START_THRESHOLD = 4
+
+const watchForDragIntent = (downEvent, id) => {
+	const cancelDragIntent = () => {
+		window.removeEventListener('mousemove', detectDrag)
+		window.removeEventListener('mouseup', cancelDragIntent)
+	}
+
+	const detectDrag = (moveEvent) => {
+		// button already released (e.g. mouseup outside the window)
+		if (!moveEvent.buttons) return cancelDragIntent()
+
+		const dx = moveEvent.clientX - downEvent.clientX
+		const dy = moveEvent.clientY - downEvent.clientY
+		if (Math.hypot(dx, dy) < DRAG_START_THRESHOLD) return
+
+		cancelDragIntent()
+
+		// pass the original mousedown event so the drag measures
+		// from the press position and no movement is lost
+		triggerDrag(downEvent, id)
+	}
+
+	window.addEventListener('mousemove', detectDrag)
+	window.addEventListener('mouseup', cancelDragIntent)
+}
+
 const duplicateAndDrag = (e, id) => {
 	duplicateElements(e, activeElements.value, slideIndex.value, false).then(() => {
-		triggerDrag(e, id)
+		watchForDragIntent(e, id)
 	})
 }
 
@@ -240,11 +273,10 @@ const handleMouseDown = (e, element) => {
 
 	if (e.altKey || e.ctrlKey) return duplicateAndDrag(e, id)
 
-	// wait for click to be registered
-	// if the click is not registered, it means the user is dragging
-	dragTimeout = setTimeout(() => triggerDrag(e, id), 100)
+	// start dragging once the pointer moves past a small threshold
+	watchForDragIntent(e, id)
 
-	// if the click is registered ie. mouseup happens before dragTimeout
+	// if mouseup happens before the threshold is crossed
 	// then consider it a selection instead of dragging
 	e.target.addEventListener('mouseup', () => handleMouseUp(e, id), { once: true })
 }
@@ -257,88 +289,42 @@ const scale = computed(() => {
 
 const activeDiv = computed(() => {
 	if (activeElementIds.value.length != 1) return null
-	return document.querySelector(`[data-index="${activeElementIds.value[0]}"]`)
+	return getElementDiv(activeElementIds.value[0])
 })
 
 useResizeObserver(activeDiv, (entries) => {
 	const entry = entries[0]
 	const { width, height } = entry.contentRect
-	const target = entry.target.getBoundingClientRect()
-	const useLayoutPosition = ['shape', 'image'].includes(activeElement.value?.type)
 
-	// case:
-	// when element dimensions are changed not by resizer
-	// but by other updates on properties - font size, line height, letter spacing etc.
+	// fires on any size change: resize gestures, and property updates like
+	// font size / line height / letter spacing
+
+	// shapes/images are layout-anchored: left/top derive from element state,
+	// no forced-layout read needed
+	if (['shape', 'image'].includes(activeElement.value?.type)) {
+		updateSelectionBounds({
+			width: width,
+			height: height,
+			left: activeElement.value.left + elementOffset.left,
+			top: activeElement.value.top + elementOffset.top,
+		})
+		return
+	}
+
+	// text elements are center-anchored (translate(-50%, -50%)): their visual
+	// left/top shift whenever the size changes, so read the rendered rect
+	const target = entry.target.getBoundingClientRect()
+
 	updateSelectionBounds({
 		width: width,
 		height: height,
-		left: useLayoutPosition
-			? activeElement.value.left + elementOffset.left
-			: (target.left - slideBounds.left) / scale.value,
-		top: useLayoutPosition
-			? activeElement.value.top + elementOffset.top
-			: (target.top - slideBounds.top) / scale.value,
+		left: (target.left - slideBounds.left) / scale.value,
+		top: (target.top - slideBounds.top) / scale.value,
 	})
 })
 
 const togglePanZoom = () => {
 	allowPanAndZoom.value = !allowPanAndZoom.value
-}
-
-const applyResistance = (axis, delta) => {
-	const scaledThreshold = (0.01 * selectionBounds.width) / slideBounds.scale
-
-	const escapeDelta = Math.max(1.5, Math.min(5, scaledThreshold))
-
-	let useResistanceKeys = []
-	let pullDelta = null
-
-	if (axis == 'X') {
-		useResistanceKeys = ['left', 'right', 'centerY']
-		pullDelta = delta.left
-	} else if (axis == 'Y') {
-		useResistanceKeys = ['top', 'bottom', 'centerX']
-		pullDelta = delta.top
-	} else if (axis == null && currentResizer.value) {
-		useResistanceKeys = ['left', 'right', 'top', 'bottom', 'centerX', 'centerY']
-		pullDelta = delta.width
-	}
-
-	const useResistance = useResistanceKeys.some((key) => resistanceMap[key])
-
-	return useResistance && Math.abs(pullDelta) < escapeDelta
-}
-
-const updateTotalDeltaForResize = (totalDelta, delta, width, height) => {
-	totalDelta.width = applyResistance(null, delta) ? 0 : width
-	totalDelta.height = applyResistance(null, delta) ? 0 : height
-
-	// if resisting width change, don't apply top change either otherwise
-	// element sticks to one axis and drags on other which shouldn't happen on resize
-	if (totalDelta.width === 0 && !['top', 'bottom'].includes(currentResizer.value)) {
-		totalDelta.top = 0
-	}
-}
-
-const getTotalInteractionDelta = (delta, interaction = 'dragging') => {
-	const snapDelta = handleSnapping(interaction)
-
-	const left = snapDelta.x || delta.left
-	const top = snapDelta.y || delta.top
-
-	const totalDelta = {
-		left: applyResistance('X', delta) ? 0 : left,
-		top: applyResistance('Y', delta) ? 0 : top,
-	}
-
-	const width = snapDelta.width || delta.width
-	const height = snapDelta.height || delta.height
-
-	if (interaction === 'resizing') {
-		updateTotalDeltaForResize(totalDelta, delta, width, height)
-	}
-
-	return totalDelta
 }
 
 const elementOffset = reactive({
@@ -348,78 +334,109 @@ const elementOffset = reactive({
 	height: 0,
 })
 
-const handlePositionChange = (delta) => {
-	if (!delta.left && !delta.top) return
+// selection bounds at drag start — captured synchronously in triggerDrag
+let dragStartBounds = null
 
-	const totalDelta = getTotalInteractionDelta(delta)
-
-	applyPositionDelta(totalDelta)
+const snapRotatedPosition = (target, rotation) => {
+	const boundingBox = getRotatedBoundingBox(target, rotation)
+	const snapped = snapForDrag(boundingBox)
+	return {
+		left: target.left + (snapped.left - boundingBox.left),
+		top: target.top + (snapped.top - boundingBox.top),
+	}
 }
 
-const applyAspectRatio = (delta, type) => {
-	if (!['top-left', 'top-right', 'bottom-left', 'bottom-right'].includes(currentResizer.value))
-		return
+const handlePositionChange = (total) => {
+	if (!dragStartBounds) return
 
-	if (type == 'shape') {
-		delta.height = delta.width
+	const target = {
+		left: dragStartBounds.left + total.left / slideBounds.scale,
+		top: dragStartBounds.top + total.top / slideBounds.scale,
+		width: selectionBounds.width,
+		height: selectionBounds.height,
+	}
+	const rotation = activeElement.value?.rotation
+	const desired = rotation ? snapRotatedPosition(target, rotation) : snapForDrag(target)
+
+	elementOffset.left = desired.left - dragStartBounds.left
+	elementOffset.top = desired.top - dragStartBounds.top
+	updateSelectionBounds({ left: desired.left, top: desired.top })
+}
+
+// the element's box + type when the resize began, captured synchronously like dragStartBounds
+let resizeStartBounds = null
+
+const startElementResize = (e, resizer) => {
+	resizeStartBounds = {
+		left: selectionBounds.left,
+		top: selectionBounds.top,
+		width: selectionBounds.width,
+		height: selectionBounds.height,
+		rotation: activeElement.value?.rotation || 0,
+		type: activeElement.value?.type,
 	}
 
-	if (!delta.top || !['image', 'video'].includes(type)) return
-	const ratio = selectionBounds.width / selectionBounds.height
-	delta.top = (delta.top ?? 0) / ratio
+	startResize(e, resizer)
 }
 
-const validateMinWidth = (width) => {
-	const minWidth = activeElement.value?.type === 'text' ? 7 : 1
-	return width + selectionBounds.width > minWidth
+const setOffsetFromBox = (box) => {
+	elementOffset.left = box.left - resizeStartBounds.left
+	elementOffset.top = box.top - resizeStartBounds.top
+	elementOffset.width = box.width - resizeStartBounds.width
+	elementOffset.height = box.height - resizeStartBounds.height
+
+	updateSelectionBounds({ left: box.left, top: box.top, width: box.width, height: box.height })
 }
 
-const validateMinHeight = (height) => {
-	const minHeight = activeElement.value?.type === 'text' ? 7 : 29
-	return height + selectionBounds.height > minHeight
+const resizeBox = (cursorMovement) => {
+	const box = getResizedBox(resizeStartBounds, currentResizer.value, cursorMovement)
+	if (!box) return
+
+	const axes = isAspectLocked(resizeStartBounds.type) ? ['x'] : ['x', 'y']
+	// resize runs in the element's rotated local frame; the snap engine works on
+	// screen-axis-aligned boxes, so snapping a rotated resize isn't supported yet
+	const snappedBox = resizeStartBounds.rotation ? box : snapForResize(box, { axes })
+	setOffsetFromBox(snappedBox)
 }
 
-const applyPositionDelta = (delta) => {
-	if (!delta.left && !delta.top) return
+const resizeLine = (cursorMovement) => {
+	const box = getResizedLine(resizeStartBounds, currentResizer.value, cursorMovement)
 
-	const deltaLeft = delta.left / slideBounds.scale
-	const deltaTop = delta.top / slideBounds.scale
-
-	updateSelectionBounds({
-		left: selectionBounds.left + deltaLeft,
-		top: selectionBounds.top + deltaTop,
-	})
-
-	elementOffset.left += deltaLeft
-	elementOffset.top += deltaTop
+	setOffsetFromBox(box)
+	rotationDelta.value = box.rotation - resizeStartBounds.rotation
 }
 
-const applyDimensionDelta = (delta) => {
-	if (!delta.width && !delta.height) return
+const setOffsetFromTextBox = (box) => {
+	const minWidth = getMinSizeForElement(resizeStartBounds.type).width
+	const grabbingRight = currentResizer.value === 'text-right'
 
-	const deltaWidth = delta.width / slideBounds.scale
-	const deltaHeight = delta.height / slideBounds.scale
+	const fixedEdge = grabbingRight ? box.left : box.left + box.width
+	const width = Math.max(minWidth, box.width)
+	const centre = grabbingRight ? fixedEdge + width / 2 : fixedEdge - width / 2
 
-	elementOffset.width += deltaWidth
-	elementOffset.height += deltaHeight
+	elementOffset.width = width - resizeStartBounds.width
+	elementOffset.left = centre - (resizeStartBounds.left + resizeStartBounds.width / 2)
 }
 
-const handleDimensionChange = (delta) => {
-	if (!delta.width && !delta.height) return
-	if (!validateMinWidth(delta.width)) delta.width = 0
-	if (!validateMinHeight(delta.height)) delta.height = 0
-
-	if (['shape', 'image', 'video'].includes(activeElement.value.type)) {
-		applyAspectRatio(delta, activeElement.value.type)
-	}
-
-	const totalDelta = getTotalInteractionDelta(delta, 'resizing')
-
-	applyPositionDelta(totalDelta)
-
+const resizeText = (cursorMovement) => {
 	if (!activeElement.value.width) addFixedWidthToElement()
 
-	applyDimensionDelta(totalDelta)
+	const box = getResizedTextBox(resizeStartBounds, currentResizer.value, cursorMovement)
+	const snappedBox = snapForResize(box, { axes: ['x'] })
+	setOffsetFromTextBox(snappedBox)
+}
+
+const handleResize = () => {
+	if (!resizeStartBounds) return
+
+	const cursorMovement = {
+		x: pointerDelta.value.x / slideBounds.scale,
+		y: pointerDelta.value.y / slideBounds.scale,
+	}
+	const handle = currentResizer.value
+	if (handle === 'text-left' || handle === 'text-right') return resizeText(cursorMovement)
+	if (handle === 'line-left' || handle === 'line-right') return resizeLine(cursorMovement)
+	resizeBox(cursorMovement)
 }
 
 const updateSlideBounds = () => {
@@ -456,16 +473,14 @@ watch(
 
 watch(
 	() => positionDelta.value,
-	(delta) => {
-		handlePositionChange(delta)
+	(total) => {
+		handlePositionChange(total)
 	},
 )
 
 watch(
-	() => dimensionDelta.value,
-	(delta) => {
-		handleDimensionChange(delta)
-	},
+	() => pointerDelta.value,
+	() => handleResize(),
 )
 
 const initSlideAndListeners = () => {
@@ -496,7 +511,7 @@ provide('slideDiv', slideRef)
 provide('slideContainerDiv', slideContainerRef)
 provide('resizer', {
 	currentResizer,
-	startResize,
+	startResize: startElementResize,
 })
 provide('rotator', {
 	startRotate,
@@ -577,12 +592,4 @@ watch(
 		emit('update:hasOngoingInteraction', newVal)
 	},
 )
-
-const handleSlideDoubleClick = (e) => {
-	if (inReadonlyMode.value || e.target !== e.currentTarget) return
-	addTextElement('', {
-		left: (e.clientX - slideBounds.left) / scale.value,
-		top: (e.clientY - slideBounds.top) / scale.value,
-	})
-}
 </script>

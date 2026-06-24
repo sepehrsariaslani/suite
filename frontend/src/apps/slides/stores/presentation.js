@@ -1,9 +1,9 @@
 import { ref, computed } from 'vue'
 import { createResource, call, createDocumentResource } from 'frappe-ui'
-import { isEqual } from 'lodash'
 
 import { router } from '@/apps/slides/router'
 import { slides } from './slide'
+import { markClean } from './saving'
 import { normalizeZIndices } from '@/apps/slides/stores/element'
 import { v4 as uuid4 } from 'uuid'
 import { commandHistory } from './historyMeta'
@@ -123,6 +123,10 @@ const parseElements = (value) => {
 			const lh = el.editorMetadata.lineHeight
 			el.lineHeight = lh
 		}
+		if (el.type === 'shape' && el.shapeType === 'circle') {
+			// 'circle' was renamed to 'oval' to match the display name
+			el.shapeType = 'oval'
+		}
 		return el
 	})
 
@@ -156,6 +160,7 @@ const getPresentationResource = (name) => {
 			}
 			slides.value = JSON.parse(JSON.stringify(doc.slides || []))
 			isPublicPresentation.value = Boolean(doc.is_public)
+			markClean()
 		},
 	})
 }
@@ -185,6 +190,7 @@ const getPublicPresentationResource = (name) => {
 			slidesLength.value = doc.slides?.length || 0
 			slides.value = JSON.parse(JSON.stringify(doc.slides || []))
 			isPublicPresentation.value = Boolean(doc.is_public)
+			markClean()
 		},
 	})
 }
@@ -214,44 +220,9 @@ const getCompositePresentationResource = (name) => {
 			slidesLength.value = doc.slides?.length || 0
 			slides.value = JSON.parse(JSON.stringify(doc.slides || []))
 			isPublicPresentation.value = true
+			markClean()
 		},
 	})
-}
-
-const hasSlideChanged = (originalState, slideState) => {
-	const keysToCompare = [
-		'background',
-		'transition',
-		'transitionDuration',
-		'fadeUnmatchedElements',
-	]
-
-	for (const key of keysToCompare) {
-		if (slideState[key] != originalState[key]) return true
-	}
-
-	if (slideState.clientId != originalState.clientId) {
-		return true
-	}
-
-	const currElements = parseElements(slideState.elements)
-	const origElements = parseElements(originalState.elements)
-
-	return !isEqual(currElements, origElements)
-}
-
-const hasStateChanged = (original, current) => {
-	if (original.length != current.length) return true
-
-	let hasChanged = false
-	for (let i = 0; i < current.length; i++) {
-		if (hasSlideChanged(original[i], current[i])) {
-			hasChanged = true
-			break
-		}
-	}
-
-	return hasChanged
 }
 
 const savePresentationDoc = async (updatedSlides) => {
@@ -342,6 +313,7 @@ const resetEditorState = () => {
 	slidesLength.value = 0
 	isPublicPresentation.value = false
 	commandHistory.clearHistory()
+	markClean()
 }
 
 export {
@@ -357,7 +329,6 @@ export {
 	presentationTheme,
 	inReadonlyMode,
 	updatePresentationTitle,
-	hasStateChanged,
 	savePresentationDoc,
 	initPresentationDoc,
 	deletePresentation,

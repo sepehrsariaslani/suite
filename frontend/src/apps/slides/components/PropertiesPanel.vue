@@ -28,15 +28,18 @@ import AppearanceProperties from '@/apps/slides/components/AppearanceProperties.
 import { useDeferredCommit } from '@/apps/slides/composables/useDeferredCommit'
 
 import { currentSlide } from '@/apps/slides/stores/slide'
-import { activeElement, activeElementIds } from '@/apps/slides/stores/element'
+import { activeElement, activeElementIds, focusElementId } from '@/apps/slides/stores/element'
 import { commandHistory } from '@/apps/slides/stores/historyMeta'
 import { handleScrollBarWheelEvent } from '@/apps/slides/utils/helpers'
 import { editElementCommand, editSlideCommand } from '@/apps/slides/stores/commands'
 
 const activeProperties = computed(() => {
-	const elementType = activeElement.value?.type
+	const element = activeElement.value
+	const isEditingShapeText = element?.type === 'shape' && focusElementId.value === element.id
 
-	switch (elementType) {
+	if (isEditingShapeText) return TextProperties
+
+	switch (element?.type) {
 		case 'text':
 			return TextProperties
 		case 'image':

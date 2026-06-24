@@ -5,8 +5,9 @@ import { call } from 'frappe-ui'
 import { presentationDoc, unsyncedPresentationRecord, inReadonlyMode } from '@/apps/slides/stores/presentation'
 import { slides } from '@/apps/slides/stores/slide'
 import { focusElementId } from '@/apps/slides/stores/element'
-import { isDirty, isSaving } from '@/apps/slides/stores/saving'
+import { dirty, isSaving } from '@/apps/slides/stores/saving'
 import { captureDOM } from '@/apps/slides/utils/domToWebp'
+import { getAttachmentUrl } from '@/apps/slides/utils/mediaUploads'
 
 const DEBOUNCE_MS = 5000
 
@@ -40,7 +41,7 @@ export const useThumbnailCapture = (thumbnailCapture, hasOngoingInteraction) => 
 			return false
 		}
 		if (unsyncedPresentationRecord.value.deleted) return false
-		if (!navigator.onLine || isDirty.value || isSaving.value) return false
+		if (!navigator.onLine || dirty.value || isSaving.value) return false
 		if (hasOngoingInteraction.value || focusElementId.value != null) return false
 		return true
 	}
@@ -87,7 +88,9 @@ export const useThumbnailCapture = (thumbnailCapture, hasOngoingInteraction) => 
 	const evictThumbnailCache = async (url) => {
 		if (!('caches' in window) || !url) return
 		const cache = await caches.open('slides-media')
-		await cache.delete(url)
+		// delete the exact URL the SW cached under — getAttachmentUrl() adds the
+		// slides_media marker / proxy path, so the raw url alone wouldn't match
+		await cache.delete(getAttachmentUrl(url))
 	}
 
 	const apply = async (thumbnail) => {

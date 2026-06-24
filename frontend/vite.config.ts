@@ -6,6 +6,17 @@ import { noiseSuppressionAudioWorkletVitePlugin } from '@workadventure/noise-sup
 import frappeui from 'frappe-ui/vite'
 import { defineConfig } from 'vite'
 
+const emitSlidesServiceWorker = () => ({
+  name: 'slides-service-worker',
+  apply: 'build' as const,
+  writeBundle() {
+    const swSource = path.resolve(__dirname, 'src/apps/slides/service-worker.js')
+    const swOutput = path.resolve(__dirname, '../suite/www/service-worker.js')
+    fs.mkdirSync(path.dirname(swOutput), { recursive: true })
+    fs.copyFileSync(swSource, swOutput)
+  },
+})
+
 const benchRoot = path.resolve(__dirname, '../../..')
 const commonSiteConfig = JSON.parse(
   fs.readFileSync(path.join(benchRoot, 'sites/common_site_config.json'), 'utf-8'),
@@ -18,6 +29,7 @@ const frappeBackendUrl = `http://${defaultSite}:${webserverPort}`
 export default defineConfig(({ mode }) => ({
   define: {
     __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: 'false',
+    __SITE_NAME__: JSON.stringify(defaultSite),
     __SOCKETIO_PORT__: JSON.stringify(commonSiteConfig.socketio_port || 9000),
   },
   // Served by Frappe at /assets/suite/frontend/ (build output lands in
@@ -40,6 +52,7 @@ export default defineConfig(({ mode }) => ({
       },
     }),
     vue(),
+    emitSlidesServiceWorker(),
   ],
   resolve: {
     alias: {
@@ -70,19 +83,8 @@ export default defineConfig(({ mode }) => ({
   server: {
     port: 8085,
     allowedHosts: [defaultSite, 'suite.localhost'],
-    proxy: {
-      // Fallback explicit proxy in case frappeProxy autodetection misses the
-      // port; forward the Frappe API surface to the bench webserver port.
-      '^/(app|api|assets|files|private|method|website_script\\.js)': {
-        target: frappeBackendUrl,
-        ws: true,
-        changeOrigin: true,
-        router: () => frappeBackendUrl,
-      },
-    },
     fs: {
-      // Meet imports socketio_port from sites/common_site_config.json (outside
-      // the frontend root); allow the bench + frappe-ui source paths.
+      // Allow the bench + frappe-ui source paths used by the dev proxy/build.
       allow: ['..', 'node_modules', '../../..'],
     },
   },

@@ -7,15 +7,16 @@
 			v-show="resizeHandle.isVisible"
 			:key="resizeHandle.direction"
 			:direction="resizeHandle.direction"
+			:currentResizer="currentResizer"
 			@startResize="(e) => startResize(e, resizeHandle.direction)"
 		/>
 
-		<!-- <ResizeIndicator
+		<ResizeIndicator
 			v-show="currentResizer"
 			:type="elementType"
 			:dimensions="dimensions"
 			:indicatorStyles="indicatorStyles"
-		/> -->
+		/>
 	</div>
 </template>
 
@@ -42,7 +43,7 @@ const props = defineProps({
 const { currentResizer, startResize } = inject('resizer', {})
 
 const showRotateHandle = computed(() => {
-	return ['rectangle', 'circle', 'line', 'image'].includes(props.elementType)
+	return !['line', 'text', 'video'].includes(props.elementType)
 })
 
 const isResizeHandleVisible = (resizer) => {
@@ -52,7 +53,7 @@ const isResizeHandleVisible = (resizer) => {
 
 const resizeHandles = computed(() => {
 	let directions = []
-	if (['rectangle', 'circle'].includes(props.elementType)) {
+	if (['rectangle', 'oval'].includes(props.elementType)) {
 		directions = [
 			'left',
 			'right',
@@ -68,7 +69,7 @@ const resizeHandles = computed(() => {
 	} else if (props.elementType === 'text') {
 		directions = ['text-left', 'text-right']
 	} else {
-		directions = ['top-left', 'top-right', 'bottom-left', 'bottom-right']
+		directions = ['left', 'right', 'top', 'bottom', 'top-left', 'top-right', 'bottom-left', 'bottom-right']
 	}
 
 	return directions.map((direction) => ({
@@ -104,13 +105,10 @@ const getLineIndicatorPosition = () => {
 const getMediaIndicatorPosition = () => {
 	const resizer = currentResizer.value
 	const offset = getScaledValue(8)
+	const horizontal = resizer.includes('right') ? { right: offset } : { left: offset }
+	const vertical = resizer.includes('bottom') ? { bottom: offset } : { top: offset }
 
-	return {
-		left: resizer.includes('left') ? offset : 'auto',
-		right: resizer.includes('right') ? offset : 'auto',
-		top: resizer.includes('top') ? offset : 'auto',
-		bottom: resizer.includes('bottom') ? offset : 'auto',
-	}
+	return { ...horizontal, ...vertical }
 }
 
 const getPositionStyles = () => {

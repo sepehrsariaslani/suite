@@ -1,6 +1,6 @@
 import { defineConfig, devices } from "@playwright/test";
 
-const baseURL = process.env.BASE_URL ?? "http://localhost:8096";
+const baseURL = process.env.BASE_URL ?? "http://localhost:8098";
 
 export default defineConfig({
 	testDir: "./specs",
@@ -35,6 +35,7 @@ export default defineConfig({
 			name: "chromium",
 			use: {
 				...devices["Desktop Chrome"],
+				channel: "chrome",
 				launchOptions: {
 					args: [
 						"--use-fake-ui-for-media-stream",

@@ -11,8 +11,10 @@ import {
 } from './slide'
 import { useTextEditor } from '@/apps/slides/composables/useTextEditor'
 
+import { getElementDiv } from './elementRegistry'
+import { markDirty } from './saving'
 import { generateUniqueId, cloneObj } from '../utils/helpers'
-import { guessTextColorFromBackground } from '../utils/color'
+import { guessTextColorFromBackground, guessShapeColorsFromBackground } from '../utils/color'
 import { presentationId } from './presentation'
 import { getCommandsToInitElementRefId, getCommandsToUpdateElementRefId } from './transition'
 import { commandHistory } from './historyMeta'
@@ -29,6 +31,7 @@ import {
 const activeElementIds = ref([])
 const focusElementId = ref(null)
 const pairElementId = ref(null)
+const pendingShapeType = ref(null)
 
 const activeElements = computed(() => {
 	let elements = []
@@ -89,76 +92,62 @@ const getElementContent = (element) => {
 	return generateHTML(contentJSON, extensions)
 }
 
+const getInitialShapeTextContent = (shapeElement) => {
+	return getElementContent({
+		textAlign: 'center',
+		lineHeight: 1.5,
+		fontSize: 20,
+		fontFamily: 'Inter',
+		color: guessTextColorFromBackground(shapeElement.fillColor || '#ffffff'),
+		letterSpacing: 0,
+		innerText: '​',
+	})
+}
+
 const getShapeDefaults = (shapeType) => {
 	let width, height, strokeColor, strokeWidth, borderRadius, elementShapeType
 	let markerStart = false
 	let markerEnd = false
 
+	const { fillColor, strokeColor: defaultStrokeColor } = guessShapeColorsFromBackground(currentSlide.value?.background)
+
 	switch (shapeType) {
 		case 'rectangle':
 			width = 300
 			height = 200
-			strokeColor = '#7C7C7CFF'
+			strokeColor = defaultStrokeColor
 			strokeWidth = 2
 			borderRadius = 0
 			elementShapeType = 'rectangle'
 			break
-		case 'rounded rectangle':
-			width = 300
-			height = 200
-			strokeColor = '#7C7C7CFF'
-			strokeWidth = 2
-			borderRadius = 20
-			elementShapeType = 'rectangle'
-			break
-		case 'square':
-			width = 300
-			height = 300
-			strokeColor = '#7C7C7CFF'
-			strokeWidth = 2
-			borderRadius = 0
-			elementShapeType = 'rectangle'
-			break
-		case 'rounded square':
-			width = 300
-			height = 300
-			strokeColor = '#7C7C7CFF'
-			strokeWidth = 2
-			borderRadius = 20
-			elementShapeType = 'rectangle'
-			break
+		case 'oval':
 		case 'circle':
 			width = 300
-			height = 300
-			strokeColor = '#7C7C7CFF'
+			height = 200
+			strokeColor = defaultStrokeColor
 			strokeWidth = 2
 			borderRadius = 0
-			elementShapeType = 'circle'
+			elementShapeType = 'oval'
+			break
+		case 'diamond':
+		case 'triangle':
+		case 'pentagon':
+			width = 300
+			height = 300
+			strokeColor = defaultStrokeColor
+			strokeWidth = 2
+			borderRadius = 0
+			elementShapeType = shapeType
 			break
 		case 'line':
 			width = 300
-			height = 2
-			strokeColor = guessTextColorFromBackground(currentSlide.value.background)
-			strokeWidth = 2
+			height = 1
+			strokeColor = defaultStrokeColor
+			strokeWidth = 1
 			borderRadius = 0
 			elementShapeType = 'line'
 			break
-		case 'line with arrows':
-			width = 300
-			height = 20
-			strokeColor = guessTextColorFromBackground(currentSlide.value.background)
-			strokeWidth = 2
-			borderRadius = 0
-			elementShapeType = 'line'
-			markerStart = true
-			markerEnd = true
-			break
-
-		// TODO: add default styles for other shapes
-		// TODO: cleanup code here, maybe move constants to separate file
 	}
-
-	const fillColor = guessTextColorFromBackground(currentSlide.value.background)
 
 	return {
 		width,
@@ -173,12 +162,25 @@ const getShapeDefaults = (shapeType) => {
 	}
 }
 
-const addShapeElement = async (shapeType) => {
+const lineBoundsFromEndpoints = ({ x1, y1, x2, y2 }, height) => {
+	const dx = x2 - x1
+	const dy = y2 - y1
+	const length = Math.sqrt(dx ** 2 + dy ** 2)
+	return {
+		width: length,
+		height,
+		left: (x1 + x2) / 2 - length / 2,
+		top: (y1 + y2) / 2 - height / 2,
+		rotation: Math.atan2(dy, dx) * (180 / Math.PI),
+	}
+}
+
+const addShapeElement = async (shapeType, bounds = null) => {
 	if (!shapeType) return
 
 	const {
-		width,
-		height,
+		width: defaultWidth,
+		height: defaultHeight,
 		fillColor,
 		strokeColor,
 		strokeWidth,
@@ -188,18 +190,29 @@ const addShapeElement = async (shapeType) => {
 		markerEnd,
 	} = getShapeDefaults(shapeType)
 
+	if (!elementShapeType) return
+
 	const slideWidth = slideBounds.width / slideBounds.scale
 	const slideHeight = slideBounds.height / slideBounds.scale
+
+	if (elementShapeType === 'line' && bounds?.x1 !== undefined) {
+		bounds = lineBoundsFromEndpoints(bounds, defaultHeight)
+	}
+
+	const width = bounds?.width ?? defaultWidth
+	const height = elementShapeType === 'line' ? defaultHeight : (bounds?.height ?? defaultHeight)
+	const left = bounds?.left ?? (slideWidth - width) / 2
+	const top = bounds?.top ?? (slideHeight - height) / 2
 
 	const element = {
 		id: generateUniqueId(),
 		zIndex: currentSlide.value.elements.length + 1,
-		width: width,
-		height: height,
-		left: (slideWidth - width) / 2,
-		top: (slideHeight - height) / 2,
+		width,
+		height,
+		left,
+		top,
 		opacity: 100,
-		rotation: 0,
+		rotation: bounds?.rotation ?? 0,
 		type: 'shape',
 		shapeType: elementShapeType,
 		fillColor,
@@ -676,9 +689,10 @@ const resetFocus = () => {
 }
 
 const getElementPosition = (elementId) => {
-	const elementRect = document
-		.querySelector(`[data-index="${elementId}"]`)
-		.getBoundingClientRect()
+	const elementDiv = getElementDiv(elementId)
+	if (!elementDiv) return { left: 0, top: 0, right: 0, bottom: 0 }
+
+	const elementRect = elementDiv.getBoundingClientRect()
 
 	const elementLeft = (elementRect.left - slideBounds.left) / slideBounds.scale
 	const elementTop = (elementRect.top - slideBounds.top) / slideBounds.scale
@@ -694,8 +708,16 @@ const getElementPosition = (elementId) => {
 }
 
 const getElementLayoutPosition = (element) => {
-	const elementDiv = document.querySelector(`[data-index="${element.id}"]`)
-	if (!elementDiv) return getElementPosition(element.id)
+	const elementDiv = getElementDiv(element.id)
+	// no rendered node yet: fall back to the element's stored bounds
+	if (!elementDiv) {
+		return {
+			left: element.left,
+			top: element.top,
+			right: element.left + (element.width || 0),
+			bottom: element.top + (element.height || 0),
+		}
+	}
 
 	return {
 		left: element.left,
@@ -720,11 +742,12 @@ const isWithinOverlappingBounds = (outer, inner) => {
 	return withinWidth && withinHeight
 }
 
-const addFixedWidthToElement = (deltaWidth) => {
-	const elementDiv = document.querySelector(`[data-index="${activeElement.value.id}"]`)
+const addFixedWidthToElement = () => {
+	const elementDiv = getElementDiv(activeElement.value.id)
 	if (elementDiv) {
 		const rect = elementDiv.getBoundingClientRect()
-		activeElement.value.width = rect.width
+		activeElement.value.width = rect.width / slideBounds.scale
+		markDirty()
 	}
 }
 
@@ -749,25 +772,33 @@ const updateElementContent = (element) => {
 				slideId: currentSlide.value.clientId,
 				elementIds: [element.id],
 				commands: refCommands,
+				// runs while blurring away from the element, must not steal selection
+				skipJumpOnExecute: true,
 			}),
 		)
 	}
 
 	element.content = updatedHTML
 	editorOldText = currentText
+
+	markDirty()
 }
 
 const blurAndSaveContent = (element) => {
 	activeEditor.value.setEditable(false)
 	activeEditor.value.commands.blur()
 
-	const text = activeEditor.value?.getText() || ''
-	const isEmpty = text.replace(/\u200B/g, '') === ''
+	const isEmpty = (activeEditor.value?.getText() || '').replace(/\u200B/g, '') === ''
 
-	if (isEmpty) {
-		deleteElements(null, [element.id])
+	if (!isEmpty) return updateElementContent(element)
+
+	if (element.type === 'shape') {
+		if (element.content) {
+			element.content = null
+			markDirty()
+		}
 	} else {
-		updateElementContent(element)
+		deleteElements(null, [element.id])
 	}
 }
 
@@ -789,19 +820,48 @@ const initEditorForElement = (element) => {
 	}
 }
 
+const findSlideElement = (id) => currentSlide.value?.elements.find((el) => el.id === id)
+
+const replaceEditor = (fn) =>
+	nextTick(() => {
+		activeEditor.value?.destroy()
+		activeEditor.value = null
+		fn?.()
+		editorOldText = activeEditor.value?.getText()
+	})
+
+const initShapeEditor = (element) =>
+	replaceEditor(() => {
+		initTextEditor(element.id, element.content || getInitialShapeTextContent(element), true)
+		setEditableState()
+	})
+
 watch(
 	() => activeElement.value,
 	(element, oldElement) => {
-		if (oldElement?.type == 'text') {
+		if (['text', 'shape'].includes(oldElement?.type) && activeEditor.value) {
 			blurAndSaveContent(oldElement)
 		}
+		replaceEditor(() => initEditorForElement(element))
+	},
+)
 
-		nextTick(() => {
-			activeEditor.value?.destroy()
-			activeEditor.value = null
-			initEditorForElement(element)
-			editorOldText = activeEditor.value?.getText()
-		})
+// focusElementId changing to a shape's id enters text-edit mode for that shape.
+// The activeElement watch won't fire then (same element object), so this handles it.
+// Also handles the inverse: focusElementId cleared while still on the same shape (Escape).
+watch(
+	() => focusElementId.value,
+	(id, oldId) => {
+		if (id) {
+			const element = findSlideElement(id)
+			if (element?.type === 'shape') initShapeEditor(element)
+		} else if (oldId && activeEditor.value) {
+			if (activeElement.value?.id !== oldId) return
+			const oldElement = findSlideElement(oldId)
+			if (oldElement?.type !== 'shape') return
+			blurAndSaveContent(oldElement)
+			replaceEditor()
+		}
 	},
 )
 
@@ -945,6 +1005,7 @@ export {
 	activeElementIds,
 	focusElementId,
 	pairElementId,
+	pendingShapeType,
 	activeElements,
 	activeElement,
 	setActiveElements,

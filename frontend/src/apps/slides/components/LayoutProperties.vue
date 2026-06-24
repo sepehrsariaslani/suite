@@ -9,7 +9,7 @@
 				<div :class="fieldLabelClasses">Position</div>
 				<div class="flex items-center gap-3">
 					<NumberInput
-						:modelValue="selectionBounds.left"
+						:modelValue="Math.round(selectionBounds.left)"
 						@update:modelValue="(val) => updatePosition('X', val)"
 						prefix="x"
 						:rangeStart="0"
@@ -17,7 +17,7 @@
 						:hideButtons="true"
 					/>
 					<NumberInput
-						:modelValue="selectionBounds.top"
+						:modelValue="Math.round(selectionBounds.top)"
 						@update:modelValue="(val) => updatePosition('Y', val)"
 						prefix="y"
 						:rangeStart="0"
@@ -31,7 +31,7 @@
 				<div :class="fieldLabelClasses">Dimensions</div>
 				<div class="flex items-center gap-3">
 					<NumberInput
-						:modelValue="selectionBounds.width"
+						:modelValue="Math.round(selectionBounds.width)"
 						@update:modelValue="(val) => updateDimension('W', val)"
 						prefix="w"
 						:rangeStart="1"
@@ -39,7 +39,7 @@
 						:hideButtons="true"
 					/>
 					<NumberInput
-						:modelValue="selectionBounds.height"
+						:modelValue="Math.round(selectionBounds.height)"
 						@update:modelValue="(val) => updateDimension('H', val)"
 						prefix="h"
 						:rangeStart="1"
@@ -80,6 +80,7 @@ import Backward from '@/apps/slides/icons/Backward.vue'
 import SendToBack from '@/apps/slides/icons/SendToBack.vue'
 import BringToFront from '@/apps/slides/icons/BringToFront.vue'
 import CollapsibleSection from '@/apps/slides/components/controls/CollapsibleSection.vue'
+import NumberInput from '@/apps/slides/components/controls/NumberInput.vue'
 
 import { selectionBounds, currentSlide } from '@/apps/slides/stores/slide'
 import {
