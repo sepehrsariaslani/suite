@@ -99,7 +99,7 @@
                     v-else-if="row.share_count > 0"
                     class="size-4 text-ink-gray-6"
                   />
-                  <template v-if="row.owner === $store.state.user.id">
+                  <template v-if="row.owner === currentUserId">
                     <Avatar
                       :image="$user(row.owner)?.user_image"
                       :label="$user(row.owner)?.full_name || 'Deleted'"
@@ -158,11 +158,10 @@ import LucideGlobe2 from '~icons/lucide/globe-2'
 import LucideBuilding2 from '~icons/lucide/building-2'
 import LucideUsers from '~icons/lucide/users'
 import LucideFileText from '~icons/lucide/file-text'
-import store from '@/apps/writer/store'
+import { useSessionStore } from '@/boot/session'
 import { useUsers } from '@/apps/writer/composables/useUsers'
 
-// Template compat: standalone app exposed global `$user` + `$store` helpers.
-const $store = store
+const currentUserId = computed(() => useSessionStore().user)
 const { getUser: $user } = useUsers()
 
 const thumbnail = ref(
