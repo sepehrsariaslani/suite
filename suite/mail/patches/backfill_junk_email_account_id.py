@@ -12,7 +12,9 @@ def execute() -> None:
 	(account_id, email) and fills account_id in, and drops the now-redundant per-handle index.
 	"""
 
-	if not frappe.db.has_column("Junk Email Address", "account"):
+	if not frappe.db.table_exists("Junk Email Address") or not frappe.db.has_column(
+		"Junk Email Address", "account"
+	):
 		# Fresh install (or already migrated) — nothing to backfill.
 		return
 

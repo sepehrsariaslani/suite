@@ -49,13 +49,21 @@ def execute() -> None:
 
 	# Reject rules first so they win over a Spam rule for the same address.
 	if frappe.db.table_exists("Blocked Email Address"):
+		# `account_id` only exists if this site got the account-id refactor before the doctype was
+		# dropped; a site jumping straight to this version still has only the legacy `account` handle.
+		blocked_fields = ["user", "account", "email", "creation"]
+		has_account_id = frappe.db.has_column("Blocked Email Address", "account_id")
+		if has_account_id:
+			blocked_fields.insert(2, "account_id")
 		for row in frappe.get_all(
 			"Blocked Email Address",
-			fields=["user", "account", "account_id", "email", "creation"],
+			fields=blocked_fields,
 			order_by="creation asc",
 		):
 			try:
-				account_id = row.account_id or (parse_account(row.account)[1] if row.account else None)
+				account_id = (has_account_id and row.account_id) or (
+					parse_account(row.account)[1] if row.account else None
+				)
 			except Exception:
 				continue  # skip malformed handles rather than abort the migration
 			add(row.user, row.account, account_id, row.email, "Reject", row.creation)
