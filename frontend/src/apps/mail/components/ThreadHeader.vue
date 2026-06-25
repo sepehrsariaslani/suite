@@ -1,5 +1,5 @@
 <template>
-	<div class="bg-surface-white sticky top-0 flex items-center border-b py-2.5 sm:px-3.5">
+	<div class="bg-surface-base sticky top-0 flex items-center border-b py-2.5 sm:px-3.5">
 		<Button
 			variant="ghost"
 			class="mr-2 shrink-0"

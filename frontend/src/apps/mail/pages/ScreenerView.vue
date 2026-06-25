@@ -111,7 +111,7 @@
 
 				<!-- Read-only thread preview — split when the reading pane is on, full-width otherwise -->
 				<div
-					class="bg-surface-white flex flex-col"
+					class="bg-surface-base flex flex-col"
 					:class="{
 						'w-2/3': !isMobile && showReadingPane,
 						'absolute bottom-0 left-0 right-0 top-0': !isMobile && !showReadingPane,
@@ -122,7 +122,7 @@
 					<template v-if="openSender">
 						<!-- Subject + Block/Allow; back button only when the preview owns the whole pane -->
 						<div
-							class="bg-surface-white sticky top-0 z-10 flex shrink-0 items-center justify-between gap-3 border-b p-2.5 sm:px-5"
+							class="bg-surface-base sticky top-0 z-10 flex shrink-0 items-center justify-between gap-3 border-b p-2.5 sm:px-5"
 						>
 							<div class="flex min-w-0 items-center">
 								<Button
