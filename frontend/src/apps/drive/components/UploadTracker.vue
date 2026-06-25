@@ -73,21 +73,19 @@
     </div>
     <Dialog
       v-if="showErrorDialog"
-      v-model="showErrorDialog"
-      :options="{
-        title: 'Upload failed',
-        message: selectedUpload.error,
-        size: 'sm',
-        actions: [
-          {
-            label: 'OK',
-            variant: 'solid',
-            onClick: () => {
-              showErrorDialog = false
-            },
+      v-model:open="showErrorDialog"
+      title="Upload failed"
+      :message="selectedUpload.error"
+      size="sm"
+      :actions="[
+        {
+          label: 'OK',
+          variant: 'solid',
+          onClick: () => {
+            showErrorDialog = false
           },
-        ],
-      }"
+        },
+      ]"
     />
   </div>
 </template>

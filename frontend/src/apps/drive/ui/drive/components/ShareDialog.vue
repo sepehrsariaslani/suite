@@ -1,5 +1,5 @@
 <template>
-  <Dialog v-model="open" :options="{ size: 'lg' }">
+  <Dialog v-model:open="open" size="lg">
     <template #body-main>
       <div class="p-4">
         <!-- Header -->

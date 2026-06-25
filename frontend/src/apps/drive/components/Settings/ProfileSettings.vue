@@ -13,21 +13,18 @@
     </Button>
   </div>
   <Dialog
-    v-model="editProfileDialog"
-    :options="{
-      title: __('Edit Profile'),
-      size: 'md',
-      actions: [
-        {
-          label: __('Confirm'),
-          variant: 'solid',
-          onClick: updateProfile,
-        },
-      ],
-    }"
+    v-model:open="editProfileDialog"
+    :title="__('Edit Profile')"
+    size="md"
+    :actions="[
+      {
+        label: __('Confirm'),
+        variant: 'solid',
+        onClick: updateProfile,
+      },
+    ]"
   >
-    <template #body-content>
-      <div class="flex flex-col items-start justify-start gap-y-2">
+    <div class="flex flex-col items-start justify-start gap-y-2">
         <span class="text-base text-ink-gray-5">Profile Photo</span>
         <div class="flex items-center justify-between w-full">
           <Avatar :image="newImageUrl" size="3xl" :label="newFullName" class="w-20 h-20" />
@@ -72,7 +69,6 @@
           <Input v-model="newLastName" />
         </div>
       </div>
-    </template>
   </Dialog>
   <h1 class="font-semibold mt-12 mb-4 text-ink-gray-8">
     {{ __('Preferences') }}

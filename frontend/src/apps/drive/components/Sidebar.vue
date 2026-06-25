@@ -1,48 +1,25 @@
 <template>
-  <Sidebar
-    id="sidebar"
-    v-model:collapsed="sidebarCollapsed"
-    class="hidden sm:flex"
-    :header="{
-      title: 'Drive',
-      subtitle: currentUserFullName.value,
-      menuItems: settingsItems,
-      logo: FrappeDriveLogo,
-    }"
-    :sections="sidebarItems"
-  >
+  <Sidebar id="sidebar" v-model:collapsed="sidebarCollapsed" class="hidden sm:flex" :header="{
+    title: 'Drive',
+    subtitle: currentUserFullName,
+    menuItems: settingsItems,
+    logo: FrappeDriveLogo,
+  }" :sections="sidebarItems">
     <template #footer-items="{ isCollapsed }">
       <StorageBar v-if="teamExists.data" :is-expanded="!isCollapsed" />
     </template>
     <template #sidebar-item="{ item, isCollapsed }">
-      <SidebarItem
-        :class="
-          draggedSpace === item.label &&
-          'ring-1 ring-outline-gray-3 !bg-surface-gray-3'
-        "
-        :label="item.label"
-        :accessKey="item.accessKey"
-        :icon="item.icon"
-        :suffix="item.suffix"
-        :to="item.to"
-        :isActive="item.isActive"
-        :isCollapsed
-        :onClick="item.onClick"
-        @dragover.prevent="
-          ;(['Trash', 'Home'].includes(item.label) ||
-            item.to?.name === 'drive-Team') &&
-            (draggedSpace = item.label)
-        "
-        @dragleave="draggedSpace = null"
-        @drop.prevent="handleDrop($event, item)"
-      />
+      <SidebarItem :class="draggedSpace === item.label &&
+        'ring-1 ring-outline-gray-3 !bg-surface-gray-3'
+        " :label="item.label" :accessKey="item.accessKey" :icon="item.icon" :suffix="item.suffix" :to="item.to"
+        :isActive="item.isActive" :isCollapsed :onClick="item.onClick" @dragover.prevent="
+          ; (['Trash', 'Home'].includes(item.label) ||
+          item.to?.name === 'drive-Team') &&
+          (draggedSpace = item.label)
+          " @dragleave="draggedSpace = null" @drop.prevent="handleDrop($event, item)" />
     </template>
   </Sidebar>
-  <SettingsDialog
-    v-if="showSettings"
-    v-model="showSettings"
-    :suggested-tab="suggestedTab"
-  />
+  <SettingsDialog v-if="showSettings" v-model="showSettings" :suggested-tab="suggestedTab" />
   <ShortcutsDialog v-if="showShortcuts" v-model="showShortcuts" />
 </template>
 <script setup>
