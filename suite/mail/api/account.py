@@ -10,7 +10,7 @@ from suite.mail.api.admin import add_member
 from suite.mail.api.mail import normalize_filter
 from suite.mail.api.utils import get_avatar_url
 from suite.client.doctype.identity.identity import fetch_identities
-from suite.mail.mail.doctype.mail_settings.mail_settings import get_signup_domains
+from suite.mail.doctype.mail_settings.mail_settings import get_signup_domains
 from suite.mail.utils import convert_html_to_text, user_context
 from suite.mail.utils.rate_limiter import dynamic_rate_limit
 from suite.mail.utils.user import (
