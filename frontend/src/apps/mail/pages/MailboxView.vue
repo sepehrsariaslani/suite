@@ -844,7 +844,7 @@ const screenerBannerLabel = computed(() =>
 		? __('1 new thread is waiting to be screened.')
 		: __('{0} new threads are waiting to be screened.', [String(screenerCount.value)]),
 )
-const goToScreener = () => router.push({ name: 'Screener', params: { accountId } })
+const goToScreener = () => router.push({ name: 'mail-screener', params: { accountId } })
 
 // Called once a page's data has loaded: reveal it (range + list update together) and scroll to top.
 // No-op for same-page reloads (e.g. the periodic refresh) so those don't yank the scroll position.

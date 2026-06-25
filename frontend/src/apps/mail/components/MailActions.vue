@@ -349,7 +349,7 @@ const setMailsSeen = createResource({
 	onSuccess: (ids: string[]) => {
 		raiseToast(__('{0} marked as unread.', [ids.length === 1 ? __('Mail') : __('Mails')]))
 		router.push({
-			name: 'Mailbox',
+			name: 'mail-mailbox',
 			params: { accountId: route.params.accountId, mailbox },
 			query: route.query,
 		})

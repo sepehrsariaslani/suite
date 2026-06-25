@@ -40,7 +40,7 @@ const router = useRouter()
 
 const tabIndex = ref(0)
 
-watch(tabIndex, (val) => router.push({ name: val ? 'Invites' : 'Members' }))
+watch(tabIndex, (val) => router.push({ name: val ? 'mail-invites' : 'mail-members' }))
 
 watch(
 	() => route.name,

@@ -221,7 +221,7 @@ watch(
 	([ready, enabled, inboxId]) => {
 		if (ready && !enabled && inboxId)
 			router.replace({
-				name: 'Mailbox',
+				name: 'mail-mailbox',
 				params: { accountId: store.accountId, mailbox: inboxId },
 			})
 	},

@@ -282,7 +282,7 @@ const { accountId, identities } = store
 
 const viewSentMessage = (threadID: string) =>
 	router.push({
-		name: 'Mail',
+		name: 'mail-mail',
 		params: { accountId: store.accountId, mailbox: store.mailboxIds.sent, threadID },
 	})
 

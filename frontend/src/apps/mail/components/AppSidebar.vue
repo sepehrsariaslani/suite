@@ -171,12 +171,12 @@ const menuItems = computed(() => [
 					const mailbox = mailboxes.data?.[0]?.id
 					if (mailbox)
 						router.push({
-							name: 'Mailbox',
+							name: 'mail-mailbox',
 							params: { accountId: store.accountId, mailbox },
 						})
 					else
 						router.push({
-							name: 'AddressBooks',
+							name: 'mail-address-books',
 							params: { accountId: store.accountId },
 						})
 				},
@@ -254,16 +254,16 @@ const dashboardItems = [
 	{
 		items: [
 			{
-				label: __('Domains'),
+				label: __('mail-domains'),
 				icon: Globe,
-				to: { name: 'Domains' },
-				activeFor: ['Domains', 'Domain'],
+				to: { name: 'mail-domains' },
+				activeFor: ['mail-domains', 'mail-domain'],
 			},
 			{
-				label: __('Members'),
+				label: __('mail-members'),
 				icon: Users,
-				to: { name: 'Members' },
-				activeFor: ['Members', 'Invites', 'Member'],
+				to: { name: 'mail-members' },
+				activeFor: ['mail-members', 'mail-invites', 'mail-member'],
 			},
 		],
 	},
@@ -286,7 +286,7 @@ const mailboxItems = computed(
 					to: isScreener
 						? { name: 'mail-screener', params: { accountId: store.accountId } }
 						: {
-								name: 'Mailbox',
+								name: 'mail-mailbox',
 								params: { accountId: store.accountId, mailbox: mailbox.id },
 							},
 					suffix: mailbox.unread_threads ? String(mailbox.unread_threads) : '',
@@ -338,7 +338,7 @@ const sidebarItems = computed(() => {
 	const starredItem = {
 		label: __('Starred'),
 		icon: Star,
-		to: { name: 'Mailbox', params: { accountId: store.accountId, mailbox: 'starred' } },
+		to: { name: 'mail-mailbox', params: { accountId: store.accountId, mailbox: 'starred' } },
 		activeFor: ['starred'],
 	}
 	const defaultItems = [...defaultMailboxes, starredItem]
@@ -361,14 +361,14 @@ const sidebarItems = computed(() => {
 		{
 			label: __('Address Books'),
 			icon: BookUser,
-			to: { name: 'AddressBooks', params: { accountId: store.accountId } },
-			activeFor: ['AddressBooks', 'AddressBook'],
+			to: { name: 'mail-address-books', params: { accountId: store.accountId } },
+			activeFor: ['mail-address-books', 'mail-address-book'],
 		},
 		{
-			label: __('Contacts'),
+			label: __('mail-contacts'),
 			icon: ContactRound,
-			to: { name: 'Contacts', params: { accountId: store.accountId } },
-			activeFor: ['Contacts', 'Contact'],
+			to: { name: 'mail-contacts', params: { accountId: store.accountId } },
+			activeFor: ['mail-contacts', 'mail-contact'],
 		},
 	]
 

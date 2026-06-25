@@ -3,7 +3,7 @@
 		<Button
 			variant="ghost"
 			class="mr-2 shrink-0"
-			@click="$router.push({ name: 'Mailbox', params: { mailbox }, query: route.query })"
+			@click="$router.push({ name: 'mail-mailbox', params: { mailbox }, query: route.query })"
 		>
 			<template #icon>
 				<ChevronLeft class="icon" />
