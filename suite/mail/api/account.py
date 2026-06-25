@@ -10,7 +10,7 @@ from suite.mail.api.admin import add_member
 from suite.mail.api.mail import normalize_filter
 from suite.mail.api.utils import get_avatar_url
 from suite.client.doctype.identity.identity import fetch_identities
-from suite.mail.doctype.mail_settings.mail_settings import get_signup_domains
+from suite.mail.mail.doctype.mail_settings.mail_settings import get_signup_domains
 from suite.mail.utils import convert_html_to_text, user_context
 from suite.mail.utils.rate_limiter import dynamic_rate_limit
 from suite.mail.utils.user import (
@@ -168,7 +168,13 @@ def get_user_info() -> dict | None:
 		for s in frappe.get_all(
 			"Account Settings",
 			filters={"name": ["in", account_ids]},
-			fields=["name", "default_outgoing_email", "on_mark_as_junk"],
+			fields=[
+				"name",
+				"default_outgoing_email",
+				"on_mark_as_junk",
+				"enable_screening",
+				"block_remote_images",
+			],
 		)
 	}
 	for acc in data.accounts:
@@ -176,6 +182,8 @@ def get_user_info() -> dict | None:
 		acc["account_settings"] = settings["name"] if settings else None
 		acc["default_outgoing_email"] = settings["default_outgoing_email"] if settings else None
 		acc["on_mark_as_junk"] = settings["on_mark_as_junk"] if settings else "Junk Sender's Mail"
+		acc["enable_screening"] = bool(settings["enable_screening"]) if settings else False
+		acc["block_remote_images"] = bool(settings["block_remote_images"]) if settings else True
 
 	data.user_image = data.user_image or get_avatar_url(user)
 

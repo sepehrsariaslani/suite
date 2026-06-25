@@ -3,6 +3,7 @@ import { defineStore } from 'pinia'
 import { createResource } from 'frappe-ui'
 
 import router from '@/apps/mail/router'
+import { SCREENING_MAILBOX_NAME } from '@/apps/mail/constants'
 
 import type { UserAccount, UserResource } from '@/apps/mail/types'
 
@@ -41,7 +42,7 @@ export const userStore = defineStore('mail-user', () => {
 		mailboxes.fetch()
 		addressBooks.fetch()
 		identities.fetch()
-		blockedAddresses.fetch()
+		screenedAddresses.fetch()
 		sieveScripts.fetch()
 	}
 
@@ -69,7 +70,7 @@ export const userStore = defineStore('mail-user', () => {
 	})
 
 	const mailboxIds = computed(() => {
-		const ids: Record<MailboxRole, string> = {
+		const ids: Record<MailboxRole | 'screening', string> = {
 			inbox: '',
 			sent: '',
 			drafts: '',
@@ -77,9 +78,11 @@ export const userStore = defineStore('mail-user', () => {
 			junk: '',
 			archive: '',
 			important: '',
+			screening: '',
 		}
-		mailboxes.data?.forEach((m: { role?: MailboxRole; id: string }) => {
+		mailboxes.data?.forEach((m: { role?: MailboxRole; _name?: string; id: string }) => {
 			if (m.role) ids[m.role] = m.id
+			else if (m._name === SCREENING_MAILBOX_NAME) ids.screening = m.id
 		})
 		return ids
 	})
@@ -96,10 +99,12 @@ export const userStore = defineStore('mail-user', () => {
 		cache: ['identities', accountId.value],
 	})
 
-	const blockedAddresses = createResource({
-		url: 'suite.mail.api.mail.get_blocked_addresses',
-		makeParams: () => ({ account_id: accountId.value }),
-		cache: ['blockedAddresses', accountId.value],
+	// Screened senders for the account: each is `{ email, action }` where action is 'Reject'
+	// (discard incoming mail) or 'Spam' (file it into the Spam folder).
+	const screenedAddresses = createResource({
+		url: 'suite.mail.api.mail.get_screened_addresses',
+		makeParams: () => ({ account: account.value }),
+		cache: ['screenedAddresses', accountId.value],
 	})
 
 	const sieveScripts = createResource({
@@ -120,7 +125,7 @@ export const userStore = defineStore('mail-user', () => {
 		mailboxes.reset()
 		addressBooks.reset()
 		identities.reset()
-		blockedAddresses.reset()
+		screenedAddresses.reset()
 		sieveScripts.reset()
 		domains.reset()
 	}
@@ -136,7 +141,7 @@ export const userStore = defineStore('mail-user', () => {
 		identities,
 		domains,
 		sieveScripts,
-		blockedAddresses,
+		screenedAddresses,
 		reset,
 	}
 })
