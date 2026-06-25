@@ -24,7 +24,7 @@ import SearchPopup from '@/apps/drive/components/SearchPopup.vue'
 import FDialogs from '@/apps/drive/components/FDialogs.vue'
 import BottomBar from '@/apps/drive/components/BottomBar.vue'
 import FileUploader from '@/apps/drive/components/FileUploader.vue'
-import store from '@/apps/drive/store'
+import { useSessionStore } from '@/boot/session'
 import { ref, computed, onMounted, provide } from 'vue'
 import { sidebarCollapsed } from '@/apps/drive/data/prefs'
 import { onKeyDown } from '@vueuse/core'
@@ -45,7 +45,7 @@ const inIframe = window.self !== window.top
 provide('inIframe', inIframe)
 
 const showSearchPopup = ref(false)
-const isLoggedIn = computed(() => store.getters.isLoggedIn)
+const isLoggedIn = computed(() => useSessionStore().isLoggedIn)
 const normalView = computed(
   () =>
     !inIframe &&

@@ -1,7 +1,7 @@
 import type { RouteRecordRaw } from 'vue-router'
 import { createResource } from 'frappe-ui'
 
-import store from '@/apps/drive/store'
+import { useSessionStore } from '@/boot/session'
 import {
   pageBreadcrumbs,
   setPageBreadcrumbs,
@@ -38,7 +38,7 @@ const manageBreadcrumbs = (to: any) => {
 }
 
 const setRootBreadCrumb = (to: any) => {
-  if (store.getters.isLoggedIn) {
+  if (useSessionStore().isLoggedIn) {
     document.title = __(String(to.name).replace(/^drive-/, ''))
     if (to.name !== 'drive-Team')
       setPageBreadcrumbs([
@@ -61,7 +61,7 @@ export const routes: RouteRecordRaw[] = [
         name: 'drive-Signup',
         component: () => import('@/apps/drive/pages/Signup.vue'),
         beforeEnter: () => {
-          if (store.getters.isLoggedIn) return { name: 'drive-Home' }
+          if (useSessionStore().isLoggedIn) return { name: 'drive-Home' }
         },
         meta: { isPublic: true },
       },

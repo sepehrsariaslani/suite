@@ -1,7 +1,7 @@
 import { ref } from 'vue'
 import emitter from '@/apps/drive/emitter'
 import { getTeams, getPublicTeams } from '@/apps/drive/resources/files'
-import store from '@/apps/drive/store'
+import { useSessionStore } from '@/boot/session'
 
 export type DriveBreadcrumb = Record<string, unknown>
 
@@ -99,7 +99,7 @@ export function buildBreadCrumbs(entity: Record<string, unknown>) {
         route: '/drive/shared',
       },
     ]
-  } else if (store.getters.isLoggedIn) {
+  } else if (useSessionStore().isLoggedIn) {
     res = [
       {
         label: __('Shared'),

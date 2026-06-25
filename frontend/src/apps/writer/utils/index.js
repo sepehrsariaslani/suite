@@ -1,5 +1,6 @@
 import router from '@/apps/writer/router'
-import store from '@/apps/writer/store'
+
+import { useSessionStore } from '@/boot/session'
 import { formatSize } from '@/apps/writer/utils/format'
 import { nextTick, h } from 'vue'
 import { useTimeAgo } from '@vueuse/core'
@@ -63,7 +64,7 @@ export const setBreadCrumbs = (entity) => {
     {
       label: __('Shared'),
       name: 'Shared',
-      route: store.getters.isLoggedIn && '/shared',
+      route: useSessionStore().isLoggedIn && '/shared',
     },
   ]
   const team = getTeams.data?.[breadcrumbs[0].team]
@@ -95,7 +96,6 @@ export const setBreadCrumbs = (entity) => {
         : { name: 'Folder', params: { entityName: folder.name } },
     })
   })
-  store.commit('setBreadcrumbs', res)
 }
 
 export const MIME_LIST_MAP = {
@@ -470,33 +470,6 @@ async function uploadImage(file, params) {
 
   return entity
 }
-
-// export const pasteObj = (e) => {
-//   const clipboardItems = Array.from(e.clipboardData?.items || [])
-//   if (clipboardItems.some((item) => item.type.includes('image'))) {
-//     e.preventDefault()
-//     const file = clipboardItems.find((item) => item.type.includes('image'))?.getAsFile()
-//     const route = router.currentRoute.value
-//     if (file && ['Home', 'Folder', 'Team'].includes(route.name)) {
-//       const entity = uploadImage(file, {
-//         team: route.params.team,
-//         parent: route.params.entityName || '',
-//         personal: store.state.breadcrumbs[0].name === 'Home' ? 1 : 0,
-//         total_file_size: file.size,
-//         last_modified: file.lastModified,
-//       })
-//       nToast.promise(entity, {
-//         loading: 'Uploading...',
-//         success: () => {
-//           emitter.emit('refresh')
-//           return 'Uploaded'
-//         },
-//         error: () => 'Failed to upload',
-//         duration: 500,
-//       })
-//     }
-//   }
-// }
 
 export const FONT_FAMILIES = [
   {

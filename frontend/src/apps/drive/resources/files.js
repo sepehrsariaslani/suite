@@ -1,7 +1,7 @@
 import { createResource } from 'frappe-ui'
 import { toast } from '@/apps/drive/utils/toasts'
 import { openEntity, setTitle } from '@/apps/drive/utils/files'
-import store from '@/apps/drive/store'
+import { activeEntity } from '@/apps/drive/data/selection'
 import { updateLastBreadcrumbLabel } from '@/apps/drive/data/breadcrumbs'
 import { getSortOrder } from '@/apps/drive/data/prefs'
 import router from '@/apps/drive/router'
@@ -281,9 +281,9 @@ export const rename = createResource({
       rename.params.new_title,
       rename.params.entity_name,
     )
-    if (store.state.activeEntity?.name === rename.params.entity_name) {
-      store.state.activeEntity.file_name = rename.params.new_title
-      store.state.activeEntity.modified = new Date()
+    if (activeEntity.value?.name === rename.params.entity_name) {
+      activeEntity.value.file_name = rename.params.new_title
+      activeEntity.value.modified = new Date()
     }
     setTitle(rename.params.new_title)
     updateURLSlug(rename.params.new_title)

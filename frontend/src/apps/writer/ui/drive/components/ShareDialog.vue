@@ -110,7 +110,7 @@
               </div>
               <div class="ml-auto">
                 <span
-                  v-if="user.user == $store.state.user.id"
+                  v-if="user.user == currentUserId"
                   class="mr-1 text-ink-gray-7"
                 >
                   <div v-if="user.user === entity.owner" class="flex gap-1">
@@ -173,9 +173,8 @@
 </template>
 <script setup>
 import { ref, computed, watch, markRaw, h } from 'vue'
-import store from '@/apps/writer/store'
-// Template compat: standalone app exposed a global $store.
-const $store = store
+import { useSessionStore } from '@/boot/session'
+const currentUserId = computed(() => useSessionStore().user)
 import {
   Avatar,
   Button,

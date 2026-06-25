@@ -6,7 +6,7 @@
     <Avatar :image="newImageUrl" size="3xl" :label="fullName" class="w-20 h-20" />
     <div class="flex flex-col">
       <span class="text-3xl-semibold text-ink-gray-8">{{ fullName }}</span>
-      <span class="text-base text-ink-gray-6">{{ $store.state.user.id }}</span>
+      <span class="text-base text-ink-gray-6">{{ currentUserId }}</span>
     </div>
     <Button class="ml-auto" @click="editProfileDialog = true">
       {{ __('Edit profile') }}
@@ -98,13 +98,14 @@ import {
 import LucideLink from '~icons/lucide/link'
 import LucideX from '~icons/lucide/x'
 
-import store from '@/apps/drive/store'
+import { useSessionStore, useCurrentUser, userResource } from '@/boot/session'
 import { ref, computed, watch } from 'vue'
 import { settings, setSettings } from '@/apps/drive/resources/permissions'
 
-
-const newImageUrl = ref(store.state.user.imageURL)
-const fullName = computed(() => store.state.user.fullName)
+const { user: _currentUser, fullName: _fullName, imageURL: _imageURL } = useCurrentUser()
+const currentUserId = computed(() => _currentUser.value)
+const fullName = computed(() => _fullName.value)
+const newImageUrl = ref(_imageURL.value)
 const newLastName = ref(fullName.value.split(' ')[1])
 const newFirstName = ref(fullName.value.split(' ')[0])
 const newFullName = computed(() => newFirstName.value + ' ' + newLastName.value)
@@ -127,7 +128,7 @@ for (const k in options) {
 
 const profile = createDocumentResource({
   doctype: 'User',
-  name: store.state.user.id,
+  name: currentUserId.value,
   auto: true,
 })
 
@@ -138,9 +139,8 @@ const updateProfile = () => {
       last_name: newLastName.value,
       user_image: newImageUrl.value,
     })
-    .then((data) => {
-      store.state.user.fullName = data.full_name
-      store.state.user.imageURL = data.user_image
+    .then(() => {
+      userResource.reload()
       editProfileDialog.value = false
     })
 }

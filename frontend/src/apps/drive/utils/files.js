@@ -1,5 +1,5 @@
 import router from '@/apps/drive/router'
-import store from '@/apps/drive/store'
+
 import {
   appendBreadcrumb,
   applyBreadCrumbs,

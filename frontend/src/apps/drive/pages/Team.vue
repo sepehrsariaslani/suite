@@ -18,7 +18,7 @@
 <script setup>
 import GenericPage from '@/apps/drive/components/GenericPage.vue'
 import { getTeam, getTeams, getPublicTeams } from '@/apps/drive/resources/files'
-import store from '@/apps/drive/store'
+import { useSessionStore } from '@/boot/session'
 import { setPageBreadcrumbs } from '@/apps/drive/data/breadcrumbs'
 import { setCurrentFolder } from '@/apps/drive/data/currentFolder'
 import { useRoute } from 'vue-router'
@@ -40,7 +40,7 @@ const teamData = computed(
 )
 const write = computed(
   () =>
-    teamData.value?.users?.find((k) => k.user === store.state.user.id)
+    teamData.value?.users?.find((k) => k.user === useSessionStore().user)
       ?.access_level > 0
 )
 watch(() => getPublicTeams.data, console.log)

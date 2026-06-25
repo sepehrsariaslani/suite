@@ -32,7 +32,7 @@
   <p class="hidden absolute text-center top-1/2 left-[calc(50%-4rem)] w-32 z-10 font-bold">
     Drop to upload
   </p>
-  <Transition v-if="store.state.uploads.length > 0"
+  <Transition v-if="uploads.length > 0"
     enter-active-class="transition duration-[150ms] ease-[cubic-bezier(.21,1.02,.73,1)]"
     enter-from-class="translate-y-1 opacity-0" enter-to-class="translate-y-0 opacity-100"
     leave-active-class="transition duration-[150ms] ease-[cubic-bezier(.21,1.02,.73,1)]"
@@ -70,7 +70,10 @@ import { entitiesDownload } from '@/apps/drive/utils/download'
 import { ref, computed, watch, watchEffect, provide, inject } from 'vue'
 import { useRoute } from 'vue-router'
 import { useEventListener } from '@vueuse/core'
-import store from '@/apps/drive/store'
+import { useSessionStore, useCurrentUser } from '@/boot/session'
+import { activeEntity } from '@/apps/drive/data/selection'
+import { uploads } from '@/apps/drive/data/uploads'
+const { systemUser } = useCurrentUser()
 import { pageBreadcrumbs } from '@/apps/drive/data/breadcrumbs'
 import { view, getSortOrder, setSortOrder } from '@/apps/drive/data/prefs'
 import { setCurrentFolder } from '@/apps/drive/data/currentFolder'
@@ -122,7 +125,6 @@ watch(
   },
   { immediate: true }
 )
-const activeEntity = computed(() => store.state.activeEntity)
 
 const sortId = computed(
   () => route.params.entityName || route.params.team || route.name
@@ -232,7 +234,7 @@ emitter.on('remove-file', (item) => {
   listDialog.value = 'remove'
 })
 
-if (!settings.fetched && store.getters.isLoggedIn) settings.fetch()
+if (!settings.fetched && useSessionStore().isLoggedIn) settings.fetch()
 
 // Drag and drop
 const removeFile = (file, target) => {
@@ -315,7 +317,7 @@ const actionItems = computed(() => {
       {
         divider: true,
         isEnabled: (e) =>
-          isAttachmentRef(e) || (isSiteFile(e) && store.state.user.systemUser),
+          isAttachmentRef(e) || (isSiteFile(e) && systemUser.value),
       },
       {
         label: __('Go to original'),
@@ -334,7 +336,7 @@ const actionItems = computed(() => {
         icon: LucideMonitorCog,
         action: ([entity]) =>
           window.open('/desk/file/' + entity.name, '_blank'),
-        isEnabled: (e) => isSiteFile(e) && store.state.user.systemUser,
+        isEnabled: (e) => isSiteFile(e) && systemUser.value,
       },
       { divider: true, isEnabled: (e) => !e.external && !isVirtual(e) },
       {

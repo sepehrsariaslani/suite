@@ -89,7 +89,8 @@ import { TabsExtension } from '@/apps/writer/extensions/tabs'
 import TabTrailingNode from '@/apps/writer/extensions/tab-trailing-node'
 import { CommentExtension, rebuild } from '@/apps/writer/extensions/comments'
 
-import store from '@/apps/writer/store'
+
+import { useSessionStore } from '@/boot/session'
 import emitter from '@/apps/writer/emitter'
 import {
   COMMON_EXTENSIONS,
@@ -356,7 +357,7 @@ const addComment = () => {
     id,
     from,
     to,
-    store.state.user.id,
+    useSessionStore().user,
     state.doc.textBetween(from, to, ' '),
   )
   activeComment.value = id

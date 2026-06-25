@@ -57,8 +57,9 @@
 <script setup>
 import EntityDialogs from '@/apps/drive/components/EntityDialogs.vue'
 import { Button, Breadcrumbs, LoadingIndicator, Dropdown } from 'frappe-ui'
-import store from '@/apps/drive/store'
+import { useSessionStore, useCurrentUser } from '@/boot/session'
 import { isHomeContext, pageBreadcrumbs } from '@/apps/drive/data/breadcrumbs'
+const { systemUser } = useCurrentUser()
 import emitter from '@/apps/drive/emitter'
 import { ref, computed, inject, h } from 'vue'
 import { entitiesDownload } from '@/apps/drive/utils/download'
@@ -120,7 +121,7 @@ const breadcrumbItems = computed(
   () => props.breadcrumbs ?? pageBreadcrumbs.value,
 )
 
-const isLoggedIn = computed(() => store.getters.isLoggedIn)
+const isLoggedIn = computed(() => useSessionStore().isLoggedIn)
 const listDialog = inject('listDialog', null)
 const entityDialog = ref('')
 const rootEntity = computed(() => props.rootResource?.data?.file_name && props.rootResource?.data)
@@ -164,7 +165,7 @@ const defaultActions = computed(() => {
           label: __('Open in Desk'),
           icon: LucideMonitorCog,
           onClick: () => window.open('/desk/file/' + rootEntity.value.name, '_blank'),
-          isEnabled: () => isSiteFile(rootEntity.value) && store.state.user.systemUser,
+          isEnabled: () => isSiteFile(rootEntity.value) && systemUser.value,
         },
         {
           label: __('Go to original'),

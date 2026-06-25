@@ -107,7 +107,7 @@
               <span class="text-base text-ink-gray-8">{{ user.full_name }}</span>
               <span class="text-xs text-ink-gray-6">{{ user.email }}</span>
             </div>
-            <div v-if="isAdmin.data && user.name != $store.state.user.id" class="ml-auto">
+            <div v-if="isAdmin.data && user.name != currentUserId" class="ml-auto">
               <Dropdown v-slot="{ open }" :options="accessOptions" placement="right">
                 <Button variant="ghost" @click="selectedUser = user">
                   {{
@@ -130,7 +130,7 @@
               {{
                 __(user.access_level == 2 ? 'Manager' : user.access_level == 1 ? 'User' : 'Guest')
               }}
-              <template v-if="user.name === $store.state.user.id">(you)</template>
+              <template v-if="user.name === currentUserId">(you)</template>
             </span>
           </div>
         </div>
@@ -428,6 +428,8 @@
 <script setup>
 import { default as vFocus } from '@/apps/drive/utils/focus'
 import { h, computed } from 'vue'
+import { useSessionStore } from '@/boot/session'
+const currentUserId = computed(() => useSessionStore().user)
 import { getTeams } from '@/apps/drive/resources/files'
 import icons from '@/apps/drive/utils/icons'
 import { getInvites, rejectInvite, acceptInvite, createTeam } from '@/apps/drive/resources/permissions'

@@ -39,7 +39,7 @@
 </template>
 
 <script setup>
-import store from '@/apps/drive/store'
+import { setActiveEntity } from '@/apps/drive/data/selection'
 import { pageBreadcrumbs } from '@/apps/drive/data/breadcrumbs'
 import Navbar from '@/apps/drive/components/Navbar.vue'
 import { ref, computed, onMounted, defineProps } from 'vue'
@@ -122,7 +122,7 @@ const file = createResource({
   url: 'suite.drive.api.permissions.get_entity_with_permissions',
   params: { entity_name: props.entityName },
   transform(entity) {
-    store.commit('setActiveEntity', entity)
+    setActiveEntity(entity)
     return prettyData([entity])[0]
   },
   onSuccess,

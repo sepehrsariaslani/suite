@@ -16,7 +16,7 @@
         <div class="flex gap-2"><LucideArrowBigLeft class="size-4" />Go Back</div>
       </Button>
       <Button
-        v-if="$store.state.user.id && $store.state.user.id !== 'Guest'"
+        v-if="isLoggedIn"
         variant="solid"
         size="md"
         @click="$router.replace({ name: 'drive-Home' })"
@@ -32,13 +32,14 @@
 
 <script setup>
 import { Button } from 'frappe-ui'
-import store from '@/apps/drive/store'
+import { useSessionStore } from '@/boot/session'
 import { setPageBreadcrumbs } from '@/apps/drive/data/breadcrumbs'
 import router from '@/apps/drive/router'
-import { watchEffect } from 'vue'
+import { computed, watchEffect } from 'vue'
 import LucideFileUser from '~icons/lucide/file-user'
 
 const props = defineProps({ error: Object })
+const isLoggedIn = computed(() => useSessionStore().isLoggedIn)
 
 const goToLogin = () => {
   window.location.href =
@@ -49,7 +50,7 @@ const goToLogin = () => {
 watchEffect(() => {
   if (
     props.error.exc_type === 'PermissionError' &&
-    (!store.state.user.id || store.state.user.id === 'Guest')
+    !isLoggedIn.value
   ) {
     goToLogin()
   }
