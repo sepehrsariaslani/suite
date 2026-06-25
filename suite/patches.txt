@@ -8,6 +8,8 @@ suite.drive.patches.remove_personal #3
 suite.drive.patches.integrate_with_framework
 # --- mail ---
 execute:frappe.db.delete("Mail Cluster Store")
+# --- writer ---
+suite.writer.patches.remove_frappe_writer_module
 
 [post_model_sync]
 # --- drive ---
