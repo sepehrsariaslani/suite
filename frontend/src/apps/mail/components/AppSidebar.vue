@@ -30,7 +30,7 @@
 					:to="item.to"
 					:is-active="
 						item.activeFor?.includes(
-							['Mailbox', 'Mail'].includes(route.name as string)
+							['mail-mailbox', 'mail-mail'].includes(route.name as string)
 								? route.params.mailbox
 								: route.name,
 						)

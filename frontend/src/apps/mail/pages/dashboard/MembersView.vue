@@ -44,7 +44,7 @@ watch(tabIndex, (val) => router.push({ name: val ? 'mail-invites' : 'mail-member
 
 watch(
 	() => route.name,
-	(val) => (tabIndex.value = val === 'Members' ? 0 : 1),
+	(val) => (tabIndex.value = val === 'mail-members' ? 0 : 1),
 	{ immediate: true },
 )
 

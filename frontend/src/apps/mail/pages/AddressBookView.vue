@@ -198,7 +198,7 @@ const addressBookDisplay = computed(() => addressBook.doc?._name || addressBookN
 usePageMeta(() => ({ title: addressBookDisplay.value }))
 
 const breadcrumbs = computed(() => [
-	{ label: __('Address Books'), route: '/address-books' },
+	{ label: __('Address Books'), route: '/mail/address-books' },
 	{ label: addressBookDisplay.value },
 ])
 

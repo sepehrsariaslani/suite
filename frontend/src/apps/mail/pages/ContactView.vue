@@ -382,7 +382,7 @@ const contactDisplay = computed(
 usePageMeta(() => ({ title: contactDisplay.value }))
 
 const breadcrumbs = computed(() => [
-	{ label: __('Contacts'), route: '/contacts' },
+	{ label: __('Contacts'), route: '/mail/contacts' },
 	{ label: contactDisplay.value },
 ])
 
