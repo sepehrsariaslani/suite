@@ -94,7 +94,7 @@ const primaryActions = (mail: Mail): MailAction[] => [
 	{
 		label: __('Unstar'),
 		onClick: () => emit('setFlagged', mail.id, false),
-		icon: () => h(Star, { class: 'fill-ink-amber-2 text-ink-amber-2 stroke-ink-amber-2' }),
+		icon: () => h(Star, { class: 'fill-ink-amber-6 text-ink-amber-6 stroke-ink-amber-6' }),
 		condition: !!mail.flagged && mailbox !== mailboxIds.trash && !isMobile.value,
 	},
 	{
@@ -160,7 +160,7 @@ const moreActions = (mail: Mail): GroupedAction[] => [
 				label: __('Unstar'),
 				onClick: () => emit('setFlagged', mail.id, false),
 				icon: () =>
-					h(Star, { class: 'fill-ink-amber-2 text-ink-amber-2 stroke-ink-amber-2' }),
+					h(Star, { class: 'fill-ink-amber-6 text-ink-amber-6 stroke-ink-amber-6' }),
 				condition: () => !!mail.flagged && mailbox !== mailboxIds.trash,
 			},
 			{

@@ -183,7 +183,7 @@ const threadActions = computed((): Action[] => [
 				thread.map((m) => m.id),
 				false,
 			),
-		icon: h(Star, { class: 'fill-ink-amber-2 text-ink-amber-2 stroke-ink-amber-2' }),
+		icon: h(Star, { class: 'fill-ink-amber-6 text-ink-amber-6 stroke-ink-amber-6' }),
 		condition: () => thread.every((m) => m.flagged),
 	},
 	{

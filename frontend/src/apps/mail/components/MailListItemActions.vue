@@ -11,7 +11,7 @@
 			<Star
 				class="icon text-ink-gray-5"
 				:class="{
-					'fill-ink-amber-5 text-ink-amber-5 stroke-ink-amber-5': mail.flagged,
+					'fill-ink-amber-6 text-ink-amber-6 stroke-ink-amber-6': mail.flagged,
 				}"
 			/>
 		</button>
