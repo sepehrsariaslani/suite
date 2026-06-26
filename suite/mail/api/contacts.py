@@ -43,10 +43,8 @@ def get_contact_cards(account_id: str, filter: dict | None = None, limit: int = 
 def get_contacts(account_id: str, filter: dict | None = None, limit: int = 50) -> list[dict]:
 	"""Returns the emails contacts for the given account."""
 
-	account = get_session_account(account_id)
-
 	contacts = []
-	contact_cards = get_contact_cards(account, filter, limit)
+	contact_cards = get_contact_cards(account_id, filter, limit)
 
 	for card in contact_cards:
 		if emails := card.get("emails"):
