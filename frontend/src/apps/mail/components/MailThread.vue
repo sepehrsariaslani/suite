@@ -67,8 +67,7 @@
 									(thread.length > 1 && !mail.draft) ||
 									(mail.draft && dataTheme === 'dark'),
 								'cursor-pointer': isCollapsed(mail),
-								'sm:shadow-elevation-light-md':
-									mail.draft && dataTheme === 'light',
+								'sm:shadow-md': mail.draft && dataTheme === 'light',
 							}"
 							@click="mail.collapsed = false"
 						>
@@ -255,11 +254,14 @@
 									<EmailContent
 										v-if="hasHtmlContent(mail.html_body)"
 										:content="mail.html_body"
+										:block-images="shouldBlockImages(mail)"
+										:can-trust="!readonly"
+										@trust="trustSender.submit(mail.from_email)"
 									/>
 
 									<LinkifiedText
 										v-else
-										:text="suite.mail.html_body || mail.text_body"
+										:text="mail.html_body || mail.text_body"
 									/>
 
 									<div v-if="filteredAttachments(mail).length" class="mt-8">
@@ -452,6 +454,22 @@ const isSenderBlocked = (email: string) =>
 	!!screenedAddresses.data?.some(
 		(a: ScreenedAddress) => a.email === email && a.action === 'Reject',
 	)
+
+// Trusted senders — you, or anyone you've accepted — load images normally. For everyone else, the
+// account's "Block Remote Images" setting withholds remote images (read-tracking pixels) until you opt in.
+const blockRemoteImagesEnabled = computed(
+	() =>
+		store.userResource?.data?.accounts?.find((a) => a.id === store.accountId)
+			?.block_remote_images ?? true,
+)
+const isScreenedIn = (email: string) =>
+	!!identities.data?.some((i: Identity) => i.email === email) ||
+	!!screenedAddresses.data?.some(
+		(a: ScreenedAddress) => a.email === email && a.action === 'Accepted',
+	)
+const shouldBlockImages = (mail: { from_email: string }) =>
+	blockRemoteImagesEnabled.value && !isScreenedIn(mail.from_email)
+
 const { dataTheme } = useTheme()
 
 const route = useRoute()
@@ -709,6 +727,20 @@ const unblockEmailAddress = createResource({
 	makeParams: (email) => ({ account_id: store.accountId, emails: [email] }),
 	onSuccess: () => {
 		raiseToast(__('Sender unblocked.'))
+		screenedAddresses.reload()
+	},
+})
+
+// Trusting a sender accepts them (screened in), so their remote images load now and going forward.
+const trustSender = createResource({
+	url: 'suite.mail.api.mail.screen_email_addresses',
+	makeParams: (email: string) => ({
+		account_id: store.accountId,
+		emails: [email],
+		action: 'Accepted',
+	}),
+	onSuccess: () => {
+		raiseToast(__('Sender marked as trusted.'))
 		screenedAddresses.reload()
 	},
 })

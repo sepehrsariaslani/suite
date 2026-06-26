@@ -320,7 +320,9 @@ const THEME_CONFIG = {
 		script: '',
 	},
 	dark: {
-		background: '#0F0F0F',
+		// Match frappe-ui v2's dark `surface-base` (#171717) so the email body doesn't seam against
+		// the reading-pane background. Iframes don't inherit the parent's CSS vars, so it's concrete.
+		background: '#171717',
 		text: '#D4D4D4',
 		button: '#2B2B2B',
 		buttonHover: '#343434',
