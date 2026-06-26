@@ -60,7 +60,7 @@ const segments = computed<Segment[]>(() => {
 				:href="segment.href"
 				target="_blank"
 				rel="noopener noreferrer"
-				class="text-ink-blue-2 hover:underline"
+				class="text-ink-blue-6 hover:underline"
 				>{{ segment.text }}</a
 			>
 			<span v-else>{{ segment.text }}</span>

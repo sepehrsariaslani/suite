@@ -37,7 +37,7 @@
 					<template v-for="mail in group.mails" :key="mail.name">
 						<ThreadDivider
 							v-if="shouldShowUnseenMarker(mail.id)"
-							class="!text-ink-blue-5 [&_.border-t]:border-[var(--outline-blue-1)] [&_span:not(.border-t)]:border-[var(--outline-blue-1)]"
+							class="!text-ink-blue-6 [&_.border-t]:border-[var(--outline-blue-3)] [&_span:not(.border-t)]:border-[var(--outline-blue-3)]"
 							:message="unseenMessage"
 						/>
 
