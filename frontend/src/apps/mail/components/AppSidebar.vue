@@ -254,13 +254,13 @@ const dashboardItems = [
 	{
 		items: [
 			{
-				label: __('mail-domains'),
+				label: __('Domains'),
 				icon: Globe,
 				to: { name: 'mail-domains' },
 				activeFor: ['mail-domains', 'mail-domain'],
 			},
 			{
-				label: __('mail-members'),
+				label: __('Members'),
 				icon: Users,
 				to: { name: 'mail-members' },
 				activeFor: ['mail-members', 'mail-invites', 'mail-member'],
@@ -365,7 +365,7 @@ const sidebarItems = computed(() => {
 			activeFor: ['mail-address-books', 'mail-address-book'],
 		},
 		{
-			label: __('mail-contacts'),
+			label: __('Contacts'),
 			icon: ContactRound,
 			to: { name: 'mail-contacts', params: { accountId: store.accountId } },
 			activeFor: ['mail-contacts', 'mail-contact'],
