@@ -1,17 +1,21 @@
 <template>
 	<div
 		v-if="showImagesBanner"
-		class="text-ink-gray-6 mb-3 flex items-center gap-3 rounded border p-2.5 px-4"
+		class="text-ink-gray-6 mb-3 flex flex-col gap-3 rounded border p-2.5 px-4 sm:flex-row sm:items-center"
 	>
-		<ImageOff class="h-4.5 w-4.5 stroke-1.5" />
-		<span class="text-ink-gray-8 min-w-0 flex-1"> {{ blockedLabel }} </span>
-		<Button
-			v-if="canTrust"
-			variant="ghost"
-			:label="__('Mark Sender as Trusted')"
-			@click="handleTrust"
-		/>
-		<Button :label="__('Load Images')" class="w-28" @click="imagesLoaded = true" />
+		<div class="flex min-w-0 flex-1 items-center gap-3">
+			<ImageOff class="h-4.5 w-4.5 shrink-0 stroke-1.5" />
+			<span class="text-ink-gray-8 min-w-0 flex-1"> {{ blockedLabel }} </span>
+		</div>
+		<div class="flex shrink-0 items-center justify-end gap-3">
+			<Button
+				v-if="canTrust"
+				variant="ghost"
+				:label="__('Mark Sender as Trusted')"
+				@click="handleTrust"
+			/>
+			<Button :label="__('Load Images')" class="w-28" @click="imagesLoaded = true" />
+		</div>
 	</div>
 	<div v-if="!isIframeReady" class="animate-pulse space-y-2 py-4">
 		<div

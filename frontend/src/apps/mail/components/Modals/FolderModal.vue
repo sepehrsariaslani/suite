@@ -180,8 +180,8 @@ const automationScript = computed(() =>
 const tab = ref(0)
 
 const TABS = [
-	{ label: __('General'), icon: Settings, index: 0 },
-	{ label: __('Automation'), icon: Zap, index: 1 },
+	{ label: __('General'), icon: Settings },
+	{ label: __('Automation'), icon: Zap },
 ]
 
 const DEFAULT_FOLDER = {

@@ -144,7 +144,7 @@ const LIST_OPTIONS = {
 }
 
 const TABS = [
-	{ label: __('Import'), icon: CalendarPlus, index: 0 },
-	{ label: __('Export'), icon: CalendarRange, index: 1 },
+	{ label: __('Import'), icon: CalendarPlus },
+	{ label: __('Export'), icon: CalendarRange },
 ]
 </script>

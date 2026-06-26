@@ -120,7 +120,7 @@ const tabs = computed(() => {
 			label: __('Automation'),
 			icon: Zap,
 			component: markRaw(AutomationSettings),
-			condition: user.data.is_jmap_configure,
+			condition: user.data.is_jmap_configured,
 		},
 		{
 			label: __('Screened Senders'),
