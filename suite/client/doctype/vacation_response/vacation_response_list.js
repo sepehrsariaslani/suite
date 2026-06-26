@@ -1,7 +1,7 @@
-// Copyright (c) 2026, Frappe Technologies Pvt. Ltd. and contributors
+// Copyright (c) 2025, Frappe Technologies Pvt. Ltd. and contributors
 // For license information, please see license.txt
 
-frappe.listview_settings['Blocked Email Address'] = {
+frappe.listview_settings['Vacation Response'] = {
 	refresh: (listview) => {
 		set_account_options(listview)
 	},
@@ -15,15 +15,15 @@ function set_account_options(listview) {
 	if (!user) return
 
 	frappe.call({
-		method: 'mail.jmap.get_user_accounts',
+		method: 'suite.mail.jmap.get_user_account_ids',
 		args: {
 			user: user,
 		},
 		callback: (r) => {
-			const account_field = listview.page.fields_dict.account
+			const account_field = listview.page.fields_dict.account_id
 			if (!account_field) return
 
-			const options = r.message
+			const options = r.message || []
 			options.unshift('')
 			account_field.df.options = options
 			account_field.set_options()

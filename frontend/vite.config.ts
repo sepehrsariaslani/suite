@@ -5,6 +5,7 @@ import vue from '@vitejs/plugin-vue'
 import { noiseSuppressionAudioWorkletVitePlugin } from '@workadventure/noise-suppression/vite'
 import frappeui from 'frappe-ui/vite'
 import { defineConfig } from 'vite'
+import { VitePWA } from 'vite-plugin-pwa'
 
 const emitSlidesServiceWorker = () => ({
   name: 'slides-service-worker',
@@ -53,6 +54,29 @@ export default defineConfig(({ mode }) => ({
     }),
     vue(),
     emitSlidesServiceWorker(),
+    // Bundles mail's Firebase Cloud Messaging service worker (src/apps/mail/sw.ts)
+    // into sw.js at the build root -> served at /assets/suite/frontend/sw.js, which
+    // MailLayout.registerServiceWorker() registers. Scoped to FCM only: precaching
+    // is disabled (injectionPoint: undefined) and no webmanifest is generated
+    // (manifest: false), so the other suite apps are NOT turned into a PWA.
+    // Registration is manual (injectRegister: null).
+    VitePWA({
+      strategies: 'injectManifest',
+      srcDir: 'src/apps/mail',
+      filename: 'sw.ts',
+      injectRegister: null,
+      injectManifest: {
+        injectionPoint: undefined,
+      },
+      manifest: false,
+      devOptions: {
+        // The SW is registered at the production-absolute path
+        // (/assets/suite/frontend/sw.js), which only exists in a build, so push
+        // notifications are a build-only feature (same as the slides SW). No need
+        // to serve a dev SW that would 404 anyway.
+        enabled: false,
+      },
+    }),
   ],
   resolve: {
     alias: {

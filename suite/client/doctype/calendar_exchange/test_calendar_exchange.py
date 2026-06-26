@@ -11,9 +11,9 @@ EXTRA_TEST_RECORD_DEPENDENCIES = []  # eg. ["User"]
 IGNORE_TEST_RECORD_DEPENDENCIES = []  # eg. ["User"]
 
 
-class IntegrationTestBlockedEmailAddress(IntegrationTestCase):
+class IntegrationTestCalendarExchange(IntegrationTestCase):
 	"""
-	Integration tests for BlockedEmailAddress.
+	Integration tests for CalendarExchange.
 	Use this class for testing interactions between multiple components.
 	"""
 

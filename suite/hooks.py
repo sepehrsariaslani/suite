@@ -167,8 +167,12 @@ permission_query_conditions = {
 	"Sheet Snapshot": "suite.sheets.permissions.sheet_snapshot_query",
 	# mail (client)
 	"Account Settings": "suite.client.doctype.account_settings.account_settings.get_permission_query_condition",
+	"Blocked Email Address": "suite.client.doctype.blocked_email_address.blocked_email_address.get_permission_query_condition",
+	"Calendar Exchange": "suite.client.doctype.calendar_exchange.calendar_exchange.get_permission_query_condition",
+	"Junk Email Address": "suite.client.doctype.junk_email_address.junk_email_address.get_permission_query_condition",
 	"Mail Exchange": "suite.client.doctype.mail_exchange.mail_exchange.get_permission_query_condition",
 	"Mail Queue": "suite.client.doctype.mail_queue.mail_queue.get_permission_query_condition",
+	"Mail Sync History": "suite.client.doctype.mail_sync_history.mail_sync_history.get_permission_query_condition",
 	"Mailbox Settings": "suite.client.doctype.mailbox_settings.mailbox_settings.get_permission_query_condition",
 	"User Settings": "suite.client.doctype.user_settings.user_settings.get_permission_query_condition",
 }
@@ -189,13 +193,17 @@ has_permission = {
 	# mail (client)
 	"Account Settings": "suite.client.doctype.account_settings.account_settings.has_permission",
 	"Address Book": "suite.client.doctype.address_book.address_book.has_permission",
+	"Blocked Email Address": "suite.client.doctype.blocked_email_address.blocked_email_address.has_permission",
 	"Calendar": "suite.client.doctype.calendar.calendar.has_permission",
 	"Calendar Event": "suite.client.doctype.calendar_event.calendar_event.has_permission",
+	"Calendar Exchange": "suite.client.doctype.calendar_exchange.calendar_exchange.has_permission",
 	"Contact Card": "suite.client.doctype.contact_card.contact_card.has_permission",
 	"Event Notification": "suite.client.doctype.event_notification.event_notification.has_permission",
 	"Identity": "suite.client.doctype.identity.identity.has_permission",
+	"Junk Email Address": "suite.client.doctype.junk_email_address.junk_email_address.has_permission",
 	"Mail Exchange": "suite.client.doctype.mail_exchange.mail_exchange.has_permission",
 	"Mail Queue": "suite.client.doctype.mail_queue.mail_queue.has_permission",
+	"Mail Sync History": "suite.client.doctype.mail_sync_history.mail_sync_history.has_permission",
 	"Mailbox": "suite.client.doctype.mailbox.mailbox.has_permission",
 	"Mailbox Settings": "suite.client.doctype.mailbox_settings.mailbox_settings.has_permission",
 	"Participant Identity": "suite.client.doctype.participant_identity.participant_identity.has_permission",
@@ -258,6 +266,7 @@ scheduler_events = {
 		"suite.sheets.versioning.tasks.truncate_op_log",
 		# mail
 		"suite.client.doctype.mail_exchange.mail_exchange.clean_import_export_directories",
+		"suite.client.doctype.calendar_exchange.calendar_exchange.clean_calendar_import_export_directories",
 	],
 	"hourly": [
 		# mail
@@ -306,8 +315,6 @@ fixtures = [
 	{"dt": "Presentation", "filters": [["is_template", "=", "1"]]},
 	# meet
 	{"dt": "Role", "filters": [["role_name", "like", "Meet %"]]},
-	# mail
-	{"dt": "Role", "filters": [["role_name", "in", ["Mail Admin"]]]},
 ]
 
 # ============================================================================
@@ -326,7 +333,7 @@ ignore_links_on_delete = [
 	"Server Deployment",
 	# Client
 	"Account Settings",
-	"Blocked Email Address",
+	"Screened Email Address",
 	"Mail Exchange",
 	"Mail Queue",
 	"Mail Signature",

@@ -1,12 +1,12 @@
 {
  "actions": [],
- "creation": "2026-04-21 11:54:31.220491",
+ "creation": "2026-06-22 12:00:00.000000",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
   "section_break_gl6l",
-  "user",
-  "account",
+  "account_id",
+  "action",
   "column_break_20of",
   "email"
  ],
@@ -16,13 +16,14 @@
    "fieldtype": "Section Break"
   },
   {
-   "fieldname": "user",
-   "fieldtype": "Link",
+   "description": "The shared JMAP account ID this block belongs to. The block list is the same for everyone with access to the account.",
+   "fieldname": "account_id",
+   "fieldtype": "Data",
    "in_list_view": 1,
    "in_standard_filter": 1,
-   "label": "User",
+   "label": "Account ID",
    "no_copy": 1,
-   "options": "User",
+   "reqd": 1,
    "search_index": 1,
    "set_only_once": 1
   },
@@ -31,6 +32,7 @@
    "fieldtype": "Column Break"
   },
   {
+   "description": "The email address whose mail is blocked (discarded) for the account.",
    "fieldname": "email",
    "fieldtype": "Data",
    "in_list_view": 1,
@@ -42,24 +44,25 @@
    "set_only_once": 1
   },
   {
-   "fieldname": "account",
+   "default": "Reject",
+   "description": "Accepted lets the sender's mail reach the inbox (used by screening). Spam files incoming mail into the Spam (Junk) folder. Reject discards incoming mail from the sender silently.",
+   "fieldname": "action",
    "fieldtype": "Select",
    "in_list_view": 1,
    "in_standard_filter": 1,
-   "label": "Account",
+   "label": "Action",
    "no_copy": 1,
-   "reqd": 1,
-   "search_index": 1,
-   "set_only_once": 1
+   "options": "Spam\nReject\nAccepted",
+   "reqd": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-05-06 14:54:42.253326",
+ "modified": "2026-06-23 00:00:00.000000",
  "modified_by": "Administrator",
  "module": "Client",
- "name": "Blocked Email Address",
+ "name": "Screened Email Address",
  "owner": "Administrator",
  "permissions": [
   {
