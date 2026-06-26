@@ -81,12 +81,12 @@ const handleThemeShortcut = (e: KeyboardEvent) => {
 /* -------------------------------------------------------------------------- */
 /* Push-notification service worker.                                          */
 /*                                                                            */
-/* Moved out of the standalone main.ts. The suite has NO vite-plugin-pwa, so  */
-/* `/assets/suite/frontend/sw.js` is NOT emitted yet — push notifications     */
-/* will not function at runtime under the suite until a foundation PWA/FCM    */
-/* setup lands (flagged for foundation attention). Kept FULLY fail-safe so it */
-/* never breaks the build or first paint. `firebase` is dynamically imported  */
-/* so it stays code-split out of the shared shell chunk.                      */
+/* Moved out of the standalone main.ts. `sw.js` (the FCM service worker) is    */
+/* emitted at /assets/suite/frontend/sw.js by vite-plugin-pwa from             */
+/* src/apps/mail/sw.ts (see vite.config.ts). It is a build-only artifact, so   */
+/* push notifications work in a production build, not the dev server. Kept     */
+/* FULLY fail-safe so it never breaks the build or first paint. `firebase` is  */
+/* dynamically imported so it stays code-split out of the shared shell chunk.  */
 /* -------------------------------------------------------------------------- */
 const registerServiceWorker = async () => {
 	try {
