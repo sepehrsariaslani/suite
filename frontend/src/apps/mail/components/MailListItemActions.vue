@@ -10,9 +10,8 @@
 		<button class="action-btn" @click.stop.prevent="emit('setFlagged', !mail.flagged)">
 			<Star
 				class="icon text-ink-gray-5"
-				:class="{
-					'fill-ink-amber-6 text-ink-amber-6 stroke-ink-amber-6': mail.flagged,
-				}"
+				:fill="mail.flagged ? 'currentColor' : 'none'"
+				:class="{ 'text-ink-amber-6': mail.flagged }"
 			/>
 		</button>
 	</Tooltip>
