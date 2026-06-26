@@ -103,7 +103,7 @@ export const userStore = defineStore('mail-user', () => {
 	// (discard incoming mail) or 'Spam' (file it into the Spam folder).
 	const screenedAddresses = createResource({
 		url: 'suite.mail.api.mail.get_screened_addresses',
-		makeParams: () => ({ account: account.value }),
+		makeParams: () => ({ account_id: accountId.value }),
 		cache: ['screenedAddresses', accountId.value],
 	})
 

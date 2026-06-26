@@ -1,6 +1,7 @@
 <template>
 	<div v-if="threadID" class="relative flex h-full flex-col overflow-hidden">
 		<ThreadHeader
+			v-if="!readonly"
 			:threads
 			:thread
 			:can-go-prev="canGoPrev"
@@ -102,6 +103,7 @@
 										<MailDate :datetime="mail.received_at" />
 									</div>
 									<MailActions
+										v-if="!readonly"
 										:mailbox
 										:mail
 										:draft-mail="draftMails[mail.name]"
@@ -180,7 +182,7 @@
 												:datetime="mail.received_at"
 											/>
 											<MailActions
-												v-if="!isMobile"
+												v-if="!isMobile && !readonly"
 												:mailbox
 												:mail
 												:is-collapsed="isCollapsed(mail)"
@@ -213,7 +215,7 @@
 
 								<div v-show="!isCollapsed(mail)">
 									<Alert
-										v-if="blockedAddresses.data.includes(mail.from_email)"
+										v-if="!readonly && isSenderBlocked(mail.from_email)"
 										:title="__('This sender is blocked')"
 										class="mb-4"
 										:dismissable="false"
@@ -309,7 +311,7 @@
 				</template>
 
 				<div
-					v-if="thread.length && !thread?.at(-1)?.draft"
+					v-if="!readonly && thread.length && !thread?.at(-1)?.draft"
 					class="flex"
 					:class="
 						isMobile
@@ -402,15 +404,25 @@ import SendMail from '@/apps/mail/components/SendMail.vue'
 import ThreadDivider from '@/apps/mail/components/ThreadDivider.vue'
 import ThreadHeader from '@/apps/mail/components/ThreadHeader.vue'
 
-import type { Attachment, ComposeMailData, Identity, Mail, Mailbox } from '@/apps/mail/types'
+import type {
+	Attachment,
+	ComposeMailData,
+	Identity,
+	Mail,
+	Mailbox,
+	ScreenedAddress,
+} from '@/apps/mail/types'
 
-const { mailbox, threadID, threads, messages, canGoPrev, canGoNext } = defineProps<{
+const { mailbox, threadID, threads, messages, canGoPrev, canGoNext, readonly } = defineProps<{
 	mailbox: string
 	threadID?: string
 	threads: string[]
 	messages?: Mail[]
 	canGoPrev?: boolean
 	canGoNext?: boolean
+	// Read-only thread (e.g. the Screener): renders the messages but hides every action — the thread
+	// toolbar, per-message actions, the block banner and the reply/forward bar — and never marks read.
+	readonly?: boolean
 }>()
 
 const emit = defineEmits([
@@ -433,7 +445,13 @@ const { openSettings } = useSettings()
 const dayjs = inject('$dayjs')
 const user = inject('$user')
 const store = userStore()
-const { mailboxes, mailboxIds, identities, blockedAddresses } = store
+const { mailboxes, mailboxIds, identities, screenedAddresses } = store
+
+// A sender is "blocked" when screened with the Reject action (their mail is discarded).
+const isSenderBlocked = (email: string) =>
+	!!screenedAddresses.data?.some(
+		(a: ScreenedAddress) => a.email === email && a.action === 'Reject',
+	)
 const { dataTheme } = useTheme()
 
 const route = useRoute()
@@ -514,7 +532,8 @@ const threadFallback = createResource({
 
 const transformThreadMails = (mails: Mail[]) =>
 	mails
-		.filter((mail) => filterRelevantMails(mail))
+		// Read-only views (the Screener) pass an explicit message list that isn't scoped to a mailbox.
+		.filter((mail) => readonly || filterRelevantMails(mail))
 		.map((mail) => ({
 			...mail,
 			groupedRecipients: getGroupedRecipients(mail.recipients, false),
@@ -559,8 +578,8 @@ const loadThread = () => {
 	})
 
 	// Opening a thread marks every message in the whole conversation read — including copies in other
-	// mailboxes (e.g. Sent) that aren't shown in this view.
-	if (source.some((mail) => !mail.seen)) setThreadSeen(true)
+	// mailboxes (e.g. Sent) that aren't shown in this view. Read-only views (the Screener) never do this.
+	if (!readonly && source.some((mail) => !mail.seen)) setThreadSeen(true)
 }
 
 // Mark the whole conversation seen/unseen — every message across all mailboxes, not just the ones
@@ -686,11 +705,11 @@ watch(
 onMounted(() => loadThread())
 
 const unblockEmailAddress = createResource({
-	url: 'suite.mail.api.mail.unblock_email_addresses',
+	url: 'suite.mail.api.mail.unscreen_email_addresses',
 	makeParams: (email) => ({ account_id: store.accountId, emails: [email] }),
 	onSuccess: () => {
 		raiseToast(__('Sender unblocked.'))
-		blockedAddresses.reload()
+		screenedAddresses.reload()
 	},
 })
 
@@ -837,7 +856,8 @@ const discardLocalDraft = (mail: string) => {
 // Shortcuts
 
 const handleKeydown = (e: KeyboardEvent) => {
-	if (shouldIgnoreKeypress(e)) return
+	// Read-only views (the Screener) expose no reply/forward, so their shortcuts are inert too.
+	if (readonly || shouldIgnoreKeypress(e)) return
 
 	const key = e.key.toLowerCase()
 	const lastMail = thread.value?.at(-1)
