@@ -127,7 +127,7 @@
       class="flex flex-col items-center gap-2.5 my-10"
     >
       <div class="flex flex-col gap-1.5 items-center">
-        <LucideFileText class="size-8" />
+        <LucideFileText class="size-8 text-ink-gray-4" />
         <p class="text-base-medium text-ink-gray-6">
           {{ __('No documents yet.') }}
         </p>
