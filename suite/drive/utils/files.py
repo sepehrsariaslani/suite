@@ -17,6 +17,10 @@ from suite.drive.locks.distributed_lock import DistributedLock
 from . import get_home_folder, STATUS_ACTIVE
 
 S3_URL_PREFIX = "/api/method/suite.drive.api.s3.fetch?path="
+_S3_URL_PREFIXES = (
+    S3_URL_PREFIX,
+    "/api/method/drive.api.s3.fetch?path=",  # legacy prefix before suite migration
+)
 
 
 class FileManager:
@@ -423,8 +427,9 @@ def storage_key(file_url):
     # file_url -> backend storage key, always relative so `base / key` can't
     # reset to an absolute path (Path("a") / "/b" == Path("/b")).
     file_url = str(file_url)
-    if file_url.startswith(S3_URL_PREFIX):
-        return unquote(file_url[len(S3_URL_PREFIX) :])
+    for prefix in _S3_URL_PREFIXES:
+        if file_url.startswith(prefix):
+            return unquote(file_url[len(prefix) :])
     return file_url.lstrip("/")
 
 
