@@ -346,7 +346,7 @@ const addAlertOptions = computed(() => [
 const mailContacts = createResource({
 	url: 'suite.mail.api.contacts.get_contacts',
 	makeParams: (text: string) => ({
-		account: store.account,
+		account_id: store.accountId,
 		filter: { operator: 'OR', conditions: [{ text }, { email: text }] },
 	}),
 	transform: (data) => data.map((o) => o.email),
