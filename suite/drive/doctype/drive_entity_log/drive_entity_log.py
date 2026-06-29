@@ -3,7 +3,7 @@
 
 import frappe
 from frappe.model.document import Document
-from drive.api.permissions import user_has_permission
+from suite.drive.api.permissions import user_has_permission
 
 
 class DriveEntityLog(Document):
