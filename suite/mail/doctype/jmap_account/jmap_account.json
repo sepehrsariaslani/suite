@@ -240,10 +240,10 @@
   {
    "group": "Exchange",
    "link_doctype": "Calendar Exchange",
-   "link_fieldname": "account_id"
+   "link_fieldname": "account"
   }
  ],
- "modified": "2026-06-29 20:59:23.726657",
+ "modified": "2026-06-29 21:43:38.294867",
  "modified_by": "Administrator",
  "module": "Mail",
  "name": "JMAP Account",

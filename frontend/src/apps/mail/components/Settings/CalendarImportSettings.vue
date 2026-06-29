@@ -115,7 +115,7 @@ const fileUploadSubtitle = computed(() => {
 
 const createCalendarImport = createResource({
 	url: 'suite.mail.api.account.create_calendar_import',
-	makeParams: () => ({ account_id: accountId, ...calendarImport }),
+	makeParams: () => ({ account: accountId, ...calendarImport }),
 	onSuccess: () => ongoingImport.reload(),
 })
 
@@ -127,6 +127,7 @@ const ongoingImport = createResource({
 		fieldname: 'name',
 		filters: {
 			user: user.data.name,
+			account: accountId,
 			operation: 'Import',
 			status: ['in', ['Queued', 'In Progress']],
 		},

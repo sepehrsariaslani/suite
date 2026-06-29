@@ -304,7 +304,7 @@ def create_mail_export(
 
 @frappe.whitelist()
 def create_calendar_import(
-	account_id: str,
+	account: str,
 	format: Literal["ics", "jmap"],
 	file: str,
 	calendar: str | None = None,
@@ -313,7 +313,7 @@ def create_calendar_import(
 
 	doc = frappe.new_doc("Calendar Exchange")
 	doc.user = frappe.session.user
-	doc.account_id = account_id
+	doc.account = account
 	doc.operation = "Import"
 	doc.import_format = format
 	doc.import_file = file
@@ -325,7 +325,7 @@ def create_calendar_import(
 
 @frappe.whitelist()
 def create_calendar_export(
-	account_id: str,
+	account: str,
 	format: Literal["ics", "jmap"],
 	archive_type: Literal[".zip", ".tgz", ".tar.gz"],
 	sort: Literal["Start (ASC)", "Start (DESC)"],
@@ -336,7 +336,7 @@ def create_calendar_export(
 
 	doc = frappe.new_doc("Calendar Exchange")
 	doc.user = frappe.session.user
-	doc.account_id = account_id
+	doc.account = account
 	doc.operation = "Export"
 	doc.export_format = format
 	doc.export_archive_type = archive_type

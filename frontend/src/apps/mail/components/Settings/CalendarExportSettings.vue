@@ -132,7 +132,7 @@ const createCalendarExport = createResource({
 				.map(([k, v]) => [k, typeof v === 'string' ? v.trim() : v])
 				.filter(([, v]) => Boolean(v)),
 		)
-		return { account_id: accountId, ...calendarExport, filter: cleanedFilter }
+		return { account: accountId, ...calendarExport, filter: cleanedFilter }
 	},
 	onSuccess: () => ongoingExport.reload(),
 })
