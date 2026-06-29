@@ -1,7 +1,7 @@
 // Copyright (c) 2026, Frappe Technologies Pvt. Ltd. and contributors
 // For license information, please see license.txt
 
-frappe.ui.form.on('Account Settings', {
+frappe.ui.form.on('JMAP Account', {
 	refresh(frm) {
 		frm.trigger('add_actions')
 	},

@@ -54,6 +54,7 @@ class MailMessage(Document):
 
 	if TYPE_CHECKING:
 		from frappe.types import DF
+
 		from suite.mail.doctype.email_address.email_address import EmailAddress
 		from suite.mail.doctype.mail_message_mailbox.mail_message_mailbox import MailMessageMailbox
 		from suite.mail.doctype.mail_message_part.mail_message_part import MailMessagePart
@@ -1504,7 +1505,7 @@ def schedule_fetch_changes() -> None:
 	"""Schedule fetch_changes for every (user, account) whose email state hasn't been
 	updated in the last 3 hours.
 
-	Account Settings are now shared per account ID, so the set of accounts to sync is
+	JMAP Account is now shared per account ID, so the set of accounts to sync is
 	derived from each JMAP-configured user's accounts, and the last-update timestamp is
 	read from that user's per-account data store."""
 

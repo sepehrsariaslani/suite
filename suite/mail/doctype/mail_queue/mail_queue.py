@@ -30,7 +30,13 @@ from frappe.utils import (
 )
 
 from suite.mail.jmap import get_email_service, get_identities, get_jmap_connection, parse_account
-from suite.mail.jmap.models import EmailAddress, EmailAttachment, EmailCreateModel, EmailHeader, EmailRecipient
+from suite.mail.jmap.models import (
+	EmailAddress,
+	EmailAttachment,
+	EmailCreateModel,
+	EmailHeader,
+	EmailRecipient,
+)
 from suite.mail.jmap.services.mail.email import EmailService
 from suite.mail.jmap.services.mail.mailbox import MailboxService
 from suite.mail.utils import get_config, log_error
@@ -368,9 +374,9 @@ class MailQueue(Document):
 
 		account_id = self.account_id
 		if self.newsletter:
-			if frappe.db.get_value("Account Settings", account_id, "destroy_newsletter_after_submit"):
+			if frappe.db.get_value("JMAP Account", account_id, "destroy_newsletter_after_submit"):
 				self.destroy_after_submit = 1
-		elif frappe.db.get_value("Account Settings", account_id, "destroy_email_after_submit"):
+		elif frappe.db.get_value("JMAP Account", account_id, "destroy_email_after_submit"):
 			self.destroy_after_submit = 1
 
 	def validate_delivery_mode(self) -> None:

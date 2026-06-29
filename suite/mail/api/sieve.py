@@ -332,7 +332,7 @@ def build_automation_sieve(account: str, activate: bool = False) -> None:
 	     client deleted it.
 	  2. Regenerates all four managed sections, in precedence order — Reject → Mailbox → Spam →
 	     Screening — from their persistent backups: the per-mailbox rules in Mailbox Settings (Mailbox
-	     section) and the Reject/Spam/Screening rules in Screened Email Address plus Account Settings.
+	     section) and the Reject/Spam/Screening rules in Screened Email Address plus JMAP Account.
 	  3. Activates the script when `activate` is set (the "Enable Folder Automation" action); otherwise
 	     its current active state is preserved.
 
@@ -413,9 +413,9 @@ def get_screening_folder_path(account: str) -> str:
 
 
 def is_screening_enabled(account: str) -> bool:
-	"""Whether Hey-style screening is enabled for the account (Account Settings.enable_screening)."""
+	"""Whether Hey-style screening is enabled for the account (JMAP Account.enable_screening)."""
 
-	return bool(frappe.db.get_value("Account Settings", parse_account(account)[1], "enable_screening"))
+	return bool(frappe.db.get_value("JMAP Account", parse_account(account)[1], "enable_screening"))
 
 
 def build_screening_gate(account: str, accepted_emails: list[str]) -> str:
@@ -477,7 +477,7 @@ def _build_screening_block(block_name: str, emails: list[str], action_lines: lis
 def _apply_screening_blocks(account: str, content: str) -> str:
 	"""Layer the Reject/Spam/Screening sieve blocks onto `content` and return the result.
 
-	Rebuilt from the Screened Email Address list (+ Account Settings) in one pass. The blocks are
+	Rebuilt from the Screened Email Address list (+ JMAP Account) in one pass. The blocks are
 	ordered by precedence: Reject (discard) sits at the very top, right after `require`, so it wins
 	outright. The mailbox automation rules come next, so an explicit folder rule can still route mail.
 	Spam (file to Junk) and the Screening gate (`if not <trusted>` → Screening) are fallbacks below the

@@ -82,7 +82,7 @@ def get_user_account_ids(user: str) -> list[str]:
 	"""Returns the JMAP account IDs the user has access to.
 
 	The IDs are read from the user's cached JMAP session (populated whenever a JMAP
-	connection is established). This is the source of truth for which Account Settings
+	connection is established). This is the source of truth for which JMAP Account
 	a user may read/write, since those documents are shared per JMAP account ID.
 	"""
 
@@ -128,7 +128,7 @@ def get_account_scoped_permission_query(
 
 	Restricts non-admins to rows whose `column` (the bare JMAP account ID) is one of the
 	accounts the user has access to. `column="name"` is used by doctypes named directly by
-	the account ID (e.g. Account Settings).
+	the account ID (e.g. JMAP Account).
 	"""
 
 	user = user or frappe.session.user
@@ -241,7 +241,7 @@ def generate_user_keys(user: str) -> dict:
 def get_sync_state(account: str, type: Literal["email"]) -> str | None:
 	"""Returns the Sync State for the given account and type."""
 
-	from suite.mail.doctype.account_settings.account_settings import get_or_create_account_settings
+	from suite.mail.doctype.jmap_account.jmap_account import get_or_create_account_settings
 
 	store = get_data_store(parse_account(account)[1])
 	value = store.get(Entity.STATE, f"{type}_current_state")

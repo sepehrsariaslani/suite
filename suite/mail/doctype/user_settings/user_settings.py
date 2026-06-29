@@ -9,7 +9,7 @@ import frappe
 from frappe import _
 from frappe.model.document import Document
 
-from suite.mail.doctype.account_settings.account_settings import sync_account_settings
+from suite.mail.doctype.jmap_account.jmap_account import sync_account_settings
 from suite.mail.jmap import get_jmap_session_manager
 from suite.mail.jmap.connection import JMAPConnection, JMAPConnectionInfo
 from suite.mail.utils import get_config

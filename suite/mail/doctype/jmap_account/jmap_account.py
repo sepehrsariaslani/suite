@@ -29,17 +29,33 @@ from suite.mail.utils.user import (
 )
 
 
-class AccountSettings(Document):
+class JMAPAccount(Document):
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+
+		account_id: DF.Data
+		block_remote_images: DF.Check
+		create_contacts_after_email_submit: DF.Check
+		default_outgoing_email: DF.Data | None
+		destroy_email_after_submit: DF.Check
+		destroy_newsletter_after_submit: DF.Check
+		enable_screening: DF.Check
+		is_personal: DF.Check
+		last_active_sieve_script_id: DF.Data | None
+		on_mark_as_junk: DF.Literal["Junk Sender's Mail", "Ask to Block Sender"]
+	# end: auto-generated types
+
 	"""Per-account settings shared across every user that has JMAP access to the account.
 
 	The document is named by the bare JMAP account ID. Cache-related fields and actions
 	operate on the *session user's* local store for the account, since the cache is kept
 	per (user, account).
 	"""
-
-	def autoname(self) -> None:
-		# The account ID is supplied by `get_or_create_account_settings` via flags.
-		self.name = self.flags.account_id
 
 	@property
 	def account(self) -> str:
@@ -133,7 +149,7 @@ class AccountSettings(Document):
 			from suite.mail.api.sieve import build_automation_sieve
 			from suite.mail.utils.user import get_session_account
 
-			# Account Settings is named by the shared account_id; resolve it to the session user's
+			# JMAP Account is named by the shared account_id; resolve it to the session user's
 			# account handle for the sieve regeneration.
 			build_automation_sieve(get_session_account(self.name))
 
@@ -210,15 +226,15 @@ class AccountSettings(Document):
 
 
 def get_or_create_account_settings(account: str) -> str:
-	"""Return the name of the (shared) Account Settings for the given `user:account_id`,
+	"""Return the name of the (shared) JMAP Account for the given `user:account_id`,
 	creating it if it does not already exist. The document is named by the account ID."""
 
 	account_id = parse_account(account)[1]
 
-	if frappe.db.exists("Account Settings", account_id):
+	if frappe.db.exists("JMAP Account", account_id):
 		return account_id
 
-	settings = frappe.new_doc("Account Settings")
+	settings = frappe.new_doc("JMAP Account")
 	settings.flags.account_id = account_id
 	# Carry the full account so after_insert / validate can reach JMAP for this user.
 	settings.flags.account = account
@@ -238,7 +254,7 @@ def get_or_create_account_settings(account: str) -> str:
 
 
 def sync_account_settings(user: str, accounts: dict[str, dict]) -> None:
-	"""Ensure a shared Account Settings document exists for each of the user's accounts.
+	"""Ensure a shared JMAP Account document exists for each of the user's accounts.
 
 	Settings are shared by account ID across every user with access, so documents for
 	accounts the user can no longer see are intentionally left untouched.
@@ -265,7 +281,7 @@ def backfill_default_outgoing_emails() -> None:
 			continue
 
 		for account_id in account_ids:
-			if not frappe.db.exists("Account Settings", account_id):
+			if not frappe.db.exists("JMAP Account", account_id):
 				continue
 
 			try:
@@ -276,11 +292,11 @@ def backfill_default_outgoing_emails() -> None:
 			if not emails:
 				continue
 
-			current = frappe.db.get_value("Account Settings", account_id, "default_outgoing_email")
+			current = frappe.db.get_value("JMAP Account", account_id, "default_outgoing_email")
 			resolved = current if current in emails else emails[0]
 			if resolved != current:
 				frappe.db.set_value(
-					"Account Settings",
+					"JMAP Account",
 					account_id,
 					"default_outgoing_email",
 					resolved,
@@ -291,12 +307,12 @@ def backfill_default_outgoing_emails() -> None:
 
 
 def get_permission_query_condition(user: str | None = None) -> str:
-	# Account Settings is named directly by the account ID, so scope on `name`.
-	return get_account_scoped_permission_query("Account Settings", column="name", user=user)
+	# JMAP Account is named directly by the account ID, so scope on `name`.
+	return get_account_scoped_permission_query("JMAP Account", column="name", user=user)
 
 
 def has_permission(doc: Document, ptype: str, user: str | None = None) -> bool:
-	if doc.doctype != "Account Settings":
+	if doc.doctype != "JMAP Account":
 		return False
 
 	return has_account_scoped_permission(doc, column="name", user=user)

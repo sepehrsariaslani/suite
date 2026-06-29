@@ -1,9 +1,13 @@
 {
  "actions": [],
+ "autoname": "field:account_id",
  "creation": "2026-04-15 14:57:59.610465",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
+  "account_id",
+  "is_personal",
+  "column_break_wase",
   "outgoing_section",
   "default_outgoing_email",
   "column_break_outgoing",
@@ -180,6 +184,29 @@
   {
    "fieldname": "column_break_bxpt",
    "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "account_id",
+   "fieldtype": "Data",
+   "label": "Account ID",
+   "no_copy": 1,
+   "reqd": 1,
+   "set_only_once": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "column_break_wase",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "is_personal",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "Is Personal",
+   "no_copy": 1,
+   "search_index": 1,
+   "set_only_once": 1
   }
  ],
  "grid_page_length": 50,
@@ -211,10 +238,11 @@
    "link_fieldname": "account_id"
   }
  ],
- "modified": "2026-06-24 20:45:58.331960",
+ "modified": "2026-06-29 20:46:46.089325",
  "modified_by": "Administrator",
  "module": "Mail",
- "name": "Account Settings",
+ "name": "JMAP Account",
+ "naming_rule": "By fieldname",
  "owner": "Administrator",
  "permissions": [
   {

@@ -16,6 +16,7 @@ suite.mail.patches.delete_client_module
 suite.mail.patches.capture_user_outgoing_settings
 suite.mail.patches.rebuild_rate_limit_unique_constraint
 suite.mail.patches.refactor_account_settings
+suite.mail.patches.rename_account_settings_to_jmap_account
 [post_model_sync]
 # --- drive ---
 suite.drive.patches.folder_size #3

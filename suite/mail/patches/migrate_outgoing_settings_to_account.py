@@ -1,11 +1,11 @@
 import frappe
 
-from suite.mail.doctype.account_settings.account_settings import backfill_default_outgoing_emails
+from suite.mail.doctype.jmap_account.jmap_account import backfill_default_outgoing_emails
 from suite.mail.patches.capture_user_outgoing_settings import CACHE_KEY
 
 
 def execute() -> None:
-	"""Apply the captured per-user Outgoing settings onto each Account Settings.
+	"""Apply the captured per-user Outgoing settings onto each JMAP Account.
 
 	The three toggles and the old default_outgoing_email are copied verbatim to every
 	account the user owns (JMAP isn't reliably reachable during `bench migrate`, so we
@@ -13,22 +13,22 @@ def execute() -> None:
 	each account's identities by a background job once migrate is done.
 	"""
 
-	# Account Settings was later reshaped to be shared per account ID, dropping the
+	# JMAP Account was later reshaped to be shared per account ID, dropping the
 	# `user`/`account` columns (see refactor_account_settings). When those columns are
 	# gone there is nothing for this legacy patch to migrate.
-	if not frappe.db.has_column("Account Settings", "account"):
+	if not frappe.db.has_column("JMAP Account", "account"):
 		return
 
 	captured = frappe.cache.get_value(CACHE_KEY)
 	by_user = frappe.parse_json(captured) if captured else {}
 
-	for settings in frappe.get_all("Account Settings", fields=["name", "account", "user"]):
+	for settings in frappe.get_all("JMAP Account", fields=["name", "account", "user"]):
 		old = by_user.get(settings["user"])
 		if not old:
 			continue
 
 		frappe.db.set_value(
-			"Account Settings",
+			"JMAP Account",
 			settings["name"],
 			{
 				"default_outgoing_email": old.get("default_outgoing_email"),

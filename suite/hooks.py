@@ -166,7 +166,7 @@ permission_query_conditions = {
 	"Sheet Op Log": "suite.sheets.permissions.sheet_op_log_query",
 	"Sheet Snapshot": "suite.sheets.permissions.sheet_snapshot_query",
 	# mail
-	"Account Settings": "suite.mail.doctype.account_settings.account_settings.get_permission_query_condition",
+	"JMAP Account": "suite.mail.doctype.jmap_account.jmap_account.get_permission_query_condition",
 	"Blocked Email Address": "suite.mail.doctype.blocked_email_address.blocked_email_address.get_permission_query_condition",
 	"Calendar Exchange": "suite.mail.doctype.calendar_exchange.calendar_exchange.get_permission_query_condition",
 	"Junk Email Address": "suite.mail.doctype.junk_email_address.junk_email_address.get_permission_query_condition",
@@ -191,7 +191,7 @@ has_permission = {
 	"Sheet Op Log": "suite.sheets.permissions.sheet_op_log_has_permission",
 	"Sheet Snapshot": "suite.sheets.permissions.sheet_snapshot_has_permission",
 	# mail
-	"Account Settings": "suite.mail.doctype.account_settings.account_settings.has_permission",
+	"JMAP Account": "suite.mail.doctype.jmap_account.jmap_account.has_permission",
 	"Address Book": "suite.mail.doctype.address_book.address_book.has_permission",
 	"Blocked Email Address": "suite.mail.doctype.blocked_email_address.blocked_email_address.has_permission",
 	"Calendar": "suite.mail.doctype.calendar.calendar.has_permission",
@@ -343,7 +343,7 @@ ignore_links_on_delete = [
 	"Server Job",
 	"Server Ansible Play",
 	"Server Deployment",
-	"Account Settings",
+	"JMAP Account",
 	"Screened Email Address",
 	"Mail Exchange",
 	"Mail Queue",
