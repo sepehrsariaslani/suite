@@ -206,7 +206,7 @@ const isNotificationsDisabled = computed(
 	() =>
 		!isNew.value &&
 		((mailbox?.role &&
-			['sent', 'drafts', 'junk', 'trash'].includes(mailbox.role)) ||
+			['sent', 'drafts', 'junk', 'trash', 'archive'].includes(mailbox.role)) ||
 			mailbox?._name === SCREENER_MAILBOX_NAME),
 )
 

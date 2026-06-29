@@ -1307,7 +1307,8 @@ def fetch_changes(account: str, email_state: str | None = None, ctx: dict | None
 				) | {
 					m["id"]
 					for m in mailbox_service.mailboxes
-					if m["role"] in ["sent", "drafts", "junk", "trash"] or m["name"] == SCREENER_MAILBOX_NAME
+					if m["role"] in ["sent", "drafts", "junk", "trash", "archive"]
+					or m["name"] == SCREENER_MAILBOX_NAME
 				}
 				logger.debug("resolved-disabled-mailboxes", disabled_mailboxes=disabled_mailboxes)
 
