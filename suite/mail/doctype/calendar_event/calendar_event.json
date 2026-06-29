@@ -6,7 +6,7 @@
  "field_order": [
   "section_break_nfos",
   "user",
-  "account",
+  "account_id",
   "created_utc",
   "updated_utc",
   "after",
@@ -403,13 +403,10 @@
    "set_only_once": 1
   },
   {
-   "description": "The account this event belongs to.",
-   "fieldname": "account",
+   "fieldname": "account_id",
    "fieldtype": "Select",
-   "in_list_view": 1,
    "in_standard_filter": 1,
-   "label": "Account",
-   "reqd": 1,
+   "label": "Account ID",
    "set_only_once": 1
   },
   {
@@ -427,7 +424,7 @@
  "index_web_pages_for_search": 1,
  "is_virtual": 1,
  "links": [],
- "modified": "2026-04-17 14:09:01.908337",
+ "modified": "2026-06-29 13:37:33.327664",
  "modified_by": "Administrator",
  "module": "Mail",
  "name": "Calendar Event",

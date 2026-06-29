@@ -14,6 +14,28 @@ from suite.mail.utils.validation import has_permission_for_user
 
 
 class Quota(Document):
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+
+		_name: DF.Data | None
+		account_id: DF.Literal[None]
+		description: DF.SmallText | None
+		hard_limit: DF.Int
+		id: DF.Data | None
+		resource_type: DF.Data | None
+		scope: DF.Data | None
+		soft_limit: DF.Int
+		types: DF.JSON | None
+		used: DF.Int
+		user: DF.Link | None
+		warn_limit: DF.Int
+	# end: auto-generated types
+
 	@property
 	def account(self) -> str:
 		"""Full ``user:account_id`` JMAP handle, rebuilt from the selected user and account ID."""

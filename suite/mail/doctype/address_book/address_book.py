@@ -16,6 +16,28 @@ from suite.mail.utils.validation import has_permission_for_user
 
 
 class AddressBook(Document):
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+
+		_name: DF.Data
+		account_id: DF.Literal[None]
+		default: DF.Check
+		description: DF.SmallText | None
+		id: DF.Data | None
+		may_admin: DF.Check
+		may_delete: DF.Check
+		may_read: DF.Check
+		may_write: DF.Check
+		sort_order: DF.Int
+		subscribed: DF.Check
+		user: DF.Link | None
+	# end: auto-generated types
+
 	@property
 	def account(self) -> str:
 		"""Full ``user:account_id`` JMAP handle, rebuilt from the selected user and account ID."""

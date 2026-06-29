@@ -47,6 +47,66 @@ from suite.mail.utils.validation import has_permission_for_user
 
 
 class MailMessage(Document):
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+		from suite.mail.doctype.email_address.email_address import EmailAddress
+		from suite.mail.doctype.mail_message_mailbox.mail_message_mailbox import MailMessageMailbox
+		from suite.mail.doctype.mail_message_part.mail_message_part import MailMessagePart
+		from suite.mail.doctype.mail_message_recipient.mail_message_recipient import MailMessageRecipient
+
+		_bcc: DF.Data | None
+		_cc: DF.Data | None
+		_from: DF.Data | None
+		_html_body: DF.Table[MailMessagePart]
+		_text_body: DF.Table[MailMessagePart]
+		_to: DF.Data | None
+		account_id: DF.Literal[None]
+		after: DF.Datetime | None
+		answered: DF.Check
+		attachments: DF.Table[MailMessagePart]
+		before: DF.Datetime | None
+		blob_id: DF.Data | None
+		body: DF.Data | None
+		draft: DF.Check
+		flagged: DF.Check
+		forwarded: DF.Check
+		from_email: DF.Data | None
+		from_name: DF.Data | None
+		has_attachment: DF.Check
+		has_keyword: DF.Data | None
+		html_body: DF.Code | None
+		id: DF.Data | None
+		in_mailbox: DF.Data | None
+		in_reply_to: DF.Data | None
+		junk: DF.Check
+		keywords: DF.JSON | None
+		mailboxes: DF.Table[MailMessageMailbox]
+		max_size: DF.Int
+		message_id: DF.Data | None
+		min_size: DF.Int
+		not_keyword: DF.Data | None
+		preview: DF.Code | None
+		received_after: DF.Float
+		received_at: DF.Datetime | None
+		recipients: DF.Table[MailMessageRecipient]
+		reply_to: DF.Table[EmailAddress]
+		seen: DF.Check
+		sender_email: DF.Data | None
+		sender_name: DF.Data | None
+		sent_at: DF.Datetime | None
+		size: DF.Int
+		subject: DF.SmallText | None
+		text: DF.Data | None
+		text_body: DF.Code | None
+		thread_id: DF.Data | None
+		user: DF.Link | None
+	# end: auto-generated types
+
 	@property
 	def account(self) -> str:
 		"""Full ``user:account_id`` JMAP handle, rebuilt from the selected user and account ID."""

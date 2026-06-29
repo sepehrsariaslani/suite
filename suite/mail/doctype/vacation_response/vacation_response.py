@@ -22,6 +22,24 @@ from suite.mail.utils.validation import has_permission_for_user
 
 
 class VacationResponse(Document):
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+
+		account_id: DF.Literal[None]
+		enabled: DF.Check
+		from_date: DF.Datetime | None
+		html_body: DF.TextEditor | None
+		subject: DF.Data | None
+		text_body: DF.Code | None
+		to_date: DF.Datetime | None
+		user: DF.Link | None
+	# end: auto-generated types
+
 	@property
 	def account(self) -> str | None:
 		"""Full ``user:account_id`` JMAP handle, rebuilt from the selected user and account ID."""

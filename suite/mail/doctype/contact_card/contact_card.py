@@ -20,6 +20,35 @@ from suite.mail.utils.validation import has_permission_for_user
 
 
 class ContactCard(Document):
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+		from suite.mail.doctype.contact_card_address.contact_card_address import ContactCardAddress
+		from suite.mail.doctype.contact_card_address_book.contact_card_address_book import ContactCardAddressBook
+		from suite.mail.doctype.contact_card_email.contact_card_email import ContactCardEmail
+		from suite.mail.doctype.contact_card_phone.contact_card_phone import ContactCardPhone
+
+		account_id: DF.Literal[None]
+		address_books: DF.Table[ContactCardAddressBook]
+		addresses: DF.Table[ContactCardAddress]
+		created_at: DF.Data | None
+		email: DF.Data | None
+		emails: DF.Table[ContactCardEmail]
+		full_name: DF.Data | None
+		id: DF.Data | None
+		kind: DF.Data | None
+		name_breakup: DF.JSON | None
+		phone: DF.Data | None
+		phones: DF.Table[ContactCardPhone]
+		uid: DF.Data | None
+		updated_at: DF.Data | None
+		user: DF.Link | None
+	# end: auto-generated types
+
 	@property
 	def account(self) -> str:
 		"""Full ``user:account_id`` JMAP handle, rebuilt from the selected user and account ID."""

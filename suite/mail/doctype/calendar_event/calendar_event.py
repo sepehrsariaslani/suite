@@ -15,10 +15,66 @@ from suite.mail.doctype.calendar.calendar import validate_calendar_name_format
 from suite.mail.jmap import get_calendar_event_service, parse_account
 from suite.mail.utils import parse_filters
 from suite.mail.utils.dt import convert_to_utc, parse_iso_datetime, utcnow
+from suite.mail.utils.user import resolve_account_handle
 from suite.mail.utils.validation import has_permission_for_user
 
 
 class CalendarEvent(Document):
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+		from suite.mail.doctype.event_alert.event_alert import EventAlert
+		from suite.mail.doctype.event_calendar.event_calendar import EventCalendar
+		from suite.mail.doctype.event_link.event_link import EventLink
+		from suite.mail.doctype.event_location.event_location import EventLocation
+		from suite.mail.doctype.event_participant.event_participant import EventParticipant
+
+		account_id: DF.Literal[None]
+		after: DF.Datetime | None
+		alerts: DF.Table[EventAlert]
+		before: DF.Datetime | None
+		calendars: DF.Table[EventCalendar]
+		created_utc: DF.Data | None
+		description: DF.SmallText | None
+		draft: DF.Check
+		duration: DF.Data | None
+		free_busy_status: DF.Literal["", "Busy", "Free"]
+		hide_attendees: DF.Check
+		id: DF.Data | None
+		links: DF.Table[EventLink]
+		locations: DF.Table[EventLocation]
+		may_invite_others: DF.Check
+		may_invite_self: DF.Check
+		organizer: DF.Data | None
+		origin: DF.Check
+		participants: DF.Table[EventParticipant]
+		privacy: DF.Literal["", "Public", "Private"]
+		recurrence_id: DF.Data | None
+		recurrence_id_time_zone: DF.Autocomplete | None
+		recurrence_rule: DF.JSON | None
+		send_scheduling_messages: DF.Check
+		sequence: DF.Int
+		show_without_time: DF.Check
+		start: DF.Data | None
+		status: DF.Literal["Tentative", "Confirmed", "Cancelled"]
+		time_zone: DF.Autocomplete | None
+		title: DF.Data | None
+		uid: DF.Data | None
+		updated_utc: DF.Data | None
+		use_default_alerts: DF.Check
+		user: DF.Link | None
+	# end: auto-generated types
+
+	@property
+	def account(self) -> str:
+		"""Full ``user:account_id`` JMAP handle, rebuilt from the selected user and account ID."""
+
+		return f"{self.user}:{self.account_id}"
+
 	@property
 	def calendar_ids(self) -> list[str]:
 		"""Returns a list of calendar IDs associated with the event."""
@@ -94,7 +150,7 @@ class CalendarEvent(Document):
 
 	def db_insert(self, *args, **kwargs) -> None:
 		self.id = add_calendar_event(
-			account=self.account,
+			account_id=self.account,
 			organizer=self.organizer,
 			calendar_ids=self.calendar_ids,
 			status=self.status,
@@ -132,7 +188,7 @@ class CalendarEvent(Document):
 
 	def db_update(self) -> None:
 		update_calendar_event(
-			account=self.account,
+			account_id=self.account,
 			id=self.id,
 			uid=self.uid,
 			organizer=self.organizer,
@@ -171,6 +227,8 @@ class CalendarEvent(Document):
 		title = filters.get("title")
 		calendar = filters.get("calendar")
 		account = filters.get("account")
+		if not account and filters.get("user") and filters.get("account_id"):
+			account = f"{filters['user']}:{filters['account_id']}"
 
 		if not account:
 			frappe.msgprint(_("Please select an account to view calendar events."), alert=True)
@@ -206,6 +264,8 @@ class CalendarEvent(Document):
 	def get_count(filters=None, **kwargs) -> int:
 		filters = parse_filters(filters)
 		account = filters.get("account")
+		if not account and filters.get("user") and filters.get("account_id"):
+			account = f"{filters['user']}:{filters['account_id']}"
 
 		if account:
 			if has_permission_for_user(parse_account(account)[0], raise_exception=False):
@@ -276,7 +336,7 @@ def bulk_delete(names: str | list[str]) -> None:
 
 @frappe.whitelist()
 def add_calendar_event(
-	account: str,
+	account_id: str,
 	organizer: str | None = None,
 	calendar_ids: list[str] | None = None,
 	status: Literal["Tentative", "Confirmed", "Cancelled"] = "Confirmed",
@@ -298,6 +358,8 @@ def add_calendar_event(
 	send_scheduling_messages: bool = False,
 ) -> str:
 	"""Adds a calendar event for the given account and returns the event ID."""
+
+	account = resolve_account_handle(account_id)
 
 	has_permission_for_user(parse_account(account)[0])
 
@@ -404,7 +466,7 @@ def get_master_events_by_uids(account: str, uids: list[str]) -> dict:
 
 @frappe.whitelist()
 def update_calendar_event(
-	account: str,
+	account_id: str,
 	id: str,
 	uid: str | None = None,
 	organizer: str | None = None,
@@ -428,6 +490,8 @@ def update_calendar_event(
 	send_scheduling_messages: bool = False,
 ) -> None:
 	"""Updates a calendar event for the given account and event ID."""
+
+	account = resolve_account_handle(account_id)
 
 	has_permission_for_user(parse_account(account)[0])
 
@@ -467,13 +531,15 @@ def update_calendar_event(
 
 @frappe.whitelist()
 def update_calendar_event_instance(
-	account: str,
+	account_id: str,
 	master_id: str,
 	recurrence_id: str,
 	patch: dict,
 	send_scheduling_messages: bool = False,
 ) -> None:
 	"""Updates a specific instance of a recurring calendar event based on its master ID and recurrence ID."""
+
+	account = resolve_account_handle(account_id)
 
 	has_permission_for_user(parse_account(account)[0])
 
@@ -491,8 +557,10 @@ def update_calendar_event_instance(
 
 
 @frappe.whitelist()
-def delete_calendar_events(account: str, ids: list[str]) -> None:
+def delete_calendar_events(account_id: str, ids: list[str]) -> None:
 	"""Deletes a calendar event for the given account by its ID."""
+
+	account = resolve_account_handle(account_id)
 
 	has_permission_for_user(parse_account(account)[0])
 
@@ -513,8 +581,10 @@ def delete_calendar_events(account: str, ids: list[str]) -> None:
 
 
 @frappe.whitelist()
-def delete_calendar_event_instance(account: str, master_id: str, recurrence_id: str) -> None:
+def delete_calendar_event_instance(account_id: str, master_id: str, recurrence_id: str) -> None:
 	"""Deletes a specific instance of a recurring calendar event based on its master ID and recurrence ID."""
+
+	account = resolve_account_handle(account_id)
 
 	has_permission_for_user(parse_account(account)[0])
 
@@ -622,7 +692,8 @@ def format_calendar_event(account: str, calendar_map: dict, event: dict) -> dict
 
 	return {
 		"name": f"{account}|{event['id']}",
-		"account": account,
+		"account_id": parse_account(account)[1],
+		"user": parse_account(account)[0],
 		"id": event["id"],
 		"uid": event["uid"],
 		"recurrence_id": event.get("recurrenceId"),

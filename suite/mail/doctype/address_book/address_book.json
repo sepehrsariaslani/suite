@@ -143,7 +143,8 @@
    "fieldname": "account_id",
    "fieldtype": "Select",
    "in_standard_filter": 1,
-   "label": "Account ID"
+   "label": "Account ID",
+   "set_only_once": 1
   },
   {
    "description": "The user this address book belongs to.",
@@ -165,7 +166,7 @@
    "link_fieldname": "address_book"
   }
  ],
- "modified": "2026-04-17 13:52:03.036656",
+ "modified": "2026-06-29 13:39:18.728347",
  "modified_by": "Administrator",
  "module": "Mail",
  "name": "Address Book",

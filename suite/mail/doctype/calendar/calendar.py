@@ -12,10 +12,49 @@ from frappe.utils import cint, today
 
 from suite.mail.jmap import get_calendar_service, parse_account
 from suite.mail.utils import parse_filters
+from suite.mail.utils.user import resolve_account_handle
 from suite.mail.utils.validation import has_permission_for_user
 
 
 class Calendar(Document):
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+		from suite.mail.doctype.calendar_rights.calendar_rights import CalendarRights
+
+		_name: DF.Data
+		account_id: DF.Literal[None]
+		color: DF.Color | None
+		default: DF.Check
+		description: DF.SmallText | None
+		id: DF.Data | None
+		include_in_availability: DF.Literal["All", "Attending", "None"]
+		may_admin: DF.Check
+		may_delete: DF.Check
+		may_read_free_busy: DF.Check
+		may_read_items: DF.Check
+		may_rsvp: DF.Check
+		may_update_private: DF.Check
+		may_write_all: DF.Check
+		may_write_own: DF.Check
+		share_with: DF.Table[CalendarRights]
+		sort_order: DF.Int
+		subscribed: DF.Check
+		time_zone: DF.Autocomplete | None
+		user: DF.Link | None
+		visible: DF.Check
+	# end: auto-generated types
+
+	@property
+	def account(self) -> str:
+		"""Full ``user:account_id`` JMAP handle, rebuilt from the selected user and account ID."""
+
+		return f"{self.user}:{self.account_id}"
+
 	def db_insert(self, *args, **kwargs) -> None:
 		self.id = add_calendar(
 			self.account,
@@ -60,6 +99,8 @@ class Calendar(Document):
 	def get_list(filters=None, page_length=20, **kwargs) -> list:
 		filters = parse_filters(filters)
 		account = filters.get("account")
+		if not account and filters.get("user") and filters.get("account_id"):
+			account = f"{filters['user']}:{filters['account_id']}"
 
 		if not account:
 			frappe.msgprint(_("Please select an account to view calendars."), alert=True)
@@ -76,6 +117,8 @@ class Calendar(Document):
 	def get_count(filters=None, **kwargs) -> int:
 		filters = parse_filters(filters)
 		account = filters.get("account")
+		if not account and filters.get("user") and filters.get("account_id"):
+			account = f"{filters['user']}:{filters['account_id']}"
 
 		if account:
 			if has_permission_for_user(parse_account(account)[0], raise_exception=False):
@@ -122,7 +165,7 @@ def bulk_delete(names: str | list[str]) -> None:
 
 @frappe.whitelist()
 def add_calendar(
-	account: str,
+	account_id: str,
 	name: str,
 	color: str | None = None,
 	description: str | None = None,
@@ -134,6 +177,8 @@ def add_calendar(
 	default: bool = False,
 ) -> str:
 	"""Adds a calendar for the given account with the specified parameters."""
+
+	account = resolve_account_handle(account_id)
 
 	has_permission_for_user(parse_account(account)[0])
 
@@ -222,8 +267,10 @@ def update_calendar(
 
 
 @frappe.whitelist()
-def delete_calendars(account: str, ids: list[str], remove_events: bool = True) -> None:
+def delete_calendars(account_id: str, ids: list[str], remove_events: bool = True) -> None:
 	"""Deletes calendars for the specified account and ID(s)."""
+
+	account = resolve_account_handle(account_id)
 
 	has_permission_for_user(parse_account(account)[0])
 
@@ -241,8 +288,10 @@ def delete_calendars(account: str, ids: list[str], remove_events: bool = True) -
 
 
 @frappe.whitelist()
-def fetch_calendars(account: str, page: int = 1, limit: int = 10) -> list:
+def fetch_calendars(account_id: str, page: int = 1, limit: int = 10) -> list:
 	"""Returns a list of calendars for the given account."""
+
+	account = resolve_account_handle(account_id)
 
 	has_permission_for_user(parse_account(account)[0])
 
@@ -280,7 +329,8 @@ def format_calendar(account: str, calendar: dict) -> dict:
 
 	return {
 		"name": f"{account}|{calendar['id']}",
-		"account": account,
+		"account_id": parse_account(account)[1],
+		"user": parse_account(account)[0],
 		"id": calendar["id"],
 		"_name": calendar["name"],
 		"description": calendar["description"],

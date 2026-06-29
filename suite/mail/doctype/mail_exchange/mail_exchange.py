@@ -479,6 +479,37 @@ class ExportWriter:
 
 
 class MailExchange(Document):
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+
+		account_id: DF.Literal[None]
+		amended_from: DF.Link | None
+		completed_at: DF.Datetime | None
+		deduplicate_export: DF.Check
+		duration: DF.Float
+		export_archive_type: DF.Literal[".zip", ".tgz", ".tar.gz"]
+		export_filter: DF.JSON | None
+		export_format: DF.Literal["jmap", "mbox", "maildir", "maildir-nested"]
+		export_limit: DF.Int
+		export_sort: DF.Literal["", "Received At (ASC)", "Received At (DESC)"]
+		import_file: DF.Attach | None
+		import_format: DF.Literal["eml", "jmap", "mbox", "maildir", "maildir-nested"]
+		import_metadata: DF.JSON | None
+		operation: DF.Literal["", "Import", "Export"]
+		output: DF.Code | None
+		queued_at: DF.Datetime | None
+		retries: DF.Int
+		started_after: DF.Float
+		started_at: DF.Datetime | None
+		status: DF.Literal["Draft", "Queued", "In Progress", "Completed", "Failed", "Cancelled"]
+		user: DF.Link
+	# end: auto-generated types
+
 	@property
 	def max_import(self) -> int:
 		"""Returns the maximum number of emails allowed for import."""

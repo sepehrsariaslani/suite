@@ -15,6 +15,24 @@ from suite.mail.utils.validation import has_permission_for_user
 
 
 class SieveScript(Document):
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+
+		_name: DF.Data
+		account_id: DF.Literal[None]
+		active: DF.Check
+		blob_id: DF.Data | None
+		content: DF.Code
+		id: DF.Data | None
+		read_only: DF.Check
+		user: DF.Link | None
+	# end: auto-generated types
+
 	@property
 	def account(self) -> str:
 		"""Full ``user:account_id`` JMAP handle, rebuilt from the selected user and account ID."""
