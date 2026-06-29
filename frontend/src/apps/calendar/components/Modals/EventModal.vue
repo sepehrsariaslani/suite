@@ -244,7 +244,7 @@ const handleSuccess = () => {
 const createEvent = createResource({
 	url: 'suite.mail.doctype.calendar_event.calendar_event.add_calendar_event',
 	makeParams: ({ sendEmail }: { sendEmail: boolean }) => ({
-		account: store.account,
+		account_id: store.accountId,
 		...eventParams.value,
 		send_scheduling_messages: sendEmail,
 	}),
@@ -254,7 +254,7 @@ const createEvent = createResource({
 const editEventInstance = createResource({
 	url: 'suite.mail.doctype.calendar_event.calendar_event.update_calendar_event_instance',
 	makeParams: ({ sendEmail }: { sendEmail: boolean }) => ({
-		account: store.account,
+		account_id: store.accountId,
 		master_id: selectedEvent.calendarEvent.master_id,
 		recurrence_id: selectedEvent.calendarEvent.recurrence_id,
 		patch: patch.value,
@@ -266,7 +266,7 @@ const editEventInstance = createResource({
 const editEvent = createResource({
 	url: 'suite.mail.doctype.calendar_event.calendar_event.update_calendar_event',
 	makeParams: ({ sendEmail }: { sendEmail: boolean }) => ({
-		account: store.account,
+		account_id: store.accountId,
 		id: selectedEvent.calendarEvent.master_id,
 		uid: selectedEvent.calendarEvent.uid,
 		...eventParams.value,

@@ -6,7 +6,7 @@
  "field_order": [
   "section_break_nfos",
   "user",
-  "account",
+  "account_id",
   "created_utc",
   "updated_utc",
   "after",
@@ -403,14 +403,10 @@
    "set_only_once": 1
   },
   {
-   "description": "The account this event belongs to.",
-   "fieldname": "account",
+   "fieldname": "account_id",
    "fieldtype": "Select",
-   "in_list_view": 1,
    "in_standard_filter": 1,
-   "label": "Account",
-   "reqd": 1,
-   "set_only_once": 1
+   "label": "Account ID"
   },
   {
    "description": "The user this event belongs to.",
