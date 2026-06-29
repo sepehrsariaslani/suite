@@ -292,9 +292,9 @@ scheduler_events = {
 	"cron": {
 		"*/5 * * * *": [
 			# mail (server)
-			"suite.server.doctype.server_job.server_job.retry_failed_jobs",
-			"suite.server.doctype.server_deployment.server_deployment.retry_failed_deployments",
-			"suite.server.doctype.server_ansible_play.server_ansible_play.retry_failed_ansible_plays",
+			"suite.mail.doctype.server_job.server_job.retry_failed_jobs",
+			"suite.mail.doctype.server_deployment.server_deployment.retry_failed_deployments",
+			"suite.mail.doctype.server_ansible_play.server_ansible_play.retry_failed_ansible_plays",
 			# mail (client)
 			"suite.client.doctype.mail_queue.mail_queue.enqueue_process_pending_emails",
 		],

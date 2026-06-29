@@ -173,7 +173,7 @@
  "links": [],
  "modified": "2026-05-18 15:08:26.869368",
  "modified_by": "Administrator",
- "module": "Server",
+ "module": "Mail",
  "name": "Mail Account Request",
  "owner": "Administrator",
  "permissions": [

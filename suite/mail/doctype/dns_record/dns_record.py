@@ -8,7 +8,7 @@ from frappe import _
 from frappe.model.document import Document
 from frappe.utils import cint, now
 
-from suite.server.doctype.dns_record.dns_provider import DNSProvider
+from suite.mail.doctype.dns_record.dns_provider import DNSProvider
 from suite.mail.utils import enqueue_job, get_config, password_or_none, user_context
 from suite.mail.utils.dns import verify_dns_record
 

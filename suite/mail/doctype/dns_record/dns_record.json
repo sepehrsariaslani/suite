@@ -114,7 +114,7 @@
  "links": [],
  "modified": "2025-11-27 17:03:22.707375",
  "modified_by": "Administrator",
- "module": "Server",
+ "module": "Mail",
  "name": "DNS Record",
  "naming_rule": "Random",
  "owner": "Administrator",

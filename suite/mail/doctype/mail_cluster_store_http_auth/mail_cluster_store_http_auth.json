@@ -71,7 +71,7 @@
  "links": [],
  "modified": "2026-05-11 12:26:45.666253",
  "modified_by": "Administrator",
- "module": "Server",
+ "module": "Mail",
  "name": "Mail Cluster Store HTTP Auth",
  "owner": "Administrator",
  "permissions": [
