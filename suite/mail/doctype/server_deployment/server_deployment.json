@@ -1,48 +1,34 @@
 {
  "actions": [],
- "creation": "2025-09-25 17:01:20.637215",
+ "creation": "2025-09-27 10:37:56.625645",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
-  "section_break_ecmu",
+  "section_break_uxmr",
   "status",
-  "play",
-  "playbook",
-  "column_break_gaur",
+  "column_break_rkiz",
   "server",
-  "deployment",
-  "section_break_jwfm",
+  "section_break_ywge",
   "retries",
-  "column_break_arkm",
+  "column_break_gohq",
   "max_retries",
-  "section_break_3tra",
+  "section_break_jjjv",
   "started_at",
   "ended_at",
-  "column_break_mdcx",
+  "column_break_vkxq",
   "started_after",
   "duration",
-  "statistics_section",
-  "ok",
-  "changed",
-  "failures",
-  "unreachable",
-  "column_break_fpay",
-  "skipped",
-  "rescued",
-  "ignored",
-  "processed",
-  "section_break_6og3",
-  "variables",
+  "section_break_mndp",
+  "services",
   "error_log_section",
   "error_log"
  ],
  "fields": [
   {
-   "fieldname": "section_break_ecmu",
+   "fieldname": "section_break_uxmr",
    "fieldtype": "Section Break"
   },
   {
-   "default": "Pending",
    "fieldname": "status",
    "fieldtype": "Select",
    "in_list_view": 1,
@@ -53,10 +39,6 @@
    "read_only": 1,
    "reqd": 1,
    "search_index": 1
-  },
-  {
-   "fieldname": "column_break_gaur",
-   "fieldtype": "Column Break"
   },
   {
    "fieldname": "server",
@@ -70,7 +52,11 @@
    "set_only_once": 1
   },
   {
-   "fieldname": "section_break_3tra",
+   "fieldname": "column_break_rkiz",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_jjjv",
    "fieldtype": "Section Break"
   },
   {
@@ -90,7 +76,7 @@
    "read_only": 1
   },
   {
-   "fieldname": "column_break_mdcx",
+   "fieldname": "column_break_vkxq",
    "fieldtype": "Column Break"
   },
   {
@@ -134,14 +120,6 @@
    "read_only": 1
   },
   {
-   "fieldname": "playbook",
-   "fieldtype": "Data",
-   "label": "Playbook",
-   "reqd": 1,
-   "search_index": 1,
-   "set_only_once": 1
-  },
-  {
    "depends_on": "eval: doc.retries",
    "fieldname": "retries",
    "fieldtype": "Int",
@@ -153,11 +131,11 @@
    "search_index": 1
   },
   {
-   "fieldname": "section_break_jwfm",
+   "fieldname": "section_break_ywge",
    "fieldtype": "Section Break"
   },
   {
-   "fieldname": "column_break_arkm",
+   "fieldname": "column_break_gohq",
    "fieldtype": "Column Break"
   },
   {
@@ -174,102 +152,14 @@
    "set_only_once": 1
   },
   {
-   "fieldname": "variables",
-   "fieldtype": "Table",
-   "label": "Variables",
-   "options": "Server Ansible Play Variable",
-   "set_only_once": 1
-  },
-  {
-   "collapsible_depends_on": "eval: false",
-   "fieldname": "section_break_6og3",
+   "fieldname": "section_break_mndp",
    "fieldtype": "Section Break"
   },
   {
-   "fieldname": "play",
-   "fieldtype": "Data",
-   "in_list_view": 1,
-   "in_standard_filter": 1,
-   "label": "Play",
-   "reqd": 1,
-   "search_index": 1,
-   "set_only_once": 1
-  },
-  {
-   "depends_on": "eval: ![\"Pending\", \"Running\"].includes(doc.status)",
-   "fieldname": "statistics_section",
-   "fieldtype": "Section Break",
-   "label": "Statistics"
-  },
-  {
-   "fieldname": "ok",
-   "fieldtype": "Int",
-   "label": "OK",
-   "no_copy": 1,
-   "read_only": 1
-  },
-  {
-   "fieldname": "changed",
-   "fieldtype": "Int",
-   "label": "Changed",
-   "no_copy": 1,
-   "read_only": 1
-  },
-  {
-   "fieldname": "failures",
-   "fieldtype": "Int",
-   "label": "Failures",
-   "no_copy": 1,
-   "read_only": 1
-  },
-  {
-   "fieldname": "column_break_fpay",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "skipped",
-   "fieldtype": "Int",
-   "label": "Skipped",
-   "no_copy": 1,
-   "read_only": 1
-  },
-  {
-   "fieldname": "rescued",
-   "fieldtype": "Int",
-   "label": "Rescued",
-   "no_copy": 1,
-   "read_only": 1
-  },
-  {
-   "fieldname": "ignored",
-   "fieldtype": "Int",
-   "label": "Ignored",
-   "no_copy": 1,
-   "read_only": 1
-  },
-  {
-   "fieldname": "processed",
-   "fieldtype": "Int",
-   "label": "Processed",
-   "no_copy": 1,
-   "read_only": 1
-  },
-  {
-   "fieldname": "unreachable",
-   "fieldtype": "Int",
-   "label": "Unreachable",
-   "no_copy": 1,
-   "read_only": 1
-  },
-  {
-   "depends_on": "eval: doc.deployment",
-   "fieldname": "deployment",
-   "fieldtype": "Link",
-   "label": "Deployment",
-   "no_copy": 1,
-   "options": "Server Deployment",
-   "read_only": 1,
-   "search_index": 1,
+   "fieldname": "services",
+   "fieldtype": "Table",
+   "label": "Services",
+   "options": "Server Deployment Service",
    "set_only_once": 1
   }
  ],
@@ -278,14 +168,14 @@
  "links": [
   {
    "group": "Reference",
-   "link_doctype": "Server Ansible Play Task",
-   "link_fieldname": "play"
+   "link_doctype": "Server Ansible Play",
+   "link_fieldname": "deployment"
   }
  ],
- "modified": "2025-11-17 11:26:57.053054",
+ "modified": "2026-05-05 22:24:48.231315",
  "modified_by": "Administrator",
- "module": "Server",
- "name": "Server Ansible Play",
+ "module": "Mail",
+ "name": "Server Deployment",
  "owner": "Administrator",
  "permissions": [
   {
@@ -305,5 +195,5 @@
  "sort_field": "creation",
  "sort_order": "DESC",
  "states": [],
- "title_field": "play"
+ "title_field": "server"
 }

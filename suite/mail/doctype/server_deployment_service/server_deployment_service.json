@@ -101,7 +101,7 @@
  "links": [],
  "modified": "2026-05-05 23:22:00.493653",
  "modified_by": "Administrator",
- "module": "Server",
+ "module": "Mail",
  "name": "Server Deployment Service",
  "owner": "Administrator",
  "permissions": [],

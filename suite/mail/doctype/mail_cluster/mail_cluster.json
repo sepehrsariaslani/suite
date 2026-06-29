@@ -267,7 +267,7 @@
  ],
  "modified": "2026-05-12 13:37:24.340189",
  "modified_by": "Administrator",
- "module": "Server",
+ "module": "Mail",
  "name": "Mail Cluster",
  "naming_rule": "Set by user",
  "owner": "Administrator",
