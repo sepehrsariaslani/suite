@@ -214,6 +214,11 @@
  "links": [
   {
    "group": "Reference",
+   "link_doctype": "Mail Queue",
+   "link_fieldname": "account"
+  },
+  {
+   "group": "Reference",
    "link_doctype": "User Account",
    "link_fieldname": "account"
   },
@@ -235,7 +240,7 @@
   {
    "group": "Exchange",
    "link_doctype": "Mail Exchange",
-   "link_fieldname": "account_id"
+   "link_fieldname": "account"
   },
   {
    "group": "Exchange",
@@ -243,7 +248,7 @@
    "link_fieldname": "account"
   }
  ],
- "modified": "2026-06-29 21:43:38.294867",
+ "modified": "2026-06-29 22:33:08.682485",
  "modified_by": "Administrator",
  "module": "Mail",
  "name": "JMAP Account",

@@ -56,17 +56,17 @@ def is_jmap_account_belongs_to_user(
 	return exists
 
 
-def has_permission(doc: "Document", ptype: str, user: str | None = None) -> bool:
-	if doc.doctype != "User Account":
-		return False
-
-	user = user or frappe.session.user
-	return doc.user == user or is_system_manager(user)
-
-
 def get_permission_query_condition(user: str | None = None) -> str | None:
 	user = user or frappe.session.user
 	if is_system_manager(user):
 		return ""
 
 	return f"""`tabUser Account`.user = '{user}'"""
+
+
+def has_permission(doc: "Document", ptype: str, user: str | None = None) -> bool:
+	if doc.doctype != "User Account":
+		return False
+
+	user = user or frappe.session.user
+	return doc.user == user or is_system_manager(user)
