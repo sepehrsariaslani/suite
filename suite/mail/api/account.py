@@ -99,7 +99,7 @@ def get_account_request(request_key: str) -> dict | None:
 @frappe.whitelist(allow_guest=True)
 @dynamic_rate_limit()
 def create_account(request_key: str, first_name: str, last_name: str, password: str) -> None:
-	"""Create a new user account"""
+	"""Create a new mail account"""
 
 	account_request = frappe.get_last_doc("Mail Account Request", {"request_key": request_key})
 	account_request.validate_expired()
@@ -157,7 +157,7 @@ def get_user_info() -> dict | None:
 	data.is_mail_admin = is_mail_admin(user)
 	data.is_system_manager = is_system_manager(user)
 	data.is_jmap_configured = is_jmap_configured(user)
-	data.accounts = frappe.get_all("User Account", filters={"user": user})
+	data.accounts = frappe.db.get_all("User Account", filters={"user": user})
 
 	# Outgoing settings now live per-account on JMAP Account (shared across the users
 	# of an account and named by the account ID); attach each account's default outgoing

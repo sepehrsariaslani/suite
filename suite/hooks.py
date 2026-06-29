@@ -174,6 +174,7 @@ permission_query_conditions = {
 	"Mail Queue": "suite.mail.doctype.mail_queue.mail_queue.get_permission_query_condition",
 	"Mail Sync History": "suite.mail.doctype.mail_sync_history.mail_sync_history.get_permission_query_condition",
 	"Mailbox Settings": "suite.mail.doctype.mailbox_settings.mailbox_settings.get_permission_query_condition",
+	"User Account": "suite.mail.doctype.user_account.user_account.get_permission_query_condition",
 	"User Settings": "suite.mail.doctype.user_settings.user_settings.get_permission_query_condition",
 }
 
