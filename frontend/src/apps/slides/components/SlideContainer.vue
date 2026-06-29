@@ -98,6 +98,7 @@ import {
 	getResizedLine,
 	getResizedTextBox,
 	getRotatedBoundingBox,
+	getMinSizeForElement,
 	isAspectLocked,
 } from '@/apps/slides/utils/resize'
 
@@ -402,6 +403,15 @@ const resizeText = (cursorMovement) => {
 
 	const box = getResizedTextBox(resizeStartBounds, currentResizer.value, cursorMovement)
 	const snappedBox = snapForResize(box, { axes: ['x'] })
+
+	const minWidth = getMinSizeForElement(resizeStartBounds.type).width
+	if (snappedBox.width < minWidth) {
+		if (currentResizer.value === 'text-left') {
+			snappedBox.left = snappedBox.left + snappedBox.width - minWidth
+		}
+		snappedBox.width = minWidth
+	}
+
 	setOffsetFromTextBox(snappedBox)
 }
 
