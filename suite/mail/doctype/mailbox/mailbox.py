@@ -19,6 +19,38 @@ REBALANCE_MAILBOX_WINDOW = 10
 
 
 class Mailbox(Document):
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+
+		_name: DF.Data
+		_parent: DF.Link | None
+		account_id: DF.Literal[None]
+		id: DF.Data | None
+		may_add_items: DF.Check
+		may_create_child: DF.Check
+		may_delete: DF.Check
+		may_read_items: DF.Check
+		may_remove_items: DF.Check
+		may_rename: DF.Check
+		may_set_keywords: DF.Check
+		may_set_seen: DF.Check
+		may_submit: DF.Check
+		parent_id: DF.Data | None
+		role: DF.Literal["", "inbox", "important", "sent", "drafts", "junk", "archive", "trash"]
+		sort_order: DF.Int
+		subscribed: DF.Check
+		total_emails: DF.Int
+		total_threads: DF.Int
+		unread_emails: DF.Int
+		unread_threads: DF.Int
+		user: DF.Link | None
+	# end: auto-generated types
+
 	@property
 	def account(self) -> str:
 		"""Full ``user:account_id`` JMAP handle, rebuilt from the selected user and account ID."""

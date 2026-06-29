@@ -233,7 +233,8 @@
    "fieldname": "account_id",
    "fieldtype": "Select",
    "in_standard_filter": 1,
-   "label": "Account ID"
+   "label": "Account ID",
+   "set_only_once": 1
   },
   {
    "description": "The user this calendar belongs to.",
@@ -255,7 +256,7 @@
    "link_fieldname": "calendar"
   }
  ],
- "modified": "2026-04-17 14:07:04.696313",
+ "modified": "2026-06-29 13:37:39.428021",
  "modified_by": "Administrator",
  "module": "Mail",
  "name": "Calendar",

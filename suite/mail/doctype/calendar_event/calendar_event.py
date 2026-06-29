@@ -20,6 +20,55 @@ from suite.mail.utils.validation import has_permission_for_user
 
 
 class CalendarEvent(Document):
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+		from suite.mail.doctype.event_alert.event_alert import EventAlert
+		from suite.mail.doctype.event_calendar.event_calendar import EventCalendar
+		from suite.mail.doctype.event_link.event_link import EventLink
+		from suite.mail.doctype.event_location.event_location import EventLocation
+		from suite.mail.doctype.event_participant.event_participant import EventParticipant
+
+		account_id: DF.Literal[None]
+		after: DF.Datetime | None
+		alerts: DF.Table[EventAlert]
+		before: DF.Datetime | None
+		calendars: DF.Table[EventCalendar]
+		created_utc: DF.Data | None
+		description: DF.SmallText | None
+		draft: DF.Check
+		duration: DF.Data | None
+		free_busy_status: DF.Literal["", "Busy", "Free"]
+		hide_attendees: DF.Check
+		id: DF.Data | None
+		links: DF.Table[EventLink]
+		locations: DF.Table[EventLocation]
+		may_invite_others: DF.Check
+		may_invite_self: DF.Check
+		organizer: DF.Data | None
+		origin: DF.Check
+		participants: DF.Table[EventParticipant]
+		privacy: DF.Literal["", "Public", "Private"]
+		recurrence_id: DF.Data | None
+		recurrence_id_time_zone: DF.Autocomplete | None
+		recurrence_rule: DF.JSON | None
+		send_scheduling_messages: DF.Check
+		sequence: DF.Int
+		show_without_time: DF.Check
+		start: DF.Data | None
+		status: DF.Literal["Tentative", "Confirmed", "Cancelled"]
+		time_zone: DF.Autocomplete | None
+		title: DF.Data | None
+		uid: DF.Data | None
+		updated_utc: DF.Data | None
+		use_default_alerts: DF.Check
+		user: DF.Link | None
+	# end: auto-generated types
+
 	@property
 	def account(self) -> str:
 		"""Full ``user:account_id`` JMAP handle, rebuilt from the selected user and account ID."""

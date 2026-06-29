@@ -16,6 +16,27 @@ from suite.mail.utils.validation import has_permission_for_user
 
 
 class Identity(Document):
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+		from suite.mail.doctype.email_address.email_address import EmailAddress
+
+		_name: DF.Data | None
+		account_id: DF.Literal[None]
+		bcc: DF.Table[EmailAddress]
+		email: DF.Data
+		html_signature: DF.HTMLEditor | None
+		id: DF.Data | None
+		may_delete: DF.Check
+		reply_to: DF.Table[EmailAddress]
+		text_signature: DF.Code | None
+		user: DF.Link | None
+	# end: auto-generated types
+
 	@property
 	def account(self) -> str:
 		"""Full ``user:account_id`` JMAP handle, rebuilt from the selected user and account ID."""

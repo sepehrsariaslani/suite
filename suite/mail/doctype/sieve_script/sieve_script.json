@@ -111,7 +111,8 @@
    "fieldname": "account_id",
    "fieldtype": "Select",
    "in_standard_filter": 1,
-   "label": "Account ID"
+   "label": "Account ID",
+   "set_only_once": 1
   },
   {
    "description": "The user this script belongs to.",
@@ -128,7 +129,7 @@
  "index_web_pages_for_search": 1,
  "is_virtual": 1,
  "links": [],
- "modified": "2026-04-17 13:38:14.276046",
+ "modified": "2026-06-29 13:37:17.378434",
  "modified_by": "Administrator",
  "module": "Mail",
  "name": "Sieve Script",

@@ -17,6 +17,38 @@ from suite.mail.utils.validation import has_permission_for_user
 
 
 class Calendar(Document):
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+		from suite.mail.doctype.calendar_rights.calendar_rights import CalendarRights
+
+		_name: DF.Data
+		account_id: DF.Literal[None]
+		color: DF.Color | None
+		default: DF.Check
+		description: DF.SmallText | None
+		id: DF.Data | None
+		include_in_availability: DF.Literal["All", "Attending", "None"]
+		may_admin: DF.Check
+		may_delete: DF.Check
+		may_read_free_busy: DF.Check
+		may_read_items: DF.Check
+		may_rsvp: DF.Check
+		may_update_private: DF.Check
+		may_write_all: DF.Check
+		may_write_own: DF.Check
+		share_with: DF.Table[CalendarRights]
+		sort_order: DF.Int
+		subscribed: DF.Check
+		time_zone: DF.Autocomplete | None
+		user: DF.Link | None
+		visible: DF.Check
+	# end: auto-generated types
+
 	@property
 	def account(self) -> str:
 		"""Full ``user:account_id`` JMAP handle, rebuilt from the selected user and account ID."""
