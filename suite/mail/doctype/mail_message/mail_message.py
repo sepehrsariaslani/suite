@@ -24,6 +24,7 @@ from frappe.utils import (
 	time_diff_in_seconds,
 )
 
+from suite.mail.api.sieve import SCREENER_MAILBOX_NAME
 from suite.mail.doctype.mail_queue.mail_queue import MailQueue
 from suite.mail.jmap import get_email_service, get_jmap_connection, get_thread_service, parse_account
 from suite.mail.jmap.services.mail.email import EmailService
@@ -1306,7 +1307,7 @@ def fetch_changes(account: str, email_state: str | None = None, ctx: dict | None
 				) | {
 					m["id"]
 					for m in mailbox_service.mailboxes
-					if m["role"] in ["sent", "drafts", "junk", "trash"]
+					if m["role"] in ["sent", "drafts", "junk", "trash"] or m["name"] == SCREENER_MAILBOX_NAME
 				}
 				logger.debug("resolved-disabled-mailboxes", disabled_mailboxes=disabled_mailboxes)
 
