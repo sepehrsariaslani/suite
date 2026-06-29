@@ -255,7 +255,7 @@ def get_user_for_reset_password_key(key: str) -> str:
 
 @frappe.whitelist()
 def create_mail_import(
-	account_id: str,
+	account: str,
 	format: Literal["eml", "jmap", "mbox", "maildir", "maildir-nested"],
 	file: str,
 	mailbox: str | None = None,
@@ -265,7 +265,7 @@ def create_mail_import(
 
 	doc = frappe.new_doc("Mail Exchange")
 	doc.user = frappe.session.user
-	doc.account_id = account_id
+	doc.account = account
 	doc.operation = "Import"
 	doc.import_format = format
 	doc.import_file = file
@@ -277,7 +277,7 @@ def create_mail_import(
 
 @frappe.whitelist()
 def create_mail_export(
-	account_id: str,
+	account: str,
 	format: Literal["jmap", "mbox", "maildir", "maildir-nested"],
 	archive_type: Literal[".zip", ".tgz", ".tar.gz"],
 	sort: Literal["Received At (ASC)", "Received At (DESC)"],
@@ -288,7 +288,7 @@ def create_mail_export(
 
 	doc = frappe.new_doc("Mail Exchange")
 	doc.user = frappe.session.user
-	doc.account_id = account_id
+	doc.account = account
 	doc.operation = "Export"
 	doc.export_format = format
 	doc.export_archive_type = archive_type
