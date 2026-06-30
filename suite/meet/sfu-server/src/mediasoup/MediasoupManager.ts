@@ -475,6 +475,7 @@ export class MediasoupManager {
 		let appliedLayers:
 			| { spatialLayer: number | null; temporalLayer: number | null }
 			| undefined;
+		let previousSpatial: number | null = null;
 
 		if (consumer.kind === 'video') {
 			const spatialLayer = this.estimateSpatialLayer(
@@ -511,22 +512,7 @@ export class MediasoupManager {
 						layerResult.temporalLayer,
 					);
 					const currentLayers = consumer.currentLayers;
-					const previousSpatial = currentLayers?.spatialLayer ?? null;
-					if (
-						(previousSpatial !== null &&
-							layerResult.spatialLayer > previousSpatial) ||
-						wasPaused
-					) {
-						try {
-							await consumer.requestKeyFrame();
-						} catch (error) {
-							loggers.mediasoupManager.warn(
-								'Failed to request key frame for consumer %s: %s',
-								consumer.id,
-								(error as Error).message,
-							);
-						}
-					}
+					previousSpatial = currentLayers?.spatialLayer ?? null;
 				}
 			} else {
 				// Even if we didn't change layers, return the current state
@@ -543,6 +529,23 @@ export class MediasoupManager {
 						appliedLayers.temporalLayer,
 					);
 				}
+			}
+		}
+
+		const layerUpgraded =
+			appliedLayers &&
+			appliedLayers.spatialLayer !== null &&
+			previousSpatial !== null &&
+			appliedLayers.spatialLayer > previousSpatial;
+		if (consumer.kind === 'video' && (wasPaused || layerUpgraded)) {
+			try {
+				await consumer.requestKeyFrame();
+			} catch (error) {
+				loggers.mediasoupManager.warn(
+					'Failed to request key frame for consumer %s: %s',
+					consumer.id,
+					(error as Error).message,
+				);
 			}
 		}
 
