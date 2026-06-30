@@ -27,13 +27,14 @@ class CalendarEvent(Document):
 
 	if TYPE_CHECKING:
 		from frappe.types import DF
+
 		from suite.mail.doctype.event_alert.event_alert import EventAlert
 		from suite.mail.doctype.event_calendar.event_calendar import EventCalendar
 		from suite.mail.doctype.event_link.event_link import EventLink
 		from suite.mail.doctype.event_location.event_location import EventLocation
 		from suite.mail.doctype.event_participant.event_participant import EventParticipant
 
-		account_id: DF.Literal[None]
+		account: DF.Link
 		after: DF.Datetime | None
 		alerts: DF.Table[EventAlert]
 		before: DF.Datetime | None
@@ -66,11 +67,10 @@ class CalendarEvent(Document):
 		uid: DF.Data | None
 		updated_utc: DF.Data | None
 		use_default_alerts: DF.Check
-		user: DF.Link | None
 	# end: auto-generated types
 
 	@property
-	def account(self) -> str:
+	def _account(self) -> str:
 		"""Full ``user:account_id`` JMAP handle, rebuilt from the selected user and account ID."""
 
 		return f"{self.user}:{self.account_id}"
@@ -150,7 +150,7 @@ class CalendarEvent(Document):
 
 	def db_insert(self, *args, **kwargs) -> None:
 		self.id = add_calendar_event(
-			account_id=self.account,
+			account_id=self._account,
 			organizer=self.organizer,
 			calendar_ids=self.calendar_ids,
 			status=self.status,
@@ -171,7 +171,7 @@ class CalendarEvent(Document):
 			use_default_alerts=bool(self.use_default_alerts),
 			send_scheduling_messages=bool(self.send_scheduling_messages),
 		)
-		self.name = f"{self.account}|{self.id}"
+		self.name = f"{self._account}|{self.id}"
 		self.reload()
 
 	def load_from_db(self) -> "CalendarEvent":
@@ -188,7 +188,7 @@ class CalendarEvent(Document):
 
 	def db_update(self) -> None:
 		update_calendar_event(
-			account_id=self.account,
+			account_id=self._account,
 			id=self.id,
 			uid=self.uid,
 			organizer=self.organizer,
@@ -215,7 +215,7 @@ class CalendarEvent(Document):
 
 	def delete(self) -> None:
 		if self.get("recurrence_id") and self.get("uid"):
-			delete_calendar_event_instance(self.account, self.uid, self.recurrence_id)
+			delete_calendar_event_instance(self._account, self.uid, self.recurrence_id)
 		else:
 			account, id = self.name.split("|")
 			delete_calendar_events(account, [id])
@@ -682,8 +682,7 @@ def format_calendar_event(account: str, calendar_map: dict, event: dict) -> dict
 	organizer = (
 		event.get("organizerCalendarAddress")
 		and event["organizerCalendarAddress"].lower().replace("mailto:", "")
-		or ""
-	)
+	) or ""
 
 	created = event.get("created")
 	updated = event.get("updated")
@@ -699,7 +698,7 @@ def format_calendar_event(account: str, calendar_map: dict, event: dict) -> dict
 		"recurrence_id": event.get("recurrenceId"),
 		"organizer": organizer,
 		"calendars": calendars,
-		"status": event.get("status") and event["status"].title() or "Confirmed",
+		"status": (event.get("status") and event["status"].title()) or "Confirmed",
 		"draft": cint(event.get("isDraft") or False),
 		"title": event.get("title") or "",
 		"start": event.get("start") or "",
@@ -708,8 +707,8 @@ def format_calendar_event(account: str, calendar_map: dict, event: dict) -> dict
 		"recurrence_id_time_zone": event.get("recurrenceIdTimeZone") or "",
 		"recurrence_rule": json.dumps(event.get("recurrenceRule", {}), indent=2),
 		"show_without_time": cint(event.get("showWithoutTime") or False),
-		"privacy": event.get("privacy") and event["privacy"].title() or "",
-		"free_busy_status": event.get("freeBusyStatus") and event["freeBusyStatus"].title() or "",
+		"privacy": (event.get("privacy") and event["privacy"].title()) or "",
+		"free_busy_status": (event.get("freeBusyStatus") and event["freeBusyStatus"].title()) or "",
 		"description": event.get("description") or "",
 		"locations": locations,
 		"links": links,

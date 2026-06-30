@@ -14,6 +14,30 @@ from suite.mail.utils.validation import has_permission_for_user
 
 
 class EventNotification(Document):
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+
+		account: DF.Link
+		calendar_event: DF.Link | None
+		calendar_event_id: DF.Data | None
+		changed_by_email: DF.Data | None
+		changed_by_name: DF.Data | None
+		changed_by_principal_id: DF.Data | None
+		changed_by_schedule_id: DF.Data | None
+		comment: DF.SmallText | None
+		created_utc: DF.Data | None
+		draft: DF.Check
+		event: DF.JSON | None
+		event_patch: DF.JSON | None
+		id: DF.Data | None
+		type: DF.Literal["", "Created", "Updated", "Destroyed"]
+	# end: auto-generated types
+
 	def db_insert(self, *args, **kwargs) -> None:
 		frappe.throw(
 			_("Event Notification are only created by the server, users cannot create them directly.")

@@ -29,7 +29,7 @@ class Mailbox(Document):
 
 		_name: DF.Data
 		_parent: DF.Link | None
-		account_id: DF.Literal[None]
+		account: DF.Link
 		id: DF.Data | None
 		may_add_items: DF.Check
 		may_create_child: DF.Check
@@ -48,21 +48,20 @@ class Mailbox(Document):
 		total_threads: DF.Int
 		unread_emails: DF.Int
 		unread_threads: DF.Int
-		user: DF.Link | None
 	# end: auto-generated types
 
 	@property
-	def account(self) -> str:
+	def _account(self) -> str:
 		"""Full ``user:account_id`` JMAP handle, rebuilt from the selected user and account ID."""
 
 		return f"{self.user}:{self.account_id}"
 
 	def db_insert(self, *args, **kwargs) -> None:
-		parent = self._parent.replace(f"{self.account}|", "") if self._parent else None
+		parent = self._parent.replace(f"{self._account}|", "") if self._parent else None
 		self.id = add_mailbox(
-			self.account, self._name, self.role, parent, self.sort_order, bool(self.subscribed)
+			self._account, self._name, self.role, parent, self.sort_order, bool(self.subscribed)
 		)
-		self.name = f"{self.account}|{self.id}"
+		self.name = f"{self._account}|{self.id}"
 
 	def load_from_db(self) -> "Mailbox":
 		account, id = self.name.split("|")
@@ -70,9 +69,9 @@ class Mailbox(Document):
 		return super(Document, self).__init__(mailbox)
 
 	def db_update(self) -> None:
-		parent = self._parent.replace(f"{self.account}|", "") if self._parent else None
+		parent = self._parent.replace(f"{self._account}|", "") if self._parent else None
 		update_mailbox(
-			self.account, self.id, self._name, self.role, parent, self.sort_order, bool(self.subscribed)
+			self._account, self.id, self._name, self.role, parent, self.sort_order, bool(self.subscribed)
 		)
 		self.reload()
 

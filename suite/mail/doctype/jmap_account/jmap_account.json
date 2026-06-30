@@ -246,9 +246,64 @@
    "group": "Exchange",
    "link_doctype": "Calendar Exchange",
    "link_fieldname": "account"
+  },
+  {
+   "group": "Reference",
+   "link_doctype": "Sieve Script",
+   "link_fieldname": "account"
+  },
+  {
+   "group": "Reference",
+   "link_doctype": "Event Notification",
+   "link_fieldname": "account"
+  },
+  {
+   "group": "Reference",
+   "link_doctype": "Participant Identity",
+   "link_fieldname": "account"
+  },
+  {
+   "group": "Reference",
+   "link_doctype": "Calendar Event",
+   "link_fieldname": "account"
+  },
+  {
+   "group": "Reference",
+   "link_doctype": "Calendar",
+   "link_fieldname": "account"
+  },
+  {
+   "group": "Reference",
+   "link_doctype": "Quota",
+   "link_fieldname": "account"
+  },
+  {
+   "group": "Reference",
+   "link_doctype": "Identity",
+   "link_fieldname": "account"
+  },
+  {
+   "group": "Reference",
+   "link_doctype": "Contact Card",
+   "link_fieldname": "account"
+  },
+  {
+   "group": "Reference",
+   "link_doctype": "Address Book",
+   "link_fieldname": "account"
+  },
+  {
+   "group": "Reference",
+   "link_doctype": "Mail Message",
+   "link_fieldname": "account"
+  },
+  {
+   "group": "Reference",
+   "link_doctype": "Mailbox",
+   "link_fieldname": "account"
   }
  ],
- "modified": "2026-06-30 09:46:39.507672",
+ "modified": "2026-06-30 10:31:50.942773",
  "modified_by": "Administrator",
  "module": "Mail",
  "name": "JMAP Account",

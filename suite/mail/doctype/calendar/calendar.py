@@ -24,10 +24,11 @@ class Calendar(Document):
 
 	if TYPE_CHECKING:
 		from frappe.types import DF
+
 		from suite.mail.doctype.calendar_rights.calendar_rights import CalendarRights
 
 		_name: DF.Data
-		account_id: DF.Literal[None]
+		account: DF.Link
 		color: DF.Color | None
 		default: DF.Check
 		description: DF.SmallText | None
@@ -45,19 +46,18 @@ class Calendar(Document):
 		sort_order: DF.Int
 		subscribed: DF.Check
 		time_zone: DF.Autocomplete | None
-		user: DF.Link | None
 		visible: DF.Check
 	# end: auto-generated types
 
 	@property
-	def account(self) -> str:
+	def _account(self) -> str:
 		"""Full ``user:account_id`` JMAP handle, rebuilt from the selected user and account ID."""
 
 		return f"{self.user}:{self.account_id}"
 
 	def db_insert(self, *args, **kwargs) -> None:
 		self.id = add_calendar(
-			self.account,
+			self._account,
 			self._name,
 			self.color,
 			self.description,
@@ -68,7 +68,7 @@ class Calendar(Document):
 			bool(self.visible),
 			bool(self.default),
 		)
-		self.name = f"{self.account}|{self.id}"
+		self.name = f"{self._account}|{self.id}"
 
 	def load_from_db(self) -> "Calendar":
 		account, id = self.name.split("|")
@@ -77,7 +77,7 @@ class Calendar(Document):
 
 	def db_update(self) -> None:
 		update_calendar(
-			self.account,
+			self._account,
 			self.id,
 			self._name,
 			self.color,

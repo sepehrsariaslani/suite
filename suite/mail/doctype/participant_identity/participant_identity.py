@@ -15,6 +15,21 @@ from suite.mail.utils.validation import has_permission_for_user
 
 
 class ParticipantIdentity(Document):
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+
+		_name: DF.Data | None
+		account: DF.Link
+		default: DF.Check
+		email: DF.Data
+		id: DF.Data | None
+	# end: auto-generated types
+
 	@property
 	def calendar_address(self) -> str:
 		"""Returns the calendar address in mailto format."""

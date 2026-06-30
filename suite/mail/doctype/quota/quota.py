@@ -23,7 +23,7 @@ class Quota(Document):
 		from frappe.types import DF
 
 		_name: DF.Data | None
-		account_id: DF.Literal[None]
+		account: DF.Link
 		description: DF.SmallText | None
 		hard_limit: DF.Int
 		id: DF.Data | None
@@ -32,12 +32,11 @@ class Quota(Document):
 		soft_limit: DF.Int
 		types: DF.JSON | None
 		used: DF.Int
-		user: DF.Link | None
 		warn_limit: DF.Int
 	# end: auto-generated types
 
 	@property
-	def account(self) -> str:
+	def _account(self) -> str:
 		"""Full ``user:account_id`` JMAP handle, rebuilt from the selected user and account ID."""
 
 		return f"{self.user}:{self.account_id}"

@@ -24,24 +24,23 @@ class SieveScript(Document):
 		from frappe.types import DF
 
 		_name: DF.Data
-		account_id: DF.Literal[None]
+		account: DF.Link
 		active: DF.Check
 		blob_id: DF.Data | None
 		content: DF.Code
 		id: DF.Data | None
 		read_only: DF.Check
-		user: DF.Link | None
 	# end: auto-generated types
 
 	@property
-	def account(self) -> str:
+	def _account(self) -> str:
 		"""Full ``user:account_id`` JMAP handle, rebuilt from the selected user and account ID."""
 
 		return f"{self.user}:{self.account_id}"
 
 	def db_insert(self, *args, **kwargs) -> None:
-		self.id = SieveScript._add_sieve_script(self.account, self._name, self.content, bool(self.active))
-		self.name = f"{self.account}|{self.id}"
+		self.id = SieveScript._add_sieve_script(self._account, self._name, self.content, bool(self.active))
+		self.name = f"{self._account}|{self.id}"
 
 	def load_from_db(self) -> "SieveScript":
 		account, id = self.name.split("|")
@@ -56,7 +55,7 @@ class SieveScript(Document):
 		)
 
 	def db_update(self) -> None:
-		SieveScript._update_sieve_script(self.account, self.id, self._name, self.content, bool(self.active))
+		SieveScript._update_sieve_script(self._account, self.id, self._name, self.content, bool(self.active))
 		self.reload()
 
 	def delete(self) -> None:
@@ -371,7 +370,7 @@ def format_sieve_script(account: str, script: dict) -> dict:
 
 	return {
 		"name": f"{account}|{script['id']}",
-		"account_id": parse_account(account)[1],
+		"account": parse_account(account)[1],
 		"user": parse_account(account)[0],
 		"id": script["id"],
 		"_name": script["name"],

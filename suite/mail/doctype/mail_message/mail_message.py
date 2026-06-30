@@ -66,7 +66,7 @@ class MailMessage(Document):
 		_html_body: DF.Table[MailMessagePart]
 		_text_body: DF.Table[MailMessagePart]
 		_to: DF.Data | None
-		account_id: DF.Literal[None]
+		account: DF.Link
 		after: DF.Datetime | None
 		answered: DF.Check
 		attachments: DF.Table[MailMessagePart]
@@ -105,11 +105,10 @@ class MailMessage(Document):
 		text: DF.Data | None
 		text_body: DF.Code | None
 		thread_id: DF.Data | None
-		user: DF.Link | None
 	# end: auto-generated types
 
 	@property
-	def account(self) -> str:
+	def _account(self) -> str:
 		"""Full ``user:account_id`` JMAP handle, rebuilt from the selected user and account ID."""
 
 		return f"{self.user}:{self.account_id}"
@@ -208,7 +207,7 @@ class MailMessage(Document):
 	def message(self) -> str | None:
 		"""Returns the message content if available."""
 
-		cached_blobs = _get_cached_blobs(self.account, [self.blob_id])
+		cached_blobs = _get_cached_blobs(self._account, [self.blob_id])
 		if content := cached_blobs.get(self.blob_id):
 			return content.decode("utf-8")
 
@@ -233,7 +232,7 @@ class MailMessage(Document):
 		"""Returns the type of email (Sent or Received)."""
 
 		email_type = "Received"
-		account_addresses = get_account_emails(self.account)
+		account_addresses = get_account_emails(self._account)
 
 		if self.from_email in account_addresses or (
 			hasattr(self, "sender_email") and self.sender_email in account_addresses
@@ -243,7 +242,7 @@ class MailMessage(Document):
 		return email_type
 
 	def autoname(self) -> None:
-		self.name = f"{self.account}|{uuid7()!s}"
+		self.name = f"{self._account}|{uuid7()!s}"
 
 	def db_insert(self, *args, **kwargs) -> None:
 		raise NotImplementedError
@@ -379,7 +378,7 @@ class MailMessage(Document):
 		"""Move the Mail Message to a specified mailbox."""
 
 		self.validate_draft()
-		move_messages_to_mailbox(self.account, [self.id], mailbox_id)
+		move_messages_to_mailbox(self._account, [self.id], mailbox_id)
 		self.reload()
 
 	@frappe.whitelist()
@@ -387,7 +386,7 @@ class MailMessage(Document):
 		"""Add the Mail Message to a specified mailbox."""
 
 		self.validate_draft()
-		add_messages_to_mailbox(self.account, [self.id], mailbox_id)
+		add_messages_to_mailbox(self._account, [self.id], mailbox_id)
 		self.reload()
 
 	@frappe.whitelist()
@@ -395,21 +394,21 @@ class MailMessage(Document):
 		"""Remove the Mail Message from a specified mailbox."""
 
 		self.validate_draft()
-		remove_messages_from_mailbox(self.account, [self.id], mailbox_id)
+		remove_messages_from_mailbox(self._account, [self.id], mailbox_id)
 		self.reload()
 
 	@frappe.whitelist()
 	def set_seen(self, seen: bool) -> None:
 		"""Set the Mail Message as seen or unseen."""
 
-		set_seen_status(self.account, [self.id], seen)
+		set_seen_status(self._account, [self.id], seen)
 		self.reload()
 
 	@frappe.whitelist()
 	def set_flagged(self, flagged: bool) -> None:
 		"""Set the Mail Message as flagged or unflagged."""
 
-		set_flagged_status(self.account, [self.id], flagged)
+		set_flagged_status(self._account, [self.id], flagged)
 		self.reload()
 
 	@frappe.whitelist()
@@ -462,7 +461,7 @@ class MailMessage(Document):
 				recipients.append({"type": "To", "display_name": self.from_name, "email": self.from_email})
 
 			# Cc = (original To + original Cc) minus account addresses
-			account_addresses = get_account_emails(self.account)
+			account_addresses = get_account_emails(self._account)
 			for rcpt in self.recipients:
 				if rcpt.type in ["To", "Cc"] and rcpt.email not in account_addresses:
 					recipients.append({"type": "Cc", "display_name": rcpt.display_name, "email": rcpt.email})
@@ -538,7 +537,7 @@ class MailMessage(Document):
 				)
 
 		return MailQueue._create(
-			account=self.account,
+			account=self._account,
 			subject=f"Fwd: {self.subject}" if not self.subject.lower().startswith("fwd:") else self.subject,
 			html_body=forward_html_body,
 			text_body=forward_text_body,
@@ -555,7 +554,7 @@ class MailMessage(Document):
 			frappe.throw(_("Mail Message does not have a blob ID."))
 
 		self.clear_cached_properties()
-		return fetch_blob(self.account, self.blob_id).decode("utf-8")
+		return fetch_blob(self._account, self.blob_id).decode("utf-8")
 
 	@frappe.whitelist()
 	def load_attachments(self, include_inline: bool = True, include_regular: bool = True) -> None:
@@ -576,7 +575,7 @@ class MailMessage(Document):
 				if body_part.disposition == "inline":
 					blobs.append((body_part.blob_id, body_part.filename))
 
-		fetch_blobs(self.account, blobs)
+		fetch_blobs(self._account, blobs)
 
 	def clear_cached_properties(self) -> None:
 		"""Clear cached properties to avoid stale data."""
@@ -615,7 +614,7 @@ class MailMessage(Document):
 		]
 
 		return MailQueue._create(
-			account=self.account,
+			account=self._account,
 			from_name=self.from_name,
 			from_email=self.from_email,
 			subject=self.subject,
@@ -641,7 +640,7 @@ class MailMessage(Document):
 			subject = f"Re: {self.subject}" if not self.subject.lower().startswith("re:") else self.subject
 
 		return MailQueue._create(
-			account=self.account,
+			account=self._account,
 			subject=subject,
 			recipients=recipients,
 			in_reply_to=self.message_id,

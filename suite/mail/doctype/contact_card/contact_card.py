@@ -27,12 +27,15 @@ class ContactCard(Document):
 
 	if TYPE_CHECKING:
 		from frappe.types import DF
+
 		from suite.mail.doctype.contact_card_address.contact_card_address import ContactCardAddress
-		from suite.mail.doctype.contact_card_address_book.contact_card_address_book import ContactCardAddressBook
+		from suite.mail.doctype.contact_card_address_book.contact_card_address_book import (
+			ContactCardAddressBook,
+		)
 		from suite.mail.doctype.contact_card_email.contact_card_email import ContactCardEmail
 		from suite.mail.doctype.contact_card_phone.contact_card_phone import ContactCardPhone
 
-		account_id: DF.Literal[None]
+		account: DF.Link
 		address_books: DF.Table[ContactCardAddressBook]
 		addresses: DF.Table[ContactCardAddress]
 		created_at: DF.Data | None
@@ -46,11 +49,10 @@ class ContactCard(Document):
 		phones: DF.Table[ContactCardPhone]
 		uid: DF.Data | None
 		updated_at: DF.Data | None
-		user: DF.Link | None
 	# end: auto-generated types
 
 	@property
-	def account(self) -> str:
+	def _account(self) -> str:
 		"""Full ``user:account_id`` JMAP handle, rebuilt from the selected user and account ID."""
 
 		return f"{self.user}:{self.account_id}"
@@ -125,7 +127,7 @@ class ContactCard(Document):
 
 	def db_insert(self, *args, **kwargs) -> None:
 		self.id = add_contact_card(
-			self.account,
+			self._account,
 			self.address_book_ids,
 			self.full_name,
 			self.formatted_emails,
@@ -133,7 +135,7 @@ class ContactCard(Document):
 			self.formatted_addresses,
 			self.kind,
 		)
-		self.name = f"{self.account}|{self.id}"
+		self.name = f"{self._account}|{self.id}"
 
 	def load_from_db(self) -> "ContactCard":
 		account, id = self.name.split("|")
@@ -149,7 +151,7 @@ class ContactCard(Document):
 
 	def db_update(self) -> None:
 		update_contact_card(
-			self.account,
+			self._account,
 			self.id,
 			self.address_book_ids,
 			self.full_name,

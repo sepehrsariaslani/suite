@@ -23,10 +23,11 @@ class Identity(Document):
 
 	if TYPE_CHECKING:
 		from frappe.types import DF
+
 		from suite.mail.doctype.email_address.email_address import EmailAddress
 
 		_name: DF.Data | None
-		account_id: DF.Literal[None]
+		account: DF.Link
 		bcc: DF.Table[EmailAddress]
 		email: DF.Data
 		html_signature: DF.HTMLEditor | None
@@ -34,11 +35,10 @@ class Identity(Document):
 		may_delete: DF.Check
 		reply_to: DF.Table[EmailAddress]
 		text_signature: DF.Code | None
-		user: DF.Link | None
 	# end: auto-generated types
 
 	@property
-	def account(self) -> str:
+	def _account(self) -> str:
 		"""Full ``user:account_id`` JMAP handle, rebuilt from the selected user and account ID."""
 
 		return f"{self.user}:{self.account_id}"
@@ -63,7 +63,7 @@ class Identity(Document):
 
 	def db_insert(self, *args, **kwargs) -> None:
 		self.id = add_identity(
-			self.account,
+			self._account,
 			self.email,
 			self._name,
 			self._reply_to,
@@ -71,7 +71,7 @@ class Identity(Document):
 			self.text_signature,
 			self.html_signature,
 		)
-		self.name = f"{self.account}|{self.id}"
+		self.name = f"{self._account}|{self.id}"
 
 	def load_from_db(self) -> "Identity":
 		account, id = self.name.split("|")
@@ -80,7 +80,7 @@ class Identity(Document):
 
 	def db_update(self) -> None:
 		update_identity(
-			self.account,
+			self._account,
 			self.id,
 			self._name,
 			self._reply_to,

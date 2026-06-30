@@ -25,7 +25,7 @@ class AddressBook(Document):
 		from frappe.types import DF
 
 		_name: DF.Data
-		account_id: DF.Literal[None]
+		account: DF.Link
 		default: DF.Check
 		description: DF.SmallText | None
 		id: DF.Data | None
@@ -35,25 +35,24 @@ class AddressBook(Document):
 		may_write: DF.Check
 		sort_order: DF.Int
 		subscribed: DF.Check
-		user: DF.Link | None
 	# end: auto-generated types
 
 	@property
-	def account(self) -> str:
+	def _account(self) -> str:
 		"""Full ``user:account_id`` JMAP handle, rebuilt from the selected user and account ID."""
 
 		return f"{self.user}:{self.account_id}"
 
 	def db_insert(self, *args, **kwargs) -> None:
 		self.id = add_address_book(
-			self.account,
+			self._account,
 			self._name,
 			self.description,
 			self.sort_order,
 			bool(self.default),
 			bool(self.subscribed),
 		)
-		self.name = f"{self.account}|{self.id}"
+		self.name = f"{self._account}|{self.id}"
 
 	def load_from_db(self) -> "AddressBook":
 		account, id = self.name.split("|")
@@ -62,7 +61,7 @@ class AddressBook(Document):
 
 	def db_update(self) -> None:
 		update_address_book(
-			self.account,
+			self._account,
 			self.id,
 			self._name,
 			self.description,
