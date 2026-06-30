@@ -225,7 +225,7 @@
   {
    "group": "Reference",
    "link_doctype": "Mailbox Settings",
-   "link_fieldname": "account_id"
+   "link_fieldname": "account"
   },
   {
    "group": "Reference",
@@ -248,7 +248,7 @@
    "link_fieldname": "account"
   }
  ],
- "modified": "2026-06-30 09:33:38.733123",
+ "modified": "2026-06-30 09:46:39.507672",
  "modified_by": "Administrator",
  "module": "Mail",
  "name": "JMAP Account",

@@ -6,11 +6,13 @@ from uuid import uuid7
 import frappe
 from frappe.model.document import Document
 
+from suite.mail.doctype.user_account.user_account import get_user_jmap_account_ids
 from suite.mail.jmap import parse_account
 from suite.mail.utils.user import (
 	get_account_scoped_permission_query,
 	get_session_account,
 	has_account_scoped_permission,
+	is_system_manager,
 )
 
 # Screening actions: what happens to future mail from a screened sender.
@@ -79,15 +81,32 @@ def get_screened_email_addresses(account: str, action: str | None = None) -> lis
 	return frappe.db.get_all("Screened Email Address", filters=filters, fields=["email", "action"])
 
 
-def get_permission_query_condition(user: str | None = None) -> str:
-	return get_account_scoped_permission_query("Screened Email Address", user=user)
+def get_permission_query_condition(user: str | None = None) -> str | None:
+	user = user or frappe.session.user
+	if is_system_manager(user):
+		return ""
+
+	accounts = get_user_jmap_account_ids(user)
+	if not accounts:
+		return "1=0"
+
+	return f"""`tabScreened Email Address`.account in ({", ".join(frappe.db.escape(account) for account in accounts)})"""
 
 
-def has_permission(doc: Document, ptype: str, user: str | None = None) -> bool:
+def has_permission(doc: "Document", ptype: str, user: str | None = None) -> bool:
 	if doc.doctype != "Screened Email Address":
 		return False
 
-	return has_account_scoped_permission(doc, user=user)
+	user = user or frappe.session.user
+
+	if is_system_manager(user):
+		return True
+
+	accounts = get_user_jmap_account_ids(user)
+	if not accounts:
+		return False
+
+	return doc.account in accounts
 
 
 def on_doctype_update() -> None:
