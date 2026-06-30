@@ -107,7 +107,7 @@ const filter = reactive({
 const calendars = createResource({
 	url: 'suite.mail.doctype.calendar.calendar.fetch_calendars',
 	auto: true,
-	makeParams: () => ({ account_id: accountId, limit: 100 }),
+	makeParams: () => ({ account: accountId, limit: 100 }),
 })
 
 const calendarOptions = computed(() =>
