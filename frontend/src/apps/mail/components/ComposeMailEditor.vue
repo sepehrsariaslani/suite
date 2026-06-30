@@ -453,7 +453,7 @@ const onMailUpdateSuccess = ({
 const createMail = createResource({
 	url: 'suite.mail.api.mail.create_mail',
 	makeParams: ({ save_as_draft }: { save_as_draft: boolean }) => ({
-		account_id: accountId,
+		account: accountId,
 		...mail,
 		...processInlineImages(mail),
 		from_name: getIdentity(mail.from_email!)._name,
@@ -466,7 +466,7 @@ const createMail = createResource({
 const updateDraft = createResource({
 	url: 'suite.mail.api.mail.update_draft_mail',
 	makeParams: ({ submit }: { submit: boolean }) => ({
-		account_id: accountId,
+		account: accountId,
 		...mail,
 		...processInlineImages(mail),
 		from_name: getIdentity(mail.from_email!)._name,
@@ -478,7 +478,7 @@ const updateDraft = createResource({
 
 const deleteMail = createResource({
 	url: 'suite.mail.api.mail.delete_mail',
-	makeParams: () => ({ account_id: accountId, id: mail.id }),
+	makeParams: () => ({ account: accountId, id: mail.id }),
 	onSuccess: () => {
 		reloadMails()
 		raiseToast(__('Draft discarded.'))

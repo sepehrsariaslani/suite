@@ -10,10 +10,9 @@ from frappe import _
 from frappe.model.document import Document
 from frappe.utils import cint, today
 
+from suite.mail.doctype.user_account.user_account import get_user_for_jmap_account
 from suite.mail.jmap import get_calendar_service
 from suite.mail.utils import parse_filters
-from suite.mail.utils.user import get_account_user
-from suite.mail.utils.validation import has_permission_for_user
 
 
 class Calendar(Document):
@@ -112,7 +111,7 @@ class Calendar(Document):
 		account = filters.get("account")
 
 		if account:
-			if has_permission_for_user(frappe.session.user, raise_exception=False):
+			if get_user_for_jmap_account(account, raise_exception=False):
 				return cint(frappe.cache.get_value(_get_total_cache_key(account)))
 
 		return 0
@@ -174,12 +173,8 @@ def add_calendar(
 	subscribed: bool = True,
 	visible: bool = True,
 	default: bool = False,
-	user: str | None = None,
 ) -> str:
 	"""Adds a calendar for the given account with the specified parameters."""
-
-	user = get_account_user(account, user)
-	has_permission_for_user(user)
 
 	creation_id = str(uuid7())
 	calendar = {
@@ -195,7 +190,7 @@ def add_calendar(
 		"is_default": default,
 	}
 
-	service = get_calendar_service(user, account)
+	service = get_calendar_service(account)
 	response = service.create([calendar])
 
 	title = _("Calendar Creation Error")
@@ -208,15 +203,12 @@ def add_calendar(
 
 
 @frappe.whitelist()
-def get_calendar(account: str, id: str, user: str | None = None) -> dict:
+def get_calendar(account: str, id: str) -> dict:
 	"""Returns calendar details for the given account and id."""
 
-	user = get_account_user(account, user)
-	has_permission_for_user(user)
-
-	service = get_calendar_service(user, account)
+	service = get_calendar_service(account)
 	if calendars := service.get([id]):
-		return format_calendar(account, calendars[0], user)
+		return format_calendar(account, calendars[0])
 
 	frappe.throw(
 		_("Calendar with ID {0} not found for account {1}").format(frappe.bold(id), frappe.bold(account)),
@@ -237,12 +229,8 @@ def update_calendar(
 	subscribed: bool = True,
 	visible: bool = True,
 	default: bool = False,
-	user: str | None = None,
 ) -> None:
 	"""Updates an existing calendar with the given parameters."""
-
-	user = get_account_user(account, user)
-	has_permission_for_user(user)
 
 	calendar = {
 		"id": id,
@@ -257,7 +245,7 @@ def update_calendar(
 		"is_default": default,
 	}
 
-	service = get_calendar_service(user, account)
+	service = get_calendar_service(account)
 	response = service.update([calendar])
 
 	title = _("Calendar Update Error")
@@ -269,13 +257,10 @@ def update_calendar(
 
 
 @frappe.whitelist()
-def delete_calendars(account: str, ids: list[str], remove_events: bool = True, user: str | None = None) -> None:
+def delete_calendars(account: str, ids: list[str], remove_events: bool = True) -> None:
 	"""Deletes calendars for the specified account and ID(s)."""
 
-	user = get_account_user(account, user)
-	has_permission_for_user(user)
-
-	service = get_calendar_service(user, account)
+	service = get_calendar_service(account)
 	response = service.delete(ids, remove_events=remove_events)
 
 	if response.get("notDestroyed"):
@@ -289,15 +274,12 @@ def delete_calendars(account: str, ids: list[str], remove_events: bool = True, u
 
 
 @frappe.whitelist()
-def fetch_calendars(account: str, page: int = 1, limit: int = 10, user: str | None = None) -> list:
+def fetch_calendars(account: str, page: int = 1, limit: int = 10) -> list:
 	"""Returns a list of calendars for the given account."""
 
-	user = get_account_user(account, user)
-	has_permission_for_user(user)
-
-	service = get_calendar_service(user, account)
+	service = get_calendar_service(account)
 	calendars = service.get()
-	formatted_calendars = [format_calendar(account, calendar, user) for calendar in calendars]
+	formatted_calendars = [format_calendar(account, calendar) for calendar in calendars]
 	frappe.cache.set_value(_get_total_cache_key(account), len(calendars), expires_in_sec=600)
 
 	start = (page - 1) * limit
@@ -306,10 +288,8 @@ def fetch_calendars(account: str, page: int = 1, limit: int = 10, user: str | No
 	return formatted_calendars[start:end]
 
 
-def format_calendar(account: str, calendar: dict, user: str | None = None) -> dict:
+def format_calendar(account: str, calendar: dict) -> dict:
 	"""Formats calendar data for display."""
-
-	user = get_account_user(account, user)
 
 	share_with = []
 	for pid, r in calendar.get("shareWith", {}).items():
@@ -332,7 +312,6 @@ def format_calendar(account: str, calendar: dict, user: str | None = None) -> di
 	return {
 		"name": f"{account}|{calendar['id']}",
 		"account": account,
-		"user": user,
 		"id": calendar["id"],
 		"_name": calendar["name"],
 		"description": calendar["description"],
@@ -361,4 +340,4 @@ def has_permission(doc: "Document", ptype: str, user: str | None = None) -> bool
 	if doc.doctype != "Calendar":
 		return False
 
-	return has_permission_for_user(user or frappe.session.user, raise_exception=False)
+	return bool(get_user_for_jmap_account(doc.account, raise_exception=False))

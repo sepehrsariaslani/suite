@@ -20,12 +20,10 @@ from suite.mail.storage.data_store import Entity
 if TYPE_CHECKING:
 	from suite.mail.jmap.services.core import CoreService
 
+from suite.mail.doctype.sieve_script.sieve_script import build_automation_sieve, maybe_build_automation_sieve
+from suite.mail.doctype.user_account.user_account import get_user_jmap_accounts
 from suite.mail.utils import log_error
-from suite.mail.utils.user import (
-	get_account_emails,
-	get_account_scoped_permission_query,
-	has_account_scoped_permission,
-)
+from suite.mail.utils.user import get_account_emails, is_system_manager
 
 
 class JMAPAccount(Document):
@@ -37,6 +35,7 @@ class JMAPAccount(Document):
 	if TYPE_CHECKING:
 		from frappe.types import DF
 
+		_name: DF.Data
 		account_id: DF.Data
 		block_remote_images: DF.Check
 		create_contacts_after_email_submit: DF.Check
@@ -45,6 +44,7 @@ class JMAPAccount(Document):
 		destroy_newsletter_after_submit: DF.Check
 		enable_screening: DF.Check
 		is_personal: DF.Check
+		is_readonly: DF.Check
 		last_active_sieve_script_id: DF.Data | None
 		on_mark_as_junk: DF.Literal["Junk Sender's Mail", "Ask to Block Sender"]
 	# end: auto-generated types
@@ -132,25 +132,22 @@ class JMAPAccount(Document):
 		except Exception:
 			return
 
-		if emails and self.default_outgoing_email not in emails:
-			self.default_outgoing_email = emails[0]
+		if self.default_outgoing_email not in emails:
+			frappe.throw(
+				_("Default Outgoing Email {0} is not one of the account's identities.").format(
+					frappe.bold(self.default_outgoing_email)
+				)
+			)
 
 	def after_insert(self) -> None:
 		create_archive_mailbox(self._user, self.name)
 
 	def on_update(self) -> None:
-		# Toggling screening changes the automation sieve's screening gate, so regenerate it. Skipped
-		# during migrate (no JMAP round-trips) and only when the flag actually changed.
 		if frappe.flags.in_migrate:
 			return
 
 		if self.has_value_changed("enable_screening"):
-			from suite.mail.api.sieve import build_automation_sieve
-			from suite.mail.utils.user import get_session_account
-
-			# JMAP Account is named by the shared account_id; resolve it to the session user's
-			# account handle for the sieve regeneration.
-			build_automation_sieve(get_session_account(self.name))
+			maybe_build_automation_sieve(self.name, activate=self.enable_screening)
 
 	def after_delete(self) -> None:
 		"""Clear all caches related to the account when the settings are deleted."""
@@ -224,97 +221,61 @@ class JMAPAccount(Document):
 		self.db_set(kwargs, update_modified=update_modified, notify=notify, commit=commit)
 
 
-def get_or_create_account_settings(account: str, user: str | None = None) -> str:
-	"""Return the name of the (shared) JMAP Account for the given bare `account`,
-	creating it if it does not already exist. The document is named by the account ID."""
-
-	if frappe.db.exists("JMAP Account", account):
-		return account
-
-	user = user or frappe.session.user
-
-	settings = frappe.new_doc("JMAP Account")
-	settings.account_id = account
-	# Carry the user so after_insert / validate can reach JMAP for this account.
-	settings.flags.user = user
-
-	# Default the outgoing sender to the account's first identity.
-	try:
-		emails = get_account_emails(user, account)
-		if emails:
-			settings.default_outgoing_email = emails[0]
-	except Exception:
-		pass
-
-	settings.flags.ignore_links = True
-	settings.insert(ignore_permissions=True)
-
-	return settings.name
-
-
-def sync_account_settings(user: str, accounts: dict[str, dict]) -> None:
+def sync_jmap_accounts(user: str, accounts: dict[str, dict]) -> None:
 	"""Ensure a shared JMAP Account document exists for each of the user's accounts.
 
 	Settings are shared by account ID across every user with access, so documents for
 	accounts the user can no longer see are intentionally left untouched.
 	"""
 
-	for account in accounts.keys():
-		get_or_create_account_settings(account, user=user)
+	frappe.flags.skip_automation_sieve_build = True
 
+	new_accounts_with_screening = []
+	for account_id, details in accounts.items():
+		if not frappe.db.exists("JMAP Account", account_id):
+			doc = frappe.new_doc("JMAP Account")
+			doc._name = details["name"]
+			doc.account_id = account_id
+			doc.is_personal = details["isPersonal"]
+			doc.is_readonly = details["isReadOnly"]
 
-def backfill_default_outgoing_emails() -> None:
-	"""Resolve each account's default outgoing email against its identities.
+			# Carry the user so after_insert / validate can reach JMAP for this account.
+			doc.flags.user = user
 
-	Run as a background job (e.g. after the Outgoing-settings migration), where JMAP is
-	reachable — unlike during `bench migrate`. Keeps an existing default if it's one of
-	the account's identities, otherwise uses the account's first identity.
-	"""
+			doc.flags.ignore_links = True
+			doc.insert(ignore_permissions=True)
 
-	from suite.mail.jmap import get_jmap_connection
+			if doc.enable_screening:
+				new_accounts_with_screening.append(doc.name)
 
-	for user in frappe.get_all("User Settings", filters={"username": ["is", "set"]}, pluck="user"):
-		try:
-			account_ids = list(get_jmap_connection(user, ignore_permissions=True).accounts.keys())
-		except Exception:
-			continue
+	user_account_map = {
+		user_account.account: user_account.name
+		for user_account in frappe.db.get_all("User Account", {"user": user}, ["name", "account"])
+	}
 
-		for account_id in account_ids:
-			if not frappe.db.exists("JMAP Account", account_id):
-				continue
+	account_ids = set(accounts.keys())
+	existing_account_ids = set(user_account_map.keys())
 
-			try:
-				emails = get_account_emails(user, account_id)
-			except Exception:
-				continue
+	accounts_to_add = account_ids - existing_account_ids
+	accounts_to_remove = existing_account_ids - account_ids
 
-			if not emails:
-				continue
+	if accounts_to_add:
+		user_settings = frappe.get_doc("User Settings", {"user": user})
+		for account_id in accounts_to_add:
+			doc = frappe.new_doc("User Account")
+			doc.user = user
+			doc.account = account_id
+			doc.user_settings = user_settings.name
+			doc.insert(ignore_permissions=True)
 
-			current = frappe.db.get_value("JMAP Account", account_id, "default_outgoing_email")
-			resolved = current if current in emails else emails[0]
-			if resolved != current:
-				frappe.db.set_value(
-					"JMAP Account",
-					account_id,
-					"default_outgoing_email",
-					resolved,
-					update_modified=False,
-				)
+	if accounts_to_remove:
+		frappe.db.delete(
+			"User Account", {"name": ["in", [user_account_map[account] for account in accounts_to_remove]]}
+		)
 
-	frappe.db.commit()
-
-
-def get_permission_query_condition(user: str | None = None) -> str:
-	# JMAP Account is named directly by the account ID, so scope on `name`.
-	return get_account_scoped_permission_query("JMAP Account", column="name", user=user)
-
-
-def has_permission(doc: Document, ptype: str, user: str | None = None) -> bool:
-	if doc.doctype != "JMAP Account":
-		return False
-
-	return has_account_scoped_permission(doc, column="name", user=user)
+	if new_accounts_with_screening:
+		for account in new_accounts_with_screening:
+			build_automation_sieve(account, activate=True)
 
 
 def create_archive_mailbox(user: str, account: str) -> None:
@@ -326,5 +287,33 @@ def create_archive_mailbox(user: str, account: str) -> None:
 	except Exception:
 		log_error(
 			_("Archive Mailbox Creation Error"),
-			_("Failed to create archive mailbox for account {0}").format(account),
+			_("Failed to create archive mailbox for account {0}").format(frappe.bold(account)),
 		)
+
+
+def get_permission_query_condition(user: str | None = None) -> str | None:
+	user = user or frappe.session.user
+	if is_system_manager(user):
+		return ""
+
+	accounts = get_user_jmap_accounts(user)
+	if not accounts:
+		return "1=0"
+
+	return f"""`tabJMAP Account`.name in ({", ".join(frappe.db.escape(account) for account in accounts)})"""
+
+
+def has_permission(doc: "Document", ptype: str, user: str | None = None) -> bool:
+	if doc.doctype != "JMAP Account":
+		return False
+
+	user = user or frappe.session.user
+
+	if is_system_manager(user):
+		return True
+
+	accounts = get_user_jmap_accounts(user)
+	if not accounts:
+		return False
+
+	return doc.name in accounts

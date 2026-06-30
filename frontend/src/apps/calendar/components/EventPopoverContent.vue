@@ -152,7 +152,7 @@ const editEventInstance = createResource({
 const editEvent = createResource({
 	url: 'suite.calendar.api.edit_calendar_event',
 	makeParams: ({ patch }) => ({
-		account_id: store.accountId,
+		account: store.accountId,
 		id: calendarEvent.master_id,
 		...patch,
 		send_scheduling_messages: true,

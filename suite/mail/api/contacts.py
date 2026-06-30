@@ -75,7 +75,7 @@ def get_address_book_contact_count(account: str, address_book: str) -> int:
 	return fetch_contact_cards(account, {"inAddressBook": address_book}, 0, 1)[1]
 
 
-def create_contacts_if_not_exists(user: str, account: str, recipients: list[dict] | str) -> None:
+def create_contacts_if_not_exists(account: str, recipients: list[dict] | str) -> None:
 	"""Creates contacts for the given recipients if they do not exist."""
 
 	if not frappe.db.get_value("JMAP Account", account, "create_contacts_after_email_submit"):
@@ -88,20 +88,20 @@ def create_contacts_if_not_exists(user: str, account: str, recipients: list[dict
 
 	new_emails = []
 	for email in emails:
-		if not (fetch_contact_cards(account, {"email": email}, 0, 1, user=user)[0]):
+		if not (fetch_contact_cards(account, {"email": email}, 0, 1)[0]):
 			new_emails.append(email)
 
 	contact_cards = []
 	for email in new_emails:
 		contact_card = {
-			"address_book_ids": [get_default_address_book_id(user, account)],
+			"address_book_ids": [get_default_address_book_id(account)],
 			"full_name": extract_name_from_email(email),
 			"kind": "Individual",
 			"emails": [{"address": email, "type": "Personal"}],
 		}
 		contact_cards.append(contact_card)
 
-	bulk_add_contact_cards(account, contact_cards, user=user)
+	bulk_add_contact_cards(account, contact_cards)
 
 
 def extract_name_from_email(email: str) -> str:

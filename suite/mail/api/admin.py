@@ -179,7 +179,10 @@ def delete_domain(domain_id: str) -> None:
 def get_enabled_domains() -> list[str]:
 	"""Returns the list of enabled domains"""
 
-	return list(set([d["name"] for d in get_stalwart_domains() if d["isEnabled"]]))
+	try:
+		return list(set([d["name"] for d in get_stalwart_domains() if d["isEnabled"]]))
+	except Exception:
+		return []
 
 
 @frappe.whitelist()
@@ -302,6 +305,13 @@ def get_account_requests(
 	search: str | None = None, status: Literal["All", "Pending", "Accepted", "Expired"] = "All"
 ) -> list[dict]:
 	"""Returns the list of account invites"""
+
+	user = frappe.session.user
+
+	if not is_mail_admin(user) and not is_system_manager(user):
+		frappe.throw(
+			_("User {0} does not have permission to view account requests.").format(frappe.bold(user))
+		)
 
 	ACC_REQ = frappe.qb.DocType("Mail Account Request")
 	query = (

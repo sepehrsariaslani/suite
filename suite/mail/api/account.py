@@ -156,19 +156,17 @@ def get_user_info() -> dict | None:
 	data.is_mail_admin = is_mail_admin(user)
 	data.is_system_manager = is_system_manager(user)
 	data.is_jmap_configured = is_jmap_configured(user)
-	data.accounts = frappe.db.get_all("User Account", filters={"user": user})
+	data.accounts = frappe.db.get_all("User Account", {"user": user}, ["account"])
 
-	# Outgoing settings now live per-account on JMAP Account (shared across the users
-	# of an account and named by the account ID); attach each account's default outgoing
-	# email (and its settings doc) so the compose UI can pick the default sender.
-	account_ids = [acc["id"] for acc in data.accounts]
 	settings_by_account = {
 		s["name"]: s
 		for s in frappe.get_all(
 			"JMAP Account",
-			filters={"name": ["in", account_ids]},
+			filters={"name": ["in", [account["account"] for account in data.accounts]]},
 			fields=[
 				"name",
+				"_name",
+				"is_personal",
 				"default_outgoing_email",
 				"on_mark_as_junk",
 				"enable_screening",
@@ -176,13 +174,16 @@ def get_user_info() -> dict | None:
 			],
 		)
 	}
-	for acc in data.accounts:
-		settings = settings_by_account.get(acc["id"])
-		acc["jmap_account"] = settings["name"] if settings else None
-		acc["default_outgoing_email"] = settings["default_outgoing_email"] if settings else None
-		acc["on_mark_as_junk"] = settings["on_mark_as_junk"] if settings else "Junk Sender's Mail"
-		acc["enable_screening"] = bool(settings["enable_screening"]) if settings else False
-		acc["block_remote_images"] = bool(settings["block_remote_images"]) if settings else True
+	for account in data.accounts:
+		settings = settings_by_account.get(account["account"])
+		account["id"] = account["account"]
+		account["_name"] = settings["_name"] if settings else None
+		account["is_personal"] = bool(settings["is_personal"]) if settings else False
+		account["jmap_account"] = settings["name"] if settings else None
+		account["default_outgoing_email"] = settings["default_outgoing_email"] if settings else None
+		account["on_mark_as_junk"] = settings["on_mark_as_junk"] if settings else "Junk Sender's Mail"
+		account["enable_screening"] = bool(settings["enable_screening"]) if settings else False
+		account["block_remote_images"] = bool(settings["block_remote_images"]) if settings else True
 
 	data.user_image = data.user_image or get_avatar_url(user)
 

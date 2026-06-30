@@ -224,7 +224,7 @@ const mailboxOptions = computed(() =>
 
 const results = createResource({
 	url: 'suite.mail.api.mail.search_mails',
-	makeParams: () => ({ account_id: accountId, filter: filteredFilter.value }),
+	makeParams: () => ({ account: accountId, filter: filteredFilter.value }),
 })
 
 const noOfAttachments = (result) =>

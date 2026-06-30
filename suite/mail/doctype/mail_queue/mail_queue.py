@@ -30,7 +30,7 @@ from frappe.utils import (
 )
 
 from suite.mail.doctype.user_account.user_account import is_jmap_account_belongs_to_user
-from suite.mail.jmap import get_email_service, get_identities, get_jmap_connection, parse_account
+from suite.mail.jmap import get_email_service, get_identities, get_jmap_connection
 from suite.mail.jmap.models import (
 	EmailAddress,
 	EmailAttachment,
@@ -43,7 +43,6 @@ from suite.mail.jmap.services.mail.mailbox import MailboxService
 from suite.mail.utils import get_config, log_error
 from suite.mail.utils.dt import parsedate_to_datetime
 from suite.mail.utils.user import is_administrator, is_jmap_configured
-from suite.mail.utils.validation import has_permission_for_user
 
 
 class MailQueue(Document):
@@ -147,7 +146,8 @@ class MailQueue(Document):
 		kwargs = frappe._dict(kwargs)
 
 		doc = frappe.new_doc("Mail Queue")
-		doc.user, doc.account = parse_account(kwargs.account)
+		doc.user = kwargs.user
+		doc.account = kwargs.account
 		doc.from_name = kwargs.from_name
 		doc.from_email = kwargs.from_email
 		doc.subject = kwargs.subject
@@ -207,7 +207,7 @@ class MailQueue(Document):
 		identity = {}
 
 		if self.from_email:
-			for i in get_identities(self.user, self.account):
+			for i in get_identities(self.account):
 				if self.from_email.lower() == i.get("email").lower():
 					identity = i
 					break

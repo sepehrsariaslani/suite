@@ -8,10 +8,9 @@ from frappe import _
 from frappe.model.document import Document
 from frappe.utils import cint
 
+from suite.mail.doctype.user_account.user_account import get_user_for_jmap_account
 from suite.mail.jmap import get_quota_service
 from suite.mail.utils import parse_filters
-from suite.mail.utils.user import get_account_user
-from suite.mail.utils.validation import has_permission_for_user
 
 
 class Quota(Document):
@@ -78,7 +77,7 @@ class Quota(Document):
 		account = filters.get("account")
 
 		if account:
-			if has_permission_for_user(frappe.session.user, raise_exception=False):
+			if get_user_for_jmap_account(account, raise_exception=False):
 				return cint(frappe.cache.get_value(_get_total_cache_key(account)))
 
 		return 0
@@ -102,16 +101,13 @@ def parse_quota_name(name: str) -> tuple[str, str]:
 
 
 @frappe.whitelist()
-def get_quota(account: str, id: str, raise_exception: bool = True, user: str | None = None) -> dict | None:
+def get_quota(account: str, id: str, raise_exception: bool = True) -> dict | None:
 	"""Returns quota details for the given account and id."""
 
-	user = get_account_user(account, user)
-	has_permission_for_user(user)
-
-	service = get_quota_service(user, account)
+	service = get_quota_service(account)
 
 	if quotas := service.get([id]):
-		return format_quota(account, quotas[0], user)
+		return format_quota(account, quotas[0])
 
 	if raise_exception:
 		frappe.throw(
@@ -121,15 +117,12 @@ def get_quota(account: str, id: str, raise_exception: bool = True, user: str | N
 
 
 @frappe.whitelist()
-def fetch_quotas(account: str, page: int = 1, limit: int = 10, user: str | None = None) -> list:
+def fetch_quotas(account: str, page: int = 1, limit: int = 10) -> list:
 	"""Returns a list of quotas for the given account."""
 
-	user = get_account_user(account, user)
-	has_permission_for_user(user)
-
-	service = get_quota_service(user, account)
+	service = get_quota_service(account)
 	quotas = service.get()
-	formatted_quotas = [format_quota(account, quota, user) for quota in quotas]
+	formatted_quotas = [format_quota(account, quota) for quota in quotas]
 	frappe.cache.set_value(_get_total_cache_key(account), len(quotas), expires_in_sec=600)
 
 	start = (page - 1) * limit
@@ -138,15 +131,12 @@ def fetch_quotas(account: str, page: int = 1, limit: int = 10, user: str | None 
 	return formatted_quotas[start:end]
 
 
-def format_quota(account: str, quota: dict, user: str | None = None) -> dict:
+def format_quota(account: str, quota: dict) -> dict:
 	"""Formats quota data for display."""
-
-	user = get_account_user(account, user)
 
 	return {
 		"name": f"{account}|{quota['id']}",
 		"account": account,
-		"user": user,
 		"id": quota["id"],
 		"_name": quota["name"],
 		"resource_type": quota["resourceType"],
@@ -164,4 +154,4 @@ def has_permission(doc: "Document", ptype: str, user: str | None = None) -> bool
 	if doc.doctype != "Quota":
 		return False
 
-	return has_permission_for_user(user or frappe.session.user, raise_exception=False)
+	return bool(get_user_for_jmap_account(doc.account, raise_exception=False))

@@ -425,24 +425,3 @@ class CoreService(CoreServiceHelper):
 				results[blob_id] = future.result()
 
 		return results
-
-
-def parse_account(account: str) -> tuple[str, str]:
-	"""Helper method to parse the account string into user and account ID components, validating the format and content of the account string."""
-
-	if not isinstance(account, str):
-		raise ValueError("Account must be a string.")
-
-	parts = account.split(":")
-	if len(parts) != 2:
-		raise ValueError("Account must be in the format 'user:account_id'.")
-
-	user = parts[0].strip()
-	account_id = parts[1].strip()
-
-	if not user:
-		raise ValueError("User part of the account cannot be empty.")
-	if not account_id:
-		raise ValueError("Account ID part of the account cannot be empty.")
-
-	return user, account_id

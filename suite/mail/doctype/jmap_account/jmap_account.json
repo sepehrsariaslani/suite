@@ -6,8 +6,10 @@
  "engine": "InnoDB",
  "field_order": [
   "account_id",
-  "is_personal",
+  "_name",
   "column_break_wase",
+  "is_personal",
+  "is_readonly",
   "outgoing_section",
   "default_outgoing_email",
   "column_break_outgoing",
@@ -186,6 +188,7 @@
    "fieldtype": "Column Break"
   },
   {
+   "description": "The JMAP account ID this document represents. The document is named by this value and is shared across every user with access to the account.",
    "fieldname": "account_id",
    "fieldtype": "Data",
    "label": "Account ID",
@@ -200,10 +203,34 @@
   },
   {
    "default": "0",
+   "description": "Whether this is the user's personal account (as opposed to a shared or delegated account), mirrored from the JMAP session's isPersonal flag.",
    "fieldname": "is_personal",
    "fieldtype": "Check",
    "in_list_view": 1,
    "label": "Is Personal",
+   "no_copy": 1,
+   "search_index": 1,
+   "set_only_once": 1
+  },
+  {
+   "description": "The account's display name, mirrored from the JMAP session's account name.",
+   "fieldname": "_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Name",
+   "no_copy": 1,
+   "reqd": 1,
+   "set_only_once": 1,
+   "unique": 1
+  },
+  {
+   "default": "0",
+   "description": "Whether the user has read-only access to this account, mirrored from the JMAP session's isReadOnly flag.",
+   "fieldname": "is_readonly",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "Is Readonly",
    "no_copy": 1,
    "search_index": 1,
    "set_only_once": 1
@@ -213,28 +240,73 @@
  "index_web_pages_for_search": 1,
  "links": [
   {
-   "group": "Reference",
-   "link_doctype": "Mail Queue",
+   "group": "Mail",
+   "link_doctype": "Mailbox",
    "link_fieldname": "account"
   },
   {
-   "group": "Reference",
-   "link_doctype": "User Account",
-   "link_fieldname": "account"
-  },
-  {
-   "group": "Reference",
+   "group": "Mail",
    "link_doctype": "Mailbox Settings",
    "link_fieldname": "account"
   },
   {
-   "group": "Reference",
+   "group": "Mail",
+   "link_doctype": "Mail Message",
+   "link_fieldname": "account"
+  },
+  {
+   "group": "Mail",
+   "link_doctype": "Mail Queue",
+   "link_fieldname": "account"
+  },
+  {
+   "group": "Mail",
+   "link_doctype": "Identity",
+   "link_fieldname": "account"
+  },
+  {
+   "group": "Mail",
+   "link_doctype": "Sieve Script",
+   "link_fieldname": "account"
+  },
+  {
+   "group": "Mail",
+   "link_doctype": "Screened Email Address",
+   "link_fieldname": "account"
+  },
+  {
+   "group": "Mail",
    "link_doctype": "Mail Sync History",
    "link_fieldname": "account_id"
   },
   {
-   "group": "Reference",
-   "link_doctype": "Screened Email Address",
+   "group": "Calendar",
+   "link_doctype": "Calendar",
+   "link_fieldname": "account"
+  },
+  {
+   "group": "Calendar",
+   "link_doctype": "Calendar Event",
+   "link_fieldname": "account"
+  },
+  {
+   "group": "Calendar",
+   "link_doctype": "Participant Identity",
+   "link_fieldname": "account"
+  },
+  {
+   "group": "Calendar",
+   "link_doctype": "Event Notification",
+   "link_fieldname": "account"
+  },
+  {
+   "group": "Contacts",
+   "link_doctype": "Address Book",
+   "link_fieldname": "account"
+  },
+  {
+   "group": "Contacts",
+   "link_doctype": "Contact Card",
    "link_fieldname": "account"
   },
   {
@@ -248,62 +320,17 @@
    "link_fieldname": "account"
   },
   {
-   "group": "Reference",
-   "link_doctype": "Sieve Script",
+   "group": "Account",
+   "link_doctype": "User Account",
    "link_fieldname": "account"
   },
   {
-   "group": "Reference",
-   "link_doctype": "Event Notification",
-   "link_fieldname": "account"
-  },
-  {
-   "group": "Reference",
-   "link_doctype": "Participant Identity",
-   "link_fieldname": "account"
-  },
-  {
-   "group": "Reference",
-   "link_doctype": "Calendar Event",
-   "link_fieldname": "account"
-  },
-  {
-   "group": "Reference",
-   "link_doctype": "Calendar",
-   "link_fieldname": "account"
-  },
-  {
-   "group": "Reference",
+   "group": "Account",
    "link_doctype": "Quota",
-   "link_fieldname": "account"
-  },
-  {
-   "group": "Reference",
-   "link_doctype": "Identity",
-   "link_fieldname": "account"
-  },
-  {
-   "group": "Reference",
-   "link_doctype": "Contact Card",
-   "link_fieldname": "account"
-  },
-  {
-   "group": "Reference",
-   "link_doctype": "Address Book",
-   "link_fieldname": "account"
-  },
-  {
-   "group": "Reference",
-   "link_doctype": "Mail Message",
-   "link_fieldname": "account"
-  },
-  {
-   "group": "Reference",
-   "link_doctype": "Mailbox",
    "link_fieldname": "account"
   }
  ],
- "modified": "2026-06-30 10:31:50.942773",
+ "modified": "2026-07-01 15:42:33.195505",
  "modified_by": "Administrator",
  "module": "Mail",
  "name": "JMAP Account",

@@ -14,10 +14,10 @@ from suite.mail.doctype.sieve_script.sieve_script import (
 	get_active_sieve_script_id,
 	set_last_active_sieve_script_id,
 )
+from suite.mail.doctype.user_account.user_account import get_user_for_jmap_account
 from suite.mail.jmap import get_vacation_response_service
 from suite.mail.utils import convert_html_to_text
 from suite.mail.utils.dt import convert_to_utc
-from suite.mail.utils.validation import has_permission_for_user
 
 
 class VacationResponse(Document):
@@ -48,8 +48,8 @@ class VacationResponse(Document):
 			frappe.msgprint(_("Please select an account to view vacation response details."), alert=True)
 			return super(Document, self).__init__({"creation": today(), "modified": today()})
 
-		vc = get_vacation_response(self.account, user=self.get("user"))
-		return super(Document, self).__init__(vc)
+		vr = get_vacation_response(self.account, user=self.get("user"))
+		return super(Document, self).__init__(vr)
 
 	def on_update(self) -> None:
 		if not self.get("account"):
@@ -84,15 +84,12 @@ class VacationResponse(Document):
 
 
 @frappe.whitelist()
-def get_vacation_response(account: str, user: str | None = None) -> dict:
+def get_vacation_response(account: str) -> dict:
 	"""Returns the vacation response settings for the given account."""
 
-	user = user or frappe.session.user
-	has_permission_for_user(user)
-
-	service = get_vacation_response_service(user, account)
-	vc = service.get()
-	return format_vacation_response(account, vc, user)
+	service = get_vacation_response_service(account)
+	vr = service.get()
+	return format_vacation_response(account, vr)
 
 
 @frappe.whitelist()
@@ -104,12 +101,8 @@ def update_vacation_response(
 	subject: str | None = None,
 	text_body: str | None = None,
 	html_body: str | None = None,
-	user: str | None = None,
 ) -> None:
 	"""Updates the vacation response settings for the given account."""
-
-	user = user or frappe.session.user
-	has_permission_for_user(user)
 
 	enabled = bool(enabled)
 	from_date = convert_to_utc(from_date).isoformat() if from_date else None
@@ -121,9 +114,9 @@ def update_vacation_response(
 	if not convert_html_to_text(html_body):
 		html_body = None
 
-	current_active_sieve_script_id = get_active_sieve_script_id(account, user=user)
+	current_active_sieve_script_id = get_active_sieve_script_id(account)
 
-	service = get_vacation_response_service(user, account)
+	service = get_vacation_response_service(account)
 	previous_vacation_response = service.get()
 	vacation_update_result = service.update(
 		{
@@ -139,31 +132,28 @@ def update_vacation_response(
 	if vacation_update_result.get("updated"):
 		if enabled:
 			if not previous_vacation_response.get("isEnabled"):
-				set_last_active_sieve_script_id(account, current_active_sieve_script_id, user=user)
+				set_last_active_sieve_script_id(account, current_active_sieve_script_id)
 		else:
-			activate_last_active_sieve_script(account, user=user)
+			activate_last_active_sieve_script(account)
 
 
-def format_vacation_response(account: str, vc: dict, user: str | None = None) -> dict:
+def format_vacation_response(account: str, vr: dict) -> dict:
 	"""Formats the vacation response data."""
 
-	user = user or frappe.session.user
-
-	from_date = vc.get("fromDate", None)
+	from_date = vr.get("fromDate", None)
 	local_from_date = convert_utc_to_system_timezone(get_datetime(from_date)) if from_date else None
 
-	to_date = vc.get("toDate", None)
+	to_date = vr.get("toDate", None)
 	local_to_date = convert_utc_to_system_timezone(get_datetime(to_date)) if to_date else None
 
 	return {
 		"account": account,
-		"user": user,
-		"enabled": cint(vc.get("isEnabled")),
+		"enabled": cint(vr.get("isEnabled")),
 		"from_date": local_from_date,
 		"to_date": local_to_date,
-		"subject": vc.get("subject"),
-		"text_body": vc.get("textBody"),
-		"html_body": vc.get("htmlBody"),
+		"subject": vr.get("subject"),
+		"text_body": vr.get("textBody"),
+		"html_body": vr.get("htmlBody"),
 		"creation": today(),
 		"modified": today(),
 	}
@@ -173,4 +163,4 @@ def has_permission(doc: "Document", ptype: str, user: str | None = None) -> bool
 	if doc.doctype != "Vacation Response" or not doc.get("account"):
 		return False
 
-	return has_permission_for_user(user or frappe.session.user, raise_exception=False)
+	return bool(get_user_for_jmap_account(doc.account, raise_exception=False))

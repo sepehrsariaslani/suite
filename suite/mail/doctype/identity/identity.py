@@ -9,10 +9,9 @@ from frappe import _
 from frappe.model.document import Document
 from frappe.utils import cint, today
 
+from suite.mail.doctype.user_account.user_account import get_user_for_jmap_account
 from suite.mail.jmap import get_identity_service
 from suite.mail.utils import parse_filters
-from suite.mail.utils.user import get_account_user, is_mail_admin
-from suite.mail.utils.validation import has_permission_for_user
 
 
 class Identity(Document):
@@ -117,7 +116,7 @@ class Identity(Document):
 		account = filters.get("account")
 
 		if account:
-			if has_permission_for_user(frappe.session.user, raise_exception=False):
+			if get_user_for_jmap_account(account, raise_exception=False):
 				return cint(frappe.cache.get_value(_get_total_cache_key(account)))
 
 		return 0
@@ -138,17 +137,6 @@ def parse_identity_name(name: str) -> tuple[str, str]:
 
 	account, id = name.split("|")
 	return account, id
-
-
-def has_permission_for_identity(user: str) -> bool:
-	"""Checks if the user has permission for the identity."""
-
-	if not has_permission_for_user(user, raise_exception=False) and not is_mail_admin(frappe.session.user):
-		frappe.throw(
-			_("User {0} does not have permission to view identities for user {1}.").format(
-				frappe.bold(frappe.session.user), frappe.bold(user)
-			)
-		)
 
 
 @frappe.whitelist()
@@ -178,12 +166,8 @@ def add_identity(
 	bcc: list[dict] | None = None,
 	text_signature: str | None = None,
 	html_signature: str | None = None,
-	user: str | None = None,
 ) -> str:
 	"""Adds an identity for the given account with the specified parameters."""
-
-	user = get_account_user(account, user)
-	has_permission_for_user(user)
 
 	creation_id = str(uuid7())
 	identity = {
@@ -196,7 +180,7 @@ def add_identity(
 		"html_signature": html_signature,
 	}
 
-	service = get_identity_service(user, account)
+	service = get_identity_service(account)
 	response = service.create([identity])
 
 	title = _("Identity Creation Error")
@@ -209,15 +193,12 @@ def add_identity(
 
 
 @frappe.whitelist()
-def get_identity(account: str, id: str, raise_exception: bool = True, user: str | None = None) -> dict | None:
+def get_identity(account: str, id: str, raise_exception: bool = True) -> dict | None:
 	"""Returns identity details for the given account and id."""
 
-	user = get_account_user(account, user)
-	has_permission_for_user(user)
-
-	service = get_identity_service(user, account)
+	service = get_identity_service(account)
 	if identities := service.get([id]):
-		return format_identity(account, identities[0], user)
+		return format_identity(account, identities[0])
 
 	if raise_exception:
 		frappe.throw(
@@ -235,12 +216,8 @@ def update_identity(
 	bcc: list[dict] | None = None,
 	text_signature: str | None = None,
 	html_signature: str | None = None,
-	user: str | None = None,
 ) -> None:
 	"""Updates an existing identity with the given parameters."""
-
-	user = get_account_user(account, user)
-	has_permission_for_user(user)
 
 	identity = {
 		"id": id,
@@ -251,7 +228,7 @@ def update_identity(
 		"html_signature": html_signature,
 	}
 
-	service = get_identity_service(user, account)
+	service = get_identity_service(account)
 	response = service.update([identity])
 
 	if not response.get("updated"):
@@ -263,13 +240,10 @@ def update_identity(
 
 
 @frappe.whitelist()
-def delete_identities(account: str, ids: list[str], user: str | None = None) -> None:
+def delete_identities(account: str, ids: list[str]) -> None:
 	"""Deletes identities for the given account and list of identity IDs."""
 
-	user = get_account_user(account, user)
-	has_permission_for_user(user)
-
-	service = get_identity_service(user, account, ignore_permissions=True)
+	service = get_identity_service(account, ignore_permissions=True)
 	response = service.delete(ids)
 
 	if response.get("notDestroyed"):
@@ -283,23 +257,13 @@ def delete_identities(account: str, ids: list[str], user: str | None = None) -> 
 
 
 @frappe.whitelist()
-def fetch_identities(account: str, page: int = 1, limit: int = 10, user: str | None = None) -> list:
+def fetch_identities(account: str, page: int = 1, limit: int = 10) -> list:
 	"""Returns a list of identities for the given account."""
 
-	user = get_account_user(account, user)
-
-	if not has_permission_for_user(user, raise_exception=False):
-		if not is_mail_admin(frappe.session.user):
-			frappe.throw(
-				_("User {0} does not have permission to view identities for user {1}.").format(
-					frappe.bold(frappe.session.user), frappe.bold(user)
-				)
-			)
-
-	service = get_identity_service(user, account, ignore_permissions=True)
+	service = get_identity_service(account, ignore_permissions=True)
 	identities = service.get()
 
-	formatted_identities = [format_identity(account, identity, user) for identity in identities]
+	formatted_identities = [format_identity(account, identity) for identity in identities]
 	frappe.cache.set_value(_get_total_cache_key(account), len(identities), expires_in_sec=600)
 
 	start = (page - 1) * limit
@@ -308,10 +272,8 @@ def fetch_identities(account: str, page: int = 1, limit: int = 10, user: str | N
 	return formatted_identities[start:end]
 
 
-def format_identity(account: str, identity: dict, user: str | None = None) -> dict:
+def format_identity(account: str, identity: dict) -> dict:
 	"""Formats identity data for display."""
-
-	user = get_account_user(account, user)
 
 	bcc = []
 	for b in identity["bcc"] or []:
@@ -324,7 +286,6 @@ def format_identity(account: str, identity: dict, user: str | None = None) -> di
 	return {
 		"name": f"{account}|{identity['id']}",
 		"account": account,
-		"user": user,
 		"id": identity["id"],
 		"_name": identity["name"],
 		"email": identity["email"].lower(),
@@ -335,7 +296,6 @@ def format_identity(account: str, identity: dict, user: str | None = None) -> di
 		"may_delete": cint(identity["mayDelete"]),
 		"creation": today(),
 		"modified": today(),
-		"owner": user,
 	}
 
 
@@ -343,4 +303,4 @@ def has_permission(doc: "Document", ptype: str, user: str | None = None) -> bool
 	if doc.doctype != "Identity":
 		return False
 
-	return has_permission_for_user(user or frappe.session.user, raise_exception=False)
+	return bool(get_user_for_jmap_account(doc.account, raise_exception=False))

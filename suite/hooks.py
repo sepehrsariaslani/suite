@@ -285,6 +285,7 @@ scheduler_events = {
 	"hourly": [
 		# mail
 		"suite.mail.doctype.mail_exchange.mail_exchange.retry_stuck_mail_exchanges",
+		"suite.mail.doctype.calendar_exchange.calendar_exchange.retry_stuck_calendar_exchanges",
 	],
 	"hourly_long": [
 		# mail

@@ -164,7 +164,7 @@ const showMoveToInbox = ref(false)
 
 const moveScreeningToInbox = createResource({
 	url: 'suite.mail.api.mail.move_screening_mails_to_inbox',
-	makeParams: () => ({ account_id: accountId }),
+	makeParams: () => ({ account: accountId }),
 	onSuccess: () => {
 		raiseToast(__('Unscreened messages moved to Inbox.'))
 		showMoveToInbox.value = false

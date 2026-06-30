@@ -6,14 +6,8 @@ from uuid import uuid7
 import frappe
 from frappe.model.document import Document
 
-from suite.mail.doctype.user_account.user_account import get_user_jmap_account_ids
-from suite.mail.jmap import parse_account
-from suite.mail.utils.user import (
-	get_account_scoped_permission_query,
-	get_session_account,
-	has_account_scoped_permission,
-	is_system_manager,
-)
+from suite.mail.doctype.user_account.user_account import get_user_jmap_accounts
+from suite.mail.utils.user import is_system_manager
 
 # Screening actions: what happens to future mail from a screened sender.
 REJECT = "Reject"  # discard the incoming mail silently
@@ -41,19 +35,19 @@ class ScreenedEmailAddress(Document):
 		self.validate_duplicate_email()
 
 	def on_update(self) -> None:
-		from suite.mail.api.sieve import maybe_build_automation_sieve
+		from suite.mail.doctype.sieve_script.sieve_script import maybe_build_automation_sieve
 
 		# Runs on both insert and save. `email` is set_only_once, so on an edit only the action can
 		# change; regenerate on insert (no prior doc) and whenever the action is changed (e.g. switching
 		# Spam <-> Reject in Desk), since that moves the sender between sieve blocks. Skipped when a
 		# caller paused builds for a bulk write (it rebuilds once at the end instead).
 		if self.has_value_changed("action"):
-			maybe_build_automation_sieve(get_session_account(self.account))
+			maybe_build_automation_sieve(self.account)
 
 	def after_delete(self) -> None:
-		from suite.mail.api.sieve import maybe_build_automation_sieve
+		from suite.mail.doctype.sieve_script.sieve_script import maybe_build_automation_sieve
 
-		maybe_build_automation_sieve(get_session_account(self.account))
+		maybe_build_automation_sieve(self.account)
 
 	def validate_duplicate_email(self) -> None:
 		"""Validates that the same email address is not screened more than once for the same account."""
@@ -86,7 +80,7 @@ def get_permission_query_condition(user: str | None = None) -> str | None:
 	if is_system_manager(user):
 		return ""
 
-	accounts = get_user_jmap_account_ids(user)
+	accounts = get_user_jmap_accounts(user)
 	if not accounts:
 		return "1=0"
 
@@ -102,7 +96,7 @@ def has_permission(doc: "Document", ptype: str, user: str | None = None) -> bool
 	if is_system_manager(user):
 		return True
 
-	accounts = get_user_jmap_account_ids(user)
+	accounts = get_user_jmap_accounts(user)
 	if not accounts:
 		return False
 

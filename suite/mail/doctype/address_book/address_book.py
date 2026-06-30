@@ -9,10 +9,9 @@ from frappe import _
 from frappe.model.document import Document
 from frappe.utils import cint, today
 
+from suite.mail.doctype.user_account.user_account import get_user_for_jmap_account
 from suite.mail.jmap import get_address_book_service
 from suite.mail.utils import parse_filters
-from suite.mail.utils.user import get_account_user
-from suite.mail.utils.validation import has_permission_for_user
 
 
 class AddressBook(Document):
@@ -98,7 +97,7 @@ class AddressBook(Document):
 		account = filters.get("account")
 
 		if account:
-			if has_permission_for_user(frappe.session.user, raise_exception=False):
+			if get_user_for_jmap_account(account, raise_exception=False):
 				return cint(frappe.cache.get_value(_get_total_cache_key(account)))
 
 		return 0
@@ -156,12 +155,8 @@ def add_address_book(
 	sort_order: int = 0,
 	default: bool = False,
 	subscribed: bool = True,
-	user: str | None = None,
 ) -> str:
 	"""Adds a address book for the given account with the specified parameters."""
-
-	user = get_account_user(account, user)
-	has_permission_for_user(user)
 
 	creation_id = str(uuid7())
 	address_book = {
@@ -173,7 +168,7 @@ def add_address_book(
 		"is_subscribed": subscribed,
 	}
 
-	service = get_address_book_service(user, account)
+	service = get_address_book_service(account)
 	response = service.create([address_book])
 
 	title = _("Address Book Creation Error")
@@ -186,15 +181,12 @@ def add_address_book(
 
 
 @frappe.whitelist()
-def get_address_book(account: str, id: str, raise_exception: bool = True, user: str | None = None) -> dict | None:
+def get_address_book(account: str, id: str, raise_exception: bool = True) -> dict | None:
 	"""Returns address book details for the given account and id."""
 
-	user = get_account_user(account, user)
-	has_permission_for_user(user)
-
-	service = get_address_book_service(user, account)
+	service = get_address_book_service(account)
 	if address_books := service.get([id]):
-		return format_address_book(account, address_books[0], user)
+		return format_address_book(account, address_books[0])
 
 	if raise_exception:
 		frappe.throw(
@@ -214,12 +206,8 @@ def update_address_book(
 	sort_order: int = 0,
 	default: bool = False,
 	subscribed: bool = True,
-	user: str | None = None,
 ) -> None:
 	"""Updates an existing address book with the given parameters."""
-
-	user = get_account_user(account, user)
-	has_permission_for_user(user)
 
 	address_book = {
 		"id": id,
@@ -230,7 +218,7 @@ def update_address_book(
 		"is_subscribed": subscribed,
 	}
 
-	service = get_address_book_service(user, account)
+	service = get_address_book_service(account)
 	response = service.update([address_book])
 
 	title = _("Address Book Update Error")
@@ -242,13 +230,10 @@ def update_address_book(
 
 
 @frappe.whitelist()
-def delete_address_books(account: str, ids: list[str], user: str | None = None) -> None:
+def delete_address_books(account: str, ids: list[str]) -> None:
 	"""Deletes address books for the given account and list of address book IDs."""
 
-	user = get_account_user(account, user)
-	has_permission_for_user(user)
-
-	service = get_address_book_service(user, account)
+	service = get_address_book_service(account)
 	response = service.delete(ids, remove_contents=True)
 
 	if response.get("notDestroyed"):
@@ -262,15 +247,12 @@ def delete_address_books(account: str, ids: list[str], user: str | None = None) 
 
 
 @frappe.whitelist()
-def fetch_address_books(account: str, page: int = 1, limit: int = 10, user: str | None = None) -> list:
+def fetch_address_books(account: str, page: int = 1, limit: int = 10) -> list:
 	"""Returns a list of address books for the given account."""
 
-	user = get_account_user(account, user)
-	has_permission_for_user(user)
-
-	service = get_address_book_service(user, account)
+	service = get_address_book_service(account)
 	address_books = service.get()
-	formatted_address_books = [format_address_book(account, book, user) for book in address_books]
+	formatted_address_books = [format_address_book(account, book) for book in address_books]
 	sorted_address_books = sorted(formatted_address_books, key=lambda x: x["sort_order"])
 	frappe.cache.set_value(_get_total_cache_key(account), len(address_books), expires_in_sec=600)
 
@@ -280,17 +262,15 @@ def fetch_address_books(account: str, page: int = 1, limit: int = 10, user: str 
 	return sorted_address_books[start:end]
 
 
-def format_address_book(account: str, address_book: dict, user: str | None = None) -> dict:
+def format_address_book(account: str, address_book: dict) -> dict:
 	"""Formats address book data for display."""
 
-	user = get_account_user(account, user)
 	sort_order = cint(address_book["sortOrder"])
 	rights = address_book.get("myRights") or {}
 
 	return {
 		"name": f"{account}|{address_book['id']}",
 		"account": account,
-		"user": user,
 		"id": address_book["id"],
 		"_name": address_book["name"],
 		"sort_order": sort_order,
@@ -310,4 +290,4 @@ def has_permission(doc: "Document", ptype: str, user: str | None = None) -> bool
 	if doc.doctype != "Address Book":
 		return False
 
-	return has_permission_for_user(user or frappe.session.user, raise_exception=False)
+	return bool(get_user_for_jmap_account(doc.account, raise_exception=False))

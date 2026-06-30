@@ -9,7 +9,7 @@ import frappe
 from frappe import _
 from frappe.model.document import Document
 
-from suite.mail.doctype.jmap_account.jmap_account import sync_account_settings
+from suite.mail.doctype.jmap_account.jmap_account import sync_jmap_accounts
 from suite.mail.jmap import get_jmap_session_manager
 from suite.mail.jmap.connection import JMAPConnection, JMAPConnectionInfo
 from suite.mail.utils import get_config
@@ -94,7 +94,7 @@ class UserSettings(Document):
 
 	def on_update(self) -> None:
 		if connection := self.connection:
-			sync_account_settings(self.user, connection.accounts)
+			sync_jmap_accounts(self.user, connection.accounts)
 
 	def validate_jmap_settings(self) -> None:
 		"""Validate the JMAP settings by connecting to the JMAP server."""

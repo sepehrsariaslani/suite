@@ -7,11 +7,10 @@ from frappe import _
 from frappe.model.document import Document
 from frappe.utils import cint
 
+from suite.mail.doctype.user_account.user_account import get_user_for_jmap_account
 from suite.mail.jmap import get_calendar_event_notification_service
 from suite.mail.utils import parse_filters
 from suite.mail.utils.dt import parse_iso_datetime
-from suite.mail.utils.user import get_account_user
-from suite.mail.utils.validation import has_permission_for_user
 
 
 class EventNotification(Document):
@@ -88,7 +87,7 @@ class EventNotification(Document):
 		account = filters.get("account")
 
 		if account:
-			if has_permission_for_user(frappe.session.user, raise_exception=False):
+			if get_user_for_jmap_account(account, raise_exception=False):
 				return cint(frappe.cache.get_value(_get_total_cache_key(account)))
 
 		return 0
@@ -111,12 +110,12 @@ def bulk_delete(names: str | list[str]) -> None:
 	if isinstance(names, str):
 		names = json.loads(names)
 
-	account_ids_map = {}
+	accounts_map = {}
 	for name in names:
 		account, id = name.split("|")
-		account_ids_map.setdefault(account, []).append(id)
+		accounts_map.setdefault(account, []).append(id)
 
-	for account, ids in account_ids_map.items():
+	for account, ids in accounts_map.items():
 		delete_event_notifications(account, ids)
 
 	frappe.msgprint(_("Event Notifications deleted successfully."), alert=True)
@@ -132,11 +131,8 @@ def fetch_event_notifications(
 ) -> tuple[list[dict], int]:
 	"""Returns a list of event notifications and total count based on the provided filter."""
 
-	has_permission_for_user(frappe.session.user)
-
 	notifications = []
-
-	service = get_calendar_event_notification_service(get_account_user(account), account)
+	service = get_calendar_event_notification_service(account)
 	data = service.query(filter, position, limit, sort)
 
 	ids = data.get("ids", [])
@@ -151,9 +147,7 @@ def fetch_event_notifications(
 def get_event_notifications(account: str, ids: list[str]) -> list[dict]:
 	"""Returns a list of event notifications for the specified account and IDs."""
 
-	has_permission_for_user(frappe.session.user)
-
-	service = get_calendar_event_notification_service(get_account_user(account), account)
+	service = get_calendar_event_notification_service(account)
 
 	notifications = {}
 	for notification in service.get(ids):
@@ -167,9 +161,7 @@ def get_event_notifications(account: str, ids: list[str]) -> list[dict]:
 def delete_event_notifications(account: str, ids: list[str]) -> None:
 	"""Deletes event notifications for the specified account and ID(s)."""
 
-	has_permission_for_user(frappe.session.user)
-
-	service = get_calendar_event_notification_service(get_account_user(account), account)
+	service = get_calendar_event_notification_service(account)
 	response = service.delete(ids)
 
 	if response.get("notDestroyed"):
@@ -216,4 +208,4 @@ def has_permission(doc: "Document", ptype: str, user: str | None = None) -> bool
 	if doc.doctype != "Event Notification":
 		return False
 
-	return has_permission_for_user(frappe.session.user, raise_exception=False)
+	return bool(get_user_for_jmap_account(doc.account, raise_exception=False))

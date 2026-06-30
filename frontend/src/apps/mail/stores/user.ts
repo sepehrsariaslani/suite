@@ -61,7 +61,7 @@ export const userStore = defineStore('mail-user', () => {
 
 	const mailboxes = createResource({
 		url: 'suite.mail.api.mail.get_mailboxes',
-		makeParams: () => ({ account_id: accountId.value }),
+		makeParams: () => ({ account: accountId.value }),
 		cache: ['mailboxes', accountId.value],
 	})
 
@@ -99,7 +99,7 @@ export const userStore = defineStore('mail-user', () => {
 	// (discard incoming mail) or 'Spam' (file it into the Spam folder).
 	const screenedAddresses = createResource({
 		url: 'suite.mail.api.mail.get_screened_addresses',
-		makeParams: () => ({ account_id: accountId.value }),
+		makeParams: () => ({ account: accountId.value }),
 		cache: ['screenedAddresses', accountId.value],
 	})
 
