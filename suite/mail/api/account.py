@@ -14,7 +14,6 @@ from suite.mail.doctype.mail_settings.mail_settings import get_signup_domains
 from suite.mail.utils import convert_html_to_text, user_context
 from suite.mail.utils.rate_limiter import dynamic_rate_limit
 from suite.mail.utils.user import (
-	get_session_account,
 	has_user_settings,
 	is_jmap_configured,
 	is_mail_admin,
@@ -373,10 +372,8 @@ def is_push_notification_relay_enabled() -> bool:
 
 
 @frappe.whitelist()
-def get_quota(account_id: str) -> dict:
+def get_quota(account: str) -> dict:
 	"""Return quota usage for the user"""
-
-	account = get_session_account(account_id)
 
 	result = {
 		"disk_quota": 0,
@@ -399,10 +396,8 @@ def get_quota(account_id: str) -> dict:
 
 
 @frappe.whitelist()
-def get_identities(account_id: str) -> list[dict]:
+def get_identities(account: str) -> list[dict]:
 	"""Return the email identities for the user"""
-
-	account = get_session_account(account_id)
 
 	return fetch_identities(account, page=1, limit=100)
 

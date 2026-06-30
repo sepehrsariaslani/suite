@@ -8,7 +8,7 @@ from frappe import _
 from frappe.model.document import Document
 from frappe.utils import cint
 
-from suite.mail.jmap import get_quota_service, parse_account
+from suite.mail.jmap import get_quota_service
 from suite.mail.utils import parse_filters
 from suite.mail.utils.validation import has_permission_for_user
 
@@ -35,17 +35,11 @@ class Quota(Document):
 		warn_limit: DF.Int
 	# end: auto-generated types
 
-	@property
-	def _account(self) -> str:
-		"""Full ``user:account_id`` JMAP handle, rebuilt from the selected user and account ID."""
-
-		return f"{self.user}:{self.account_id}"
-
 	def db_insert(self, *args, **kwargs) -> None:
 		raise NotImplementedError
 
 	def load_from_db(self) -> "Quota":
-		account, id = self.name.split("|")
+		account, id = parse_quota_name(self.name)
 		quota = get_quota(account, id)
 		return super(Document, self).__init__(quota)
 
@@ -60,8 +54,6 @@ class Quota(Document):
 		filters = parse_filters(filters)
 		id = filters.get("id")
 		account = filters.get("account")
-		if not account and filters.get("user") and filters.get("account_id"):
-			account = f"{filters['user']}:{filters['account_id']}"
 
 		if not account:
 			frappe.msgprint(_("Please select an account to view quotas."), alert=True)
@@ -83,11 +75,9 @@ class Quota(Document):
 	def get_count(filters=None, **kwargs) -> int:
 		filters = parse_filters(filters)
 		account = filters.get("account")
-		if not account and filters.get("user") and filters.get("account_id"):
-			account = f"{filters['user']}:{filters['account_id']}"
 
 		if account:
-			if has_permission_for_user(parse_account(account)[0], raise_exception=False):
+			if has_permission_for_user(frappe.session.user, raise_exception=False):
 				return cint(frappe.cache.get_value(_get_total_cache_key(account)))
 
 		return 0
@@ -103,16 +93,24 @@ def _get_total_cache_key(account: str) -> str:
 	return f"{account}:quotas:total"
 
 
+def parse_quota_name(name: str) -> tuple[str, str]:
+	"""Splits a Quota name `user:account|id` into its bare `account` and `id`."""
+
+	handle, id = name.split("|")
+	return handle.split(":")[1], id
+
+
 @frappe.whitelist()
-def get_quota(account: str, id: str, raise_exception: bool = True) -> dict | None:
-	"""Returns quota details for the given name in the format 'account|id'."""
+def get_quota(account: str, id: str, raise_exception: bool = True, user: str | None = None) -> dict | None:
+	"""Returns quota details for the given account and id."""
 
-	has_permission_for_user(parse_account(account)[0])
+	user = user or frappe.session.user
+	has_permission_for_user(user)
 
-	service = get_quota_service(*parse_account(account))
+	service = get_quota_service(user, account)
 
 	if quotas := service.get([id]):
-		return format_quota(account, quotas[0])
+		return format_quota(account, quotas[0], user)
 
 	if raise_exception:
 		frappe.throw(
@@ -122,14 +120,15 @@ def get_quota(account: str, id: str, raise_exception: bool = True) -> dict | Non
 
 
 @frappe.whitelist()
-def fetch_quotas(account: str, page: int = 1, limit: int = 10) -> list:
+def fetch_quotas(account: str, page: int = 1, limit: int = 10, user: str | None = None) -> list:
 	"""Returns a list of quotas for the given account."""
 
-	has_permission_for_user(parse_account(account)[0])
+	user = user or frappe.session.user
+	has_permission_for_user(user)
 
-	service = get_quota_service(*parse_account(account))
+	service = get_quota_service(user, account)
 	quotas = service.get()
-	formatted_quotas = [format_quota(account, quota) for quota in quotas]
+	formatted_quotas = [format_quota(account, quota, user) for quota in quotas]
 	frappe.cache.set_value(_get_total_cache_key(account), len(quotas), expires_in_sec=600)
 
 	start = (page - 1) * limit
@@ -138,13 +137,15 @@ def fetch_quotas(account: str, page: int = 1, limit: int = 10) -> list:
 	return formatted_quotas[start:end]
 
 
-def format_quota(account: str, quota: dict) -> dict:
+def format_quota(account: str, quota: dict, user: str | None = None) -> dict:
 	"""Formats quota data for display."""
 
+	user = user or frappe.session.user
+
 	return {
-		"name": f"{account}|{quota['id']}",
-		"account_id": parse_account(account)[1],
-		"user": parse_account(account)[0],
+		"name": f"{user}:{account}|{quota['id']}",
+		"account": account,
+		"user": user,
 		"id": quota["id"],
 		"_name": quota["name"],
 		"resource_type": quota["resourceType"],
@@ -162,4 +163,4 @@ def has_permission(doc: "Document", ptype: str, user: str | None = None) -> bool
 	if doc.doctype != "Quota":
 		return False
 
-	return has_permission_for_user(parse_account(doc.account)[0], raise_exception=False)
+	return has_permission_for_user(user or frappe.session.user, raise_exception=False)
