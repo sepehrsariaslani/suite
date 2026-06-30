@@ -235,7 +235,7 @@
   {
    "group": "Reference",
    "link_doctype": "Screened Email Address",
-   "link_fieldname": "account_id"
+   "link_fieldname": "account"
   },
   {
    "group": "Exchange",
@@ -248,7 +248,7 @@
    "link_fieldname": "account"
   }
  ],
- "modified": "2026-06-29 22:33:08.682485",
+ "modified": "2026-06-30 09:33:38.733123",
  "modified_by": "Administrator",
  "module": "Mail",
  "name": "JMAP Account",

@@ -19,6 +19,19 @@ SPAM = "Spam"  # file the incoming mail into the Spam (Junk) folder
 
 
 class ScreenedEmailAddress(Document):
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+
+		account: DF.Link
+		action: DF.Literal["Spam", "Reject", "Accepted"]
+		email: DF.Data
+	# end: auto-generated types
+
 	def autoname(self) -> None:
 		self.name = str(uuid7())
 
@@ -33,24 +46,19 @@ class ScreenedEmailAddress(Document):
 		# Spam <-> Reject in Desk), since that moves the sender between sieve blocks. Skipped when a
 		# caller paused builds for a bulk write (it rebuilds once at the end instead).
 		if self.has_value_changed("action"):
-			maybe_build_automation_sieve(get_session_account(self.account_id))
+			maybe_build_automation_sieve(get_session_account(self.account))
 
 	def after_delete(self) -> None:
 		from suite.mail.api.sieve import maybe_build_automation_sieve
 
-		maybe_build_automation_sieve(get_session_account(self.account_id))
+		maybe_build_automation_sieve(get_session_account(self.account))
 
 	def validate_duplicate_email(self) -> None:
-		"""Validates that the same email address is not screened more than once for the same account.
-
-		Scoped to `account_id` (not the per-user `account` handle) so a shared account can't have the
-		same address screened twice by different users. Uniqueness is on the address alone, not the
-		action, so a sender always has exactly one screening rule (Reject or Spam, never both).
-		"""
+		"""Validates that the same email address is not screened more than once for the same account."""
 
 		if frappe.db.exists(
 			"Screened Email Address",
-			{"account_id": self.account_id, "email": self.email, "name": ["!=", self.name]},
+			{"account": self.account, "email": self.email, "name": ["!=", self.name]},
 		):
 			frappe.throw(
 				frappe._("The email address {0} is already screened for this account.").format(self.email)
@@ -60,12 +68,11 @@ class ScreenedEmailAddress(Document):
 def get_screened_email_addresses(account: str, action: str | None = None) -> list[dict]:
 	"""Returns the screened email addresses (with their action) for the given account.
 
-	Keyed on `account_id` so every user with access to a shared account sees the same list. Pass
+	Keyed on `account` so every user with access to a shared account sees the same list. Pass
 	`action` to restrict to a single action (e.g. only the Reject rules).
 	"""
 
-	account_id = parse_account(account)[1]
-	filters = {"account_id": account_id}
+	filters = {"account": account}
 	if action:
 		filters["action"] = action
 
@@ -84,10 +91,10 @@ def has_permission(doc: Document, ptype: str, user: str | None = None) -> bool:
 
 
 def on_doctype_update() -> None:
-	# Screening list is shared per account_id, so uniqueness is on (account_id, email) — one rule
+	# Screening list is shared per account, so uniqueness is on (account, email) — one rule
 	# per address regardless of action.
 	frappe.db.add_unique(
 		"Screened Email Address",
-		["account_id", "email"],
-		constraint_name="unique_account_id_screened_email",
+		["account", "email"],
+		constraint_name="unique_account_screened_email",
 	)

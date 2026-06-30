@@ -493,7 +493,7 @@ def _apply_screening_blocks(account: str, content: str) -> str:
 	for name in ("Rejected Emails", "Spam Senders", "Screening", "Blocked Emails", "Junk Senders"):
 		content = remove_sieve_block(content, name)
 
-	screened = get_screened_email_addresses(account)
+	screened = get_screened_email_addresses(parse_account(account)[1])
 	reject_emails = [s.email for s in screened if s.action == "Reject"]
 	spam_emails = [s.email for s in screened if s.action == "Spam"]
 	accepted_emails = [s.email for s in screened if s.action == "Accepted"]

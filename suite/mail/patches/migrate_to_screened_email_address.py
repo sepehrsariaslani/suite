@@ -36,8 +36,7 @@ def execute() -> None:
 			{
 				"doctype": "Screened Email Address",
 				"user": user,
-				"account": account,
-				"account_id": account_id,
+				"account": account_id,
 				"email": email,
 				"action": action,
 			}

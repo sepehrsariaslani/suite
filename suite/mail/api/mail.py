@@ -908,7 +908,7 @@ def get_screened_addresses(account_id: str) -> list[dict]:
 	account = get_session_account(account_id)
 
 	has_permission_for_user(parse_account(account)[0])
-	return get_screened_email_addresses(account)
+	return get_screened_email_addresses(account_id)
 
 
 @frappe.whitelist()
@@ -960,7 +960,7 @@ def _screen_email_addresses(
 		row.email: row
 		for row in frappe.db.get_all(
 			"Screened Email Address",
-			filters={"account_id": account_id, "email": ["in", emails]},
+			filters={"account": account_id, "email": ["in", emails]},
 			fields=["name", "email", "action"],
 		)
 	}
@@ -980,7 +980,7 @@ def _screen_email_addresses(
 		doc = frappe.get_doc(
 			{
 				"doctype": "Screened Email Address",
-				"account_id": account_id,
+				"account": account_id,
 				"email": email,
 				"action": action,
 			}
@@ -1038,7 +1038,7 @@ def unscreen_email_addresses(account_id: str, emails: list[str]) -> None:
 	account_id = parse_account(account)[1]
 	deleted = frappe.db.get_all(
 		"Screened Email Address",
-		filters={"account_id": account_id, "email": ["in", emails]},
+		filters={"account": account_id, "email": ["in", emails]},
 		pluck="name",
 	)
 	if not deleted:
