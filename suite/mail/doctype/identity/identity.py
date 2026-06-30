@@ -11,7 +11,7 @@ from frappe.utils import cint, today
 
 from suite.mail.jmap import get_identity_service
 from suite.mail.utils import parse_filters
-from suite.mail.utils.user import is_mail_admin
+from suite.mail.utils.user import get_account_user, is_mail_admin
 from suite.mail.utils.validation import has_permission_for_user
 
 
@@ -56,7 +56,6 @@ class Identity(Document):
 		return reply_to
 
 	def db_insert(self, *args, **kwargs) -> None:
-		user = frappe.session.user
 		self.id = add_identity(
 			self.account,
 			self.email,
@@ -66,7 +65,7 @@ class Identity(Document):
 			self.text_signature,
 			self.html_signature,
 		)
-		self.name = f"{user}:{self.account}|{self.id}"
+		self.name = f"{self.account}|{self.id}"
 
 	def load_from_db(self) -> "Identity":
 		account, id = parse_identity_name(self.name)
@@ -135,10 +134,10 @@ def _get_total_cache_key(account: str) -> str:
 
 
 def parse_identity_name(name: str) -> tuple[str, str]:
-	"""Splits an Identity name `user:account|id` into its bare `account` and `id`."""
+	"""Splits an Identity name `account|id` into its bare `account` and `id`."""
 
-	handle, id = name.split("|")
-	return handle.split(":")[1], id
+	account, id = name.split("|")
+	return account, id
 
 
 def has_permission_for_identity(user: str) -> bool:
@@ -183,7 +182,7 @@ def add_identity(
 ) -> str:
 	"""Adds an identity for the given account with the specified parameters."""
 
-	user = user or frappe.session.user
+	user = get_account_user(account, user)
 	has_permission_for_user(user)
 
 	creation_id = str(uuid7())
@@ -213,7 +212,7 @@ def add_identity(
 def get_identity(account: str, id: str, raise_exception: bool = True, user: str | None = None) -> dict | None:
 	"""Returns identity details for the given account and id."""
 
-	user = user or frappe.session.user
+	user = get_account_user(account, user)
 	has_permission_for_user(user)
 
 	service = get_identity_service(user, account)
@@ -240,7 +239,7 @@ def update_identity(
 ) -> None:
 	"""Updates an existing identity with the given parameters."""
 
-	user = user or frappe.session.user
+	user = get_account_user(account, user)
 	has_permission_for_user(user)
 
 	identity = {
@@ -267,7 +266,7 @@ def update_identity(
 def delete_identities(account: str, ids: list[str], user: str | None = None) -> None:
 	"""Deletes identities for the given account and list of identity IDs."""
 
-	user = user or frappe.session.user
+	user = get_account_user(account, user)
 	has_permission_for_user(user)
 
 	service = get_identity_service(user, account, ignore_permissions=True)
@@ -287,7 +286,7 @@ def delete_identities(account: str, ids: list[str], user: str | None = None) -> 
 def fetch_identities(account: str, page: int = 1, limit: int = 10, user: str | None = None) -> list:
 	"""Returns a list of identities for the given account."""
 
-	user = user or frappe.session.user
+	user = get_account_user(account, user)
 
 	if not has_permission_for_user(user, raise_exception=False):
 		if not is_mail_admin(frappe.session.user):
@@ -312,7 +311,7 @@ def fetch_identities(account: str, page: int = 1, limit: int = 10, user: str | N
 def format_identity(account: str, identity: dict, user: str | None = None) -> dict:
 	"""Formats identity data for display."""
 
-	user = user or frappe.session.user
+	user = get_account_user(account, user)
 
 	bcc = []
 	for b in identity["bcc"] or []:
@@ -323,7 +322,7 @@ def format_identity(account: str, identity: dict, user: str | None = None) -> di
 		reply_to.append({"display_name": r["name"], "email": r["email"].lower()})
 
 	return {
-		"name": f"{user}:{account}|{identity['id']}",
+		"name": f"{account}|{identity['id']}",
 		"account": account,
 		"user": user,
 		"id": identity["id"],

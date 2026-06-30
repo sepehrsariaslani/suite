@@ -15,6 +15,7 @@ from suite.mail.doctype.calendar.calendar import validate_calendar_name_format
 from suite.mail.jmap import get_calendar_event_service
 from suite.mail.utils import parse_filters
 from suite.mail.utils.dt import convert_to_utc, parse_iso_datetime, utcnow
+from suite.mail.utils.user import get_account_user
 from suite.mail.utils.validation import has_permission_for_user
 
 
@@ -142,7 +143,6 @@ class CalendarEvent(Document):
 			]
 
 	def db_insert(self, *args, **kwargs) -> None:
-		user = frappe.session.user
 		self.id = add_calendar_event(
 			account=self.account,
 			organizer=self.organizer,
@@ -165,7 +165,7 @@ class CalendarEvent(Document):
 			use_default_alerts=bool(self.use_default_alerts),
 			send_scheduling_messages=bool(self.send_scheduling_messages),
 		)
-		self.name = f"{user}:{self.account}|{self.id}"
+		self.name = f"{self.account}|{self.id}"
 		self.reload()
 
 	def load_from_db(self) -> "CalendarEvent":
@@ -307,10 +307,10 @@ def _get_total_cache_key(account: str) -> str:
 
 
 def parse_calendar_event_name(name: str) -> tuple[str, str]:
-	"""Splits a Calendar Event name `user:account|id` into its bare `account` and `id`."""
+	"""Splits a Calendar Event name `account|id` into its bare `account` and `id`."""
 
-	handle, id = name.split("|")
-	return handle.split(":")[1], id
+	account, id = name.split("|")
+	return account, id
 
 
 @frappe.whitelist()
@@ -357,7 +357,7 @@ def add_calendar_event(
 ) -> str:
 	"""Adds a calendar event for the given account and returns the event ID."""
 
-	user = user or frappe.session.user
+	user = get_account_user(account, user)
 	has_permission_for_user(user)
 
 	uid = uuid7().hex
@@ -410,7 +410,7 @@ def fetch_calendar_events(
 ) -> list:
 	"""Returns a list of calendar events for the given account based on the provided filters."""
 
-	user = user or frappe.session.user
+	user = get_account_user(account, user)
 	has_permission_for_user(user)
 
 	calendar_events = []
@@ -430,7 +430,7 @@ def fetch_calendar_events(
 def get_calendar_events(account: str, ids: list[str], user: str | None = None) -> list[dict]:
 	"""Returns a list of calendar events for the specified account and IDs."""
 
-	user = user or frappe.session.user
+	user = get_account_user(account, user)
 	has_permission_for_user(user)
 
 	service = get_calendar_event_service(user, account)
@@ -448,7 +448,7 @@ def get_calendar_events(account: str, ids: list[str], user: str | None = None) -
 def get_master_events_by_uids(account: str, uids: list[str], user: str | None = None) -> dict:
 	"""Returns a dictionary of master calendar events for the specified account and UIDs."""
 
-	user = user or frappe.session.user
+	user = get_account_user(account, user)
 	has_permission_for_user(user)
 
 	events = {}
@@ -493,7 +493,7 @@ def update_calendar_event(
 ) -> None:
 	"""Updates a calendar event for the given account and event ID."""
 
-	user = user or frappe.session.user
+	user = get_account_user(account, user)
 	has_permission_for_user(user)
 
 	event = {
@@ -541,7 +541,7 @@ def update_calendar_event_instance(
 ) -> None:
 	"""Updates a specific instance of a recurring calendar event based on its master ID and recurrence ID."""
 
-	user = user or frappe.session.user
+	user = get_account_user(account, user)
 	has_permission_for_user(user)
 
 	service = get_calendar_event_service(user, account)
@@ -561,7 +561,7 @@ def update_calendar_event_instance(
 def delete_calendar_events(account: str, ids: list[str], user: str | None = None) -> None:
 	"""Deletes a calendar event for the given account by its ID."""
 
-	user = user or frappe.session.user
+	user = get_account_user(account, user)
 	has_permission_for_user(user)
 
 	service = get_calendar_event_service(user, account)
@@ -583,7 +583,7 @@ def delete_calendar_event_instance(
 ) -> None:
 	"""Deletes a specific instance of a recurring calendar event based on its master ID and recurrence ID."""
 
-	user = user or frappe.session.user
+	user = get_account_user(account, user)
 	has_permission_for_user(user)
 
 	service = get_calendar_event_service(user, account)
@@ -601,7 +601,7 @@ def delete_calendar_event_instance(
 def parse_ics(account: str, ics_data: bytes | str, user: str | None = None) -> list[dict]:
 	"""Parses ICS data and returns calendar event details."""
 
-	user = user or frappe.session.user
+	user = get_account_user(account, user)
 	has_permission_for_user(user)
 
 	service = get_calendar_event_service(user, account)
@@ -631,13 +631,13 @@ def format_calendar_event(
 ) -> dict:
 	"""Formats calendar event data for display."""
 
-	user = user or frappe.session.user
+	user = get_account_user(account, user)
 
 	calendars = []
 	for calendar_id in event["calendarIds"].keys():
 		calendars.append(
 			{
-				"calendar": f"{user}:{account}|{calendar_id}",
+				"calendar": f"{account}|{calendar_id}",
 				"calendar_id": calendar_id,
 				"calendar_name": calendar_map.get(calendar_id),
 			}
@@ -693,7 +693,7 @@ def format_calendar_event(
 	updated_utc = updated or created or utcnow()
 
 	return {
-		"name": f"{user}:{account}|{event['id']}",
+		"name": f"{account}|{event['id']}",
 		"account": account,
 		"user": user,
 		"id": event["id"],

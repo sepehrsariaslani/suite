@@ -145,6 +145,25 @@ def has_account_scoped_permission(doc, column: str = "account_id", user: str | N
 	return value in get_user_account_ids(user)
 
 
+def get_account_user(account: str, user: str | None = None) -> str:
+	"""Resolve the user whose JMAP connection authenticates requests for ``account``.
+
+	Defaults to the explicitly provided ``user`` or the session user. An Administrator or
+	System Manager may not personally have JMAP access to the account, so for them we fall
+	back to any user linked to the account via User Account.
+	"""
+
+	if user:
+		return user
+
+	user = frappe.session.user
+	if is_system_manager(user):
+		if linked := frappe.db.get_value("User Account", {"account": account}, "user"):
+			return linked
+
+	return user
+
+
 def get_account_emails(user: str, account: str) -> list[str]:
 	"""Returns the list of email addresses associated with the account."""
 

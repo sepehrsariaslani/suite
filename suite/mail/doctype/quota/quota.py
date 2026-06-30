@@ -10,6 +10,7 @@ from frappe.utils import cint
 
 from suite.mail.jmap import get_quota_service
 from suite.mail.utils import parse_filters
+from suite.mail.utils.user import get_account_user
 from suite.mail.utils.validation import has_permission_for_user
 
 
@@ -94,17 +95,17 @@ def _get_total_cache_key(account: str) -> str:
 
 
 def parse_quota_name(name: str) -> tuple[str, str]:
-	"""Splits a Quota name `user:account|id` into its bare `account` and `id`."""
+	"""Splits a Quota name `account|id` into its bare `account` and `id`."""
 
-	handle, id = name.split("|")
-	return handle.split(":")[1], id
+	account, id = name.split("|")
+	return account, id
 
 
 @frappe.whitelist()
 def get_quota(account: str, id: str, raise_exception: bool = True, user: str | None = None) -> dict | None:
 	"""Returns quota details for the given account and id."""
 
-	user = user or frappe.session.user
+	user = get_account_user(account, user)
 	has_permission_for_user(user)
 
 	service = get_quota_service(user, account)
@@ -123,7 +124,7 @@ def get_quota(account: str, id: str, raise_exception: bool = True, user: str | N
 def fetch_quotas(account: str, page: int = 1, limit: int = 10, user: str | None = None) -> list:
 	"""Returns a list of quotas for the given account."""
 
-	user = user or frappe.session.user
+	user = get_account_user(account, user)
 	has_permission_for_user(user)
 
 	service = get_quota_service(user, account)
@@ -140,10 +141,10 @@ def fetch_quotas(account: str, page: int = 1, limit: int = 10, user: str | None 
 def format_quota(account: str, quota: dict, user: str | None = None) -> dict:
 	"""Formats quota data for display."""
 
-	user = user or frappe.session.user
+	user = get_account_user(account, user)
 
 	return {
-		"name": f"{user}:{account}|{quota['id']}",
+		"name": f"{account}|{quota['id']}",
 		"account": account,
 		"user": user,
 		"id": quota["id"],

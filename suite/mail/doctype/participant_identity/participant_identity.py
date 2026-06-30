@@ -11,6 +11,7 @@ from frappe.utils import cint, today
 
 from suite.mail.jmap import get_participant_identity_service
 from suite.mail.utils import parse_filters
+from suite.mail.utils.user import get_account_user
 from suite.mail.utils.validation import has_permission_for_user
 
 
@@ -134,7 +135,7 @@ def add_participant_identity(account: str, name: str, email: str, default: bool 
 		"is_default": default,
 	}
 
-	service = get_participant_identity_service(frappe.session.user, account)
+	service = get_participant_identity_service(get_account_user(account), account)
 	response = service.create([participant_identity])
 
 	title = _("Participant Identity Creation Error")
@@ -152,7 +153,7 @@ def get_participant_identity(account: str, id: str) -> dict:
 
 	has_permission_for_user(frappe.session.user)
 
-	service = get_participant_identity_service(frappe.session.user, account)
+	service = get_participant_identity_service(get_account_user(account), account)
 	if identities := service.get([id]):
 		return format_participant_identity(account, identities[0])
 
@@ -177,7 +178,7 @@ def update_participant_identity(account: str, id: str, name: str, email: str, de
 		"is_default": default,
 	}
 
-	service = get_participant_identity_service(frappe.session.user, account)
+	service = get_participant_identity_service(get_account_user(account), account)
 	response = service.update([participant_identity])
 
 	if not response.get("updated"):
@@ -194,7 +195,7 @@ def delete_participant_identities(account: str, ids: list[str]) -> None:
 
 	has_permission_for_user(frappe.session.user)
 
-	service = get_participant_identity_service(frappe.session.user, account)
+	service = get_participant_identity_service(get_account_user(account), account)
 	response = service.delete(ids)
 
 	if response.get("notDestroyed"):
@@ -213,7 +214,7 @@ def fetch_participant_identities(account: str, page: int = 1, limit: int = 10) -
 
 	has_permission_for_user(frappe.session.user)
 
-	service = get_participant_identity_service(frappe.session.user, account)
+	service = get_participant_identity_service(get_account_user(account), account)
 	identities = service.get()
 	formatted_identities = [format_participant_identity(account, identity) for identity in identities]
 	frappe.cache.set_value(_get_total_cache_key(account), len(identities), expires_in_sec=600)

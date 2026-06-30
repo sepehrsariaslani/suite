@@ -210,10 +210,10 @@ def validate_nested_maildir_tree(base_dir: str, raise_exception: bool = False) -
 def has_permission_for_user(user: str, raise_exception: bool = True) -> bool:
 	"""Checks if the current user has permission to access the given user."""
 
-	from suite.mail.utils.user import is_administrator
+	from suite.mail.utils.user import is_system_manager
 
 	current_user = frappe.session.user
-	has_permission = user == current_user or is_administrator(current_user)
+	has_permission = user == current_user or is_system_manager(current_user)
 
 	if not has_permission and raise_exception:
 		frappe.throw(_("You do not have permission to access this resource."), frappe.PermissionError)

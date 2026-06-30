@@ -304,7 +304,7 @@ def get_identities(user: str, account: str) -> list[dict]:
 
 	identities = [
 		{
-			"name": f"{user}:{account}|{i['id']}",
+			"name": f"{account}|{i['id']}",
 			"account": account,
 			"user": user,
 			"id": i["id"],
@@ -342,13 +342,13 @@ def get_mailboxes(user: str, account: str) -> list[dict]:
 
 	mailboxes = [
 		{
-			"name": f"{user}:{account}|{m['id']}",
+			"name": f"{account}|{m['id']}",
 			"account": account,
 			"user": user,
 			"id": m["id"],
 			"role": m["role"],
 			"_name": m["name"],
-			"_parent": f"{user}:{account}|{m['parentId']}" if m.get("parentId") else None,
+			"_parent": f"{account}|{m['parentId']}" if m.get("parentId") else None,
 			"parent_id": m["parentId"],
 			"subscribed": m["isSubscribed"],
 		}

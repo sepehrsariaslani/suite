@@ -10,6 +10,7 @@ from frappe.utils import cint
 from suite.mail.jmap import get_calendar_event_notification_service
 from suite.mail.utils import parse_filters
 from suite.mail.utils.dt import parse_iso_datetime
+from suite.mail.utils.user import get_account_user
 from suite.mail.utils.validation import has_permission_for_user
 
 
@@ -135,7 +136,7 @@ def fetch_event_notifications(
 
 	notifications = []
 
-	service = get_calendar_event_notification_service(frappe.session.user, account)
+	service = get_calendar_event_notification_service(get_account_user(account), account)
 	data = service.query(filter, position, limit, sort)
 
 	ids = data.get("ids", [])
@@ -152,7 +153,7 @@ def get_event_notifications(account: str, ids: list[str]) -> list[dict]:
 
 	has_permission_for_user(frappe.session.user)
 
-	service = get_calendar_event_notification_service(frappe.session.user, account)
+	service = get_calendar_event_notification_service(get_account_user(account), account)
 
 	notifications = {}
 	for notification in service.get(ids):
@@ -168,7 +169,7 @@ def delete_event_notifications(account: str, ids: list[str]) -> None:
 
 	has_permission_for_user(frappe.session.user)
 
-	service = get_calendar_event_notification_service(frappe.session.user, account)
+	service = get_calendar_event_notification_service(get_account_user(account), account)
 	response = service.delete(ids)
 
 	if response.get("notDestroyed"):

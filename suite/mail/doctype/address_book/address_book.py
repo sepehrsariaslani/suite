@@ -11,6 +11,7 @@ from frappe.utils import cint, today
 
 from suite.mail.jmap import get_address_book_service
 from suite.mail.utils import parse_filters
+from suite.mail.utils.user import get_account_user
 from suite.mail.utils.validation import has_permission_for_user
 
 
@@ -37,7 +38,6 @@ class AddressBook(Document):
 	# end: auto-generated types
 
 	def db_insert(self, *args, **kwargs) -> None:
-		user = frappe.session.user
 		self.id = add_address_book(
 			self.account,
 			self._name,
@@ -46,7 +46,7 @@ class AddressBook(Document):
 			bool(self.default),
 			bool(self.subscribed),
 		)
-		self.name = f"{user}:{self.account}|{self.id}"
+		self.name = f"{self.account}|{self.id}"
 
 	def load_from_db(self) -> "AddressBook":
 		account, id = parse_address_book_name(self.name)
@@ -109,19 +109,19 @@ class AddressBook(Document):
 
 
 def parse_address_book_name(name: str) -> tuple[str, str]:
-	"""Splits an Address Book name `user:account|id` into its bare `account` and `id`."""
+	"""Splits an Address Book name `account|id` into its bare `account` and `id`."""
 
 	validate_address_book_name_format(name)
-	handle, id = name.split("|")
-	return handle.split(":")[1], id
+	account, id = name.split("|")
+	return account, id
 
 
 def validate_address_book_name_format(name: str) -> None:
-	"""Validates that the address book name is in the format 'user:account|id'."""
+	"""Validates that the address book name is in the format 'account|id'."""
 
 	parts = name.split("|")
 	if len(parts) != 2:
-		frappe.throw(_("Address Book name must be in the format 'user:account|id'."))
+		frappe.throw(_("Address Book name must be in the format 'account|id'."))
 
 
 def _get_total_cache_key(account: str) -> str:
@@ -160,7 +160,7 @@ def add_address_book(
 ) -> str:
 	"""Adds a address book for the given account with the specified parameters."""
 
-	user = user or frappe.session.user
+	user = get_account_user(account, user)
 	has_permission_for_user(user)
 
 	creation_id = str(uuid7())
@@ -189,7 +189,7 @@ def add_address_book(
 def get_address_book(account: str, id: str, raise_exception: bool = True, user: str | None = None) -> dict | None:
 	"""Returns address book details for the given account and id."""
 
-	user = user or frappe.session.user
+	user = get_account_user(account, user)
 	has_permission_for_user(user)
 
 	service = get_address_book_service(user, account)
@@ -218,7 +218,7 @@ def update_address_book(
 ) -> None:
 	"""Updates an existing address book with the given parameters."""
 
-	user = user or frappe.session.user
+	user = get_account_user(account, user)
 	has_permission_for_user(user)
 
 	address_book = {
@@ -245,7 +245,7 @@ def update_address_book(
 def delete_address_books(account: str, ids: list[str], user: str | None = None) -> None:
 	"""Deletes address books for the given account and list of address book IDs."""
 
-	user = user or frappe.session.user
+	user = get_account_user(account, user)
 	has_permission_for_user(user)
 
 	service = get_address_book_service(user, account)
@@ -265,7 +265,7 @@ def delete_address_books(account: str, ids: list[str], user: str | None = None) 
 def fetch_address_books(account: str, page: int = 1, limit: int = 10, user: str | None = None) -> list:
 	"""Returns a list of address books for the given account."""
 
-	user = user or frappe.session.user
+	user = get_account_user(account, user)
 	has_permission_for_user(user)
 
 	service = get_address_book_service(user, account)
@@ -283,12 +283,12 @@ def fetch_address_books(account: str, page: int = 1, limit: int = 10, user: str 
 def format_address_book(account: str, address_book: dict, user: str | None = None) -> dict:
 	"""Formats address book data for display."""
 
-	user = user or frappe.session.user
+	user = get_account_user(account, user)
 	sort_order = cint(address_book["sortOrder"])
 	rights = address_book.get("myRights") or {}
 
 	return {
-		"name": f"{user}:{account}|{address_book['id']}",
+		"name": f"{account}|{address_book['id']}",
 		"account": account,
 		"user": user,
 		"id": address_book["id"],

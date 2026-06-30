@@ -15,6 +15,7 @@ from suite.mail.storage import get_data_store
 from suite.mail.storage.data_store import Entity
 from suite.mail.utils import parse_filters
 from suite.mail.utils.dt import parse_iso_datetime
+from suite.mail.utils.user import get_account_user
 from suite.mail.utils.validation import has_permission_for_user
 
 
@@ -119,7 +120,6 @@ class ContactCard(Document):
 			return addresses
 
 	def db_insert(self, *args, **kwargs) -> None:
-		user = frappe.session.user
 		self.id = add_contact_card(
 			self.account,
 			self.address_book_ids,
@@ -129,7 +129,7 @@ class ContactCard(Document):
 			self.formatted_addresses,
 			self.kind,
 		)
-		self.name = f"{user}:{self.account}|{self.id}"
+		self.name = f"{self.account}|{self.id}"
 
 	def load_from_db(self) -> "ContactCard":
 		account, id = parse_contact_card_name(self.name)
@@ -230,10 +230,10 @@ class ContactCard(Document):
 
 
 def parse_contact_card_name(name: str) -> tuple[str, str]:
-	"""Splits a Contact Card name `user:account|id` into its bare `account` and `id`."""
+	"""Splits a Contact Card name `account|id` into its bare `account` and `id`."""
 
-	handle, id = name.split("|")
-	return handle.split(":")[1], id
+	account, id = name.split("|")
+	return account, id
 
 
 @frappe.whitelist()
@@ -267,7 +267,7 @@ def add_contact_card(
 ) -> str:
 	"""Adds a contact card for the given account with the specified parameters."""
 
-	user = user or frappe.session.user
+	user = get_account_user(account, user)
 	has_permission_for_user(user)
 
 	creation_id = str(uuid7())
@@ -299,7 +299,7 @@ def bulk_add_contact_cards(
 ) -> None:
 	"""Adds multiple contact cards for the given account and returns their IDs."""
 
-	user = user or frappe.session.user
+	user = get_account_user(account, user)
 	has_permission_for_user(user)
 
 	service = get_contact_card_service(user, account)
@@ -327,7 +327,7 @@ def fetch_contact_cards(
 ) -> tuple[list[dict], int]:
 	"""Returns a list of contact cards and total count based on the provided filter."""
 
-	user = user or frappe.session.user
+	user = get_account_user(account, user)
 	has_permission_for_user(user)
 
 	contact_cards = []
@@ -347,7 +347,7 @@ def fetch_contact_cards(
 def get_contact_cards(account: str, ids: list[str], user: str | None = None) -> list[dict]:
 	"""Returns a list of contact cards for the provided IDs in the same order as ids."""
 
-	user = user or frappe.session.user
+	user = get_account_user(account, user)
 	has_permission_for_user(user)
 
 	cached_contact_cards = _get_cached_contact_cards(account, ids)
@@ -391,7 +391,7 @@ def update_contact_card(
 ) -> None:
 	"""Updates an existing contact card with the given parameters."""
 
-	user = user or frappe.session.user
+	user = get_account_user(account, user)
 	has_permission_for_user(user)
 
 	contact_card = {
@@ -435,7 +435,7 @@ def contact_card_update_address_books(
 	- move_to_address_book_id: replaces addressBookIds entirely
 	"""
 
-	user = user or frappe.session.user
+	user = get_account_user(account, user)
 	has_permission_for_user(user)
 
 	service = get_contact_card_service(user, account)
@@ -500,7 +500,7 @@ def contact_card_move_to_address_book(
 def delete_contact_cards(account: str, ids: list[str], user: str | None = None) -> None:
 	"""Deletes contact cards for the given account by its IDs."""
 
-	user = user or frappe.session.user
+	user = get_account_user(account, user)
 	has_permission_for_user(user)
 
 	service = get_contact_card_service(user, account)
@@ -540,7 +540,7 @@ def format_contact_card(
 ) -> dict:
 	"""Formats contact card data for display."""
 
-	user = user or frappe.session.user
+	user = get_account_user(account, user)
 
 	full_name = None
 	if contact_name := contact_card.get("name"):
@@ -564,7 +564,7 @@ def format_contact_card(
 	for address_book_id in contact_card["addressBookIds"].keys():
 		address_books.append(
 			{
-				"address_book": f"{user}:{account}|{address_book_id}",
+				"address_book": f"{account}|{address_book_id}",
 				"address_book_id": address_book_id,
 				"address_book_name": address_book_map.get(address_book_id),
 			}
@@ -624,7 +624,7 @@ def format_contact_card(
 		modified = parse_iso_datetime(contact_card["updated"], as_str=True)
 
 	return {
-		"name": f"{user}:{account}|{contact_card['id']}",
+		"name": f"{account}|{contact_card['id']}",
 		"account": account,
 		"user": user,
 		"id": contact_card["id"],

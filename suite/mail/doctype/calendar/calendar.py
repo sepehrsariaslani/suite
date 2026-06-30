@@ -12,6 +12,7 @@ from frappe.utils import cint, today
 
 from suite.mail.jmap import get_calendar_service
 from suite.mail.utils import parse_filters
+from suite.mail.utils.user import get_account_user
 from suite.mail.utils.validation import has_permission_for_user
 
 
@@ -49,7 +50,6 @@ class Calendar(Document):
 	# end: auto-generated types
 
 	def db_insert(self, *args, **kwargs) -> None:
-		user = frappe.session.user
 		self.id = add_calendar(
 			self.account,
 			self._name,
@@ -62,7 +62,7 @@ class Calendar(Document):
 			bool(self.visible),
 			bool(self.default),
 		)
-		self.name = f"{user}:{self.account}|{self.id}"
+		self.name = f"{self.account}|{self.id}"
 
 	def load_from_db(self) -> "Calendar":
 		account, id = parse_calendar_name(self.name)
@@ -129,19 +129,19 @@ def _get_total_cache_key(account: str) -> str:
 
 
 def parse_calendar_name(name: str) -> tuple[str, str]:
-	"""Splits a Calendar name `user:account|id` into its bare `account` and `id`."""
+	"""Splits a Calendar name `account|id` into its bare `account` and `id`."""
 
 	validate_calendar_name_format(name)
-	handle, id = name.split("|")
-	return handle.split(":")[1], id
+	account, id = name.split("|")
+	return account, id
 
 
 def validate_calendar_name_format(name: str) -> None:
-	"Validates that the calendar name is in the format 'user:account|id'."
+	"Validates that the calendar name is in the format 'account|id'."
 
 	parts = name.split("|")
 	if len(parts) != 2:
-		frappe.throw(_("Calendar name must be in the format 'user:account|id'."))
+		frappe.throw(_("Calendar name must be in the format 'account|id'."))
 
 
 @frappe.whitelist()
@@ -178,7 +178,7 @@ def add_calendar(
 ) -> str:
 	"""Adds a calendar for the given account with the specified parameters."""
 
-	user = user or frappe.session.user
+	user = get_account_user(account, user)
 	has_permission_for_user(user)
 
 	creation_id = str(uuid7())
@@ -211,7 +211,7 @@ def add_calendar(
 def get_calendar(account: str, id: str, user: str | None = None) -> dict:
 	"""Returns calendar details for the given account and id."""
 
-	user = user or frappe.session.user
+	user = get_account_user(account, user)
 	has_permission_for_user(user)
 
 	service = get_calendar_service(user, account)
@@ -241,7 +241,7 @@ def update_calendar(
 ) -> None:
 	"""Updates an existing calendar with the given parameters."""
 
-	user = user or frappe.session.user
+	user = get_account_user(account, user)
 	has_permission_for_user(user)
 
 	calendar = {
@@ -272,7 +272,7 @@ def update_calendar(
 def delete_calendars(account: str, ids: list[str], remove_events: bool = True, user: str | None = None) -> None:
 	"""Deletes calendars for the specified account and ID(s)."""
 
-	user = user or frappe.session.user
+	user = get_account_user(account, user)
 	has_permission_for_user(user)
 
 	service = get_calendar_service(user, account)
@@ -292,7 +292,7 @@ def delete_calendars(account: str, ids: list[str], remove_events: bool = True, u
 def fetch_calendars(account: str, page: int = 1, limit: int = 10, user: str | None = None) -> list:
 	"""Returns a list of calendars for the given account."""
 
-	user = user or frappe.session.user
+	user = get_account_user(account, user)
 	has_permission_for_user(user)
 
 	service = get_calendar_service(user, account)
@@ -309,7 +309,7 @@ def fetch_calendars(account: str, page: int = 1, limit: int = 10, user: str | No
 def format_calendar(account: str, calendar: dict, user: str | None = None) -> dict:
 	"""Formats calendar data for display."""
 
-	user = user or frappe.session.user
+	user = get_account_user(account, user)
 
 	share_with = []
 	for pid, r in calendar.get("shareWith", {}).items():
@@ -330,7 +330,7 @@ def format_calendar(account: str, calendar: dict, user: str | None = None) -> di
 	rights = calendar.get("myRights") or {}
 
 	return {
-		"name": f"{user}:{account}|{calendar['id']}",
+		"name": f"{account}|{calendar['id']}",
 		"account": account,
 		"user": user,
 		"id": calendar["id"],

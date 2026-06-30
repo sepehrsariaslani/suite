@@ -11,6 +11,7 @@ from frappe.utils import cint, today
 
 from suite.mail.jmap import get_sieve_script_service
 from suite.mail.utils import parse_filters
+from suite.mail.utils.user import get_account_user
 from suite.mail.utils.validation import has_permission_for_user
 
 
@@ -33,9 +34,8 @@ class SieveScript(Document):
 	# end: auto-generated types
 
 	def db_insert(self, *args, **kwargs) -> None:
-		user = frappe.session.user
 		self.id = SieveScript._add_sieve_script(self.account, self._name, self.content, bool(self.active))
-		self.name = f"{user}:{self.account}|{self.id}"
+		self.name = f"{self.account}|{self.id}"
 
 	def load_from_db(self) -> "SieveScript":
 		account, id = parse_sieve_script_name(self.name)
@@ -119,7 +119,7 @@ class SieveScript(Document):
 	) -> str:
 		"""Adds a sieve script for the given account with the specified parameters."""
 
-		user = user or frappe.session.user
+		user = get_account_user(account, user)
 
 		if not content or not content.strip():
 			frappe.throw(_("Sieve script content cannot be empty."))
@@ -158,7 +158,7 @@ class SieveScript(Document):
 	) -> tuple[list, int]:
 		"""Returns a list of sieve scripts for the given account."""
 
-		user = user or frappe.session.user
+		user = get_account_user(account, user)
 		has_permission_for_user(user)
 
 		scripts = []
@@ -179,7 +179,7 @@ class SieveScript(Document):
 	) -> list[dict]:
 		"""Returns a list of sieve scripts for the provided IDs in the same order as ids."""
 
-		user = user or frappe.session.user
+		user = get_account_user(account, user)
 		has_permission_for_user(user)
 
 		sieve_scripts = {}
@@ -204,7 +204,7 @@ class SieveScript(Document):
 	def _validate_sieve_script(cls, account: str, content: str, user: str | None = None) -> None:
 		"""Validates a sieve script for the given account."""
 
-		user = user or frappe.session.user
+		user = get_account_user(account, user)
 
 		if not content or not content.strip():
 			frappe.throw(_("Sieve script content cannot be empty."))
@@ -232,7 +232,7 @@ class SieveScript(Document):
 	) -> None:
 		"""Updates a sieve script for the given account and ID with the specified parameters."""
 
-		user = user or frappe.session.user
+		user = get_account_user(account, user)
 
 		if not content or not content.strip():
 			frappe.throw(_("Sieve script content cannot be empty."))
@@ -264,7 +264,7 @@ class SieveScript(Document):
 	def _delete_sieve_scripts(cls, account: str, ids: list[str], user: str | None = None) -> None:
 		"""Deletes sieve scripts for the given list of IDs and account."""
 
-		user = user or frappe.session.user
+		user = get_account_user(account, user)
 		has_permission_for_user(user)
 
 		service = get_sieve_script_service(user, account)
@@ -302,10 +302,10 @@ def _get_total_cache_key(account: str) -> str:
 
 
 def parse_sieve_script_name(name: str) -> tuple[str, str]:
-	"""Splits a Sieve Script name `user:account|id` into its bare `account` and `id`."""
+	"""Splits a Sieve Script name `account|id` into its bare `account` and `id`."""
 
-	handle, id = name.split("|")
-	return handle.split(":")[1], id
+	account, id = name.split("|")
+	return account, id
 
 
 @frappe.whitelist()
@@ -329,7 +329,7 @@ def bulk_delete(names: str | list[str]) -> None:
 def get_active_sieve_script_id(account: str, user: str | None = None) -> str | None:
 	"""Returns the ID of the currently active sieve script for the given account, if any."""
 
-	user = user or frappe.session.user
+	user = get_account_user(account, user)
 	service = get_sieve_script_service(user, account)
 	query_result = service.query({"isActive": True})
 
@@ -340,7 +340,7 @@ def get_active_sieve_script_id(account: str, user: str | None = None) -> str | N
 def activate_last_active_sieve_script(account: str, user: str | None = None) -> None:
 	"""Activates the last active sieve script for the given account, if any, and clears the last active sieve script setting."""
 
-	user = user or frappe.session.user
+	user = get_account_user(account, user)
 
 	sieve_script_id = frappe.db.get_value("JMAP Account", account, "last_active_sieve_script_id")
 	if not sieve_script_id:
@@ -371,7 +371,7 @@ def set_last_active_sieve_script_id(
 
 	from suite.mail.doctype.jmap_account.jmap_account import get_or_create_account_settings
 
-	user = user or frappe.session.user
+	user = get_account_user(account, user)
 
 	frappe.db.set_value(
 		"JMAP Account",
@@ -385,11 +385,11 @@ def set_last_active_sieve_script_id(
 def format_sieve_script(account: str, script: dict, user: str | None = None) -> dict:
 	"""Format the sieve script for display."""
 
-	user = user or frappe.session.user
+	user = get_account_user(account, user)
 	read_only = script["name"].lower() == "vacation"
 
 	return {
-		"name": f"{user}:{account}|{script['id']}",
+		"name": f"{account}|{script['id']}",
 		"account": account,
 		"user": user,
 		"id": script["id"],

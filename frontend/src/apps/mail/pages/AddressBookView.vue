@@ -133,7 +133,7 @@ const showRemoveContacts = ref(false)
 
 const addressBook = createDocumentResource({
 	doctype: 'Address Book',
-	name: `${store.user}:${store.accountId}|${addressBookName}`,
+	name: `${store.accountId}|${addressBookName}`,
 	onError: () => router.replace({ name: 'mail-address-books', params: { accountId } }),
 	setValue: {
 		onSuccess: () => {
