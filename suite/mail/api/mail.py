@@ -841,7 +841,7 @@ def create_mailbox(
 	# Create the mailbox and persist its automation rules to Mailbox Settings (the backup the sieve is
 	# generated from) without firing a per-write rebuild, then build the script once from the backups.
 	with pause_automation_sieve_build():
-		mailbox_id = add_mailbox(account, name, None, parent)
+		mailbox_id = add_mailbox(account_id, name, None, parent)
 		set_mailbox_settings(
 			account,
 			mailbox_id,
@@ -896,7 +896,7 @@ def delete_mailbox(account_id: str, id: str, name: str) -> None:
 
 	account = get_session_account(account_id)
 
-	delete_mailboxes(account, [id])
+	delete_mailboxes(account_id, [id])
 	frappe.db.delete("Mailbox Settings", {"account_id": parse_account(account)[1], "mailbox_id": id})
 	build_automation_sieve(account)
 
@@ -1056,7 +1056,7 @@ def _screening_message_ids(account: str, from_email: str | None = None) -> list[
 
 	screening_id = get_mailbox_id_by_name(*parse_account(account), SCREENER_MAILBOX_NAME)
 	if not screening_id:
-		add_mailbox(account, SCREENER_MAILBOX_NAME)
+		add_mailbox(parse_account(account)[1], SCREENER_MAILBOX_NAME)
 		return []
 
 	conditions = [{"inMailbox": screening_id}]
@@ -1083,7 +1083,7 @@ def get_screening_senders(account_id: str) -> list[dict]:
 
 	screening_id = get_mailbox_id_by_name(*parse_account(account), SCREENER_MAILBOX_NAME)
 	if not screening_id:
-		add_mailbox(account, SCREENER_MAILBOX_NAME)
+		add_mailbox(account_id, SCREENER_MAILBOX_NAME)
 		return []
 
 	messages, _total = search_messages(

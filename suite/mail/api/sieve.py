@@ -403,7 +403,7 @@ def get_screening_folder_path(account: str) -> str:
 	# so we never try to recreate an existing mailbox (which JMAP rejects with "already exists").
 	CoreService.invalidate_cache(account_id, key="mailboxes")
 	if not get_mailbox_id_by_name(user, account_id, SCREENER_MAILBOX_NAME):
-		add_mailbox(account, SCREENER_MAILBOX_NAME)
+		add_mailbox(account_id, SCREENER_MAILBOX_NAME, user=user)
 		CoreService.invalidate_cache(account_id, key="mailboxes")
 
 	return get_mailbox_folder_path(account, SCREENER_MAILBOX_NAME, raise_exception=True)

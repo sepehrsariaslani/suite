@@ -9,7 +9,7 @@ from frappe import _
 from frappe.model.document import Document
 from frappe.utils import cint, today
 
-from suite.mail.jmap import get_mailbox_service, parse_account
+from suite.mail.jmap import get_mailbox_service
 from suite.mail.utils import parse_filters
 from suite.mail.utils.validation import has_permission_for_user
 
@@ -50,33 +50,27 @@ class Mailbox(Document):
 		unread_threads: DF.Int
 	# end: auto-generated types
 
-	@property
-	def _account(self) -> str:
-		"""Full ``user:account_id`` JMAP handle, rebuilt from the selected user and account ID."""
-
-		return f"{self.user}:{self.account_id}"
-
 	def db_insert(self, *args, **kwargs) -> None:
-		parent = self._parent.replace(f"{self._account}|", "") if self._parent else None
+		user = frappe.session.user
+		parent = self._parent.split("|")[1] if self._parent else None
 		self.id = add_mailbox(
-			self._account, self._name, self.role, parent, self.sort_order, bool(self.subscribed)
+			self.account, self._name, self.role, parent, self.sort_order, bool(self.subscribed)
 		)
-		self.name = f"{self._account}|{self.id}"
+		self.name = f"{user}:{self.account}|{self.id}"
 
 	def load_from_db(self) -> "Mailbox":
-		account, id = self.name.split("|")
+		account, id = parse_mailbox_name(self.name)
 		mailbox = get_mailbox(account, id)
 		return super(Document, self).__init__(mailbox)
 
 	def db_update(self) -> None:
-		parent = self._parent.replace(f"{self._account}|", "") if self._parent else None
-		update_mailbox(
-			self._account, self.id, self._name, self.role, parent, self.sort_order, bool(self.subscribed)
-		)
+		account, id = parse_mailbox_name(self.name)
+		parent = self._parent.split("|")[1] if self._parent else None
+		update_mailbox(account, id, self._name, self.role, parent, self.sort_order, bool(self.subscribed))
 		self.reload()
 
 	def delete(self) -> None:
-		account, id = self.name.split("|")
+		account, id = parse_mailbox_name(self.name)
 		delete_mailboxes(account, [id])
 
 	@staticmethod
@@ -84,8 +78,6 @@ class Mailbox(Document):
 		filters = parse_filters(filters)
 		id = filters.get("id")
 		account = filters.get("account")
-		if not account and filters.get("user") and filters.get("account_id"):
-			account = f"{filters['user']}:{filters['account_id']}"
 
 		if not account:
 			frappe.msgprint(_("Please select an account to view mailboxes."), alert=True)
@@ -107,11 +99,9 @@ class Mailbox(Document):
 	def get_count(filters=None, **kwargs) -> int:
 		filters = parse_filters(filters)
 		account = filters.get("account")
-		if not account and filters.get("user") and filters.get("account_id"):
-			account = f"{filters['user']}:{filters['account_id']}"
 
 		if account:
-			if has_permission_for_user(parse_account(account)[0], raise_exception=False):
+			if has_permission_for_user(frappe.session.user, raise_exception=False):
 				return cint(frappe.cache.get_value(_get_total_cache_key(account)))
 
 		return 0
@@ -127,6 +117,13 @@ def _get_total_cache_key(account: str) -> str:
 	return f"{account}:mailboxes:total"
 
 
+def parse_mailbox_name(name: str) -> tuple[str, str]:
+	"""Splits a Mailbox name `user:account|id` into its bare `account` and `id`."""
+
+	handle, id = name.split("|")
+	return handle.split(":")[1], id
+
+
 @frappe.whitelist()
 def bulk_delete(names: str | list[str]) -> None:
 	"""Deletes multiple mailboxes given their names."""
@@ -134,12 +131,12 @@ def bulk_delete(names: str | list[str]) -> None:
 	if isinstance(names, str):
 		names = json.loads(names)
 
-	account_ids_map = {}
+	accounts_map = {}
 	for name in names:
-		account, id = name.split("|")
-		account_ids_map.setdefault(account, []).append(id)
+		account, id = parse_mailbox_name(name)
+		accounts_map.setdefault(account, []).append(id)
 
-	for account, ids in account_ids_map.items():
+	for account, ids in accounts_map.items():
 		delete_mailboxes(account, ids)
 
 	frappe.msgprint(_("Mailboxes deleted successfully."), alert=True)
@@ -153,10 +150,12 @@ def add_mailbox(
 	parent: str | None = None,
 	sort_order: int = 0,
 	subscribed: bool = True,
+	user: str | None = None,
 ) -> str:
 	"""Adds a mailbox for the given account with the specified parameters."""
 
-	has_permission_for_user(parse_account(account)[0])
+	user = user or frappe.session.user
+	has_permission_for_user(user)
 
 	creation_id = str(uuid7())
 	mailbox = {
@@ -168,12 +167,11 @@ def add_mailbox(
 		"is_subscribed": subscribed,
 	}
 
-	service = get_mailbox_service(*parse_account(account))
+	service = get_mailbox_service(user, account)
 	response = service.create([mailbox])
 
 	title = _("Mailbox Creation Error")
 	if response.get("created"):
-		# Cache is keyed by the bare account_id, so invalidate with that — not the full handle.
 		service.invalidate_cache(service.account, key="mailboxes")
 		return response["created"][creation_id]["id"]
 	elif response.get("notCreated"):
@@ -183,14 +181,15 @@ def add_mailbox(
 
 
 @frappe.whitelist()
-def get_mailbox(account: str, id: str, raise_exception: bool = False) -> dict | None:
-	"""Returns mailbox details for the given name in the format 'account|id'."""
+def get_mailbox(account: str, id: str, raise_exception: bool = False, user: str | None = None) -> dict | None:
+	"""Returns mailbox details for the given account and id."""
 
-	has_permission_for_user(parse_account(account)[0])
+	user = user or frappe.session.user
+	has_permission_for_user(user)
 
-	service = get_mailbox_service(*parse_account(account))
+	service = get_mailbox_service(user, account)
 	if mailboxes := service.get([id]):
-		return format_mailbox(account, mailboxes[0])
+		return format_mailbox(account, mailboxes[0], user)
 
 	if raise_exception:
 		frappe.throw(
@@ -208,10 +207,12 @@ def update_mailbox(
 	parent: str | None = None,
 	sort_order: int = 0,
 	subscribed: bool = True,
+	user: str | None = None,
 ) -> None:
 	"""Updates an existing mailbox with the given parameters."""
 
-	has_permission_for_user(parse_account(account)[0])
+	user = user or frappe.session.user
+	has_permission_for_user(user)
 
 	title = _("Mailbox Update Error")
 	if parent and id == parent:
@@ -226,7 +227,7 @@ def update_mailbox(
 		"is_subscribed": subscribed,
 	}
 
-	service = get_mailbox_service(*parse_account(account))
+	service = get_mailbox_service(user, account)
 	response = service.update([mailbox])
 
 	if not response.get("updated"):
@@ -235,17 +236,17 @@ def update_mailbox(
 		else:
 			frappe.throw(_(response["description"]), title=title)
 
-	# Cache is keyed by the bare account_id, so invalidate with that — not the full handle.
 	service.invalidate_cache(service.account, key="mailboxes")
 
 
 @frappe.whitelist()
-def delete_mailboxes(account: str, ids: list[str], remove_emails: bool = True) -> None:
+def delete_mailboxes(account: str, ids: list[str], remove_emails: bool = True, user: str | None = None) -> None:
 	"""Deletes a mailbox for the given account by its ID."""
 
-	has_permission_for_user(parse_account(account)[0])
+	user = user or frappe.session.user
+	has_permission_for_user(user)
 
-	service = get_mailbox_service(*parse_account(account))
+	service = get_mailbox_service(user, account)
 	response = service.delete(ids, remove_emails=remove_emails)
 
 	if response.get("notDestroyed"):
@@ -262,14 +263,15 @@ def delete_mailboxes(account: str, ids: list[str], remove_emails: bool = True) -
 
 
 @frappe.whitelist()
-def fetch_mailboxes(account: str, page: int = 1, limit: int = 10) -> list:
+def fetch_mailboxes(account: str, page: int = 1, limit: int = 10, user: str | None = None) -> list:
 	"""Returns a list of mailboxes for the given account."""
 
-	has_permission_for_user(parse_account(account)[0])
+	user = user or frappe.session.user
+	has_permission_for_user(user)
 
-	service = get_mailbox_service(*parse_account(account))
+	service = get_mailbox_service(user, account)
 	mailboxes = service.get()
-	formatted_mailboxes = [format_mailbox(account, mailbox) for mailbox in mailboxes]
+	formatted_mailboxes = [format_mailbox(account, mailbox, user) for mailbox in mailboxes]
 	sorted_mailboxes = sorted(
 		formatted_mailboxes, key=lambda m: (m["sort_order"], get_sort_order(m["role"]), m["_name"], m["id"])
 	)
@@ -283,7 +285,7 @@ def fetch_mailboxes(account: str, page: int = 1, limit: int = 10) -> list:
 
 @frappe.whitelist()
 def update_mailbox_position(
-	account: str, target_mailbox_id: str, prior_mailbox_id: str | None = None
+	account: str, target_mailbox_id: str, prior_mailbox_id: str | None = None, user: str | None = None
 ) -> None:
 	"""Updates the position of the target mailbox to be after the prior mailbox."""
 
@@ -360,9 +362,10 @@ def update_mailbox_position(
 
 		return updates
 
-	has_permission_for_user(parse_account(account)[0])
+	user = user or frappe.session.user
+	has_permission_for_user(user)
 
-	service = get_mailbox_service(*parse_account(account))
+	service = get_mailbox_service(user, account)
 	mailboxes = sorted(
 		service.get(), key=lambda m: (m["sortOrder"], get_sort_order(m["role"]), m["name"], m["id"])
 	)
@@ -394,18 +397,20 @@ def update_mailbox_position(
 		frappe.throw(_(result["description"]), title=title)
 
 
-def format_mailbox(account: str, mailbox: dict) -> dict:
+def format_mailbox(account: str, mailbox: dict, user: str | None = None) -> dict:
 	"""Formats mailbox data for display."""
+
+	user = user or frappe.session.user
 
 	sort_order = cint(mailbox["sortOrder"])
 	if _parent := mailbox["parentId"]:
-		_parent = f"{account}|{_parent}"
+		_parent = f"{user}:{account}|{_parent}"
 	rights = mailbox.get("myRights") or {}
 
 	return {
-		"name": f"{account}|{mailbox['id']}",
-		"account_id": parse_account(account)[1],
-		"user": parse_account(account)[0],
+		"name": f"{user}:{account}|{mailbox['id']}",
+		"account": account,
+		"user": user,
 		"id": mailbox["id"],
 		"_name": mailbox["name"],
 		"_parent": _parent,
@@ -446,4 +451,4 @@ def has_permission(doc: "Document", ptype: str, user: str | None = None) -> bool
 	if doc.doctype != "Mailbox":
 		return False
 
-	return has_permission_for_user(parse_account(doc.account)[0], raise_exception=False)
+	return has_permission_for_user(user or frappe.session.user, raise_exception=False)
