@@ -1,6 +1,7 @@
 import frappe
 
 from suite.mail.doctype.jmap_account.jmap_account import create_archive_mailbox
+from suite.mail.jmap import parse_account
 
 
 def execute() -> None:
@@ -12,4 +13,4 @@ def execute() -> None:
 		return
 
 	for account in frappe.get_all("JMAP Account", pluck="account"):
-		create_archive_mailbox(account)
+		create_archive_mailbox(*parse_account(account))

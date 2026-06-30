@@ -375,7 +375,7 @@ def set_last_active_sieve_script_id(
 
 	frappe.db.set_value(
 		"JMAP Account",
-		get_or_create_account_settings(f"{user}:{account}"),
+		get_or_create_account_settings(account, user=user),
 		"last_active_sieve_script_id",
 		sieve_script_id,
 		update_modified=False,

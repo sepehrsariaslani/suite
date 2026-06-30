@@ -228,11 +228,12 @@ def get_sync_state(account: str, type: Literal["email"]) -> str | None:
 
 	from suite.mail.doctype.jmap_account.jmap_account import get_or_create_account_settings
 
-	store = get_data_store(parse_account(account)[1])
+	user, account_id = parse_account(account)
+	store = get_data_store(account_id)
 	value = store.get(Entity.STATE, f"{type}_current_state")
 
 	if not value:
-		get_or_create_account_settings(account)
+		get_or_create_account_settings(account_id, user=user)
 
 	return value
 

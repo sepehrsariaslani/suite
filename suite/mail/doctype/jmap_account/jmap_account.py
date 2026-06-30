@@ -13,7 +13,6 @@ from suite.mail.jmap import (
 	get_mailbox_id_by_role,
 	invalidate_jmap_identities_cache,
 	invalidate_jmap_mailboxes_cache,
-	parse_account,
 )
 from suite.mail.storage import get_blob_store, get_data_store
 from suite.mail.storage.data_store import Entity
@@ -58,14 +57,14 @@ class JMAPAccount(Document):
 	"""
 
 	@property
-	def account(self) -> str:
-		"""The full `user:account_id` for the relevant user.
+	def _user(self) -> str:
+		"""The user whose JMAP connection backs per-user operations on this shared account.
 
-		Uses the creating user during insert (set via flags) and the session user
-		otherwise, so cache lookups reflect the user currently viewing the document.
+		Uses the creating user during insert (set via flags) and the session user otherwise,
+		so cache lookups reflect the user currently viewing the document.
 		"""
 
-		return self.flags.get("account") or f"{frappe.session.user}:{self.name}"
+		return self.flags.get("user") or frappe.session.user
 
 	@property
 	def core_service(self) -> "CoreService" | None:
@@ -75,7 +74,7 @@ class JMAPAccount(Document):
 			return None
 
 		try:
-			return get_core_service(*parse_account(self.account))
+			return get_core_service(self._user, self.name)
 		except Exception:
 			frappe.msgprint(f"Error getting JMAP core service for account {self.name}")
 			return None
@@ -129,7 +128,7 @@ class JMAPAccount(Document):
 			return
 
 		try:
-			emails = get_account_emails(*parse_account(self.account))
+			emails = get_account_emails(self._user, self.name)
 		except Exception:
 			return
 
@@ -137,7 +136,7 @@ class JMAPAccount(Document):
 			self.default_outgoing_email = emails[0]
 
 	def after_insert(self) -> None:
-		create_archive_mailbox(self.account)
+		create_archive_mailbox(self._user, self.name)
 
 	def on_update(self) -> None:
 		# Toggling screening changes the automation sieve's screening gate, so regenerate it. Skipped
@@ -167,14 +166,14 @@ class JMAPAccount(Document):
 		"""Clear all cached JMAP identities for the current account."""
 
 		if self.has_clear_cache_permission():
-			invalidate_jmap_identities_cache(parse_account(self.account)[1])
+			invalidate_jmap_identities_cache(self.name)
 
 	@frappe.whitelist()
 	def clear_cached_jmap_mailboxes(self) -> None:
 		"""Clear all cached JMAP mailboxes for the current account."""
 
 		if self.has_clear_cache_permission():
-			invalidate_jmap_mailboxes_cache(parse_account(self.account)[1])
+			invalidate_jmap_mailboxes_cache(self.name)
 
 	@frappe.whitelist()
 	def clear_cached_blobs(self) -> None:
@@ -225,23 +224,23 @@ class JMAPAccount(Document):
 		self.db_set(kwargs, update_modified=update_modified, notify=notify, commit=commit)
 
 
-def get_or_create_account_settings(account: str) -> str:
-	"""Return the name of the (shared) JMAP Account for the given `user:account_id`,
+def get_or_create_account_settings(account: str, user: str | None = None) -> str:
+	"""Return the name of the (shared) JMAP Account for the given bare `account`,
 	creating it if it does not already exist. The document is named by the account ID."""
 
-	account_id = parse_account(account)[1]
+	if frappe.db.exists("JMAP Account", account):
+		return account
 
-	if frappe.db.exists("JMAP Account", account_id):
-		return account_id
+	user = user or frappe.session.user
 
 	settings = frappe.new_doc("JMAP Account")
-	settings.flags.account_id = account_id
-	# Carry the full account so after_insert / validate can reach JMAP for this user.
-	settings.flags.account = account
+	settings.account_id = account
+	# Carry the user so after_insert / validate can reach JMAP for this account.
+	settings.flags.user = user
 
 	# Default the outgoing sender to the account's first identity.
 	try:
-		emails = get_account_emails(*parse_account(account))
+		emails = get_account_emails(user, account)
 		if emails:
 			settings.default_outgoing_email = emails[0]
 	except Exception:
@@ -260,8 +259,8 @@ def sync_account_settings(user: str, accounts: dict[str, dict]) -> None:
 	accounts the user can no longer see are intentionally left untouched.
 	"""
 
-	for account_id in accounts.keys():
-		get_or_create_account_settings(f"{user}:{account_id}")
+	for account in accounts.keys():
+		get_or_create_account_settings(account, user=user)
 
 
 def backfill_default_outgoing_emails() -> None:
@@ -318,11 +317,11 @@ def has_permission(doc: Document, ptype: str, user: str | None = None) -> bool:
 	return has_account_scoped_permission(doc, column="name", user=user)
 
 
-def create_archive_mailbox(account: str) -> None:
+def create_archive_mailbox(user: str, account: str) -> None:
 	"""Create the archive mailbox for the account if it does not already exist."""
 
 	try:
-		get_mailbox_id_by_role(*parse_account(account), "archive", create_if_not_exists=True)
+		get_mailbox_id_by_role(user, account, "archive", create_if_not_exists=True)
 
 	except Exception:
 		log_error(
