@@ -129,7 +129,7 @@ class JMAPAccount(Document):
 			return
 
 		try:
-			emails = get_account_emails(self.account)
+			emails = get_account_emails(*parse_account(self.account))
 		except Exception:
 			return
 
@@ -241,7 +241,7 @@ def get_or_create_account_settings(account: str) -> str:
 
 	# Default the outgoing sender to the account's first identity.
 	try:
-		emails = get_account_emails(account)
+		emails = get_account_emails(*parse_account(account))
 		if emails:
 			settings.default_outgoing_email = emails[0]
 	except Exception:
@@ -285,7 +285,7 @@ def backfill_default_outgoing_emails() -> None:
 				continue
 
 			try:
-				emails = get_account_emails(f"{user}:{account_id}")
+				emails = get_account_emails(user, account_id)
 			except Exception:
 				continue
 

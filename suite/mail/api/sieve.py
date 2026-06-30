@@ -427,7 +427,7 @@ def build_screening_gate(account: str, accepted_emails: list[str]) -> str:
 	screening_folder_path = get_screening_folder_path(account)
 
 	try:
-		own_emails = get_account_emails(account)
+		own_emails = get_account_emails(*parse_account(account))
 	except Exception:
 		own_emails = []
 

@@ -138,7 +138,7 @@ def add_user_images_to_emails(account: str, mails: list[dict], is_thread: bool =
 
 	email_map: dict[str, str] = {}
 	rcpt_order = {"To": 0, "Cc": 1, "Bcc": 2}
-	user_emails = {e.lower() for e in get_account_emails(account)}
+	user_emails = {e.lower() for e in get_account_emails(*parse_account(account))}
 
 	for mail in mails:
 		name = mail["name"]

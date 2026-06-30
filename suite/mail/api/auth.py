@@ -2,6 +2,7 @@ import frappe
 from frappe import _
 
 from suite.mail.utils.rate_limiter import dynamic_rate_limit
+from suite.mail.jmap import parse_account
 from suite.mail.utils.user import (
 	get_account_emails,
 	get_user_personal_account,
@@ -42,7 +43,7 @@ def validate_email_ownership(email: str) -> None:
 	user = frappe.session.user
 	account = get_user_personal_account(user, raise_exception=True)
 
-	if email not in get_account_emails(account):
+	if email not in get_account_emails(*parse_account(account)):
 		frappe.throw(
 			_("Email address '{0}' is not associated with any account of the user '{1}'.").format(
 				email, user

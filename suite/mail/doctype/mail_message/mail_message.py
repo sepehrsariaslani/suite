@@ -232,7 +232,7 @@ class MailMessage(Document):
 		"""Returns the type of email (Sent or Received)."""
 
 		email_type = "Received"
-		account_addresses = get_account_emails(self._account)
+		account_addresses = get_account_emails(*parse_account(self._account))
 
 		if self.from_email in account_addresses or (
 			hasattr(self, "sender_email") and self.sender_email in account_addresses
@@ -461,7 +461,7 @@ class MailMessage(Document):
 				recipients.append({"type": "To", "display_name": self.from_name, "email": self.from_email})
 
 			# Cc = (original To + original Cc) minus account addresses
-			account_addresses = get_account_emails(self._account)
+			account_addresses = get_account_emails(*parse_account(self._account))
 			for rcpt in self.recipients:
 				if rcpt.type in ["To", "Cc"] and rcpt.email not in account_addresses:
 					recipients.append({"type": "Cc", "display_name": rcpt.display_name, "email": rcpt.email})

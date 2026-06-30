@@ -145,13 +145,13 @@ def has_account_scoped_permission(doc, column: str = "account_id", user: str | N
 	return value in get_user_account_ids(user)
 
 
-def get_account_emails(account: str) -> list[str]:
+def get_account_emails(user: str, account: str) -> list[str]:
 	"""Returns the list of email addresses associated with the account."""
 
 	from suite.mail.jmap import get_identities
 
 	emails = []
-	for identity in get_identities(*parse_account(account)):
+	for identity in get_identities(user, account):
 		emails.append(identity["email"])
 
 	return emails
@@ -180,7 +180,7 @@ def get_user_emails(user: str) -> list[str]:
 	from suite.mail.doctype.user_account.user_account import fetch_user_accounts
 
 	for account in [a["name"] for a in fetch_user_accounts(user, limit=None)]:
-		emails.extend(get_account_emails(account))
+		emails.extend(get_account_emails(user, account))
 
 	return emails
 
