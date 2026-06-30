@@ -102,7 +102,7 @@ const contacts = createResource({
 					? filters[0]
 					: { operator: 'AND', conditions: filters }
 
-		return { account_id: accountId, filter, limit: limit.value }
+		return { account: accountId, filter, limit: limit.value }
 	},
 	transform: (data) =>
 		data.map((c) => ({ ...c, full_name: c.full_name || extractNameFromEmail(c.email) })),

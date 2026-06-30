@@ -477,7 +477,7 @@ def create_mail(
 	)
 
 	if not save_as_draft and doc.status == "Submitted":
-		create_contacts_if_not_exists(account, doc.recipients)
+		create_contacts_if_not_exists(*parse_account(account), doc.recipients)
 		auto_accept_recipients(account, doc.recipients)
 
 	return {"id": doc.id, "status": doc.status, "error": doc.error_message, "thread_id": doc.thread_id}
@@ -553,7 +553,7 @@ def update_draft_mail(
 	new_doc = doc.submit() if submit else doc.save_draft()
 
 	if submit and new_doc.status == "Submitted":
-		create_contacts_if_not_exists(account, doc.recipients)
+		create_contacts_if_not_exists(*parse_account(account), doc.recipients)
 		auto_accept_recipients(account, doc.recipients)
 
 	return {

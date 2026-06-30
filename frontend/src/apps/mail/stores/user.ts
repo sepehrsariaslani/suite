@@ -89,7 +89,7 @@ export const userStore = defineStore('mail-user', () => {
 
 	const addressBooks = createResource({
 		url: 'suite.mail.api.contacts.get_address_books',
-		makeParams: () => ({ account_id: accountId.value }),
+		makeParams: () => ({ account: accountId.value }),
 		cache: ['addressBooks', accountId.value],
 	})
 
