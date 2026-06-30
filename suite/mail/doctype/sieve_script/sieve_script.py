@@ -9,7 +9,7 @@ from frappe import _
 from frappe.model.document import Document
 from frappe.utils import cint, today
 
-from suite.mail.jmap import get_sieve_script_service, parse_account
+from suite.mail.jmap import get_sieve_script_service
 from suite.mail.utils import parse_filters
 from suite.mail.utils.validation import has_permission_for_user
 
@@ -32,18 +32,13 @@ class SieveScript(Document):
 		read_only: DF.Check
 	# end: auto-generated types
 
-	@property
-	def _account(self) -> str:
-		"""Full ``user:account_id`` JMAP handle, rebuilt from the selected user and account ID."""
-
-		return f"{self.user}:{self.account_id}"
-
 	def db_insert(self, *args, **kwargs) -> None:
-		self.id = SieveScript._add_sieve_script(self._account, self._name, self.content, bool(self.active))
-		self.name = f"{self._account}|{self.id}"
+		user = frappe.session.user
+		self.id = SieveScript._add_sieve_script(self.account, self._name, self.content, bool(self.active))
+		self.name = f"{user}:{self.account}|{self.id}"
 
 	def load_from_db(self) -> "SieveScript":
-		account, id = self.name.split("|")
+		account, id = parse_sieve_script_name(self.name)
 		if scripts := SieveScript._get_sieve_scripts(account, [id], download_content=True):
 			return super(Document, self).__init__(scripts[0])
 
@@ -55,11 +50,12 @@ class SieveScript(Document):
 		)
 
 	def db_update(self) -> None:
-		SieveScript._update_sieve_script(self._account, self.id, self._name, self.content, bool(self.active))
+		account, id = parse_sieve_script_name(self.name)
+		SieveScript._update_sieve_script(account, id, self._name, self.content, bool(self.active))
 		self.reload()
 
 	def delete(self) -> None:
-		account, id = self.name.split("|")
+		account, id = parse_sieve_script_name(self.name)
 
 		if self.active:
 			frappe.throw(_("Cannot delete an active sieve script. Please deactivate it first."))
@@ -71,8 +67,6 @@ class SieveScript(Document):
 		filters = parse_filters(filters)
 		id = filters.get("id")
 		account = filters.get("account")
-		if not account and filters.get("user") and filters.get("account_id"):
-			account = f"{filters['user']}:{filters['account_id']}"
 
 		if not account:
 			frappe.msgprint(_("Please select an account to view the Sieve Scripts."), alert=True)
@@ -103,11 +97,9 @@ class SieveScript(Document):
 	def get_count(filters=None, **kwargs) -> int:
 		filters = parse_filters(filters)
 		account = filters.get("account")
-		if not account and filters.get("user") and filters.get("account_id"):
-			account = f"{filters['user']}:{filters['account_id']}"
 
 		if account:
-			if has_permission_for_user(parse_account(account)[0], raise_exception=False):
+			if has_permission_for_user(frappe.session.user, raise_exception=False):
 				return cint(frappe.cache.get_value(_get_total_cache_key(account)))
 
 		return 0
@@ -123,19 +115,22 @@ class SieveScript(Document):
 		name: str,
 		content: str,
 		active: bool = False,
+		user: str | None = None,
 	) -> str:
 		"""Adds a sieve script for the given account with the specified parameters."""
+
+		user = user or frappe.session.user
 
 		if not content or not content.strip():
 			frappe.throw(_("Sieve script content cannot be empty."))
 
-		has_permission_for_user(parse_account(account)[0])
+		has_permission_for_user(user)
 
 		if name == "frappe_mail_automation" and not frappe.flags.allow_automation_script_creation:
 			frappe.throw(_("Not allowed to create automation script."))
 
 		creation_id = str(uuid7())
-		service = get_sieve_script_service(*parse_account(account))
+		service = get_sieve_script_service(user, account)
 		sieve_script = {
 			"creation_id": creation_id,
 			"name": name,
@@ -159,32 +154,37 @@ class SieveScript(Document):
 		filter: dict | None = None,
 		position: int = 0,
 		limit: int = 50,
+		user: str | None = None,
 	) -> tuple[list, int]:
 		"""Returns a list of sieve scripts for the given account."""
 
-		has_permission_for_user(parse_account(account)[0])
+		user = user or frappe.session.user
+		has_permission_for_user(user)
 
 		scripts = []
 
-		service = get_sieve_script_service(*parse_account(account))
+		service = get_sieve_script_service(user, account)
 		data = service.query(filter, position, limit)
 
 		ids = data.get("ids", [])
 		total = data.get("total", 0)
 
-		scripts.extend(SieveScript._get_sieve_scripts(account, ids))
+		scripts.extend(SieveScript._get_sieve_scripts(account, ids, user=user))
 
 		return scripts[:limit], total
 
 	@classmethod
-	def _get_sieve_scripts(cls, account: str, ids: list[str], download_content: bool = False) -> list[dict]:
+	def _get_sieve_scripts(
+		cls, account: str, ids: list[str], download_content: bool = False, user: str | None = None
+	) -> list[dict]:
 		"""Returns a list of sieve scripts for the provided IDs in the same order as ids."""
 
-		has_permission_for_user(parse_account(account)[0])
+		user = user or frappe.session.user
+		has_permission_for_user(user)
 
 		sieve_scripts = {}
 
-		service = get_sieve_script_service(*parse_account(account))
+		service = get_sieve_script_service(user, account)
 		scripts = service.get(ids)
 
 		if download_content:
@@ -195,21 +195,23 @@ class SieveScript(Document):
 				script["content"] = data.get(script["blobId"], b"").decode("utf-8")
 
 		for script in scripts:
-			script = format_sieve_script(account, script)
+			script = format_sieve_script(account, script, user)
 			sieve_scripts[script["id"]] = script
 
 		return [sieve_scripts[id] for id in ids if id in sieve_scripts]
 
 	@classmethod
-	def _validate_sieve_script(cls, account: str, content: str) -> None:
+	def _validate_sieve_script(cls, account: str, content: str, user: str | None = None) -> None:
 		"""Validates a sieve script for the given account."""
+
+		user = user or frappe.session.user
 
 		if not content or not content.strip():
 			frappe.throw(_("Sieve script content cannot be empty."))
 
-		has_permission_for_user(parse_account(account)[0])
+		has_permission_for_user(user)
 
-		service = get_sieve_script_service(*parse_account(account))
+		service = get_sieve_script_service(user, account)
 		response = service.validate(content)
 
 		if error := response.get("error"):
@@ -226,15 +228,18 @@ class SieveScript(Document):
 		name: str,
 		content: str,
 		active: bool = False,
+		user: str | None = None,
 	) -> None:
 		"""Updates a sieve script for the given account and ID with the specified parameters."""
+
+		user = user or frappe.session.user
 
 		if not content or not content.strip():
 			frappe.throw(_("Sieve script content cannot be empty."))
 
-		has_permission_for_user(parse_account(account)[0])
+		has_permission_for_user(user)
 
-		service = get_sieve_script_service(*parse_account(account))
+		service = get_sieve_script_service(user, account)
 		scripts = service.get([id])
 
 		if not scripts:
@@ -256,12 +261,13 @@ class SieveScript(Document):
 				frappe.throw(_(response["description"]), title=title)
 
 	@classmethod
-	def _delete_sieve_scripts(cls, account: str, ids: list[str]) -> None:
+	def _delete_sieve_scripts(cls, account: str, ids: list[str], user: str | None = None) -> None:
 		"""Deletes sieve scripts for the given list of IDs and account."""
 
-		has_permission_for_user(parse_account(account)[0])
+		user = user or frappe.session.user
+		has_permission_for_user(user)
 
-		service = get_sieve_script_service(*parse_account(account))
+		service = get_sieve_script_service(user, account)
 		response = service.delete(ids)
 
 		if response.get("notDestroyed"):
@@ -284,9 +290,7 @@ class SieveScript(Document):
 	def validate_script(self) -> None:
 		"""Validates the sieve script content."""
 
-		account, _id = self.name.split("|")
-		has_permission_for_user(parse_account(account)[0])
-
+		account, _id = parse_sieve_script_name(self.name)
 		self._validate_sieve_script(account, self.content)
 		frappe.msgprint(_("Sieve script is valid."), indicator="green", alert=True)
 
@@ -297,6 +301,13 @@ def _get_total_cache_key(account: str) -> str:
 	return f"{account}:sieve_scripts:total"
 
 
+def parse_sieve_script_name(name: str) -> tuple[str, str]:
+	"""Splits a Sieve Script name `user:account|id` into its bare `account` and `id`."""
+
+	handle, id = name.split("|")
+	return handle.split(":")[1], id
+
+
 @frappe.whitelist()
 def bulk_delete(names: str | list[str]) -> None:
 	"""Deletes multiple sieve scripts given their names."""
@@ -304,37 +315,40 @@ def bulk_delete(names: str | list[str]) -> None:
 	if isinstance(names, str):
 		names = json.loads(names)
 
-	account_ids_map = {}
+	accounts_map = {}
 	for name in names:
-		account, id = name.split("|")
-		account_ids_map.setdefault(account, []).append(id)
+		account, id = parse_sieve_script_name(name)
+		accounts_map.setdefault(account, []).append(id)
 
-	for account, ids in account_ids_map.items():
+	for account, ids in accounts_map.items():
 		SieveScript._delete_sieve_scripts(account, ids)
 
 	frappe.msgprint(_("Sieve Scripts deleted successfully."), alert=True)
 
 
-def get_active_sieve_script_id(account: str) -> str | None:
+def get_active_sieve_script_id(account: str, user: str | None = None) -> str | None:
 	"""Returns the ID of the currently active sieve script for the given account, if any."""
 
-	service = get_sieve_script_service(*parse_account(account))
+	user = user or frappe.session.user
+	service = get_sieve_script_service(user, account)
 	query_result = service.query({"isActive": True})
 
 	if query_result.get("ids") and len(query_result["ids"]) > 0:
 		return query_result["ids"][0]
 
 
-def activate_last_active_sieve_script(account: str) -> None:
+def activate_last_active_sieve_script(account: str, user: str | None = None) -> None:
 	"""Activates the last active sieve script for the given account, if any, and clears the last active sieve script setting."""
 
-	sieve_script_id = frappe.db.get_value(
-		"JMAP Account", parse_account(account)[1], "last_active_sieve_script_id"
-	)
+	user = user or frappe.session.user
+
+	sieve_script_id = frappe.db.get_value("JMAP Account", account, "last_active_sieve_script_id")
 	if not sieve_script_id:
 		return
 
-	if sieve_scripts := SieveScript._get_sieve_scripts(account, [sieve_script_id], download_content=True):
+	if sieve_scripts := SieveScript._get_sieve_scripts(
+		account, [sieve_script_id], download_content=True, user=user
+	):
 		sieve_script = sieve_scripts[0]
 
 		if (sieve_script.get("_name") or "").lower() != "vacation" and not sieve_script["active"]:
@@ -344,34 +358,40 @@ def activate_last_active_sieve_script(account: str) -> None:
 				sieve_script["_name"],
 				sieve_script["content"],
 				active=True,
+				user=user,
 			)
 
-	set_last_active_sieve_script_id(account, None)
+	set_last_active_sieve_script_id(account, None, user=user)
 
 
-def set_last_active_sieve_script_id(account: str, sieve_script_id: str | None = None) -> None:
+def set_last_active_sieve_script_id(
+	account: str, sieve_script_id: str | None = None, user: str | None = None
+) -> None:
 	"""Sets the given sieve script ID as the last active sieve script for the given account."""
 
 	from suite.mail.doctype.jmap_account.jmap_account import get_or_create_account_settings
 
+	user = user or frappe.session.user
+
 	frappe.db.set_value(
 		"JMAP Account",
-		get_or_create_account_settings(account),
+		get_or_create_account_settings(f"{user}:{account}"),
 		"last_active_sieve_script_id",
 		sieve_script_id,
 		update_modified=False,
 	)
 
 
-def format_sieve_script(account: str, script: dict) -> dict:
+def format_sieve_script(account: str, script: dict, user: str | None = None) -> dict:
 	"""Format the sieve script for display."""
 
+	user = user or frappe.session.user
 	read_only = script["name"].lower() == "vacation"
 
 	return {
-		"name": f"{account}|{script['id']}",
-		"account": parse_account(account)[1],
-		"user": parse_account(account)[0],
+		"name": f"{user}:{account}|{script['id']}",
+		"account": account,
+		"user": user,
 		"id": script["id"],
 		"_name": script["name"],
 		"active": cint(script["isActive"]),
@@ -387,4 +407,4 @@ def has_permission(doc: "Document", ptype: str, user: str | None = None) -> bool
 	if doc.doctype != "Sieve Script":
 		return False
 
-	return has_permission_for_user(parse_account(doc.account)[0], raise_exception=False)
+	return has_permission_for_user(user or frappe.session.user, raise_exception=False)

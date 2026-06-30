@@ -24,38 +24,30 @@ AUTOMATION_SCRIPT_REQUIRE = 'require ["fileinto", "imap4flags"];'
 
 
 @frappe.whitelist()
-def get_sieve_scripts(account_id: str) -> list[dict]:
+def get_sieve_scripts(account: str) -> list[dict]:
 	"""Return the sieve scripts for the account"""
-
-	account = get_session_account(account_id)
 
 	ids = [d["id"] for d in SieveScript._fetch_sieve_scripts(account)[0]]
 	return SieveScript._get_sieve_scripts(account, ids, True)
 
 
 @frappe.whitelist()
-def create_sieve_script(account_id: str, _name: str, content: str, active: bool) -> None:
+def create_sieve_script(account: str, _name: str, content: str, active: bool) -> None:
 	"""Create a sieve script for the account"""
-
-	account = get_session_account(account_id)
 
 	SieveScript._add_sieve_script(account, _name, content, active)
 
 
 @frappe.whitelist()
-def update_sieve_script(account_id: str, id: str, _name: str, content: str, active: bool = False) -> None:
+def update_sieve_script(account: str, id: str, _name: str, content: str, active: bool = False) -> None:
 	"""Update a sieve script for the account"""
-
-	account = get_session_account(account_id)
 
 	SieveScript._update_sieve_script(account, id, _name, content, active)
 
 
 @frappe.whitelist()
-def delete_sieve_script(account_id: str, id: str) -> None:
+def delete_sieve_script(account: str, id: str) -> None:
 	"""Delete a sieve script for the account"""
-
-	account = get_session_account(account_id)
 
 	SieveScript._delete_sieve_scripts(account, [id])
 
@@ -157,12 +149,15 @@ def get_automation_script_name(account: str) -> str:
 	since the rebuild itself calls this to resolve the script it writes to.
 	"""
 
-	scripts = SieveScript._fetch_sieve_scripts(account, filter={"name": AUTOMATION_SCRIPT_NAME})
+	user, account_id = parse_account(account)
+	scripts = SieveScript._fetch_sieve_scripts(account_id, filter={"name": AUTOMATION_SCRIPT_NAME}, user=user)
 	if scripts and scripts[0]:
 		return scripts[0][0]["name"]
 
 	frappe.flags.allow_automation_script_creation = True
-	script_id = SieveScript._add_sieve_script(account, AUTOMATION_SCRIPT_NAME, AUTOMATION_SCRIPT_REQUIRE)
+	script_id = SieveScript._add_sieve_script(
+		account_id, AUTOMATION_SCRIPT_NAME, AUTOMATION_SCRIPT_REQUIRE, user=user
+	)
 
 	return f"{account}|{script_id}"
 
@@ -197,11 +192,13 @@ def backfill_mailbox_automation_rules() -> None:
 		for account_id in account_ids:
 			account = f"{user}:{account_id}"
 			try:
-				scripts = SieveScript._fetch_sieve_scripts(account, filter={"name": AUTOMATION_SCRIPT_NAME})
+				scripts = SieveScript._fetch_sieve_scripts(
+					account_id, filter={"name": AUTOMATION_SCRIPT_NAME}, user=user
+				)
 				if not (scripts and scripts[0]):
 					continue
 
-				script = SieveScript._get_sieve_scripts(account, [scripts[0][0]["id"]], True)
+				script = SieveScript._get_sieve_scripts(account_id, [scripts[0][0]["id"]], True, user=user)
 				content = script[0]["content"] if script else ""
 			except Exception:
 				continue

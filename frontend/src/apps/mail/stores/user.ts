@@ -109,7 +109,7 @@ export const userStore = defineStore('mail-user', () => {
 
 	const sieveScripts = createResource({
 		url: 'suite.mail.api.sieve.get_sieve_scripts',
-		makeParams: () => ({ account_id: accountId.value }),
+		makeParams: () => ({ account: accountId.value }),
 		cache: ['sieveScripts', accountId.value],
 	})
 
