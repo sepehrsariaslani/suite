@@ -50,7 +50,8 @@ export class SFUMeetingManager {
 			sfuClient,
 			transportManager: this.transportManager,
 			meetingId: () => this.connectionManager?.meetingId ?? null,
-			onRecovered: () => this.connectionManager?.resyncProducers(),
+			onRecovered: () => this.connectionManager?.resetReceiveSide(),
+			onFailed: () => this.connectionManager?.resetReceiveSide(),
 		});
 
 		this.mediaManager = new SFUMediaManager(
