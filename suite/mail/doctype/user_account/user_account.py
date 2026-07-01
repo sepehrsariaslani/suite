@@ -7,6 +7,7 @@ from uuid import uuid7
 import frappe
 from frappe import _
 from frappe.model.document import Document
+from frappe.utils.caching import request_cache
 
 from suite.mail.utils.user import is_administrator, is_system_manager
 
@@ -29,6 +30,7 @@ class UserAccount(Document):
 		self.name = str(uuid7())
 
 
+@request_cache
 def get_user_for_jmap_account(
 	account: str, allow_system_manager: bool = True, raise_exception: bool = False
 ) -> str | None:
@@ -60,8 +62,12 @@ def get_user_for_jmap_account(
 		frappe.throw(_("JMAP account {0} does not exist.").format(frappe.bold(account)))
 
 
+@request_cache
 def get_user_jmap_accounts(user: str | None = None, raise_exception: bool = False) -> list[str]:
-	"""Returns the list of JMAP accounts for the given user. If no user is provided, it defaults to the current session user."""
+	"""Returns the list of JMAP accounts for the given user. If no user is provided, it defaults to the current session user.
+
+	Cached per request: the returned list is shared, so callers must treat it as read-only.
+	"""
 
 	user = user or frappe.session.user
 	accounts = frappe.db.get_all("User Account", {"user": user}, pluck="account")

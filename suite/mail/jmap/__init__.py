@@ -3,6 +3,7 @@ from typing import Any
 import frappe
 from frappe import _
 from frappe.utils import cint
+from frappe.utils.caching import request_cache
 
 from suite.mail.doctype.user_account.user_account import get_user_for_jmap_account
 from suite.mail.jmap.connection import JMAPConnection, JMAPConnectionInfo, JMAPSessionManager
@@ -31,10 +32,15 @@ from suite.mail.utils import get_config
 from suite.mail.utils.user import is_system_manager
 
 
+@request_cache
 def get_jmap_connection(
 	user: str, ignore_permissions: bool = False, timeout: tuple[float, float] = (30.0, 60.0)
 ) -> JMAPConnection:
-	"""Returns a JMAPConnection instance for the specified user, using the user's settings for connection details."""
+	"""Returns a JMAPConnection instance for the specified user, using the user's settings for connection details.
+
+	Cached per request so the many service factories that resolve a connection for the same
+	user reuse one instance (and skip the repeated password decryption / session lookup).
+	"""
 
 	if not ignore_permissions:
 		if user != frappe.session.user and not is_system_manager(frappe.session.user):

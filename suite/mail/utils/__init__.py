@@ -22,6 +22,7 @@ from bs4 import BeautifulSoup, Comment
 from frappe import _
 from frappe.types.filter import FilterTuple
 from frappe.utils import cint, get_bench_path
+from frappe.utils.caching import request_cache
 from markdown_it import MarkdownIt
 from MySQLdb import OperationalError
 from passlib.hash import sha512_crypt
@@ -116,8 +117,12 @@ def reconnect_on_failure(max_retries: int = 3) -> callable:
 	return wrapper
 
 
+@request_cache
 def get_config(key: str | None = None) -> dict[str, Any] | Any:
-	"""Fetches configuration values, prioritizing Mail Settings over global config."""
+	"""Fetches configuration values, prioritizing Mail Settings over global config.
+
+	Cached per request: the returned dict is shared, so callers must treat it as read-only.
+	"""
 
 	mail_conf = frappe.conf.mail or {}
 	settings = frappe.get_cached_doc("Mail Settings")
