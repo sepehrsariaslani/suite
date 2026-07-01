@@ -267,7 +267,8 @@ const editEvent = createResource({
 	url: 'suite.mail.doctype.calendar_event.calendar_event.update_calendar_event',
 	makeParams: ({ sendEmail }: { sendEmail: boolean }) => ({
 		account: store.accountId,
-		id: selectedEvent.calendarEvent.master_id,
+		// master_id is only set on recurring events; fall back to the event's own id
+		id: selectedEvent.calendarEvent.master_id || selectedEvent.calendarEvent.id,
 		uid: selectedEvent.calendarEvent.uid,
 		...eventParams.value,
 		send_scheduling_messages: sendEmail,

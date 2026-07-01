@@ -218,7 +218,8 @@ const editEvent = createResource({
 	url: 'suite.mail.doctype.calendar_event.calendar_event.update_calendar_event',
 	makeParams: ({ sendEmail }: { sendEmail: boolean }) => ({
 		...eventToBeUpdated,
-		id: eventToBeUpdated.master_id,
+		// master_id is only set on recurring events; fall back to the event's own id
+		id: eventToBeUpdated.master_id || eventToBeUpdated.id,
 		send_scheduling_messages: sendEmail,
 	}),
 	onSuccess: () => {

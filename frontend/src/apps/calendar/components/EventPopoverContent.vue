@@ -153,7 +153,8 @@ const editEvent = createResource({
 	url: 'suite.calendar.api.edit_calendar_event',
 	makeParams: ({ patch }) => ({
 		account: store.accountId,
-		id: calendarEvent.master_id,
+		// master_id is only set on recurring events; fall back to the event's own id
+		id: calendarEvent.master_id || calendarEvent.id,
 		...patch,
 		send_scheduling_messages: true,
 	}),
@@ -204,7 +205,7 @@ const deleteEventInstance = createResource({
 
 const deleteEvent = createResource({
 	url: 'suite.mail.doctype.calendar_event.calendar_event.delete_calendar_events',
-	makeParams: () => ({ account: store.accountId, ids: [calendarEvent.master_id] }),
+	makeParams: () => ({ account: store.accountId, ids: [calendarEvent.master_id || calendarEvent.id] }),
 	onSuccess: () => {
 		emit('reloadEvents')
 		close()

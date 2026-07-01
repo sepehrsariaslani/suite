@@ -354,3 +354,17 @@ def delete_account_requests(names: list) -> None:
 
 	for d in names:
 		frappe.delete_doc("Mail Account Request", d)
+
+
+@frappe.whitelist()
+def delete_members(names: list) -> None:
+	"""Delete member users. The User on_trash hooks cascade to their Stalwart account and settings."""
+
+	user = frappe.session.user
+	if not is_mail_admin(user) and not is_system_manager(user):
+		frappe.throw(_("User {0} does not have permission to delete members.").format(frappe.bold(user)))
+
+	for name in names:
+		if name == user:
+			frappe.throw(_("You cannot delete your own account."))
+		frappe.delete_doc("User", name)

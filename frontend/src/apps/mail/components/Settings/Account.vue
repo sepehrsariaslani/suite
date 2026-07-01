@@ -101,11 +101,14 @@ import { userStore } from '@/apps/mail/stores/user'
 import type { Identity, MailboxData } from '@/apps/mail/types'
 
 const user = inject('$user')
-const { accountId, identities, mailboxes, mailboxIds } = userStore()
+// Read store.accountId live in makeParams; destructuring would snapshot the
+// unwrapped value and miss account switches while this component stays mounted.
+const store = userStore()
+const { identities, mailboxes, mailboxIds } = store
 
 // Outgoing settings now live on the active account's JMAP Account; backup_email
 // (Recovery) is still per-user on User Settings.
-const activeAccount = user.data?.accounts?.find((a) => a.id === accountId)
+const activeAccount = user.data?.accounts?.find((a) => a.id === store.accountId)
 
 const jmapAccount = createDocumentResource({
 	doctype: 'JMAP Account',
@@ -164,7 +167,7 @@ const showMoveToInbox = ref(false)
 
 const moveScreeningToInbox = createResource({
 	url: 'suite.mail.api.mail.move_screening_mails_to_inbox',
-	makeParams: () => ({ account: accountId }),
+	makeParams: () => ({ account: store.accountId }),
 	onSuccess: () => {
 		raiseToast(__('Unscreened messages moved to Inbox.'))
 		showMoveToInbox.value = false
