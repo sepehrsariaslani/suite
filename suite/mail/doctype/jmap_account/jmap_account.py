@@ -23,6 +23,7 @@ if TYPE_CHECKING:
 from suite.mail.doctype.sieve_script.sieve_script import build_automation_sieve, maybe_build_automation_sieve
 from suite.mail.doctype.user_account.user_account import get_user_jmap_accounts
 from suite.mail.utils import log_error
+from suite.mail.utils.lock import acquire_lock, release_lock
 from suite.mail.utils.user import get_account_emails, is_system_manager
 
 
@@ -226,34 +227,76 @@ def sync_jmap_accounts(user: str, accounts: dict[str, dict]) -> None:
 
 	Settings are shared by account ID across every user with access, so documents for
 	accounts the user can no longer see are intentionally left untouched.
+
+	Serialized per user with a distributed lock: this runs on every User Settings save,
+	including session-state changes that can fire concurrently from multiple tabs or jobs.
+	Without it, two overlapping runs would both read an empty User Account set and each
+	insert a link, leaving duplicate (user, account) rows (the doctype has no unique key).
+	If the lock can't be acquired, another run is already syncing the same session snapshot,
+	so skipping is safe.
 	"""
 
-	frappe.flags.skip_automation_sieve_build = True
+	lockname = f"sync_jmap_accounts:{user}"
+	lock_id = acquire_lock(lockname)
+	if not lock_id:
+		return
+
+	try:
+		frappe.flags.skip_automation_sieve_build = True
+
+		new_accounts_with_screening = _ensure_jmap_account_docs(user, accounts)
+		_sync_user_accounts(user, set(accounts.keys()))
+
+		for account in new_accounts_with_screening:
+			build_automation_sieve(account, activate=True)
+	finally:
+		release_lock(lockname, lock_id)
+
+
+def _ensure_jmap_account_docs(user: str, accounts: dict[str, dict]) -> list[str]:
+	"""Create the shared JMAP Account document for each account that doesn't have one yet.
+
+	Returns the names of newly created accounts with screening enabled. The per-user lock
+	in sync_jmap_accounts doesn't cover this: a shared account is visible to several users,
+	so a sync running for a different user can create the same document concurrently. The
+	document is named by account ID, so the loser hits DuplicateEntryError, which we treat
+	as "already created" rather than letting it abort the whole sync.
+	"""
 
 	new_accounts_with_screening = []
 	for account_id, details in accounts.items():
-		if not frappe.db.exists("JMAP Account", account_id):
-			doc = frappe.new_doc("JMAP Account")
-			doc._name = details["name"]
-			doc.account_id = account_id
-			doc.is_personal = details["isPersonal"]
-			doc.is_readonly = details["isReadOnly"]
+		if frappe.db.exists("JMAP Account", account_id):
+			continue
 
-			# Carry the user so after_insert / validate can reach JMAP for this account.
-			doc.flags.user = user
+		doc = frappe.new_doc("JMAP Account")
+		doc._name = details["name"]
+		doc.account_id = account_id
+		doc.is_personal = details["isPersonal"]
+		doc.is_readonly = details["isReadOnly"]
 
-			doc.flags.ignore_links = True
+		# Carry the user so after_insert / validate can reach JMAP for this account.
+		doc.flags.user = user
+
+		doc.flags.ignore_links = True
+
+		try:
 			doc.insert(ignore_permissions=True)
+		except frappe.DuplicateEntryError:
+			continue
 
-			if doc.enable_screening:
-				new_accounts_with_screening.append(doc.name)
+		if doc.enable_screening:
+			new_accounts_with_screening.append(doc.name)
+
+	return new_accounts_with_screening
+
+
+def _sync_user_accounts(user: str, account_ids: set[str]) -> None:
+	"""Reconcile the user's User Account links with the given set of account IDs."""
 
 	user_account_map = {
 		user_account.account: user_account.name
 		for user_account in frappe.db.get_all("User Account", {"user": user}, ["name", "account"])
 	}
-
-	account_ids = set(accounts.keys())
 	existing_account_ids = set(user_account_map.keys())
 
 	accounts_to_add = account_ids - existing_account_ids
@@ -272,10 +315,6 @@ def sync_jmap_accounts(user: str, accounts: dict[str, dict]) -> None:
 		frappe.db.delete(
 			"User Account", {"name": ["in", [user_account_map[account] for account in accounts_to_remove]]}
 		)
-
-	if new_accounts_with_screening:
-		for account in new_accounts_with_screening:
-			build_automation_sieve(account, activate=True)
 
 
 def create_archive_mailbox(user: str, account: str) -> None:
