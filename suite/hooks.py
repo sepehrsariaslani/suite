@@ -346,6 +346,7 @@ ignore_links_on_delete = [
 	"Server Ansible Play",
 	"Server Deployment",
 	"JMAP Account",
+	"User Account",
 	"Screened Email Address",
 	"Mail Exchange",
 	"Mail Queue",

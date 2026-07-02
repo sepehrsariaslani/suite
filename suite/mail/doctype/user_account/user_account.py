@@ -100,12 +100,24 @@ def get_user_personal_jmap_account(user: str | None = None, raise_exception: boo
 	"""Returns the personal JMAP account ID for the given user. If no user is provided, it defaults to the current session user."""
 
 	user = user or frappe.session.user
-	personal_account = frappe.db.get_value("User Account", {"user": user, "is_personal": True}, "account")
+	user_accounts = get_user_jmap_accounts(user, raise_exception=raise_exception)
+	personal_accounts = frappe.db.get_all(
+		"JMAP Account", {"is_personal": True, "name": ("in", user_accounts)}, pluck="name"
+	)
 
-	if not personal_account and raise_exception:
-		frappe.throw(_("User {0} does not have a personal account configured.").format(frappe.bold(user)))
+	if personal_accounts:
+		if len(personal_accounts) > 1:
+			if raise_exception:
+				frappe.throw(
+					_("User {0} has multiple personal JMAP accounts configured.").format(frappe.bold(user))
+				)
+		else:
+			return personal_accounts[0]
 
-	return personal_account
+	elif raise_exception:
+		frappe.throw(
+			_("User {0} does not have a personal JMAP account configured.").format(frappe.bold(user))
+		)
 
 
 def get_permission_query_condition(user: str | None = None) -> str | None:

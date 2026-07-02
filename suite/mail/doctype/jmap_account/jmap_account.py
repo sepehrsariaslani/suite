@@ -22,7 +22,7 @@ if TYPE_CHECKING:
 
 from suite.mail.doctype.sieve_script.sieve_script import build_automation_sieve, maybe_build_automation_sieve
 from suite.mail.doctype.user_account.user_account import get_user_jmap_accounts
-from suite.mail.utils import log_error
+from suite.mail.utils import execute_with_logging, log_error
 from suite.mail.utils.lock import acquire_lock, release_lock
 from suite.mail.utils.user import get_account_emails, is_system_manager
 
@@ -141,7 +141,7 @@ class JMAPAccount(Document):
 			)
 
 	def after_insert(self) -> None:
-		create_archive_mailbox(self._user, self.name)
+		maybe_create_archive_mailbox(self.name)
 
 	def on_update(self) -> None:
 		if frappe.flags.in_migrate:
@@ -243,11 +243,13 @@ def sync_jmap_accounts(user: str, accounts: dict[str, dict]) -> None:
 
 	try:
 		frappe.flags.skip_automation_sieve_build = True
+		frappe.flags.skip_archive_mailbox_creation = True
 
-		new_accounts_with_screening = _ensure_jmap_account_docs(user, accounts)
+		new_accounts = _ensure_jmap_account_docs(user, accounts)
 		_sync_user_accounts(user, set(accounts.keys()))
 
-		for account in new_accounts_with_screening:
+		for account in new_accounts:
+			create_archive_mailbox(account)
 			build_automation_sieve(account, activate=True)
 	finally:
 		release_lock(lockname, lock_id)
@@ -256,14 +258,10 @@ def sync_jmap_accounts(user: str, accounts: dict[str, dict]) -> None:
 def _ensure_jmap_account_docs(user: str, accounts: dict[str, dict]) -> list[str]:
 	"""Create the shared JMAP Account document for each account that doesn't have one yet.
 
-	Returns the names of newly created accounts with screening enabled. The per-user lock
-	in sync_jmap_accounts doesn't cover this: a shared account is visible to several users,
-	so a sync running for a different user can create the same document concurrently. The
-	document is named by account ID, so the loser hits DuplicateEntryError, which we treat
-	as "already created" rather than letting it abort the whole sync.
+	Returns the list of newly created account IDs. Existing documents are left untouched.
 	"""
 
-	new_accounts_with_screening = []
+	new_accounts = []
 	for account_id, details in accounts.items():
 		if frappe.db.exists("JMAP Account", account_id):
 			continue
@@ -284,10 +282,9 @@ def _ensure_jmap_account_docs(user: str, accounts: dict[str, dict]) -> list[str]
 		except frappe.DuplicateEntryError:
 			continue
 
-		if doc.enable_screening:
-			new_accounts_with_screening.append(doc.name)
+		new_accounts.append(doc.name)
 
-	return new_accounts_with_screening
+	return new_accounts
 
 
 def _sync_user_accounts(user: str, account_ids: set[str]) -> None:
@@ -317,17 +314,24 @@ def _sync_user_accounts(user: str, account_ids: set[str]) -> None:
 		)
 
 
-def create_archive_mailbox(user: str, account: str) -> None:
+def maybe_create_archive_mailbox(account: str) -> None:
 	"""Create the archive mailbox for the account if it does not already exist."""
 
-	try:
-		get_mailbox_id_by_role(user, account, "archive", create_if_not_exists=True)
+	if frappe.flags.get("skip_archive_mailbox_creation"):
+		return
 
-	except Exception:
-		log_error(
-			_("Archive Mailbox Creation Error"),
-			_("Failed to create archive mailbox for account {0}").format(frappe.bold(account)),
-		)
+	create_archive_mailbox(account)
+
+
+def create_archive_mailbox(account: str) -> None:
+	"""Create the archive mailbox for the account if it does not already exist."""
+
+	execute_with_logging(
+		lambda: get_mailbox_id_by_role(account, "archive", create_if_not_exists=True),
+		title=_("Archive Mailbox Creation Error"),
+		user_message=_("Failed to create archive mailbox for account {0}").format(frappe.bold(account)),
+		with_context=False,
+	)
 
 
 def get_permission_query_condition(user: str | None = None) -> str | None:

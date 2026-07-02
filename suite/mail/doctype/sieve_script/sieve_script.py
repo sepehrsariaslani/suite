@@ -21,7 +21,7 @@ from suite.mail.jmap import (
 	get_mailboxes,
 	get_sieve_script_service,
 )
-from suite.mail.utils import parse_filters
+from suite.mail.utils import execute_with_logging, parse_filters
 from suite.mail.utils.user import get_account_emails
 
 
@@ -396,13 +396,22 @@ def maybe_build_automation_sieve(account: str, activate: bool = False) -> None:
 
 
 def build_automation_sieve(account: str, activate: bool = False) -> None:
-	doc = frappe.get_doc("Sieve Script", get_automation_script_name(account))
-	doc.content = _build_automation_content(account)
+	"""Build the automation sieve script for the given account and optionally activate it."""
 
-	if activate:
-		doc.active = True
+	def _build_automation_sieve(account: str, activate: bool = False) -> None:
+		doc = frappe.get_doc("Sieve Script", get_automation_script_name(account))
+		doc.content = _build_automation_content(account)
 
-	doc.save()
+		if activate:
+			doc.active = True
+
+		doc.save()
+
+	execute_with_logging(
+		lambda: _build_automation_sieve(account, activate=activate),
+		title="Failed to build automation sieve script",
+		with_context=False,
+	)
 
 
 @contextmanager
@@ -434,7 +443,9 @@ def get_automation_script_name(account: str) -> str:
 		return scripts[0][0]["name"]
 
 	frappe.flags.allow_automation_script_creation = True
-	script_id = SieveScript._add_sieve_script(account, AUTOMATION_SCRIPT_NAME, content="", active=False)
+	script_id = SieveScript._add_sieve_script(
+		account, AUTOMATION_SCRIPT_NAME, content=AUTOMATION_SCRIPT_REQUIRE, active=False
+	)
 
 	return f"{account}|{script_id}"
 
