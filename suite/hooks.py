@@ -262,6 +262,8 @@ doc_events = {
 		],
 		"on_trash": [
 			"suite.mail.events.delete_account",
+			"suite.mail.events.delete_user_accounts",
+			"suite.mail.events.delete_jmap_accounts",
 			"suite.mail.events.delete_user_settings",
 		],
 	},
