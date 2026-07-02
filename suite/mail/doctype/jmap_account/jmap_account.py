@@ -304,12 +304,21 @@ def _ensure_jmap_account_docs(user: str, accounts: dict[str, dict]) -> list[str]
 
 
 def _sync_user_accounts(user: str, account_ids: set[str]) -> None:
-	"""Reconcile the user's User Account links with the given set of account IDs."""
+	"""Reconcile the user's User Account links with the given set of account IDs.
 
-	user_account_map = {
-		user_account.account: user_account.name
-		for user_account in frappe.db.get_all("User Account", {"user": user}, ["name", "account"])
-	}
+	Guards against duplicate (user, account) links at two levels alongside the DB unique index:
+	pre-existing duplicates are collapsed to a single row, and inserts tolerate the index
+	rejecting a link that a concurrent sync created first.
+	"""
+
+	user_account_map = {}
+	duplicate_names = []
+	for user_account in frappe.db.get_all("User Account", {"user": user}, ["name", "account"]):
+		if user_account.account in user_account_map:
+			duplicate_names.append(user_account.name)
+		else:
+			user_account_map[user_account.account] = user_account.name
+
 	existing_account_ids = set(user_account_map.keys())
 
 	accounts_to_add = account_ids - existing_account_ids
@@ -322,12 +331,14 @@ def _sync_user_accounts(user: str, account_ids: set[str]) -> None:
 			doc.user = user
 			doc.account = account_id
 			doc.user_settings = user_settings.name
-			doc.insert(ignore_permissions=True)
+			try:
+				doc.insert(ignore_permissions=True)
+			except frappe.UniqueValidationError:
+				continue
 
-	if accounts_to_remove:
-		frappe.db.delete(
-			"User Account", {"name": ["in", [user_account_map[account] for account in accounts_to_remove]]}
-		)
+	names_to_remove = duplicate_names + [user_account_map[account] for account in accounts_to_remove]
+	if names_to_remove:
+		frappe.db.delete("User Account", {"name": ["in", names_to_remove]})
 
 
 def maybe_create_archive_mailbox(account: str) -> None:

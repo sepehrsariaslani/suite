@@ -134,3 +134,7 @@ def has_permission(doc: "Document", ptype: str, user: str | None = None) -> bool
 
 	user = user or frappe.session.user
 	return doc.user == user or is_system_manager(user)
+
+
+def on_doctype_update() -> None:
+	frappe.db.add_unique("User Account", ["user", "account"], constraint_name="unique_user_account")
