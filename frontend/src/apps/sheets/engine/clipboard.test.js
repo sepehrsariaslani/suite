@@ -167,6 +167,21 @@ describe('clipboard — pasteFromHTML (external table)', () => {
     expect(cb.pasteFromHTML('<p>hello world</p>', 'A1', null)).toBe(false)
     expect(sheet.getCell('A1')).toBe('')
   })
+
+  it('ignores rows/cells of a table nested inside a cell (no row bleed)', () => {
+    // Web-page clipboard HTML often embeds a <table> inside a <td>. Only the
+    // outer table's rows should become grid rows; the nested table collapses
+    // into its parent cell's text.
+    const html = '<table><tr><td>outer</td>' +
+                 '<td><table><tr><td>inner1</td></tr><tr><td>inner2</td></tr></table></td></tr>' +
+                 '<tr><td>next</td><td>row</td></tr></table>'
+    cb.pasteFromHTML(html, 'A1', null)
+    expect(sheet.getCell('A1')).toBe('outer')
+    expect(sheet.getCell('B1')).toBe('inner1inner2') // nested text, one cell
+    expect(sheet.getCell('A2')).toBe('next')          // outer row 2, not bled
+    expect(sheet.getCell('B2')).toBe('row')
+    expect(sheet.getCell('A3')).toBe('')              // no phantom rows
+  })
 })
 
 describe('clipboard — cut clears the source but not overlapping dest cells', () => {

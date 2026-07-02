@@ -233,9 +233,17 @@ export function createClipboard({ sheet, formats, condFormat = null, validation 
 		const table = doc.querySelector('table')
 		if (!table) return null
 		const grid = []
-		for (const tr of table.querySelectorAll('tr')) {
+		// Only the outer table's own rows/cells — a bare querySelectorAll('tr')
+		// descends into any nested <table> inside a cell (common in web-page
+		// clipboard HTML) and bleeds its rows into the outer grid. A nested
+		// table's text still lands in the parent cell via textContent, which is
+		// what we want.
+		const rows = table.querySelectorAll(
+			':scope > tr, :scope > thead > tr, :scope > tbody > tr, :scope > tfoot > tr',
+		)
+		for (const tr of rows) {
 			const row = []
-			for (const cell of tr.querySelectorAll('th, td')) {
+			for (const cell of tr.querySelectorAll(':scope > th, :scope > td')) {
 				const text = (cell.textContent ?? '').replace(/\s+/g, ' ').trim()
 				row.push(text)
 				const span = parseInt(cell.getAttribute('colspan') || '1', 10)
@@ -313,5 +321,5 @@ export function createClipboard({ sheet, formats, condFormat = null, validation 
 	function getPivotBlob() { return _data ? _pivot : null }
 	function clear() { _data = _fmts = _vals = _mode = _srcSel = _pivot = null }
 
-	return { copy, cut, paste, pasteFromText, pasteFromHTML, parseHTMLTable, hasData, getMode, getSourceSel, getPivotBlob, clear }
+	return { copy, cut, paste, pasteFromText, pasteFromHTML, hasData, getMode, getSourceSel, getPivotBlob, clear }
 }
