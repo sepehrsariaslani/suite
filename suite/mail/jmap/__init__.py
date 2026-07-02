@@ -68,6 +68,7 @@ def get_jmap_connection(
 			timeout,
 		),
 		session_manager=get_jmap_session_manager(user),
+		user=user,
 	)
 
 

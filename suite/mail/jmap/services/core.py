@@ -303,8 +303,25 @@ class CoreService(CoreServiceHelper):
 		session_state = response["sessionState"]
 		if self.connection.state != session_state:
 			self.connection._session_discovery()
+			self._sync_accounts_on_state_change()
 
 		return response
+
+	def _sync_accounts_on_state_change(self) -> None:
+		"""Resync the user's JMAP Accounts after the JMAP session state changes.
+
+		The session state only changes when the set of accounts available to the user changes
+		on the JMAP server, so a change here means the local JMAP Account documents and User
+		Account links may be stale and need reconciling against the freshly discovered session.
+		"""
+
+		if not self.connection.user:
+			return
+
+		# Lazy import to avoid a circular dependency (jmap_account -> suite.mail.jmap -> core).
+		from suite.mail.doctype.jmap_account.jmap_account import sync_jmap_accounts
+
+		sync_jmap_accounts(self.connection.user, self.connection.accounts)
 
 	def _exec(self, action: Literal["get", "set", "query", "changes", "upload", "lookup"], **payload) -> dict:
 		payload = {**{k: v for k, v in payload.items() if v is not None}}
