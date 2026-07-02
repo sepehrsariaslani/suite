@@ -195,6 +195,7 @@ def user_context(user: str) -> Generator[None, None, None]:
 	"""Context manager to temporarily switch the user context."""
 
 	session_user = frappe.session.user
+	session_sid = frappe.session.sid
 	session_data = frappe.session.data.copy()
 
 	if session_user == user:
@@ -205,7 +206,10 @@ def user_context(user: str) -> Generator[None, None, None]:
 		frappe.set_user(user)
 		yield
 	finally:
+		# frappe.set_user() overwrites session.sid with the username and wipes session.data,
+		# so restore both alongside the user to avoid corrupting the original session.
 		frappe.set_user(session_user)
+		frappe.session.sid = session_sid
 		frappe.session.data = session_data
 
 
