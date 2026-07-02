@@ -13,22 +13,42 @@
 				data-testid="chat-panel"
 			>
 				<div class="flex items-center justify-between p-4 border-b border-gray-200">
-					<div class="text-gray-900 text-base-medium">Chat</div>
-					<lucide-x
-						@click="$emit('close')"
-						class="w-4 h-4 text-gray-900 cursor-pointer hover:text-gray-600"
-					/>
-				</div>
 
-				<div ref="listEl" class="flex-1 overflow-y-auto p-4 space-y-4" data-testid="chat-messages">
-					<div v-for="group in groupedMessages" :key="group.id" class="min-w-0">
+					 <div class="text-gray-900 text-base font-medium">Chat</div>
+                    
+                    <div class="flex items-center gap-1">
+                        <Dropdown 
+                            v-if="isHost || isCohost"
+                            :options="pollMenuOptions"
+                        >
+                            <Button variant="ghost" icon="more-horizontal" class="text-gray-600 hover:bg-gray-100" />
+                        </Dropdown>
+
+                        <Button variant="ghost" class="text-gray-600 hover:bg-gray-100" @click="$emit('close')">
+                            <lucide-x class="w-4 h-4 text-gray-900 cursor-pointer hover:text-gray-600" />
+                        </Button>
+                    </div>
+                </div>
+
+			<div ref="listEl" class="flex-1 overflow-y-auto p-4 space-y-4" data-testid="chat-messages">
+				<template v-for="item in chatItems" :key="item.key">
+					<div v-if="item.type === 'poll'" class="min-w-0">
 						<div class="text-xs flex items-center gap-2">
-							<span class="truncate font-medium">{{ group.user_name }}</span>
-							<span class="text-gray-600">{{ time(group.timestamp) }}</span>
+							<span class="truncate font-medium">{{ pollCreatorName(item.poll) }}</span>
+							<span class="text-gray-600">{{ time(item.timestamp) }}</span>
+						</div>
+						<div class="my-1">
+							<PollMessageCard :poll="item.poll" :is-guest="isGuest" />
+						</div>
+					</div>
+					<div v-else class="min-w-0">
+						<div class="text-xs flex items-center gap-2">
+							<span class="truncate font-medium">{{ item.group.user_name }}</span>
+							<span class="text-gray-600">{{ time(item.group.timestamp) }}</span>
 						</div>
 						<div class="my-1 space-y-2">
 							<div
-								v-for="message in group.messages"
+								v-for="message in item.group.messages"
 								:key="message.id"
 								class="text-sm text-gray-900 whitespace-pre-wrap [overflow-wrap:anywhere] leading-4"
 							>
@@ -48,10 +68,11 @@
 							</div>
 						</div>
 					</div>
-					<div v-if="resolvedMessages.length === 0" class="text-gray-500 text-sm text-center mt-8">
-						No messages yet
-					</div>
+				</template>
+				<div v-if="chatItems.length === 0" class="text-gray-500 text-sm text-center mt-8">
+					No messages yet
 				</div>
+			</div>
 
 				<form class="p-2 relative" @submit.prevent="handleSend">
 					<template v-if="canSendMessages">
@@ -78,6 +99,10 @@
 						The host has restricted chat to hosts and co-hosts only.
 					</div>
 				</form>
+				<CreatePollModal 
+                    v-model="showPollModal" 
+                    @submit="handlePollSubmit" 
+                />
 			</div>
 		</div>
 	</Transition>
@@ -86,9 +111,11 @@
 <script setup lang="ts">
 import data from "@emoji-mart/data";
 import { init, SearchIndex } from "emoji-mart";
-import { Button, FormControl } from "frappe-ui";
+import { Button, FormControl, Dropdown } from "frappe-ui";
 import {
 	computed,
+	inject,
+	markRaw,
 	nextTick,
 	onMounted,
 	type Ref,
@@ -98,6 +125,11 @@ import {
 } from "vue";
 import { tokenizeChatMessage } from "../utils/chatMessageTokens";
 import EmojiPicker from "./EmojiPicker.vue";
+import { usePollStore } from "../composables/usePollStore";
+import type { PollPayloadFE } from "../types";
+import CreatePollModal from "./CreatePollModal.vue";
+import PollMessageCard from "./PollMessageCard.vue";
+import LucideChartColumn from "~icons/lucide/chart-column";
 
 interface ChatMessage {
 	id: string | number;
@@ -118,6 +150,18 @@ interface MessageGroup {
 	messages: ChatMessage[];
 }
 
+type ChatItem = {
+	type: 'poll';
+	key: string;
+	poll: PollPayloadFE;
+	timestamp: string;
+} | {
+	type: 'message';
+	key: string;
+	group: MessageGroup;
+	timestamp: string;
+};
+
 const props = defineProps<{
 	open?: boolean;
 	userId?: string;
@@ -125,8 +169,36 @@ const props = defineProps<{
 	messages?: ChatMessage[] | { value: ChatMessage[] };
 	isHost?: boolean;
 	isCohost?: boolean;
+	isGuest?: boolean;
 	hostOnlyChat?: boolean;
 }>();
+
+const pollStore = usePollStore();
+const pollService = inject("poll") as any;
+const showPollModal = ref(false);
+
+const activePolls = computed(() => pollStore.activePolls);
+const pollMenuOptions = [
+	{
+		label: "Create Poll",
+		icon: markRaw(LucideChartColumn),
+		onClick: () => {
+			showPollModal.value = true;
+		},
+	},
+];
+
+const handlePollSubmit = (payload: {
+	question: string;
+	options: { text: string }[];
+}) => {
+	if (pollService) {
+		pollService.createPoll(payload.question, payload.options);
+		showPollModal.value = false;
+	} else {
+        console.error("ERROR: pollService is undefined! The inject failed.");
+    }
+};
 
 const emit = defineEmits<{
 	close: [];
@@ -221,6 +293,28 @@ const groupedMessages = computed<MessageGroup[]>(() => {
 	return groups;
 });
 
+const chatItems = computed<ChatItem[]>(() => {
+	const items: ChatItem[] = [];
+	for (const poll of activePolls.value) {
+		items.push({
+			type: 'poll',
+			key: `poll-${poll.pollId}`,
+			poll,
+			timestamp: poll.createdAt || '1970-01-01T00:00:00.000Z',
+		});
+	}
+	for (const group of groupedMessages.value) {
+		items.push({
+			type: 'message',
+			key: `msg-${group.id}`,
+			group,
+			timestamp: group.timestamp,
+		});
+	}
+	items.sort((a, b) => a.timestamp.localeCompare(b.timestamp));
+	return items;
+});
+
 function time(ts) {
 	try {
 		return new Date(ts).toLocaleTimeString([], {
@@ -231,6 +325,11 @@ function time(ts) {
 	} catch {
 		return "";
 	}
+}
+
+function pollCreatorName(poll: PollPayloadFE) {
+	if (poll.createdBy === props.userId) return props.userName || "You";
+	return poll.createdByName || poll.createdBy;
 }
 
 const showEmojiPicker = computed(() => {
@@ -363,5 +462,5 @@ async function scrollToBottom() {
 	el.scrollTop = el.scrollHeight;
 }
 
-watch(messages, scrollToBottom, { deep: true });
+watch([chatItems], scrollToBottom, { deep: true });
 </script>

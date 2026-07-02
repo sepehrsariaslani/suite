@@ -1,5 +1,6 @@
 import type { Server, Socket } from 'socket.io';
 import type {
+	ActivePoll,
 	ClientToServerEvents,
 	ServerToClientEvents,
 	UserData,
@@ -13,6 +14,7 @@ export class RoomRegistry {
 	private raisedHands: Record<string, Record<string, string>> = {};
 	private hostOnlyChat: Record<string, boolean> = {};
 	private participantSockets: Record<string, Record<string, string>> = {};
+	private activePolls: Record<string, Map<string, ActivePoll>> = {};
 	private fullAccessSockets: Map<string, Set<string>> = new Map();
 	private previewSockets: Map<string, Set<string>> = new Map();
 	private nextSenderIdByRoom: Map<string, number> = new Map();
@@ -116,6 +118,14 @@ export class RoomRegistry {
 		return Boolean(this.hostOnlyChat[roomId]);
 	}
 
+	getActivePolls(roomId: string): Map<string, ActivePoll> | undefined {
+		return this.activePolls[roomId];
+	}
+
+	setActivePolls(roomId: string, polls: Map<string, ActivePoll>): void {
+		this.activePolls[roomId] = polls;
+	}
+
 	isEmpty(roomId: string): boolean {
 		const adapter = this.io.sockets.adapter;
 		const full = adapter.rooms.get(fullRoom(roomId))?.size ?? 0;
@@ -127,6 +137,7 @@ export class RoomRegistry {
 		delete this.raisedHands[roomId];
 		delete this.hostOnlyChat[roomId];
 		delete this.participantSockets[roomId];
+		delete this.activePolls[roomId];
 		this.fullAccessSockets.delete(roomId);
 		this.previewSockets.delete(roomId);
 		this.nextSenderIdByRoom.delete(roomId);

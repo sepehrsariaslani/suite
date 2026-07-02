@@ -117,6 +117,9 @@ export interface ServerToClientEvents {
 	'chat:message': (data: ChatMessage) => void;
 	'chat:restriction_updated': (data: { enabled: boolean }) => void;
 	'reaction:message': (data: ReactionMessage) => void;
+	'poll:new': (data: PollPayloadFE) => void;
+	'poll:update': (data: PollPayloadFE) => void;
+	existing_polls: (data: { polls: PollPayloadFE[] }) => void;
 	active_speaker: (data: ActiveSpeakerEvent) => void;
 	sfu_error: (data: SFUErrorEvent) => void;
 	'auth:expired': (data: AuthExpiredEvent) => void;
@@ -202,6 +205,30 @@ export interface ClientToServerEvents {
 	screen_share: (data: ScreenShareRequest) => void;
 	'chat:send': (data: ChatSendRequest) => void;
 	'chat:toggle_restriction': (data: { enabled: boolean }) => void;
+	'poll:create': (
+		data: {
+			question: string;
+			createdByName?: string;
+			options: { id?: string; text: string }[];
+		},
+		callback: (response: SFUResponse & { poll?: PollPayloadFE }) => void,
+	) => void;
+	'poll:vote': (
+		data: { pollId: string; optionId: string },
+		callback: (response: SFUResponse) => void,
+	) => void;
+	'poll:sync_encrypted': (
+		data: {
+			pollId: string;
+			question: string;
+			options: { id: string; text: string }[];
+		},
+		callback: (response: SFUResponse) => void,
+	) => void;
+	get_existing_polls: (
+		data: Record<string, never>,
+		callback: (response: SFUResponse & { polls?: PollPayloadFE[] }) => void,
+	) => void;
 	'reaction:send': (data: ReactionSendRequest) => void;
 	'consumer:update_preferences': (
 		data: ConsumerUpdatePreferencesRequest,
@@ -410,6 +437,34 @@ export interface HealthStats {
 	peers: number;
 }
 
+export interface PollOption {
+	id: string;
+	text: string;
+	votes: number;
+}
+
+export interface ActivePoll {
+	pollId: string;
+	createdBy: string;
+	createdByName?: string;
+	question: string;
+	options: PollOption[];
+	votedUsers: Set<string>;
+	isActive: boolean;
+	createdAt: string;
+}
+
+// for FE, sending the votedUser each payload not a good idea, if the votedUser are in huge qty
+export interface PollPayloadFE {
+	pollId: string;
+	createdBy: string;
+	createdByName?: string;
+	question: string;
+	options: PollOption[];
+	isActive: boolean;
+	hasVoted?: boolean;
+	createdAt: string;
+}
 export type E2eeEpochEnvelope =
 	| E2eeEpochKeyPackageRequest
 	| E2eeEpochGenesisRequest
@@ -507,6 +562,7 @@ declare module 'socket.io' {
 		site?: string;
 		isHost: boolean;
 		isCohost: boolean;
+		isGuest?: boolean;
 		roomId?: string;
 		participantId?: string;
 		senderId?: number;

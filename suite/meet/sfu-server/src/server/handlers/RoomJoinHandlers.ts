@@ -111,6 +111,31 @@ export function registerRoomJoinHandlers(deps: HandlerDeps) {
 					boolean
 				>,
 			});
+
+			if (socket.scope === 'full' && !socket.e2eeRequired) {
+				const roomPolls = deps.registry.getActivePolls(scopedRoomId);
+				if (roomPolls && roomPolls.size > 0) {
+					const personalizedPolls = Array.from(roomPolls.values()).map(
+						(poll) => {
+							const userVoted = poll.votedUsers.has(participantId);
+							return {
+								pollId: poll.pollId,
+								createdBy: poll.createdBy,
+								createdByName: poll.createdByName,
+								question: poll.question,
+								options: poll.options,
+								isActive: poll.isActive,
+								hasVoted: userVoted,
+								createdAt: poll.createdAt,
+							};
+						},
+					);
+
+					socket.emit('existing_polls', {
+						polls: personalizedPolls,
+					});
+				}
+			}
 		} catch (error) {
 			loggers.socketHandler.error(
 				'Error in handleJoinRoom for user %s: %s',
