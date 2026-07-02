@@ -11,9 +11,9 @@ EXTRA_TEST_RECORD_DEPENDENCIES = []  # eg. ["User"]
 IGNORE_TEST_RECORD_DEPENDENCIES = []  # eg. ["User"]
 
 
-class IntegrationTestAccountSettings(IntegrationTestCase):
+class IntegrationTestJMAPAccount(IntegrationTestCase):
 	"""
-	Integration tests for AccountSettings.
+	Integration tests for JMAP Account.
 	Use this class for testing interactions between multiple components.
 	"""
 
