@@ -263,7 +263,6 @@ doc_events = {
 		"on_trash": [
 			"suite.mail.events.delete_account",
 			"suite.mail.events.delete_user_accounts",
-			"suite.mail.events.delete_jmap_accounts",
 			"suite.mail.events.delete_user_settings",
 		],
 	},
@@ -281,6 +280,7 @@ scheduler_events = {
 		"suite.sheets.versioning.tasks.rollup_snapshots",
 		"suite.sheets.versioning.tasks.truncate_op_log",
 		# mail
+		"suite.mail.doctype.jmap_account.jmap_account.delete_orphaned_jmap_accounts",
 		"suite.mail.doctype.mail_exchange.mail_exchange.clean_import_export_directories",
 		"suite.mail.doctype.calendar_exchange.calendar_exchange.clean_calendar_import_export_directories",
 	],

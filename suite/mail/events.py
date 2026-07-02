@@ -28,23 +28,6 @@ def delete_user_accounts(doc: Document, method: str | None = None) -> None:
 		frappe.delete_doc("User Account", account, ignore_permissions=True, delete_permanently=True)
 
 
-def delete_jmap_accounts(doc: Document, method: str | None = None) -> None:
-	"""Delete JMAP Accounts that are no longer linked to any user.
-
-	JMAP Account settings are shared by account ID across every user with access, so a JMAP
-	Account is only orphaned once the last user's User Account link is gone. Runs after
-	`delete_user_accounts` on user deletion to clean up any now-unlinked JMAP Accounts.
-	"""
-
-	linked_accounts = frappe.db.get_all("User Account", distinct=True, pluck="account")
-	orphaned_accounts = frappe.db.get_all(
-		"JMAP Account", filters={"name": ["not in", linked_accounts]}, pluck="name"
-	)
-
-	for account in orphaned_accounts:
-		frappe.delete_doc("JMAP Account", account, ignore_permissions=True, delete_permanently=True)
-
-
 def delete_user_settings(doc: Document, method: str | None = None) -> None:
 	"""Delete User Settings when the user is deleted."""
 
