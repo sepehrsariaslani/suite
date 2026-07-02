@@ -2,6 +2,7 @@ import type {
 	AppData,
 	CloseProducerResult,
 	Consumer,
+	ConsumerData,
 	DtlsParameters,
 	ExistingProducer,
 	IceCandidate,
@@ -10,6 +11,7 @@ import type {
 	ParticipantInfo,
 	Peer,
 	PeerInfo,
+	ProducerData,
 	Room,
 	RtpCapabilities,
 	RtpCodecCapability,
@@ -30,7 +32,7 @@ export class MediasoupManager {
 	private peerManager = new PeerManager();
 	private transportManager = new TransportManager();
 	private producerManager = new ProducerManager();
-	private consumerManager = new ConsumerManager();
+	consumerManager = new ConsumerManager();
 
 	private networkQualityListeners: Array<
 		(
@@ -277,7 +279,11 @@ export class MediasoupManager {
 		rtpParameters: RtpParameters,
 		kind: 'audio' | 'video',
 		appData: AppData = {},
+		senderId?: number,
+		paused = false,
 	): Promise<{ id: string; kind: 'audio' | 'video'; appData: AppData }> {
+		const enrichedAppData: AppData =
+			senderId !== undefined ? { ...appData, senderId } : appData;
 		const transportData = this.transportManager.getTransportData(transportId);
 		if (!transportData) {
 			throw new Error(`Transport ${transportId} not found`);
@@ -299,7 +305,8 @@ export class MediasoupManager {
 			peerId,
 			rtpParameters,
 			kind,
-			appData,
+			enrichedAppData,
+			paused,
 		);
 
 		const producer = this.producerManager.getProducer(result.id);
@@ -326,6 +333,7 @@ export class MediasoupManager {
 		kind: 'audio' | 'video';
 		rtpParameters: RtpParameters;
 		paused: boolean;
+		senderId?: number;
 	}> {
 		const transportData = this.transportManager.getTransportData(transportId);
 		if (!transportData) {
@@ -375,7 +383,13 @@ export class MediasoupManager {
 		}
 		peer.consumers.set(result.id, consumer);
 
-		return result;
+		return {
+			...result,
+			senderId:
+				typeof producerData.producer.appData?.senderId === 'number'
+					? producerData.producer.appData.senderId
+					: undefined,
+		};
 	}
 
 	closeProducer(producerId: string): CloseProducerResult {
@@ -427,6 +441,14 @@ export class MediasoupManager {
 
 	async resumeProducer(producerId: string): Promise<boolean> {
 		return this.producerManager.resumeProducer(producerId);
+	}
+
+	async requestConsumerKeyFrame(consumerId: string): Promise<boolean> {
+		return this.consumerManager.requestConsumerKeyFrame(consumerId);
+	}
+
+	getConsumerData(consumerId: string): ConsumerData | undefined {
+		return this.consumerManager.getConsumerData(consumerId);
 	}
 
 	async updateConsumerPreferences(options: {
@@ -715,6 +737,9 @@ export class MediasoupManager {
 				return {
 					id: peerId,
 					user_id: peerId,
+					senderId: peer.info.senderId,
+					sender_id: peer.info.senderId,
+					is_host: peer.info.isHost || false,
 					info: {
 						name: peer.info.name,
 						userId: peer.info.userId,
@@ -756,6 +781,14 @@ export class MediasoupManager {
 				setFlag('video_enabled', true);
 				break;
 		}
+	}
+
+	getRoomPeers(roomId: string): Map<string, Peer> | undefined {
+		return this.roomManager.getRoom(roomId)?.peers;
+	}
+
+	getProducerData(producerId: string): ProducerData | undefined {
+		return this.producerManager.getProducerData(producerId);
 	}
 
 	peerExistsInRoom(roomId: string, peerId: string): boolean {

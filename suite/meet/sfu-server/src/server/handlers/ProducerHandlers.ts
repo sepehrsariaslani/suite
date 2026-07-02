@@ -8,12 +8,16 @@ export function registerProducerHandlers(deps: HandlerDeps) {
 		socket.on('create_producer', async (data, callback) => {
 			try {
 				deps.authManager.ensureFullAccess(socket);
+				enforceE2EEMediaPolicy(socket);
 				const { transportId, rtpParameters, kind, appData = {} } = data;
+				const startPaused = !!appData.e2eeStartPaused;
 				const producer = await deps.mediasoup.createProducer(
 					transportId,
 					rtpParameters,
 					kind,
 					appData,
+					socket.senderId ?? 0,
+					startPaused,
 				);
 
 				const isScreen =
@@ -28,7 +32,7 @@ export function registerProducerHandlers(deps: HandlerDeps) {
 					participantId: socket.userId,
 					producerId: producer.id,
 					kind: producer.kind,
-					paused: false,
+					paused: startPaused,
 					isScreen,
 				});
 			} catch (error) {
@@ -44,6 +48,15 @@ export function registerProducerHandlers(deps: HandlerDeps) {
 			try {
 				deps.authManager.ensureFullAccess(socket);
 				const { producerId, reason, source, details } = data;
+				const ownerCheck = assertProducerOwnership(
+					deps,
+					producerId,
+					socket.userId,
+				);
+				if (!ownerCheck.ok) {
+					callback({ success: false, error: ownerCheck.error });
+					return;
+				}
 				const result = deps.mediasoup.closeProducer(producerId);
 
 				loggers.socketHandler.info(
@@ -105,6 +118,15 @@ export function registerProducerHandlers(deps: HandlerDeps) {
 			try {
 				deps.authManager.ensureFullAccess(socket);
 				const { producerId } = data;
+				const ownerCheck = assertProducerOwnership(
+					deps,
+					producerId,
+					socket.userId,
+				);
+				if (!ownerCheck.ok) {
+					callback({ success: false, error: ownerCheck.error });
+					return;
+				}
 				const paused = await deps.mediasoup.pauseProducer(producerId);
 
 				callback({ success: true, paused });
@@ -121,6 +143,15 @@ export function registerProducerHandlers(deps: HandlerDeps) {
 			try {
 				deps.authManager.ensureFullAccess(socket);
 				const { producerId } = data;
+				const ownerCheck = assertProducerOwnership(
+					deps,
+					producerId,
+					socket.userId,
+				);
+				if (!ownerCheck.ok) {
+					callback({ success: false, error: ownerCheck.error });
+					return;
+				}
 				const resumed = await deps.mediasoup.resumeProducer(producerId);
 
 				callback({ success: true, resumed });
@@ -133,4 +164,30 @@ export function registerProducerHandlers(deps: HandlerDeps) {
 			}
 		});
 	};
+}
+
+function enforceE2EEMediaPolicy(socket: Socket): void {
+	if (!socket.e2eeRequired) return;
+	if (!socket.e2eeReady) {
+		throw new Error('E2EE join handshake not completed');
+	}
+}
+
+function assertProducerOwnership(
+	deps: HandlerDeps,
+	producerId: string,
+	userId: string,
+): { ok: true } | { ok: false; error: string } {
+	const producerData = deps.mediasoup.getProducerData(producerId);
+	if (!producerData) return { ok: false, error: 'Producer not found' };
+	if (producerData.peerId !== userId) {
+		loggers.socketHandler.warn(
+			'Producer ownership mismatch: user %s attempted to operate producer %s owned by %s',
+			userId,
+			producerId,
+			producerData.peerId,
+		);
+		return { ok: false, error: 'Not the owner of this producer' };
+	}
+	return { ok: true };
 }

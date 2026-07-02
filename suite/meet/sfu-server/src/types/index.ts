@@ -1,26 +1,20 @@
-import type { AudioLevelObserver } from 'mediasoup/node/lib/AudioLevelObserverTypes';
-import type { Consumer } from 'mediasoup/node/lib/ConsumerTypes';
-import type { Producer } from 'mediasoup/node/lib/ProducerTypes';
-import type { Router } from 'mediasoup/node/lib/RouterTypes';
-import type {
-	RouterRtpCodecCapability,
-	RtpCodecCapability,
-} from 'mediasoup/node/lib/rtpParametersTypes';
 import type {
 	AppData,
-	RtpCapabilities,
-	RtpParameters,
-} from 'mediasoup/node/lib/types';
-import type {
+	AudioLevelObserver,
+	Consumer,
 	DtlsParameters,
 	IceCandidate,
 	IceParameters,
+	Producer,
+	Router,
+	RouterRtpCodecCapability,
+	RtpCapabilities,
+	RtpCodecCapability,
+	RtpParameters,
 	WebRtcTransport,
-} from 'mediasoup/node/lib/WebRtcTransportTypes';
-import type {
 	WorkerLogLevel,
 	WorkerSettings,
-} from 'mediasoup/node/lib/WorkerTypes';
+} from 'mediasoup/types';
 import type {
 	ActiveSpeakerEvent,
 	AuthExpiredEvent,
@@ -129,6 +123,7 @@ export interface ServerToClientEvents {
 	hand_raised: (data: HandRaisedEvent) => void;
 	existing_raised_hands: (data: ExistingRaisedHandsEvent) => void;
 	network_quality_update: (data: NetworkQualityUpdateEvent) => void;
+	'e2ee:epoch': (data: E2eeEpochEnvelope) => void;
 }
 
 export interface ClientToServerEvents {
@@ -217,13 +212,13 @@ export interface ClientToServerEvents {
 		callback: (response: SFUResponse) => void,
 	) => void;
 	leave_room: (data?: LeaveRoomRequest) => void;
+	'e2ee:epoch': (data: E2eeEpochEnvelope) => void;
 }
 
 export interface SocketData {
 	userId: string;
 	userName: string;
 	meetingId: string;
-	site?: string;
 	isHost: boolean;
 	isGuest?: boolean;
 	roomId?: string;
@@ -327,7 +322,10 @@ export interface Peer {
 	joined: Date;
 }
 
-export interface PeerInfo extends UserData {}
+export interface PeerInfo extends UserData {
+	senderId?: number;
+	isHost?: boolean;
+}
 
 export interface TransportData {
 	roomId: string;
@@ -386,14 +384,16 @@ export interface JWTPayload {
 	user_id: string;
 	user_name: string;
 	meeting_id: string;
+	site?: string;
 	user_avatar?: string;
 	is_host: boolean;
 	is_cohost?: boolean;
+	is_guest?: boolean;
 	scope?: SFUScope;
+	e2ee_required?: boolean;
 	session_id?: string;
 	exp?: number;
 	iat?: number;
-	site?: string;
 }
 
 // Server types
@@ -410,6 +410,94 @@ export interface HealthStats {
 	peers: number;
 }
 
+export type E2eeEpochEnvelope =
+	| E2eeEpochKeyPackageRequest
+	| E2eeEpochGenesisRequest
+	| E2eeEpochKeyPackage
+	| E2eeEpochCommitRequest
+	| E2eeEpochCommit
+	| E2eeEpochWelcome
+	| E2eeEpochAck
+	| E2eeEpochResyncRequest
+	| E2eeEpochJoinStatus;
+
+export type E2eeEpochKeyPackageRequest = {
+	type: 'key-package-request';
+	epochNumber: number;
+	reason: 'enable' | 'join' | 'reconnect';
+};
+
+export type E2eeEpochGenesisRequest = {
+	type: 'genesis-request';
+	epochNumber: 1;
+	message: string;
+};
+
+export type E2eeEpochKeyPackage = {
+	type: 'key-package';
+	fromParticipantId: string;
+	fromSenderId: number;
+	epochNumber: number;
+	reason?: 'enable' | 'join' | 'reconnect';
+	keyPackage: string;
+};
+
+export type E2eeEpochCommitRequest = {
+	type: 'commit-request';
+	epochNumber: number;
+	nextEpochNumber: number;
+	membershipDeltaId: string;
+	membershipDeltaHash: string;
+	rosterHash: string;
+	committerSenderId: number;
+	joiningSenderIds: number[];
+	removedSenderIds?: number[];
+};
+
+export type E2eeEpochCommit = {
+	type: 'commit';
+	fromParticipantId: string;
+	fromSenderId: number;
+	previousEpochNumber: number;
+	epochNumber: number;
+	membershipDeltaId: string;
+	membershipDeltaHash: string;
+	rosterHash: string;
+	mlsCommit: string;
+};
+
+export type E2eeEpochWelcome = {
+	type: 'welcome';
+	fromParticipantId: string;
+	fromSenderId: number;
+	toParticipantId: string;
+	toSenderId: number;
+	epochNumber: number;
+	mlsWelcome: string;
+};
+
+export type E2eeEpochAck = {
+	type: 'ack';
+	fromParticipantId: string;
+	fromSenderId: number;
+	epochNumber: number;
+};
+
+export type E2eeEpochResyncRequest = {
+	type: 'resync-request';
+	fromParticipantId: string;
+	fromSenderId: number;
+	knownEpochNumber?: number;
+};
+
+export type E2eeEpochJoinStatus = {
+	type: 'join-status';
+	status: 'pending' | 'failed';
+	reason?: 'waiting-for-admitter' | 'waiting-for-host';
+	epochNumber: number;
+	message: string;
+};
+
 // Socket.IO module augmentation
 declare module 'socket.io' {
 	interface Socket {
@@ -421,8 +509,11 @@ declare module 'socket.io' {
 		isCohost: boolean;
 		roomId?: string;
 		participantId?: string;
+		senderId?: number;
 		currentToken?: string;
 		tokenExpiresAt?: number;
 		scope?: SFUScope;
+		e2eeRequired?: boolean;
+		e2eeReady?: boolean;
 	}
 }

@@ -12,6 +12,9 @@ export interface UserData {
 export interface ParticipantInfo {
 	id: string;
 	user_id: string;
+	senderId?: number;
+	sender_id?: number;
+	is_host?: boolean;
 	info: {
 		name?: string;
 		userId: string;
@@ -165,14 +168,29 @@ export interface MediaState {
 	video_enabled: boolean;
 }
 
+export type E2EEMode = "insertable-streams" | "none";
+
+export interface E2EECapability {
+	supported: boolean;
+	mode: E2EEMode;
+}
+
+export interface E2EESessionMetadata {
+	enabled: boolean;
+	capability: E2EECapability;
+	ecdhPublicKey?: string;
+}
+
 export interface JoinRoomRequest {
 	roomId: string;
 	userData: UserData;
 	mediaState: MediaState;
+	e2ee?: E2EESessionMetadata;
 }
 
 export interface CreateWebRtcTransportRequest {
 	direction: "send" | "recv";
+	encryptionEnabled?: boolean;
 }
 
 export interface MediaControlRequest {
