@@ -9,14 +9,14 @@ import {
 	transformElements,
 } from '@/apps/slides/stores/presentation'
 import { resetFocus } from '@/apps/slides/stores/element'
-import { saveChanges, dirty, markDirty, saveFailed } from '@/apps/slides/stores/saving'
+import { saveChanges, dirty, saveFailed } from '@/apps/slides/stores/saving'
 import { commandHistory } from '@/apps/slides/stores/historyMeta'
 import { generateUniqueId, cloneObj } from '@/apps/slides/utils/helpers'
 import { router } from '@/apps/slides/router'
 
 import { toast } from 'frappe-ui'
 import { inSlideShowMode } from './slideshow'
-import { addSlideCommand, removeSlideCommand } from './commands'
+import { addSlideCommand, removeSlideCommand, editSlideCommand } from './commands'
 
 const slides = ref([])
 
@@ -142,9 +142,17 @@ const deleteSlide = (deleteActive) => {
 	const totalLength = slides.value.length
 
 	if (totalLength == 1) {
-		slides.value[0].elements = []
+		// clearing the only slide's contents must go through history so it stays undoable
+		const slide = slides.value[0]
+		commandHistory.execute(
+			editSlideCommand({
+				slideId: slide.clientId,
+				property: 'elements',
+				oldValue: cloneObj(slide.elements),
+				newValue: [],
+			}),
+		)
 		focusedSlide.value = null
-		markDirty()
 		return
 	}
 
@@ -187,26 +195,9 @@ const addEmptySlide = (e, index) => {
 	if (layout) handleInsertSlide(index, cloneObj(layout))
 }
 
-const replaceSlide = (layoutObj) => {
-	const index = slideIndex.value
-	const newSlide = getNewSlide(false, layoutObj)
-
-	slides.value.splice(index, 1, newSlide)
-	slides.value.forEach((slide, index) => {
-		slide.idx = index + 1
-	})
-
-	markDirty()
-}
-
 const handleInsertSlide = (index, layoutObj) => {
-	// TODO: change this to use replace
-	let replace = false
-	if (replace) {
-		replaceSlide(layoutObj)
-	} else {
-		insertDuplicateSlide(index, layoutObj)
-	}
+	// TODO: support replacing the current slide (must route through command history)
+	insertDuplicateSlide(index, layoutObj)
 }
 
 export {
