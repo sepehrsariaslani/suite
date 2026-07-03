@@ -421,7 +421,12 @@ def build_automation_sieve(account: str, activate: bool = False) -> None:
 		doc = frappe.get_doc("Sieve Script", get_automation_script_name(account))
 		doc.content = _build_automation_content(account)
 
-		if activate and not is_vacation_script_active(account):
+		# Activate the automation script unless vacation is active. `doc.active` is the freshly loaded
+		# state (load_from_db just fetched it), and only one script can be active at a time — so an
+		# already-active automation script means vacation isn't, and we skip the vacation lookup. That
+		# keeps the hot document-save path (where automation is already active) free of the two extra
+		# JMAP round-trips `is_vacation_script_active` would otherwise make.
+		if activate and not doc.active and not is_vacation_script_active(account):
 			doc.active = True
 
 		doc.save()
