@@ -136,10 +136,8 @@ const handlePastedSlideJSON = async (json) => {
 		}
 	}
 
-	// Reassign identity so pasting the same clipboard more than once never
-	// yields slides that share a clientId (root cause of the wrong-slide
-	// symptoms). Element ids are the within-slide handle, so regenerate them
-	// too; refId (cross-slide transition key) is intentionally left as-is.
+	// Give each paste a fresh identity so repeated pastes don't share ids.
+	// refId (cross-slide transition key) is intentionally kept.
 	slideJSON.clientId = uuid4()
 	slideJSON.elements = (slideJSON.elements || []).map((el) => ({
 		...el,

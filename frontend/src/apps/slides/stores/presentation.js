@@ -3,7 +3,7 @@ import { createResource, call, createDocumentResource } from 'frappe-ui'
 
 import { router } from '@/apps/slides/router'
 import { slides } from './slide'
-import { markClean } from './saving'
+import { markClean, markDirty } from './saving'
 import { normalizeZIndices } from '@/apps/slides/stores/element'
 import { v4 as uuid4 } from 'uuid'
 import { commandHistory } from './historyMeta'
@@ -147,9 +147,24 @@ const parseElements = (value) => {
 	return normalizeZIndices(parsed)
 }
 
+// Rescue decks saved with duplicate client_ids. Returns true if anything changed.
+const ensureUniqueClientIds = (slides) => {
+	const seen = new Set()
+	let repaired = false
+	for (const slide of slides) {
+		if (seen.has(slide.clientId)) {
+			slide.clientId = uuid4()
+			repaired = true
+		}
+		seen.add(slide.clientId)
+	}
+	return repaired
+}
+
 const slidesLength = ref(0)
 
 const getPresentationResource = (name) => {
+	let clientIdsRepaired = false
 	return createDocumentResource({
 		doctype: 'Presentation',
 		name: name,
@@ -166,6 +181,7 @@ const getPresentationResource = (name) => {
 				delete slide.fade_unmatched_elements
 				delete slide.client_id
 			}
+			clientIdsRepaired = ensureUniqueClientIds(doc.slides || [])
 		},
 		async onSuccess(doc) {
 			slidesLength.value = doc.slides?.length || 0
@@ -175,6 +191,8 @@ const getPresentationResource = (name) => {
 			slides.value = JSON.parse(JSON.stringify(doc.slides || []))
 			isPublicPresentation.value = Boolean(doc.is_public)
 			markClean()
+			// persist the repair
+			if (clientIdsRepaired) markDirty()
 		},
 	})
 }
@@ -199,6 +217,7 @@ const getPublicPresentationResource = (name) => {
 				delete slide.fade_unmatched_elements
 				delete slide.client_id
 			}
+			ensureUniqueClientIds(doc.slides || [])
 		},
 		onSuccess(doc) {
 			slidesLength.value = doc.slides?.length || 0
@@ -229,6 +248,7 @@ const getCompositePresentationResource = (name) => {
 				delete slide.fade_unmatched_elements
 				delete slide.client_id
 			}
+			ensureUniqueClientIds(doc.slides || [])
 		},
 		onSuccess(doc) {
 			slidesLength.value = doc.slides?.length || 0
