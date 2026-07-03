@@ -6,10 +6,10 @@
     <div class="flex flex-1 overflow-auto">
       <ToC v-if="editor" :editor :anchors />
       <div id="editor-scroll-container" class="flex w-full overflow-y-auto relative">
-        <div class="h-full flex flex-col flex-grow" @click="onBackgroundClick">
-          <FTextEditor ref="textEditor" class="min-h-full flex flex-col" :upload-function="uploadFunction"
+        <div class="h-full flex flex-col flex-grow min-h-full" @click="onBackgroundClick" @keydown="onEditorKeydown">
+          <FTextEditor ref="textEditor" :upload-function="uploadFunction"
             :autofocus="true" v-model="localContent" placeholder="Start thinking..." :extensions="editorExtensions"
-            :editable @change="(val) => emit('editor-change', val)" @keydown="onEditorKeydown">
+            :editable @change="(val) => emit('editor-change', val)">
             <template #default="{ editor }">
               <EditorBubbleMenu :editor :items="bubbleMenuButtons" :options="bubbleMenuOpts" />
               <EditorTableMenu :editor />
@@ -204,12 +204,15 @@ const onCommentActivated = (id) => {
   }
 }
 
+const hasCollaboration = props.extensions?.some((ext) => ext?.name === 'collaboration')
+
 const editorExtensions = [
   RichTextKit.configure({
     starterKit: {
       trailingNode: { node: 'paragraph', notAfter: 'tab' },
       paragraph: false,
       gapcursor: false,
+      ...(hasCollaboration && { undoRedo: false }),
     },
     mention: { items: () => allUsers.data ?? [] },
   }),
