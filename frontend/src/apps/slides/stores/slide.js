@@ -69,9 +69,7 @@ const getNewSlide = (toDuplicate = false, layoutObject) => {
 	} else {
 		layout = layoutObject || null
 		layout.elements =
-			typeof layout?.elements === 'string'
-				? JSON.parse(layout.elements)
-				: layout?.elements || []
+			typeof layout?.elements === 'string' ? JSON.parse(layout.elements) : layout?.elements || []
 	}
 
 	let slide = {}
@@ -137,7 +135,7 @@ const saveSlide = (e) => {
 
 const deleteSlide = (deleteActive) => {
 	let deleteIndex = focusedSlide.value
-	if (!deleteIndex && deleteActive) deleteIndex = slideIndex.value
+	if (deleteIndex == null && deleteActive) deleteIndex = slideIndex.value
 	if (deleteIndex == null) return
 
 	// if there is only one slide, reset the slide state instead of deleting
@@ -167,7 +165,7 @@ const changeEditorSlide = async (index, focus = true) => {
 }
 
 const insertDuplicateSlide = async (index, layoutObj, toDuplicate) => {
-	if (toDuplicate || !index) index = slideIndex.value
+	if (toDuplicate || index == null) index = slideIndex.value
 
 	const newSlide = getNewSlide(toDuplicate, layoutObj)
 
