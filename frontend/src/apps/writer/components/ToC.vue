@@ -8,7 +8,7 @@
       })
         " :tooltip="show ? 'Hide' : 'Table of Contents'" @click="show = !show" />
     </div>
-    <div v-if="show" class="grow flex flex-col gap-0.5">
+    <div v-if="show && (anchors.length > 1 || tabs.length)" class="grow flex flex-col gap-0.5">
       <div class="flex justify-between items-center ps-2 pr-1 pb-1">
         <span class="text-base-medium text-ink-gray-8 select-none">Table of Contents</span>
         <Button :icon="LucideLeftClose" variant="ghost" @click="show = !show"
@@ -114,7 +114,7 @@ const props = defineProps({
   },
 })
 
-const show = ref(JSON.parse(localStorage.getItem('showToc') || true))
+const show = ref(JSON.parse(localStorage.getItem('showToc') || 'false'))
 watch(show, (v) => localStorage.setItem('showToc', v))
 const showHeadings = ref(true)
 
