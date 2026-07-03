@@ -119,19 +119,24 @@ watch(show, (v) => localStorage.setItem('showToc', v))
 const showHeadings = ref(true)
 
 // Get all tabs from the document
-const tabs = computed(() => {
+const tabs = ref([])
+
+const updateTabs = () => {
   const t = []
   props.editor.state.doc.descendants((node) => {
     if (node.type.name === 'tab') {
       t.push({ id: node.attrs.id, label: node.attrs.label })
     }
   })
-  return t
-})
+  tabs.value = t
+}
 
 // Get active tab ID
 const activeTabId = ref()
 onMounted(() => {
+  updateTabs()
+  props.editor.on('update', updateTabs)
+
   const handleTabChange = (e) => {
     activeTabId.value = e.detail.tabId
     finishRenaming(true)
@@ -139,6 +144,7 @@ onMounted(() => {
 
   props.editor.view.dom.addEventListener('tab-changed', handleTabChange)
   onBeforeUnmount(() => {
+    props.editor.off('update', updateTabs)
     props.editor.view.dom.removeEventListener('tab-changed', handleTabChange)
   })
 })
