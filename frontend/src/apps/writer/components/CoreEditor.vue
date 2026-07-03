@@ -2,19 +2,14 @@
   <div class="flex flex-col w-full bg-surface-base">
     <TextEditorFixedMenu v-if="editable"
       class="w-full max-w-[100vw] py-1.5 !px-4 md:px-0 overflow-x-auto flex shrink-0 border-b border-outline-elevation-2"
-      :editor="editor"
-      :items="menuButtons" />
+      :editor="editor" :items="menuButtons" />
     <div class="flex flex-1 overflow-auto">
       <ToC v-if="editor" :editor :anchors />
       <div id="editor-scroll-container" class="flex w-full overflow-y-auto relative">
         <div class="h-full flex flex-col flex-grow" @click="onBackgroundClick">
-          <FTextEditor ref="textEditor" class="min-h-full flex flex-col"
-            :upload-function="uploadFunction" :autofocus="true" v-model="localContent"
-            placeholder="Start thinking..."
-            :extensions="editorExtensions"
-            :editable
-            @change="(val) => emit('editor-change', val)"
-            @keydown="onEditorKeydown">
+          <FTextEditor ref="textEditor" class="min-h-full flex flex-col" :upload-function="uploadFunction"
+            :autofocus="true" v-model="localContent" placeholder="Start thinking..." :extensions="editorExtensions"
+            :editable @change="(val) => emit('editor-change', val)" @keydown="onEditorKeydown">
             <template #default="{ editor }">
               <EditorBubbleMenu :editor :items="bubbleMenuButtons" :options="bubbleMenuOpts" />
               <EditorTableMenu :editor />
@@ -26,16 +21,14 @@
                       ? 'md:min-w-[100ch] md:max-w-[100ch]'
                       : 'md:min-w-[48rem] md:max-w-[48rem]',
                     isPainting && 'cursor-crosshair',
-                  ]"
-                  :style="editorStyle" />
+                  ]" :style="editorStyle" />
               </EditorDropZone>
             </template>
           </FTextEditor>
         </div>
 
-        <FloatingComments v-if="commentsPainted" v-model:active-comment="activeComment"
-          :y-comments="comments" :file :show-comments :show-resolved :show-unanchored :editor
-          @save="saveComments">
+        <FloatingComments v-if="commentsPainted" v-model:active-comment="activeComment" :y-comments="comments" :file
+          :show-comments :show-resolved :show-unanchored :editor @save="saveComments">
           <div v-if="comments._map.size" class="sticky self-end top-4 right-4 z-10">
             <Dropdown :options="commentFilterOptions" placement="right">
               <Button :icon="LucideMessageSquareQuote" variant="outline" />
@@ -179,19 +172,19 @@ const commentFilterOptions = computed(() => {
       onClick: () => (showComments.value = !showComments.value),
     },
     hasResolved &&
-      showComments.value && {
-        label: 'Resolved',
-        switch: true,
-        switchValue: showResolved.value,
-        onClick: () => (showResolved.value = !showResolved.value),
-      },
+    showComments.value && {
+      label: 'Resolved',
+      switch: true,
+      switchValue: showResolved.value,
+      onClick: () => (showResolved.value = !showResolved.value),
+    },
     showUnanchoredButton.value &&
-      showComments.value && {
-        label: 'Outdated',
-        switch: true,
-        switchValue: showUnanchored.value,
-        onClick: () => (showUnanchored.value = !showUnanchored.value),
-      },
+    showComments.value && {
+      label: 'Outdated',
+      switch: true,
+      switchValue: showUnanchored.value,
+      onClick: () => (showUnanchored.value = !showUnanchored.value),
+    },
   ].filter(Boolean)
 })
 
@@ -419,7 +412,7 @@ iframe {
   border: 1px solid var(--surface-gray-4) !important;
 }
 
-.prose-v3 p + p {
+.prose-v3 p+p {
   margin-top: var(--paragraph-spacing-before, 0);
 }
 

@@ -28,7 +28,7 @@
             dragState.dropIndex !== dragState.draggedIndex + 1
           " class="h-8 my-0.5 border border-dashed rounded-sm mx-2" />
           <div v-if="editingTabId === tab.id && delayedEdit" class="flex items-center">
-            <TextInput v-model="editingTabLabel" v-on-outside-click="() => finishRenaming(false)" v-focus
+            <TextInput v-model="editingTabLabel" v-on-outside-click="() => finishRenaming(false)" autofocus
               @keydown.enter="finishRenaming(false)" @keydown.esc="finishRenaming(true)" class="w-full">
               <template #prefix>
                 <LucideFileText class="size-4" />
@@ -103,7 +103,7 @@ import LucideLink from '~icons/lucide/link'
 import LucideTrash from '~icons/lucide/trash'
 import LucideLeftClose from '~icons/lucide/panel-left-close'
 import { ref, watch, computed, h, onMounted, onBeforeUnmount } from 'vue'
-import { Button, TextInput, ContextMenu, focusDirective as vFocus, onOutsideClickDirective as vOnOutsideClick } from 'frappe-ui'
+import { Button, TextInput, ContextMenu, onOutsideClickDirective as vOnOutsideClick } from 'frappe-ui'
 import { copyToClipboard } from '@/apps/drive/ui/drive/js/utils'
 
 const props = defineProps({
