@@ -193,7 +193,10 @@ const getPresentationResource = (name) => {
 			// restore unsynced local edits, but only if the server hasn't moved past them
 			const local = await getPresentationFromLocalDB(name)
 			if (local?.dirty && local.baseModified === doc.modified) {
-				slides.value = JSON.parse(JSON.stringify(local.content))
+				const restored = JSON.parse(JSON.stringify(local.content))
+				// local content skips the transform's repair, so dedup it here too
+				ensureUniqueClientIds(restored)
+				slides.value = restored
 				slidesLength.value = slides.value.length
 				markDirty()
 				return
