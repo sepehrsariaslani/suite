@@ -4,7 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite --host",
+    "dev": "node scripts/unlink-frappe-ui.mjs && vite --host",
+    "dev:frappe-ui": "node scripts/link-frappe-ui.mjs && vite --host",
     "build": "vite build",
     "preview": "vite preview",
     "test": "vitest run"
