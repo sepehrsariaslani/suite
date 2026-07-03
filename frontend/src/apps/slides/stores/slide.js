@@ -9,7 +9,7 @@ import {
 	transformElements,
 } from '@/apps/slides/stores/presentation'
 import { resetFocus } from '@/apps/slides/stores/element'
-import { saveChanges, dirty, markDirty } from '@/apps/slides/stores/saving'
+import { saveChanges, dirty, markDirty, saveFailed } from '@/apps/slides/stores/saving'
 import { commandHistory } from '@/apps/slides/stores/historyMeta'
 import { generateUniqueId, cloneObj } from '@/apps/slides/utils/helpers'
 import { router } from '@/apps/slides/router'
@@ -122,7 +122,12 @@ const resetAndSave = async () => {
 		success: () => `Saved`,
 		error: () => 'Could not save presentation. Please try again.',
 	}
-	toast.promise(saveChanges(), toastProps)
+	toast.promise(
+		saveChanges().then(() => {
+			if (saveFailed.value) throw new Error('Save failed')
+		}),
+		toastProps,
+	)
 }
 
 const saveSlide = (e) => {

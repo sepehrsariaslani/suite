@@ -94,6 +94,9 @@ const markClean = () => {
 
 const isSaving = ref(false)
 
+// true when an online save to the server failed; drives the "Not saved" indicator
+const saveFailed = ref(false)
+
 const syncSnapshotToServer = async (snapshot) => {
 	await savePresentationDoc(snapshot.content)
 
@@ -106,15 +109,11 @@ const syncSnapshotToServer = async (snapshot) => {
 }
 
 const syncPresentationToServer = async () => {
-	try {
-		const snapshot = await getPresentationFromLocalDB(presentationId.value)
-		if (!snapshot || !snapshot.dirty) return
+	const snapshot = await getPresentationFromLocalDB(presentationId.value)
+	if (!snapshot || !snapshot.dirty) return
 
-		// if there's an unsynced snapshot locally, sync it to server
-		await syncSnapshotToServer(snapshot)
-	} catch (err) {
-		console.error('Sync to server failed: ', err)
-	}
+	// throws on failure so the caller keeps the state dirty and retries
+	await syncSnapshotToServer(snapshot)
 }
 
 const getLatestSlideContent = () => {
@@ -139,15 +138,17 @@ const saveCurrentState = async () => {
 			dirty: true,
 		})
 
-		// changes are persisted locally (and queued for sync), so the editor
-		// state is no longer ahead of storage
-		markClean()
-
-		// if offline, do not attempt to sync to server
+		// if offline, stay dirty so we retry once back online
 		if (!navigator.onLine) return
 
-		// if online, sync to server
+		// only mark clean once the server actually has the changes
 		await syncPresentationToServer()
+		markClean()
+		saveFailed.value = false
+	} catch (err) {
+		// keep dirty so autosave retries and beforeunload warns; log once per outage
+		if (!saveFailed.value) console.error('Save failed: ', err)
+		saveFailed.value = true
 	} finally {
 		isSaving.value = false
 	}
@@ -158,4 +159,4 @@ const saveChanges = async () => {
 	await saveCurrentState()
 }
 
-export { saveCurrentState, saveChanges, isSaving, dirty, markDirty, markClean }
+export { saveCurrentState, saveChanges, isSaving, dirty, markDirty, markClean, saveFailed }
