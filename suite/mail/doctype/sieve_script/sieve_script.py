@@ -695,11 +695,18 @@ def remove_sieve_block(script: str, block_name: str) -> str:
 	return result
 
 
+def _escape_sieve_string(value: str) -> str:
+	"""Escape a value for embedding in a Sieve quoted string (RFC 5228): backslash then double-quote."""
+
+	return value.replace("\\", "\\\\").replace('"', '\\"')
+
+
 def _sender_match_condition(value: str) -> str | None:
 	"""Return the Sieve `address` test that matches a screened value, or None when it is blank.
 
 	A `@domain` entry matches every sender from that domain (`address :domain :is "from" "example.com"`);
-	anything else is matched as a full address (`address :is "from" "john@example.com"`).
+	anything else is matched as a full address (`address :is "from" "john@example.com"`). Values are
+	escaped before being embedded so a stray quote or backslash can't corrupt the generated script.
 	"""
 
 	from suite.mail.utils.validation import is_domain_entry
@@ -710,9 +717,9 @@ def _sender_match_condition(value: str) -> str | None:
 
 	if is_domain_entry(value):
 		domain = value[1:].strip()
-		return f'address :domain :is "from" "{domain}"' if domain else None
+		return f'address :domain :is "from" "{_escape_sieve_string(domain)}"' if domain else None
 
-	return f'address :is "from" "{value}"'
+	return f'address :is "from" "{_escape_sieve_string(value)}"'
 
 
 def _build_screening_block(block_name: str, emails: list[str], action_lines: list[str]) -> str:
