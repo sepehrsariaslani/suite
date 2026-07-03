@@ -166,6 +166,8 @@ const editScreenedAddresses = createResource({
 		listViewRef.value?.toggleAllRows()
 		screenedAddresses.reload()
 	},
+	// Keep the selection on failure so the user can retry the same rows.
+	onError: (error) => raiseToast(error.message || __('Failed to update action.'), 'error'),
 })
 
 const bulkActionOptions = (['Accepted', 'Reject', 'Spam'] as ScreeningAction[]).map((action) => ({
@@ -183,6 +185,11 @@ const unscreenEmailAddresses = createResource({
 		showRemoveModal.value = false
 		listViewRef.value?.toggleAllRows()
 		screenedAddresses.reload()
+	},
+	// Close the confirmation and keep the selection so the user can retry.
+	onError: (error) => {
+		showRemoveModal.value = false
+		raiseToast(error.message || __('Failed to remove senders.'), 'error')
 	},
 })
 
