@@ -14,7 +14,8 @@ import {
 
 import { useTextEditor } from '@/apps/slides/composables/useTextEditor'
 
-import { getDocFromHTML } from '@/apps/slides/utils/helpers'
+import { getDocFromHTML, generateUniqueId } from '@/apps/slides/utils/helpers'
+import { v4 as uuid4 } from 'uuid'
 import { handleUploadedMedia } from '@/apps/slides/utils/mediaUploads'
 
 const { activeEditor } = useTextEditor()
@@ -134,6 +135,16 @@ const handlePastedSlideJSON = async (json) => {
 			slideJSON.elements = JSON.parse(slideJSON.elements)
 		}
 	}
+
+	// Reassign identity so pasting the same clipboard more than once never
+	// yields slides that share a clientId (root cause of the wrong-slide
+	// symptoms). Element ids are the within-slide handle, so regenerate them
+	// too; refId (cross-slide transition key) is intentionally left as-is.
+	slideJSON.clientId = uuid4()
+	slideJSON.elements = (slideJSON.elements || []).map((el) => ({
+		...el,
+		id: generateUniqueId(),
+	}))
 
 	insertSlide(slideJSON, index)
 }
