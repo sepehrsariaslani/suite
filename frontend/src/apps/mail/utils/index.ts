@@ -243,6 +243,12 @@ export const convertHtmlToText = (html: string) => {
 
 export const isEmail = (s: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s)
 
+// A domain entry, prefixed with @ (e.g. @example.com). Used by screening to trust/block a whole domain.
+export const isDomain = (s: string) => /^@[^\s@]+\.[^\s@]+$/.test(s)
+
+// A screened value: either a full email address or a whole domain (@example.com).
+export const isEmailOrDomain = (s: string) => isEmail(s) || isDomain(s)
+
 // An externally-hosted reference (http/https or protocol-relative //). cid: (inline attachments) and
 // data: URIs are part of the message, so they're never remote.
 const REMOTE_URL = /^\s*(?:https?:)?\/\//i
