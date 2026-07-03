@@ -3,7 +3,7 @@ import { createResource, call, createDocumentResource } from 'frappe-ui'
 
 import { router } from '@/apps/slides/router'
 import { slides } from './slide'
-import { markClean, markDirty } from './saving'
+import { markClean, markDirty, getPresentationFromLocalDB } from './saving'
 import { normalizeZIndices } from '@/apps/slides/stores/element'
 import { v4 as uuid4 } from 'uuid'
 import { commandHistory } from './historyMeta'
@@ -188,8 +188,18 @@ const getPresentationResource = (name) => {
 			for (const slide of doc.slides || []) {
 				slide.elements = await transformElements(slide.elements)
 			}
-			slides.value = JSON.parse(JSON.stringify(doc.slides || []))
 			isPublicPresentation.value = Boolean(doc.is_public)
+
+			// restore unsynced local edits, but only if the server hasn't moved past them
+			const local = await getPresentationFromLocalDB(name)
+			if (local?.dirty && local.baseModified === doc.modified) {
+				slides.value = JSON.parse(JSON.stringify(local.content))
+				slidesLength.value = slides.value.length
+				markDirty()
+				return
+			}
+
+			slides.value = JSON.parse(JSON.stringify(doc.slides || []))
 			markClean()
 			// persist the repair
 			if (clientIdsRepaired) markDirty()

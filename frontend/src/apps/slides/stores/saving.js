@@ -1,5 +1,5 @@
 import { ref } from 'vue'
-import { presentationId, savePresentationDoc } from '@/apps/slides/stores/presentation'
+import { presentationId, savePresentationDoc, presentationDoc } from '@/apps/slides/stores/presentation'
 import { slides } from '@/apps/slides/stores/slide'
 import { cloneObj } from '@/apps/slides/utils/helpers'
 
@@ -100,11 +100,12 @@ const saveFailed = ref(false)
 const syncSnapshotToServer = async (snapshot) => {
 	await savePresentationDoc(snapshot.content)
 
-	// after successful sync, make sure local copy is marked as clean so it's not synced again
+	// mark local copy clean; baseModified tracks the server version we're now in sync with
 	await savePresentationToLocalDB({
 		...snapshot,
 		dirty: false,
 		updatedAt: Date.now(),
+		baseModified: presentationDoc.value?.modified,
 	})
 }
 
@@ -130,12 +131,13 @@ const saveCurrentState = async () => {
 	try {
 		const content = getLatestSlideContent()
 
-		// save latest content to indexedDB with dirty flag since it's not yet synced to server
+		// save to indexedDB as dirty (not yet synced); baseModified = server version these build on
 		await savePresentationToLocalDB({
 			id: presentationId.value,
 			content: content,
 			updatedAt: Date.now(),
 			dirty: true,
+			baseModified: presentationDoc.value?.modified,
 		})
 
 		// if offline, stay dirty so we retry once back online
@@ -159,4 +161,13 @@ const saveChanges = async () => {
 	await saveCurrentState()
 }
 
-export { saveCurrentState, saveChanges, isSaving, dirty, markDirty, markClean, saveFailed }
+export {
+	saveCurrentState,
+	saveChanges,
+	isSaving,
+	dirty,
+	markDirty,
+	markClean,
+	saveFailed,
+	getPresentationFromLocalDB,
+}
