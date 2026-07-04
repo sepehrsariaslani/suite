@@ -3596,10 +3596,19 @@ async function onDocPaste(e) {
     clipboard.paste(activeCell.value, () => {}, 'all', destSel)
     pasted = true
   } else {
-    const text = e.clipboardData?.getData('text/plain')
-    if (text) {
-      clipboard.pasteFromText(text, activeCell.value, () => {}, destSel)
+    // Prefer the HTML flavor when it carries a real table — external apps
+    // (Gameplan, Google Sheets, web pages) put a structured <table> there,
+    // while their text/plain flavor can lack tab delimiters and collapse into
+    // a single column. Fall back to tab/newline-delimited plain text.
+    const html = e.clipboardData?.getData('text/html')
+    if (html && clipboard.pasteFromHTML(html, activeCell.value, () => {}, destSel)) {
       pasted = true
+    } else {
+      const text = e.clipboardData?.getData('text/plain')
+      if (text) {
+        clipboard.pasteFromText(text, activeCell.value, () => {}, destSel)
+        pasted = true
+      }
     }
   }
   clipboardHas.value = clipboard.hasData()
