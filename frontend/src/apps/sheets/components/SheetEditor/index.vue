@@ -845,6 +845,7 @@
           <!-- Type -->
           <FormControl type="select" label="Type" v-model="validationDialog.type"
             :options="[
+              { label: 'Checkbox',       value: 'checkbox' },
               { label: 'List of items',  value: 'list' },
               { label: 'Number',         value: 'number' },
               { label: 'Text length',    value: 'text_length' },
@@ -859,7 +860,7 @@
           />
 
           <!-- Operator (number / text_length) -->
-          <FormControl v-if="validationDialog.type !== 'list'"
+          <FormControl v-if="['number','text_length'].includes(validationDialog.type)"
             type="select" label="Condition" v-model="validationDialog.operator"
             :options="[
               { label: 'Between',             value: 'between' },
@@ -874,7 +875,7 @@
           />
 
           <!-- Values -->
-          <div v-if="validationDialog.type !== 'list'" class="sn-vd-vals">
+          <div v-if="['number','text_length'].includes(validationDialog.type)" class="sn-vd-vals">
             <FormControl
               v-model="validationDialog.val1"
               type="number"
@@ -2988,6 +2989,7 @@ function _setupGridInstance() {
     },
     onHyperlinkClick(url) { window.open(url, '_blank', 'noopener,noreferrer') },
     onDropdownClick(id, rule, pos) { openDropdown(id, rule, pos) },
+    onCheckboxToggle(id) { toggleCheckbox(id) },
     onPivotDrill(r, c) { return drillDownAt(r, c) },
     getSheetNames() { return sheetNames.value },
     // Cross-sheet picker — grid prefixes inserted refs with the current sheet
@@ -3922,7 +3924,9 @@ function confirmValidation() {
   const sn  = sheet.getCurrentSheet()
   const msg = validationDialog.message.trim() || undefined
   let rule
-  if (validationDialog.type === 'list') {
+  if (validationDialog.type === 'checkbox') {
+    rule = { type: 'checkbox', message: msg }
+  } else if (validationDialog.type === 'list') {
     const options = validationDialog.listRaw.split(',').map(s => s.trim()).filter(Boolean)
     rule = { type: 'list', options, message: msg }
   } else {
@@ -3934,9 +3938,29 @@ function confirmValidation() {
     rule = { type: validationDialog.type, operator: op, min, max, message: msg }
   }
   for (const id of ids) validation.set(id, rule, sn)
+
+  // Checkbox cells need a concrete value to render as unchecked and to feed
+  // formulas (SUM / COUNTIF) right away — fill blanks with FALSE, à la Sheets.
+  // The rule + these values ride in the single history.push() snapshot below,
+  // so one undo reverts the whole "apply checkboxes" action.
+  if (validationDialog.type === 'checkbox') {
+    const filled = []
+    for (const id of ids) {
+      const cur = sheet.getCell(id, sn)
+      if (cur == null || String(cur) === '') {
+        sheet.setCell(id, 'FALSE', sn)
+        filled.push({ id, value: 'FALSE' })
+      }
+    }
+    if (filled.length) {
+      broadcastBatchChange(sn, filled)
+      recomputePivotsForSheet(sn)
+    }
+  }
+
   validationDialog.open = false
   grid?.render()
-  history.push()   // validation rules live in the snapshot; record for undo
+  history.push()   // rule + any FALSE-fill live in the snapshot; record for undo
   isDirty.value = true
 }
 
@@ -3968,6 +3992,17 @@ function pickDropdownOption(opt) {
   sheet.setCell(id, opt)
   dropdownPanel.open = false
   _pushEditOp(sn, before, 'Edit cell')
+  recomputePivotsForSheet(sn)
+}
+
+// Clicking a checkbox cell's tickbox flips TRUE ↔ FALSE (empty → TRUE). Routed
+// through the same edit-op path as a dropdown pick so undo + collab match.
+function toggleCheckbox(id) {
+  const sn     = sheet.getCurrentSheet()
+  const before = { [id]: sheet.getCell(id, sn) }
+  const next   = String(before[id]).toUpperCase() === 'TRUE' ? 'FALSE' : 'TRUE'
+  sheet.setCell(id, next, sn)
+  _pushEditOp(sn, before, 'Toggle checkbox')
   recomputePivotsForSheet(sn)
 }
 
