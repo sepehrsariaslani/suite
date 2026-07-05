@@ -249,7 +249,6 @@ import { useConnectionState } from "../composables/useConnectionState";
 import { useCurrentUser } from "../composables/useCurrentUser";
 import { useE2EEState } from "../composables/useE2EEState";
 import { useGridLayout } from "../composables/useGridLayout";
-import { useKeyboardShortcuts } from "../composables/useKeyboardShortcuts";
 import { useLobby } from "../composables/useLobby";
 import { useLobbyStore } from "../composables/useLobbyStore";
 import { useMediaControls } from "../composables/useMediaControls";
@@ -475,6 +474,16 @@ const mediaControls = useMediaControls({
 	},
 });
 
+import { meetingControls } from "../composables/useKeyboardShortcuts";
+
+meetingControls.toggleMicrophone = () => mediaControls.toggleMicrophone();
+meetingControls.toggleCamera = () => mediaControls.toggleCamera();
+watch(
+	() => mediaState.isMicOn,
+	(val) => (meetingControls.isMicOn = val),
+	{ immediate: true },
+);
+
 // --- Chat ---
 const chat = useChat({
 	chatStore,
@@ -512,15 +521,6 @@ const lobby = useLobby({
 });
 
 type AccessData = { allow_guest?: boolean; host_only_chat?: boolean };
-
-// --- Keyboard Shortcuts ---
-useKeyboardShortcuts({
-	mediaControls: {
-		toggleMicrophone: () => mediaControls.toggleMicrophone(),
-		toggleCamera: () => mediaControls.toggleCamera(),
-	},
-	mediaState,
-});
 
 // --- Provide meeting context for child components ---
 provideMeetingContext({
@@ -928,4 +928,91 @@ watch(
 		}
 	},
 );
+
+let previousTheme: string | null = null;
+let previousThemeMode: string | null = null;
+let previousBodyTheme: string | null = null;
+let previousBodyThemeMode: string | null = null;
+let themeObserver: MutationObserver | null = null;
+let userChangedTheme = false;
+
+const forceDarkTheme = () => {
+	if (document.documentElement.getAttribute("data-theme") !== "dark") {
+		document.documentElement.setAttribute("data-theme", "dark");
+	}
+	if (document.body.getAttribute("data-theme") !== "dark") {
+		document.body.setAttribute("data-theme", "dark");
+	}
+};
+
+onMounted(() => {
+	previousTheme = document.documentElement.getAttribute("data-theme");
+	previousThemeMode = document.documentElement.getAttribute("data-theme-mode");
+	previousBodyTheme = document.body.getAttribute("data-theme");
+	previousBodyThemeMode = document.body.getAttribute("data-theme-mode");
+	forceDarkTheme();
+	document.documentElement.setAttribute("data-theme-mode", "dark");
+	document.body.setAttribute("data-theme-mode", "dark");
+
+	themeObserver = new MutationObserver(forceDarkTheme);
+	themeObserver.observe(document.documentElement, {
+		attributes: true,
+		attributeFilter: ["data-theme"],
+	});
+	themeObserver.observe(document.body, {
+		attributes: true,
+		attributeFilter: ["data-theme"],
+	});
+
+	const modeObserver = new MutationObserver(() => {
+		userChangedTheme = true;
+	});
+	modeObserver.observe(document.documentElement, {
+		attributes: true,
+		attributeFilter: ["data-theme-mode"],
+	});
+});
+
+onUnmounted(() => {
+	themeObserver?.disconnect();
+	themeObserver = null;
+
+	if (userChangedTheme) {
+		const mode = document.documentElement.getAttribute("data-theme-mode") || "light";
+		const resolved =
+			mode === "automatic"
+				? window.matchMedia("(prefers-color-scheme: dark)").matches
+					? "dark"
+					: "light"
+				: mode;
+		document.documentElement.setAttribute("data-theme", resolved);
+		document.documentElement.setAttribute("data-theme-mode", mode);
+		document.body.setAttribute("data-theme", resolved);
+		document.body.setAttribute("data-theme-mode", mode);
+	} else {
+		if (previousTheme) {
+			document.documentElement.setAttribute("data-theme", previousTheme);
+		} else {
+			document.documentElement.removeAttribute("data-theme");
+		}
+
+		if (previousThemeMode) {
+			document.documentElement.setAttribute("data-theme-mode", previousThemeMode);
+		} else {
+			document.documentElement.removeAttribute("data-theme-mode");
+		}
+
+		if (previousBodyTheme) {
+			document.body.setAttribute("data-theme", previousBodyTheme);
+		} else {
+			document.body.removeAttribute("data-theme");
+		}
+
+		if (previousBodyThemeMode) {
+			document.body.setAttribute("data-theme-mode", previousBodyThemeMode);
+		} else {
+			document.body.removeAttribute("data-theme-mode");
+		}
+	}
+});
 </script>
