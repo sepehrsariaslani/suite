@@ -178,6 +178,49 @@ class ContactCardService(ContactsService):
 
 		return {}
 
+	def parse(self, blob_ids: list[str]) -> dict:
+		"""Public method to parse vCard blobs into JSContact Cards via the JMAP 'ContactCard/parse' method, handling batching if the number of blob ids exceeds the server's maximum allowed in a single call."""
+
+		result = {"parsed": {}, "notFound": {}, "notParsable": {}}
+		for batch in self.create_batches(blob_ids, self.max_objects_in_get):
+			response = self._call(
+				self.capabilities,
+				[
+					[
+						f"{self.type}/parse",
+						{
+							"accountId": self.account,
+							"blobIds": batch,
+						},
+						"0",
+					]
+				],
+			)
+
+			if method_responses := response.get("methodResponses"):
+				result["parsed"].update(method_responses[0][1].get("parsed", {}))
+				if not_found := method_responses[0][1].get("notFound", {}):
+					result["notFound"].update(not_found)
+				if not_parsable := method_responses[0][1].get("notParsable", {}):
+					result["notParsable"].update(not_parsable)
+
+		return result
+
+	def get_master_ids(self, uids: list[str]) -> list[str]:
+		"""Public method to get contact card IDs for a list of UIDs."""
+
+		if not uids:
+			return []
+
+		return self.query(
+			{
+				"operator": "OR",
+				"conditions": [{"uid": uid} for uid in uids],
+			},
+			position=0,
+			limit=len(uids),
+		).get("ids", [])
+
 	def update_address_book_ids(
 		self,
 		ids: list[str],

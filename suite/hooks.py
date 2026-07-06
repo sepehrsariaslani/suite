@@ -133,6 +133,7 @@ permission_query_conditions = {
 	"JMAP Account": "suite.mail.doctype.jmap_account.jmap_account.get_permission_query_condition",
 	"Blocked Email Address": "suite.mail.doctype.blocked_email_address.blocked_email_address.get_permission_query_condition",
 	"Calendar Exchange": "suite.mail.doctype.calendar_exchange.calendar_exchange.get_permission_query_condition",
+	"Contacts Exchange": "suite.mail.doctype.contacts_exchange.contacts_exchange.get_permission_query_condition",
 	"Junk Email Address": "suite.mail.doctype.junk_email_address.junk_email_address.get_permission_query_condition",
 	"Mail Exchange": "suite.mail.doctype.mail_exchange.mail_exchange.get_permission_query_condition",
 	"Mail Queue": "suite.mail.doctype.mail_queue.mail_queue.get_permission_query_condition",
@@ -163,6 +164,7 @@ has_permission = {
 	"Calendar Event": "suite.mail.doctype.calendar_event.calendar_event.has_permission",
 	"Calendar Exchange": "suite.mail.doctype.calendar_exchange.calendar_exchange.has_permission",
 	"Contact Card": "suite.mail.doctype.contact_card.contact_card.has_permission",
+	"Contacts Exchange": "suite.mail.doctype.contacts_exchange.contacts_exchange.has_permission",
 	"Event Notification": "suite.mail.doctype.event_notification.event_notification.has_permission",
 	"Identity": "suite.mail.doctype.identity.identity.has_permission",
 	"Junk Email Address": "suite.mail.doctype.junk_email_address.junk_email_address.has_permission",
@@ -247,11 +249,13 @@ scheduler_events = {
 		"suite.mail.doctype.jmap_account.jmap_account.delete_orphaned_jmap_accounts",
 		"suite.mail.doctype.mail_exchange.mail_exchange.clean_import_export_directories",
 		"suite.mail.doctype.calendar_exchange.calendar_exchange.clean_calendar_import_export_directories",
+		"suite.mail.doctype.contacts_exchange.contacts_exchange.clean_contacts_import_export_directories",
 	],
 	"hourly": [
 		# mail
 		"suite.mail.doctype.mail_exchange.mail_exchange.retry_stuck_mail_exchanges",
 		"suite.mail.doctype.calendar_exchange.calendar_exchange.retry_stuck_calendar_exchanges",
+		"suite.mail.doctype.contacts_exchange.contacts_exchange.retry_stuck_contacts_exchanges",
 	],
 	"hourly_long": [
 		# mail
