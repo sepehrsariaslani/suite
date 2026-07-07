@@ -223,6 +223,7 @@ doc_events = {
 		],
 		"on_update": [
 			"suite.mail.events.update_account_password",
+			"suite.mail.events.apply_disabled_account_role",
 		],
 		"on_trash": [
 			"suite.mail.events.delete_account",

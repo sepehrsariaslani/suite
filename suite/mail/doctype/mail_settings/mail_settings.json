@@ -20,6 +20,7 @@
   "defaults_section",
   "default_dns_ttl",
   "default_disk_quota_gb",
+  "disabled_account_role",
   "enable_gravatar",
   "default_gravatar",
   "column_break_cuxv",
@@ -418,6 +419,12 @@
    "reqd": 1
   },
   {
+   "description": "Stalwart role (by description) applied to a user's mail account when the user is disabled. The role must be created manually on Stalwart with the appropriate allowed/disabled permissions. Leave blank to skip applying a role on disable.",
+   "fieldname": "disabled_account_role",
+   "fieldtype": "Data",
+   "label": "Disabled Account Role"
+  },
+  {
    "default": "0",
    "description": "Use Gravatar for default user images. Gravatar is a third-party service; enabling this shares users' email addresses (hashed) with it. When disabled, initials are shown instead.",
    "fieldname": "enable_gravatar",
@@ -701,7 +708,7 @@
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2026-06-23 17:16:11.209239",
+ "modified": "2026-07-07 00:00:00.000000",
  "modified_by": "Administrator",
  "module": "Mail",
  "name": "Mail Settings",
