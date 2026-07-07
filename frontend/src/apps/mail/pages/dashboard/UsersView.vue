@@ -66,6 +66,11 @@
 			<template #actions>
 				<Button
 					variant="ghost"
+					:label="__('Disable')"
+					@click="showDisableMembers = true"
+				/>
+				<Button
+					variant="ghost"
 					theme="red"
 					:label="__('Delete')"
 					@click="showDeleteMembers = true"
@@ -73,6 +78,7 @@
 			</template>
 		</ListSelectBanner>
 	</ListView>
+	<Dialog v-model="showDisableMembers" :options="DISABLE_MEMBERS_OPTIONS" />
 	<Dialog v-model="showDeleteMembers" :options="DELETE_MEMBERS_OPTIONS" />
 </template>
 
@@ -111,6 +117,7 @@ const dayjs = inject<DayjsFn>('$dayjs')
 
 const search = ref('')
 const roleFilter = ref<'all' | 'admin' | 'user'>('all')
+const showDisableMembers = ref(false)
 const showDeleteMembers = ref(false)
 const listView = useTemplateRef<{
 	selections?: Set<string>
@@ -166,6 +173,29 @@ const LIST_OPTIONS = {
 	showTooltip: false,
 	rowHeight: 50,
 	emptyState: { description: __('No members found.') },
+}
+
+const disableMembers = createResource({
+	url: 'suite.mail.api.admin.disable_members',
+	makeParams: () => ({ names: Array.from(listView.value?.selections || []) }),
+	onSuccess: () => {
+		members.reload()
+		showDisableMembers.value = false
+		raiseToast(__('Members disabled.'))
+		listView.value?.toggleAllRows?.()
+	},
+	onError: (error: { messages?: string[] }) => {
+		showDisableMembers.value = false
+		raiseToast(error.messages?.[0] || __('Failed to disable members.'), 'error')
+	},
+})
+
+const DISABLE_MEMBERS_OPTIONS = {
+	title: __('Disable Members'),
+	message: __(
+		'Are you sure you want to disable the selected members? They will no longer be able to log in.',
+	),
+	actions: [{ label: __('Confirm'), variant: 'solid', onClick: disableMembers.submit }],
 }
 
 const deleteMembers = createResource({
