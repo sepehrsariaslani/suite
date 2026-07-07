@@ -78,7 +78,6 @@ class ContactsExchange(Document):
 		export_filter: DF.JSON | None
 		export_format: DF.Literal["jmap", "vcf"]
 		export_limit: DF.Int
-		export_sort: DF.Literal["", "Name (ASC)", "Name (DESC)"]
 		import_file: DF.Attach | None
 		import_format: DF.Literal["vcf", "jmap"]
 		import_metadata: DF.JSON | None
@@ -111,16 +110,6 @@ class ContactsExchange(Document):
 		if self.operation == "Export" and self.export_filter:
 			return json.loads(self.export_filter)
 		return {}
-
-	@property
-	def export_sort_clause(self) -> list[dict]:
-		"""Returns the export sort as a list of dictionaries."""
-
-		if self.operation != "Export":
-			return []
-		if self.export_sort == "Name (DESC)":
-			return [{"property": "name", "isAscending": False}]
-		return [{"property": "name", "isAscending": True}]
 
 	@property
 	def import_metadata_dict(self) -> dict:
@@ -203,9 +192,6 @@ class ContactsExchange(Document):
 
 		if not self.export_archive_type:
 			frappe.throw(_("Archive Type is required."))
-
-		if not self.export_sort:
-			self.export_sort = "Name (ASC)"
 
 		if self.export_limit:
 			export_limit = cint(self.export_limit)
@@ -378,7 +364,7 @@ class ContactsExchange(Document):
 			service = get_contact_card_service(self.user, self.account)
 
 			limit = min(self.max_export, cint(self.export_limit or self.max_export))
-			data = service.query(self.export_filter_dict, limit=limit, sort=self.export_sort_clause)
+			data = service.query(self.export_filter_dict, limit=limit)
 			ids = data.get("ids", [])
 			total = data.get("total")
 			logger.info("export-query-resolved", total=total, fetched=len(ids), max_export=self.max_export)

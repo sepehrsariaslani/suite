@@ -393,7 +393,6 @@ def create_contacts_export(
 	account: str,
 	format: Literal["jmap", "vcf"],
 	archive_type: Literal[".zip", ".tgz", ".tar.gz"],
-	sort: Literal["Name (ASC)", "Name (DESC)"],
 	limit: int | None = None,
 	filter: dict | None = None,
 ) -> None:
@@ -405,7 +404,6 @@ def create_contacts_export(
 	doc.operation = "Export"
 	doc.export_format = format
 	doc.export_archive_type = archive_type
-	doc.export_sort = sort
 	doc.export_limit = limit
 	if filter:
 		filter = {k: v for k, v in filter.items() if v}

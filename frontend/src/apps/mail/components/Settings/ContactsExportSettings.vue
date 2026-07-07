@@ -36,14 +36,6 @@
 			variant="outline"
 			placeholder="1000"
 		/>
-		<FormControl
-			v-if="contactsExport.limit && contactsExport.limit > 0"
-			v-model="contactsExport.sort"
-			:label="__('Sort By')"
-			type="select"
-			variant="outline"
-			:options="sortOptions"
-		/>
 	</template>
 
 	<Button
@@ -80,7 +72,6 @@ const socket = inject('$socket')
 const contactsExport = reactive({
 	format: 'jmap',
 	archive_type: '.zip',
-	sort: 'Name (ASC)',
 	limit: undefined,
 })
 
@@ -106,11 +97,6 @@ const addressBookOptions = computed(() =>
 		})),
 	),
 )
-
-const sortOptions = computed(() => [
-	{ label: __('Name (A–Z)'), value: 'Name (ASC)' },
-	{ label: __('Name (Z–A)'), value: 'Name (DESC)' },
-])
 
 const createContactsExport = createResource({
 	url: 'suite.mail.api.account.create_contacts_export',

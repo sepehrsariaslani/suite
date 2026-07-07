@@ -30,7 +30,6 @@
   "column_break_emiw",
   "export_filter",
   "column_break_xxyr",
-  "export_sort",
   "export_limit",
   "deduplicate_export",
   "section_break_flrw",
@@ -204,13 +203,6 @@
   {
    "fieldname": "column_break_xxyr",
    "fieldtype": "Column Break"
-  },
-  {
-   "depends_on": "eval: doc.operation == \"Export\"",
-   "fieldname": "export_sort",
-   "fieldtype": "Select",
-   "label": "Sort",
-   "options": "\nName (ASC)\nName (DESC)"
   },
   {
    "fieldname": "column_break_emiw",
