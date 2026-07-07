@@ -333,6 +333,7 @@ class ContactsExchange(Document):
 			self._log_output(_("Prepared the source files for import."))
 
 			service = get_contact_card_service(self.user, self.account)
+			self._validate_target_address_books(service)
 
 			if self.import_format == "vcf":
 				cards = self._load_vcf_cards(service, base_dir, logger)
@@ -355,6 +356,12 @@ class ContactsExchange(Document):
 					created, skipped, failed
 				)
 			)
+
+			# The server rejecting every card (e.g. an invalid target address book) is a failure,
+			# not a successful zero-import.
+			if created == 0 and failed > 0:
+				frappe.throw(_("Import failed: the server rejected all {0} contact(s).").format(failed))
+
 			kwargs.update({"status": "Completed"})
 		except Exception:
 			logger.exception("import-failed")
@@ -498,6 +505,23 @@ class ContactsExchange(Document):
 				cards.extend(parse_vcards(_read_text(path)))
 
 		return cards
+
+	def _validate_target_address_books(self, service: ContactCardService) -> None:
+		"""Validates that the client-supplied target address book(s) exist in this account.
+
+		``target_address_book_ids`` comes from the import metadata and is passed straight to
+		``ContactCard/set``. A deleted or foreign book would make the server reject every card, so
+		fail fast with a clear error instead of silently completing with zero imports."""
+
+		target = self.target_address_book_ids
+		if not target:
+			return
+
+		known = {book["id"] for book in service.address_books}
+		if invalid := [book_id for book_id in target if book_id not in known]:
+			frappe.throw(
+				_("Target address book(s) not found in this account: {0}").format(", ".join(invalid))
+			)
 
 	def _load_jmap_cards(self, base_dir: str) -> list[dict]:
 		"""Loads JSContact cards from the cards.json file in the import directory."""
