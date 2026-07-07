@@ -207,19 +207,41 @@ class ContactCardService(ContactsService):
 		return result
 
 	def get_master_ids(self, uids: list[str]) -> list[str]:
-		"""Public method to get contact card IDs for a list of UIDs."""
+		"""Public method to get contact card IDs for a list of UIDs.
+
+		The UIDs are batched into separate OR queries so the filter stays within server limits, and
+		each batch is fully paginated using the reported ``total``. We cannot rely on the generic
+		``query`` helper here: it stops as soon as a page returns fewer IDs than requested, but a
+		server may cap a query page below that, which would silently drop matches after the first
+		page and let a re-run create duplicate cards."""
 
 		if not uids:
 			return []
 
-		return self.query(
-			{
-				"operator": "OR",
-				"conditions": [{"uid": uid} for uid in uids],
-			},
-			position=0,
-			limit=len(uids),
-		).get("ids", [])
+		ids: list[str] = []
+		for batch in self.create_batches(uids, self.max_objects_in_get):
+			filter = {"operator": "OR", "conditions": [{"uid": uid} for uid in batch]}
+			position = 0
+			total = None
+			while True:
+				response = self._query(filter, position, len(batch), calculate_total=total is None)
+
+				method_responses = response.get("methodResponses")
+				if not method_responses:
+					break
+
+				query_response = method_responses[0][1]
+				page = query_response.get("ids", [])
+				ids.extend(page)
+
+				if total is None:
+					total = query_response.get("total")
+
+				position += len(page)
+				if not page or (total is not None and position >= total):
+					break
+
+		return ids
 
 	def update_address_book_ids(
 		self,
