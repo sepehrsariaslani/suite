@@ -7,6 +7,7 @@
   "config_tab",
   "jmap_section",
   "server_url",
+  "verify_ssl",
   "column_break_xvlo",
   "username",
   "password",
@@ -271,6 +272,13 @@
    "label": "Server URL",
    "options": "URL",
    "placeholder": "https://mail.frappemail.com"
+  },
+  {
+   "default": "1",
+   "description": "Verify the server's SSL certificate. Disable only for local development against a server with a self-signed certificate.",
+   "fieldname": "verify_ssl",
+   "fieldtype": "Check",
+   "label": "Verify SSL"
   },
   {
    "fieldname": "config_tab",
