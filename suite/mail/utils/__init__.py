@@ -119,7 +119,7 @@ def reconnect_on_failure(max_retries: int = 3) -> callable:
 
 
 @request_cache
-def get_config(key: str | list[str] | None = None) -> dict[str, Any] | tuple | Any:
+def get_config(key: str | tuple[str, ...] | None = None) -> dict[str, Any] | tuple | Any:
 	"""Fetches configuration values, prioritizing Mail Settings over global config.
 
 	Cached per request: the returned dict is shared, so callers must treat it as read-only.
