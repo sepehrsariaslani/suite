@@ -3,6 +3,7 @@
 
 import base64
 import json
+from datetime import timedelta
 from uuid import uuid7
 
 import frappe
@@ -11,9 +12,12 @@ from frappe.model.document import Document
 from frappe.utils import cint, today
 
 from suite.mail.jmap import get_push_subscription_service
-from suite.mail.utils import generate_uuid_style_hash, parse_filters
-from suite.mail.utils.dt import parse_iso_datetime
+from suite.mail.utils import generate_uuid_style_hash, log_error, parse_filters
+from suite.mail.utils.dt import get_utc_now, parse_iso_datetime
 from suite.mail.utils.user import is_jmap_configured, is_system_manager
+
+# Renew push subscriptions that expire within this many days of the scheduled run.
+RENEW_THRESHOLD_DAYS = 3
 
 
 class PushSubscription(Document):
@@ -222,6 +226,46 @@ def renew_push_subscription(user: str, id: str) -> None:
 			frappe.throw(_(response["description"]), title=title)
 
 
+def renew_expiring_push_subscriptions() -> None:
+	"""Renews soon-to-expire push subscriptions for all JMAP configured users.
+
+	Scheduled to run daily. A subscription is renewed when its expiry is within
+	``RENEW_THRESHOLD_DAYS`` of the run; subscriptions without an expiry or expiring
+	later are left untouched.
+	"""
+
+	if not frappe.utils.get_url().startswith("https://"):
+		return
+
+	cutoff = get_utc_now() + timedelta(days=RENEW_THRESHOLD_DAYS)
+
+	for user in frappe.db.get_all("User Settings", {"enabled": 1, "username": ["!=", ""]}, pluck="user"):
+		try:
+			service = get_push_subscription_service(user, ignore_permissions=True)
+
+			expiring_ids = []
+			for subscription in service.get():
+				expires = subscription.get("expires")
+				if expires and parse_iso_datetime(expires, as_str=False) <= cutoff:
+					expiring_ids.append(subscription["id"])
+
+			if not expiring_ids:
+				continue
+
+			response = service.update([{"id": id} for id in expiring_ids])
+			if not_updated := response.get("notUpdated"):
+				errors = "<br>".join(f"{id}: {error['description']}" for id, error in not_updated.items())
+				log_error(
+					_("Push Subscription Renewal Failed"),
+					_("Failed to renew push subscriptions for user {0}:<br>{1}").format(user, errors),
+				)
+		except Exception as e:
+			log_error(
+				_("Push Subscription Renewal Failed"),
+				_("Failed to renew push subscriptions for user {0}: {1}").format(user, str(e)),
+			)
+
+
 @frappe.whitelist()
 def delete_push_subscriptions(user: str, ids: list[str]) -> None:
 	"""Deletes push subscriptions for the given user and list of subscription IDs."""
@@ -287,8 +331,6 @@ def get_push_subscription_keys() -> dict | None:
 
 	if p256dh and auth:
 		return {"p256dh": p256dh, "auth": auth}
-
-
 
 
 def _decode_encrypted_push_body(raw_body: bytes) -> bytes:
