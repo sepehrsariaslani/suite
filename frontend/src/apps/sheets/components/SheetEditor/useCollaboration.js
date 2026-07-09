@@ -1,5 +1,7 @@
 import { ref, watch, onUnmounted } from 'vue'
 import { call }                        from '../../utils/api.js'
+import { getSessionUser, fullName as sessionFullName, imageURL as sessionImageURL } from '@/boot/session'
+import { userInitials }                from '../../utils/session.js'
 import { createYDoc, hydrateYDoc }     from '../../collab/ydoc.js'
 import { bindCells }                   from '../../collab/cells-binding.js'
 import { createFrappeProvider }        from '../../collab/frappe-provider.js'
@@ -115,7 +117,7 @@ export function useCollaboration({
   currentSheet,
   getSheet,
   repopulateGrid,
-  _self        = window.frappe?.session?.user,
+  _self        = getSessionUser(),
   _realtime    = window.frappe?.realtime,
   _callFn      = (method, args) => call(method, args),
   _watch       = watch,
@@ -324,21 +326,16 @@ export function useCollaboration({
 
   function _readUserIdentity() {
     const id = _self
-    // Guard against `window` being undefined (tests run in node) — the
-    // composable should still function with just an id.
-    const w = (typeof window !== 'undefined') ? window : undefined
-    const fullName = w?.frappe?.session?.user_fullname
-      || w?.frappe?.boot?.user_info?.[id]?.fullname
-      || id
-      || 'Anonymous'
-    const parts = String(fullName).split(' ').filter(Boolean)
-    const initials = ((parts[0]?.[0] || '?')
-      + (parts.length > 1 ? parts[parts.length - 1][0] : '')).toUpperCase()
+    // Resolve the local user's name/image from the shared suite session store
+    // (cookie-backed, refreshed by userResource) so presence shows a real name
+    // instead of the raw email. Only trust it when it's actually this user.
+    const mine = id && id === getSessionUser()
+    const fullName = (mine && sessionFullName.value) || id || 'Anonymous'
     return {
       id,
       fullName: String(fullName),
-      initials,
-      image: w?.frappe?.boot?.user_info?.[id]?.image || '',
+      initials: userInitials(mine ? sessionFullName.value : '', id),
+      image: (mine && sessionImageURL.value) || '',
     }
   }
 

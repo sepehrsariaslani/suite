@@ -160,6 +160,8 @@
 import { ref, computed, watch } from 'vue'
 import { Badge, Button, Dialog, Spinner, Dropdown, Avatar } from 'frappe-ui'
 import { call } from '../../utils/api.js'
+import { useCurrentUser } from '@/boot/session'
+import { userInitials } from '../../utils/session.js'
 
 const props = defineProps({
   modelValue:  { type: Boolean, default: false },
@@ -205,15 +207,15 @@ function _flashError(err) {
 
 // ── owner ──────────────────────────────────────────────────────────────────
 
-const ownerFullName = computed(() =>
-  window.frappe?.session?.user_fullname
-  || window.frappe?.boot?.user_info?.[props.ownerId]?.fullname
-  || props.ownerId
-  || 'You'
-)
-const ownerInitials = computed(() =>
-  ownerFullName.value.split(' ').map(p => p[0]).join('').slice(0, 2).toUpperCase()
-)
+const currentUser = useCurrentUser()
+const ownerFullName = computed(() => {
+  // Show the resolved session name when the current user *is* the owner
+  // (from the shared suite session store); otherwise fall back to the id.
+  if (props.ownerId && props.ownerId === currentUser.user.value && currentUser.fullName.value)
+    return currentUser.fullName.value
+  return props.ownerId || 'You'
+})
+const ownerInitials = computed(() => userInitials(ownerFullName.value, props.ownerId))
 
 // ── general access ─────────────────────────────────────────────────────────
 
