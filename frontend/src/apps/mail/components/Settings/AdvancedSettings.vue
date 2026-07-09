@@ -20,59 +20,57 @@
 		</template>
 	</Dialog>
 
-	<template v-if="configRows.length">
-		<h1>{{ __('Mail Client Configuration') }}</h1>
-		<p class="text-ink-gray-6 text-base">
-			{{
-				__(
-					'Use these details to connect a third-party mail client such as Thunderbird or the Gmail app.',
-				)
-			}}
-		</p>
-		<ListView
-			class="max-w-full flex-1"
-			:columns="CONFIG_COLUMNS"
-			:rows="configRows"
-			:options="{ selectable: false }"
-			row-key="key"
-		>
-			<ListHeader />
-			<ListRows>
-				<ListRow v-for="row in configRows" :key="row.key" :row="row">
-					<template #default="{ item }">
-						<ListRowItem>
-							<Tooltip :text="__('Click to copy')">
-								<div
-									class="cursor-copy truncate"
-									@click="copyToClipBoard(String(item))"
-								>
-									{{ item }}
-								</div>
-							</Tooltip>
-						</ListRowItem>
-					</template>
-				</ListRow>
-			</ListRows>
-		</ListView>
+	<div v-if="configRows.length" class="space-y-4 border-t pt-5">
+		<div class="space-y-1">
+			<h1>{{ __('Mail Client Configuration') }}</h1>
+			<p class="text-ink-gray-6 text-base">
+				{{
+					__(
+						'Use these details to connect a third-party mail client such as Thunderbird or the Gmail app.',
+					)
+				}}
+			</p>
+		</div>
+
+		<div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+			<div
+				v-for="row in configRows"
+				:key="row.key"
+				class="space-y-3 rounded-lg border p-4"
+			>
+				<div class="flex items-center justify-between gap-2">
+					<span class="text-ink-gray-8 font-medium">{{ row.protocol }}</span>
+					<Badge :label="row.connection_security" theme="gray" variant="subtle" />
+				</div>
+				<div class="space-y-2 text-base">
+					<div
+						v-for="field in row.fields"
+						:key="field.label"
+						class="flex items-center justify-between gap-3"
+					>
+						<span class="text-ink-gray-5">{{ field.label }}</span>
+						<Tooltip :text="__('Click to copy')">
+							<span
+								class="text-ink-gray-8 cursor-copy truncate"
+								@click="copyToClipBoard(field.value)"
+							>
+								{{ field.value }}
+							</span>
+						</Tooltip>
+					</div>
+				</div>
+			</div>
+		</div>
+
 		<CopyControl :label="__('Username')" :value="user.data?.email" />
 		<p class="text-ink-gray-5 text-sm">
 			{{ __('Sign in using your existing mail account password.') }}
 		</p>
-	</template>
+	</div>
 </template>
 <script setup lang="ts">
 import { computed, inject, ref } from 'vue'
-import {
-	Button,
-	Dialog,
-	ListHeader,
-	ListRow,
-	ListRowItem,
-	ListRows,
-	ListView,
-	Tooltip,
-	createResource,
-} from 'frappe-ui'
+import { Badge, Button, Dialog, Tooltip, createResource } from 'frappe-ui'
 
 import CopyControl from '@/apps/mail/components/Controls/CopyControl.vue'
 import { copyToClipBoard } from '@/apps/mail/utils'
@@ -92,13 +90,6 @@ const generateKeys = createResource({
 	},
 })
 
-const CONFIG_COLUMNS = [
-	{ label: __('Protocol'), key: 'protocol', width: '20%' },
-	{ label: __('Hostname'), key: 'hostname', width: '40%' },
-	{ label: __('Port'), key: 'port', width: '15%' },
-	{ label: __('Security'), key: 'connection_security', width: '25%' },
-]
-
 const clientConfig = createResource({
 	url: 'suite.mail.api.account.get_mail_client_config',
 	auto: true,
@@ -107,8 +98,13 @@ const clientConfig = createResource({
 const configRows = computed(() =>
 	(clientConfig.data ?? []).map(
 		(row: Record<string, string | number>, index: number) => ({
-			...row,
 			key: `${row.protocol}-${row.port}-${index}`,
+			protocol: row.protocol,
+			connection_security: row.connection_security,
+			fields: [
+				{ label: __('Hostname'), value: String(row.hostname) },
+				{ label: __('Port'), value: String(row.port) },
+			],
 		}),
 	),
 )
