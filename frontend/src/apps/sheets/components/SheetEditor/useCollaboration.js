@@ -325,17 +325,18 @@ export function useCollaboration({
   }
 
   function _readUserIdentity() {
+    // This only ever describes THIS client's own presence (id === _self, the
+    // local user), so the name/image come straight from the shared suite
+    // session profile — no need to re-derive "is this me", which meant a
+    // second getSessionUser() read that could drift from the _self captured
+    // at init (e.g. after a re-login).
     const id = _self
-    // Resolve the local user's name/image from the shared suite session store
-    // (cookie-backed, refreshed by userResource) so presence shows a real name
-    // instead of the raw email. Only trust it when it's actually this user.
-    const mine = id && id === getSessionUser()
-    const fullName = (mine && sessionFullName.value) || id || 'Anonymous'
+    const fullName = sessionFullName.value || id || 'Anonymous'
     return {
       id,
       fullName: String(fullName),
-      initials: userInitials(mine ? sessionFullName.value : '', id),
-      image: (mine && sessionImageURL.value) || '',
+      initials: userInitials(sessionFullName.value, id),
+      image: sessionImageURL.value || '',
     }
   }
 
