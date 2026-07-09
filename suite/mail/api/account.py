@@ -1,4 +1,5 @@
 import json
+from contextlib import suppress
 from typing import Literal
 
 import frappe
@@ -11,7 +12,9 @@ from suite.mail.api.mail import normalize_filter
 from suite.mail.api.utils import get_avatar_url
 from suite.mail.doctype.identity.identity import fetch_identities
 from suite.mail.doctype.mail_settings.mail_settings import get_signup_domains
-from suite.mail.utils import convert_html_to_text, user_context
+from suite.mail.stalwart import get_domains
+from suite.mail.utils import convert_html_to_text, is_stalwart_configured, user_context
+from suite.mail.utils.dns import parse_dns_zone_file
 from suite.mail.utils.rate_limiter import dynamic_rate_limit
 from suite.mail.utils.user import (
 	has_user_settings,
@@ -19,6 +22,16 @@ from suite.mail.utils.user import (
 	is_mail_admin,
 	is_system_manager,
 )
+
+# SRV service label -> (protocol, connection security). See RFC 6186.
+_SRV_SERVICE_MAP = {
+	"_submissions": ("SMTP", "SSL/TLS"),
+	"_submission": ("SMTP", "STARTTLS"),
+	"_imaps": ("IMAP", "SSL/TLS"),
+	"_imap": ("IMAP", "STARTTLS"),
+	"_pop3s": ("POP3", "SSL/TLS"),
+	"_pop3": ("POP3", "STARTTLS"),
+}
 
 
 @frappe.whitelist(allow_guest=True)
@@ -188,6 +201,75 @@ def get_user_info() -> dict | None:
 	data.user_image = data.user_image or get_avatar_url(user)
 
 	return data
+
+
+@frappe.whitelist()
+def get_mail_client_config() -> list[dict]:
+	"""Returns the SMTP/IMAP/POP endpoints for connecting third-party mail clients.
+
+	Resolution order:
+	1. Master switch off -> nothing.
+	2. Endpoints entered by the admin in Mail Settings.
+	3. Fallback: parse the user's domain DNS SRV records (if Stalwart is configured).
+	"""
+
+	settings = frappe.get_cached_doc("Mail Settings")
+	if not settings.show_mail_client_config:
+		return []
+
+	if settings.mail_client_configurations:
+		return [
+			{
+				"protocol": row.protocol,
+				"hostname": row.hostname,
+				"port": row.port,
+				"connection_security": row.connection_security,
+			}
+			for row in settings.mail_client_configurations
+		]
+
+	if is_stalwart_configured():
+		return _get_client_config_from_dns()
+
+	return []
+
+
+def _get_client_config_from_dns() -> list[dict]:
+	"""Derives mail-client endpoints from the domain DNS SRV records."""
+
+	with suppress(Exception):
+		domains = get_domains()
+		if not domains:
+			return []
+
+		config = []
+		domain = domains[0]
+		for record in parse_dns_zone_file(domain["dnsZoneFile"]):
+			if record["type"] != "SRV":
+				continue
+
+			mapping = _SRV_SERVICE_MAP.get(record["name"].split(".")[0])
+			if not mapping:
+				continue
+
+			# SRV rdata: <priority> <weight> <port> <target>. "." target means not offered.
+			parts = record["value"].split()
+			if len(parts) < 4 or parts[3] == ".":
+				continue
+
+			protocol, connection_security = mapping
+			config.append(
+				{
+					"protocol": protocol,
+					"hostname": parts[3].rstrip("."),
+					"port": cint(parts[2]),
+					"connection_security": connection_security,
+				}
+			)
+
+		return config
+
+	return []
 
 
 def get_backup_email(user: str) -> str:

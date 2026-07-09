@@ -19,12 +19,63 @@
 			<CopyControl :label="__('API Secret')" :value="apiSecret" />
 		</template>
 	</Dialog>
+
+	<template v-if="configRows.length">
+		<h1>{{ __('Mail Client Configuration') }}</h1>
+		<p class="text-ink-gray-6 text-base">
+			{{
+				__(
+					'Use these details to connect a third-party mail client such as Thunderbird or the Gmail app.',
+				)
+			}}
+		</p>
+		<ListView
+			class="max-w-full flex-1"
+			:columns="CONFIG_COLUMNS"
+			:rows="configRows"
+			:options="{ selectable: false }"
+			row-key="key"
+		>
+			<ListHeader />
+			<ListRows>
+				<ListRow v-for="row in configRows" :key="row.key" :row="row">
+					<template #default="{ item }">
+						<ListRowItem>
+							<Tooltip :text="__('Click to copy')">
+								<div
+									class="cursor-copy truncate"
+									@click="copyToClipBoard(String(item))"
+								>
+									{{ item }}
+								</div>
+							</Tooltip>
+						</ListRowItem>
+					</template>
+				</ListRow>
+			</ListRows>
+		</ListView>
+		<CopyControl :label="__('Username')" :value="user.data?.email" />
+		<p class="text-ink-gray-5 text-sm">
+			{{ __('Sign in using your existing mail account password.') }}
+		</p>
+	</template>
 </template>
 <script setup lang="ts">
-import { inject, ref } from 'vue'
-import { Button, Dialog, createResource } from 'frappe-ui'
+import { computed, inject, ref } from 'vue'
+import {
+	Button,
+	Dialog,
+	ListHeader,
+	ListRow,
+	ListRowItem,
+	ListRows,
+	ListView,
+	Tooltip,
+	createResource,
+} from 'frappe-ui'
 
 import CopyControl from '@/apps/mail/components/Controls/CopyControl.vue'
+import { copyToClipBoard } from '@/apps/mail/utils'
 
 const user = inject('$user')
 
@@ -40,4 +91,25 @@ const generateKeys = createResource({
 		showSecret.value = true
 	},
 })
+
+const CONFIG_COLUMNS = [
+	{ label: __('Protocol'), key: 'protocol', width: '20%' },
+	{ label: __('Hostname'), key: 'hostname', width: '40%' },
+	{ label: __('Port'), key: 'port', width: '15%' },
+	{ label: __('Security'), key: 'connection_security', width: '25%' },
+]
+
+const clientConfig = createResource({
+	url: 'suite.mail.api.account.get_mail_client_config',
+	auto: true,
+})
+
+const configRows = computed(() =>
+	(clientConfig.data ?? []).map(
+		(row: Record<string, string | number>, index: number) => ({
+			...row,
+			key: `${row.protocol}-${row.port}-${index}`,
+		}),
+	),
+)
 </script>
