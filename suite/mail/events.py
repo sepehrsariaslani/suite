@@ -105,6 +105,7 @@ def clear_sessions_on_disable(doc: Document, method: str | None = None) -> None:
 		return
 
 	from frappe.sessions import clear_sessions
+
 	from suite.mail.jmap import get_jmap_session_manager
 
 	clear_sessions(user=doc.name, force=True)
