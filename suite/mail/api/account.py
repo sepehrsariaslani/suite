@@ -1,5 +1,4 @@
 import json
-from contextlib import suppress
 from typing import Literal
 
 import frappe
@@ -13,7 +12,7 @@ from suite.mail.api.utils import get_avatar_url
 from suite.mail.doctype.identity.identity import fetch_identities
 from suite.mail.doctype.mail_settings.mail_settings import get_signup_domains
 from suite.mail.stalwart import get_domains
-from suite.mail.utils import convert_html_to_text, is_stalwart_configured, user_context
+from suite.mail.utils import convert_html_to_text, is_stalwart_configured, log_error, user_context
 from suite.mail.utils.dns import parse_dns_zone_file
 from suite.mail.utils.rate_limiter import dynamic_rate_limit
 from suite.mail.utils.user import (
@@ -235,9 +234,13 @@ def get_mail_client_config() -> list[dict]:
 
 
 def _get_client_config_from_dns() -> list[dict]:
-	"""Derives mail-client endpoints from the domain DNS SRV records."""
+	"""Derives mail-client endpoints from the domain DNS SRV records.
 
-	with suppress(Exception):
+	Best-effort: on any failure (Stalwart unreachable, malformed zone file) the error is
+	logged and an empty list is returned so the Advanced tab degrades gracefully.
+	"""
+
+	try:
 		domains = get_domains()
 		if not domains:
 			return []
@@ -272,8 +275,9 @@ def _get_client_config_from_dns() -> list[dict]:
 			)
 
 		return config
-
-	return []
+	except Exception:
+		log_error(title=_("Failed to derive mail client config from DNS"), message=frappe.get_traceback())
+		return []
 
 
 def get_backup_email(user: str) -> str:
