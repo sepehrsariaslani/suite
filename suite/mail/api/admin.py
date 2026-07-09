@@ -367,9 +367,10 @@ def delete_members(names: list) -> None:
 	if not is_mail_admin(user) and not is_system_manager(user):
 		frappe.throw(_("User {0} does not have permission to delete members.").format(frappe.bold(user)))
 
+	if user in names:
+		frappe.throw(_("You cannot delete your own account."))
+
 	for name in names:
-		if name == user:
-			frappe.throw(_("You cannot delete your own account."))
 		frappe.delete_doc("User", name)
 
 
@@ -381,10 +382,10 @@ def disable_members(names: list) -> None:
 	if not is_mail_admin(user) and not is_system_manager(user):
 		frappe.throw(_("User {0} does not have permission to disable members.").format(frappe.bold(user)))
 
-	for name in names:
-		if name == user:
-			frappe.throw(_("You cannot disable your own account."))
+	if user in names:
+		frappe.throw(_("You cannot disable your own account."))
 
+	for name in names:
 		member = frappe.get_doc("User", name)
 		if not member.enabled:
 			continue
