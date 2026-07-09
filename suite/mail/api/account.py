@@ -243,7 +243,11 @@ def _get_client_config_from_dns() -> list[dict]:
 			return []
 
 		config = []
+
+		# Every domain on the cluster points at the same mail server, so their SRV records
+		# resolve to identical client endpoints. Any one domain's zone is enough.
 		domain = domains[0]
+
 		for record in parse_dns_zone_file(domain["dnsZoneFile"]):
 			if record["type"] != "SRV":
 				continue
