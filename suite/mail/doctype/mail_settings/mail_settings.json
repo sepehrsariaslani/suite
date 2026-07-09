@@ -11,6 +11,9 @@
   "column_break_xvlo",
   "username",
   "password",
+  "mail_client_config_section",
+  "show_mail_client_config",
+  "mail_client_configurations",
   "spamassassin_section",
   "spamd_host",
   "spamd_port",
@@ -558,6 +561,28 @@
    "fieldtype": "Int",
    "label": "Process Pending Emails Max Batch Size",
    "reqd": 1
+  },
+  {
+   "collapsible": 1,
+   "collapsible_depends_on": "eval: true",
+   "fieldname": "mail_client_config_section",
+   "fieldtype": "Section Break",
+   "label": "Mail Client Configuration"
+  },
+  {
+   "default": "1",
+   "description": "Show the SMTP/IMAP/POP connection details in the Mail UI so users can set up third-party mail clients. When unchecked, nothing is shown.",
+   "fieldname": "show_mail_client_config",
+   "fieldtype": "Check",
+   "label": "Show Connection Details in Mail UI"
+  },
+  {
+   "depends_on": "eval: doc.show_mail_client_config",
+   "description": "Connection endpoints shown to users. Leave empty to fall back to the domain's DNS records.",
+   "fieldname": "mail_client_configurations",
+   "fieldtype": "Table",
+   "label": "Mail Client Configuration",
+   "options": "Mail Client Configuration"
   },
   {
    "collapsible": 1,
