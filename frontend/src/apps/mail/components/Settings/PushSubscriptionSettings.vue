@@ -134,12 +134,14 @@ const renewSelected = async () => {
 		}
 		raiseToast(__('Selected subscriptions renewed.'))
 		listViewRef.value?.toggleAllRows()
-		pushSubscriptions.reload()
 	} catch (error) {
 		const err = error as { messages?: string[]; message?: string }
 		raiseToast(err.messages?.[0] || err.message || __('Failed to renew.'), 'error')
 	} finally {
+		// Reload after any outcome: a mid-loop failure still leaves earlier subscriptions renewed with
+		// updated expiry, so the table must reflect current server state without a manual refresh.
 		renewing.value = false
+		pushSubscriptions.reload()
 	}
 }
 
