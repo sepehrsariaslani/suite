@@ -249,8 +249,16 @@ def renew_expiring_push_subscriptions() -> None:
 				if expires and parse_iso_datetime(expires, as_str=False) <= cutoff:
 					expiring_ids.append(subscription["id"])
 
-			if expiring_ids:
-				service.update([{"id": id} for id in expiring_ids])
+			if not expiring_ids:
+				continue
+
+			response = service.update([{"id": id} for id in expiring_ids])
+			if not_updated := response.get("notUpdated"):
+				errors = "<br>".join(f"{id}: {error['description']}" for id, error in not_updated.items())
+				log_error(
+					_("Push Subscription Renewal Failed"),
+					_("Failed to renew push subscriptions for user {0}:<br>{1}").format(user, errors),
+				)
 		except Exception as e:
 			log_error(
 				_("Push Subscription Renewal Failed"),
