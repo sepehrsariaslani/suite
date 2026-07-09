@@ -48,6 +48,12 @@
 								:theme="row.is_admin ? 'orange' : 'blue'"
 							/>
 						</template>
+						<template v-else-if="column.key === 'status'">
+							<Badge
+								:label="row.enabled ? __('Enabled') : __('Disabled')"
+								:theme="row.enabled ? 'green' : 'gray'"
+							/>
+						</template>
 						<template v-else-if="column.key === 'last_active'">
 							<span class="text-ink-gray-5 text-sm">
 								{{
@@ -66,6 +72,11 @@
 			<template #actions>
 				<Button
 					variant="ghost"
+					:label="__('Enable')"
+					@click="showEnableMembers = true"
+				/>
+				<Button
+					variant="ghost"
 					:label="__('Disable')"
 					@click="showDisableMembers = true"
 				/>
@@ -78,6 +89,7 @@
 			</template>
 		</ListSelectBanner>
 	</ListView>
+	<Dialog v-model="showEnableMembers" :options="ENABLE_MEMBERS_OPTIONS" />
 	<Dialog v-model="showDisableMembers" :options="DISABLE_MEMBERS_OPTIONS" />
 	<Dialog v-model="showDeleteMembers" :options="DELETE_MEMBERS_OPTIONS" />
 </template>
@@ -111,12 +123,14 @@ type MemberRow = {
 	user_image?: string
 	last_active?: string | null
 	is_admin: boolean
+	enabled: boolean
 }
 
 const dayjs = inject<DayjsFn>('$dayjs')
 
 const search = ref('')
 const roleFilter = ref<'all' | 'admin' | 'user'>('all')
+const showEnableMembers = ref(false)
 const showDisableMembers = ref(false)
 const showDeleteMembers = ref(false)
 const listView = useTemplateRef<{
@@ -160,6 +174,7 @@ defineExpose({ reloadMembers })
 const LIST_COLUMNS = [
 	{ label: __('User'), key: 'user' },
 	{ label: __('Role'), key: 'role' },
+	{ label: __('Status'), key: 'status' },
 	{ label: __('Last Active'), key: 'last_active' },
 ]
 
@@ -173,6 +188,29 @@ const LIST_OPTIONS = {
 	showTooltip: false,
 	rowHeight: 50,
 	emptyState: { description: __('No members found.') },
+}
+
+const enableMembers = createResource({
+	url: 'suite.mail.api.admin.enable_members',
+	makeParams: () => ({ names: Array.from(listView.value?.selections || []) }),
+	onSuccess: () => {
+		members.reload()
+		showEnableMembers.value = false
+		raiseToast(__('Members enabled.'))
+		listView.value?.toggleAllRows?.()
+	},
+	onError: (error: { messages?: string[] }) => {
+		showEnableMembers.value = false
+		raiseToast(error.messages?.[0] || __('Failed to enable members.'), 'error')
+	},
+})
+
+const ENABLE_MEMBERS_OPTIONS = {
+	title: __('Enable Members'),
+	message: __(
+		'Are you sure you want to enable the selected members? They will be able to log in again.',
+	),
+	actions: [{ label: __('Confirm'), variant: 'solid', onClick: enableMembers.submit }],
 }
 
 const disableMembers = createResource({
