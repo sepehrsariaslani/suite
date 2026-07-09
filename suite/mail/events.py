@@ -94,6 +94,23 @@ def update_account_password(doc: Document, method: str | None = None) -> None:
 	)
 
 
+def clear_sessions_on_disable(doc: Document, method: str | None = None) -> None:
+	"""Log the user out everywhere when they are disabled.
+
+	Clears both the user's Frappe sessions and their cached JMAP session so a disabled user
+	loses access immediately instead of continuing on an existing session until it expires.
+	"""
+
+	if doc.flags.in_insert or doc.enabled or not doc.has_value_changed("enabled"):
+		return
+
+	from frappe.sessions import clear_sessions
+	from suite.mail.jmap import get_jmap_session_manager
+
+	clear_sessions(user=doc.name, force=True)
+	get_jmap_session_manager(doc.name).clear_session()
+
+
 def apply_disabled_account_role(doc: Document, method: str | None = None) -> None:
 	"""Apply the configured Stalwart role to the user's mail account when the user is disabled.
 
