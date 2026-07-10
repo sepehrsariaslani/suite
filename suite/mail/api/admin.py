@@ -17,7 +17,22 @@ from suite.mail.stalwart import get_domains as get_stalwart_domains
 from suite.mail.utils import execute_with_logging, get_config
 from suite.mail.utils.dns import parse_dns_zone_file
 from suite.mail.utils.rate_limiter import dynamic_rate_limit
-from suite.mail.utils.user import is_mail_admin, is_system_manager
+from suite.mail.utils.user import is_mail_admin, is_system_manager, is_user_enabled
+
+
+def check_admin_permission(action: str) -> str:
+	"""Ensure the session user is an enabled Mail Admin or System Manager, returning the user.
+
+	The enabled check is defense-in-depth: a disabled admin holding a still-valid session (or an
+	API key) must not be able to perform admin actions, e.g. re-enable their own account via
+	enable_members. Throws a PermissionError otherwise.
+	"""
+
+	user = frappe.session.user
+	if (not is_mail_admin(user) and not is_system_manager(user)) or not is_user_enabled(user):
+		frappe.throw(_("User {0} does not have permission to {1}.").format(frappe.bold(user), action))
+
+	return user
 
 
 def _get_stalwart_domain(domain_id: str) -> dict:
@@ -54,9 +69,7 @@ def add_domain(name: str, description: str | None = None) -> str:
 def get_domains(txt: str | None = None, is_enabled: bool | None = None) -> list[dict]:
 	"""Returns the list of domains configured in Stalwart, with optional filtering by name/description and enabled status"""
 
-	user = frappe.session.user
-	if not is_mail_admin(user) and not is_system_manager(user):
-		frappe.throw(_("User {0} does not have permission to view domains.").format(frappe.bold(user)))
+	check_admin_permission("view domains")
 
 	result = []
 
@@ -166,9 +179,7 @@ def get_domain(domain_id: str) -> dict:
 def delete_domain(domain_id: str) -> None:
 	"""Deletes a domain identified by Stalwart domain ID."""
 
-	user = frappe.session.user
-	if not is_mail_admin(user) and not is_system_manager(user):
-		frappe.throw(_("User {0} does not have permission to delete domains.").format(frappe.bold(user)))
+	check_admin_permission("delete domains")
 
 	execute_with_logging(
 		func=lambda: delete_stalwart_domain(domain_id),
@@ -257,10 +268,7 @@ def add_member(
 def get_members(
 	search: str | None = None, is_admin: bool | None = None, is_enabled: bool | None = None
 ) -> list:
-	user = frappe.session.user
-
-	if not is_mail_admin(user) and not is_system_manager(user):
-		frappe.throw(_("User {0} does not have permission to view members.").format(frappe.bold(user)))
+	check_admin_permission("view members")
 
 	USER = frappe.qb.DocType("User")
 	HAS_ROLE = frappe.qb.DocType("Has Role")
@@ -316,12 +324,7 @@ def get_account_requests(
 ) -> list[dict]:
 	"""Returns the list of account invites"""
 
-	user = frappe.session.user
-
-	if not is_mail_admin(user) and not is_system_manager(user):
-		frappe.throw(
-			_("User {0} does not have permission to view account requests.").format(frappe.bold(user))
-		)
+	check_admin_permission("view account requests")
 
 	ACC_REQ = frappe.qb.DocType("Mail Account Request")
 	query = (
@@ -356,11 +359,7 @@ def get_account_requests(
 def delete_account_requests(names: list) -> None:
 	"""Delete Mail Account Requests"""
 
-	user = frappe.session.user
-	if not is_mail_admin(user) and not is_system_manager(user):
-		frappe.throw(
-			_("User {0} does not have permission to delete account requests.").format(frappe.bold(user))
-		)
+	check_admin_permission("delete account requests")
 
 	for d in names:
 		frappe.delete_doc("Mail Account Request", d)
@@ -370,9 +369,7 @@ def delete_account_requests(names: list) -> None:
 def delete_members(names: list) -> None:
 	"""Delete member users. The User on_trash hooks cascade to their Stalwart account and settings."""
 
-	user = frappe.session.user
-	if not is_mail_admin(user) and not is_system_manager(user):
-		frappe.throw(_("User {0} does not have permission to delete members.").format(frappe.bold(user)))
+	user = check_admin_permission("delete members")
 
 	if user in names:
 		frappe.throw(_("You cannot delete your own account."))
@@ -385,9 +382,7 @@ def delete_members(names: list) -> None:
 def disable_members(names: list) -> None:
 	"""Disable member users. Disabled users can no longer log in and their sessions are cleared."""
 
-	user = frappe.session.user
-	if not is_mail_admin(user) and not is_system_manager(user):
-		frappe.throw(_("User {0} does not have permission to disable members.").format(frappe.bold(user)))
+	user = check_admin_permission("disable members")
 
 	if user in names:
 		frappe.throw(_("You cannot disable your own account."))
@@ -405,9 +400,7 @@ def disable_members(names: list) -> None:
 def enable_members(names: list) -> None:
 	"""Enable member users. The configured disabled account role is removed and the users can log in again."""
 
-	user = frappe.session.user
-	if not is_mail_admin(user) and not is_system_manager(user):
-		frappe.throw(_("User {0} does not have permission to enable members.").format(frappe.bold(user)))
+	check_admin_permission("enable members")
 
 	for name in names:
 		member = frappe.get_doc("User", name)
