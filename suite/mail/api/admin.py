@@ -254,7 +254,9 @@ def add_member(
 
 
 @frappe.whitelist()
-def get_members(search: str | None = None, is_admin: bool | None = None) -> list:
+def get_members(
+	search: str | None = None, is_admin: bool | None = None, is_enabled: bool | None = None
+) -> list:
 	user = frappe.session.user
 
 	if not is_mail_admin(user) and not is_system_manager(user):
@@ -278,11 +280,15 @@ def get_members(search: str | None = None, is_admin: bool | None = None) -> list
 			USER.full_name,
 			USER.user_image,
 			USER.last_active,
+			USER.enabled,
 			is_admin_expr.as_("is_admin"),
 		)
-		.where((USER.enabled == 1) & (USER_SETTINGS.username.isnotnull()))
+		.where(USER_SETTINGS.username.isnotnull())
 		.groupby(USER.name)
 	)
+
+	if is_enabled is not None:
+		query = query.where(USER.enabled == (1 if is_enabled else 0))
 
 	if search:
 		query = query.where(USER.name.like(f"%{search}%") | USER.full_name.like(f"%{search}%"))
@@ -299,6 +305,7 @@ def get_members(search: str | None = None, is_admin: bool | None = None) -> list
 			user["user_image"] = get_avatar_url(user["name"])
 
 		user["is_admin"] = bool(user.get("is_admin"))
+		user["enabled"] = bool(user.get("enabled"))
 
 	return users
 
@@ -367,7 +374,45 @@ def delete_members(names: list) -> None:
 	if not is_mail_admin(user) and not is_system_manager(user):
 		frappe.throw(_("User {0} does not have permission to delete members.").format(frappe.bold(user)))
 
+	if user in names:
+		frappe.throw(_("You cannot delete your own account."))
+
 	for name in names:
-		if name == user:
-			frappe.throw(_("You cannot delete your own account."))
 		frappe.delete_doc("User", name)
+
+
+@frappe.whitelist()
+def disable_members(names: list) -> None:
+	"""Disable member users. Disabled users can no longer log in and their sessions are cleared."""
+
+	user = frappe.session.user
+	if not is_mail_admin(user) and not is_system_manager(user):
+		frappe.throw(_("User {0} does not have permission to disable members.").format(frappe.bold(user)))
+
+	if user in names:
+		frappe.throw(_("You cannot disable your own account."))
+
+	for name in names:
+		member = frappe.get_doc("User", name)
+		if not member.enabled:
+			continue
+
+		member.enabled = 0
+		member.save(ignore_permissions=True)
+
+
+@frappe.whitelist()
+def enable_members(names: list) -> None:
+	"""Enable member users. The configured disabled account role is removed and the users can log in again."""
+
+	user = frappe.session.user
+	if not is_mail_admin(user) and not is_system_manager(user):
+		frappe.throw(_("User {0} does not have permission to enable members.").format(frappe.bold(user)))
+
+	for name in names:
+		member = frappe.get_doc("User", name)
+		if member.enabled:
+			continue
+
+		member.enabled = 1
+		member.save(ignore_permissions=True)
