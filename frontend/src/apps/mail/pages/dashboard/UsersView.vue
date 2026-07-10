@@ -137,7 +137,7 @@ const dayjs = inject<DayjsFn>('$dayjs')
 
 const search = ref('')
 const roleFilter = ref<'all' | 'admin' | 'user'>('all')
-const statusFilter = ref<'all' | 'enabled' | 'disabled'>('enabled')
+const statusFilter = ref<'all' | 'enabled' | 'disabled'>('all')
 const showEnableMembers = ref(false)
 const showDisableMembers = ref(false)
 const showDeleteMembers = ref(false)
