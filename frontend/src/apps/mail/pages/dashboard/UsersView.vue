@@ -12,6 +12,13 @@
 			type="select"
 			:options="ROLE_FILTER_OPTIONS"
 		/>
+		<FormControl
+			v-model="statusFilter"
+			:placeholder="__('Status')"
+			class="w-40"
+			type="select"
+			:options="STATUS_FILTER_OPTIONS"
+		/>
 	</div>
 	<ListView
 		v-if="normalizedMembers"
@@ -130,6 +137,7 @@ const dayjs = inject<DayjsFn>('$dayjs')
 
 const search = ref('')
 const roleFilter = ref<'all' | 'admin' | 'user'>('all')
+const statusFilter = ref<'all' | 'enabled' | 'disabled'>('enabled')
 const showEnableMembers = ref(false)
 const showDisableMembers = ref(false)
 const showDeleteMembers = ref(false)
@@ -141,7 +149,7 @@ const listView = useTemplateRef<{
 const members = createResource({
 	url: 'suite.mail.api.admin.get_members',
 	makeParams: () => {
-		const params: { search: string; is_admin?: boolean } = {
+		const params: { search: string; is_admin?: boolean; is_enabled?: boolean } = {
 			search: search.value,
 		}
 
@@ -149,10 +157,14 @@ const members = createResource({
 			params.is_admin = roleFilter.value === 'admin'
 		}
 
+		if (statusFilter.value !== 'all') {
+			params.is_enabled = statusFilter.value === 'enabled'
+		}
+
 		return params
 	},
 	auto: true,
-	cache: ['mailMembers', search.value, roleFilter.value],
+	cache: ['mailMembers', search.value, roleFilter.value, statusFilter.value],
 })
 
 const normalizedMembers = computed<MemberRow[]>(() => {
@@ -167,6 +179,7 @@ const normalizedMembers = computed<MemberRow[]>(() => {
 
 watchDebounced(() => search.value, members.reload, { debounce: 300 })
 watch(() => roleFilter.value, members.reload)
+watch(() => statusFilter.value, members.reload)
 
 const reloadMembers = () => members.reload()
 defineExpose({ reloadMembers })
@@ -182,6 +195,12 @@ const ROLE_FILTER_OPTIONS = [
 	{ label: __('All'), value: 'all' },
 	{ label: __('Admin'), value: 'admin' },
 	{ label: __('User'), value: 'user' },
+]
+
+const STATUS_FILTER_OPTIONS = [
+	{ label: __('All'), value: 'all' },
+	{ label: __('Enabled'), value: 'enabled' },
+	{ label: __('Disabled'), value: 'disabled' },
 ]
 
 const LIST_OPTIONS = {

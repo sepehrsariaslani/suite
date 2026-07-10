@@ -254,7 +254,9 @@ def add_member(
 
 
 @frappe.whitelist()
-def get_members(search: str | None = None, is_admin: bool | None = None) -> list:
+def get_members(
+	search: str | None = None, is_admin: bool | None = None, is_enabled: bool | None = None
+) -> list:
 	user = frappe.session.user
 
 	if not is_mail_admin(user) and not is_system_manager(user):
@@ -284,6 +286,9 @@ def get_members(search: str | None = None, is_admin: bool | None = None) -> list
 		.where(USER_SETTINGS.username.isnotnull())
 		.groupby(USER.name)
 	)
+
+	if is_enabled is not None:
+		query = query.where(USER.enabled == (1 if is_enabled else 0))
 
 	if search:
 		query = query.where(USER.name.like(f"%{search}%") | USER.full_name.like(f"%{search}%"))
