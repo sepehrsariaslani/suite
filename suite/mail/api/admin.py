@@ -25,7 +25,7 @@ def check_admin_permission(action: str) -> str:
 
 	The enabled check is defense-in-depth: a disabled admin holding a still-valid session (or an
 	API key) must not be able to perform admin actions, e.g. re-enable their own account via
-	enable_members. Throws a PermissionError otherwise.
+	enable_members. Throws frappe.PermissionError otherwise.
 	"""
 
 	user = frappe.session.user
