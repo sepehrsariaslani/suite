@@ -38,7 +38,7 @@
 								class="flex min-w-0 gap-2"
 								:class="item.poll.createdBy === userId ? 'justify-end' : 'justify-start'"
 							>
-								<Avatar
+								<MeetAvatar
 									v-if="item.poll.createdBy !== userId"
 									size="lg"
 									:label="item.poll.createdByName || item.poll.createdBy"
@@ -64,7 +64,7 @@
 							class="flex min-w-0 gap-2"
 							:class="item.group.isOwn ? 'justify-end' : 'justify-start'"
 						>
-							<Avatar
+							<MeetAvatar
 								v-if="!item.group.isOwn"
 								size="lg"
 								:label="item.group.user_name"
@@ -163,7 +163,7 @@
 
 <script setup lang="ts">
 import { Extension } from "@tiptap/core";
-import { Avatar, Button, Dropdown } from "frappe-ui";
+import { Button, Dropdown } from "frappe-ui";
 import { Editor, EditorContent, CommentKit } from "frappe-ui/editor";
 import {
 	computed,
@@ -178,6 +178,7 @@ import { tokenizeChatMessage } from "../utils/chatMessageTokens";
 import { usePollStore } from "../composables/usePollStore";
 import type { PollPayloadFE } from "../types";
 import CreatePollModal from "./CreatePollModal.vue";
+import MeetAvatar from "./MeetAvatar.vue";
 import PollMessageCard from "./PollMessageCard.vue";
 import LucideChartColumn from "~icons/lucide/chart-column";
 
