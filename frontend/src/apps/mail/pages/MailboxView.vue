@@ -1027,7 +1027,7 @@ const resetThreads: (reloadMailboxes?: boolean, mailboxRoles?: MailboxRole[]) =>
 // threads not already loaded (see onResetSuccess), keeping scroll position and the loaded rows. Used by
 // the Refresh button, the periodic poll, and the new-mail socket. Selections are preserved.
 const refreshThreads = (reloadMailboxes = true) => {
-	if (threadsResource.value.loading) return
+	if (threadsResource.value.loading || loadingMore.value) return
 
 	refreshMode.value = true
 	// Bump the epoch so an append still in flight is discarded (appendThreads checks it) instead of
