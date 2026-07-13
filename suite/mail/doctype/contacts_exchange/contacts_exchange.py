@@ -426,7 +426,12 @@ class ContactsExchange(Document):
 					)
 				)
 
-			address_book_map = {b["id"]: b["name"] for b in service.address_books}
+			# Only include address books actually referenced by the exported cards, so a filtered
+			# export doesn't leak the account's other address books into addressbooks.json.
+			referenced_ids = {book_id for card in cards for book_id in (card.get("addressBookIds") or {})}
+			address_book_map = {
+				b["id"]: b["name"] for b in service.address_books if b["id"] in referenced_ids
+			}
 			ContactsExportWriter.write(self.export_format, cards, out_dir, address_book_map)
 			self._log_output(_("Wrote {0} contact(s) to the export directory.").format(len(cards)))
 
