@@ -147,7 +147,7 @@ import {
 	RefreshCw,
 	Star,
 } from 'lucide-vue-next'
-import { Breadcrumbs, Button, Dropdown, createResource, usePageMeta } from 'frappe-ui'
+import { Breadcrumbs, Button, Dropdown, call, createResource, usePageMeta } from 'frappe-ui'
 
 import { getFormattedDate, raisePromiseToast, raiseToast } from '@/apps/mail/utils'
 import { useScreenSize, useSidebar } from '@/apps/mail/utils/composables'
@@ -260,35 +260,59 @@ const removeFromList = (thread: Thread) => {
 	)
 }
 
-const setSeen = createResource({ url: 'suite.mail.api.mail.set_mails_seen' })
-const setFlagged = createResource({ url: 'suite.mail.api.mail.set_flagged' })
-const moveMails = createResource({ url: 'suite.mail.api.mail.move_mails' })
-
+// Each action is a stateless one-shot `call()` rather than a shared createResource: rows act on
+// different accounts/threads and can be fired in rapid succession, so every invocation must be a
+// fully independent request. A shared resource carries a single reactive state slot (and one abort
+// controller); call() has no shared state, so concurrent row actions can never clobber one another.
 const handleSetSeen = (thread: Thread, seen: boolean) => {
 	if (thread.seen === (seen ? 1 : 0)) return
-	thread.seen = seen ? 1 : 0
-	thread.messages?.forEach((m) => (m.seen = seen ? 1 : 0))
-	setSeen.submit({ account: thread.account, ids: messageIds(thread), seen }).then(refreshCounts)
+	const applySeen = (value: 0 | 1) => {
+		thread.seen = value
+		thread.messages?.forEach((m) => (m.seen = value))
+	}
+	applySeen(seen ? 1 : 0)
+	call('suite.mail.api.mail.set_mails_seen', {
+		account: thread.account,
+		ids: messageIds(thread),
+		seen,
+	})
+		.then(refreshCounts)
+		.catch((error) => {
+			applySeen(seen ? 0 : 1) // revert the optimistic update
+			raiseToast(error?.messages?.[0] || error?.message, 'error')
+		})
 }
 
 const handleSetFlagged = (thread: Thread, flagged: boolean) => {
 	thread.flagged = flagged ? 1 : 0
-	setFlagged.submit({ account: thread.account, ids: [thread.id], flagged })
+	call('suite.mail.api.mail.set_flagged', {
+		account: thread.account,
+		ids: [thread.id],
+		flagged,
+	}).catch((error) => {
+		thread.flagged = flagged ? 0 : 1 // revert the optimistic update
+		raiseToast(error?.messages?.[0] || error?.message, 'error')
+	})
 }
+
+// Optimistically drop the row, then move on the server. Reload on both outcomes so a failure restores
+// the true list (the row reappears); rethrow on failure so the toast reports the error, not success.
+const moveThreadOut = (thread: Thread, mailbox: string) =>
+	call('suite.mail.api.mail.move_mails', {
+		account: thread.account,
+		ids: messageIds(thread),
+		mailbox,
+		clear_junk: true,
+	}).then(reload, (error) => {
+		reload()
+		throw error
+	})
 
 const handleArchive = (thread: Thread) => {
 	if (!thread.archive) return raiseToast(__('No Archive folder for this account.'), 'error')
 	removeFromList(thread)
 	raisePromiseToast(
-		() =>
-			moveMails
-				.submit({
-					account: thread.account,
-					ids: messageIds(thread),
-					mailbox: thread.archive,
-					clear_junk: true,
-				})
-				.then(reload),
+		() => moveThreadOut(thread, thread.archive!),
 		__('Archiving...'),
 		__('Thread archived.'),
 	)
@@ -298,15 +322,7 @@ const handleTrash = (thread: Thread) => {
 	if (!thread.trash) return raiseToast(__('No Trash folder for this account.'), 'error')
 	removeFromList(thread)
 	raisePromiseToast(
-		() =>
-			moveMails
-				.submit({
-					account: thread.account,
-					ids: messageIds(thread),
-					mailbox: thread.trash,
-					clear_junk: true,
-				})
-				.then(reload),
+		() => moveThreadOut(thread, thread.trash!),
 		__('Moving to Trash...'),
 		__('Thread moved to Trash.'),
 	)
