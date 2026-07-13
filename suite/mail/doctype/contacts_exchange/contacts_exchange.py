@@ -54,10 +54,12 @@ from suite.mail.utils.user import (
 N_COMPONENT_ORDER = ("surname", "given", "given2", "title", "generation")
 
 # Server-managed / computed properties that must be dropped before re-creating a card,
-# otherwise the JMAP server rejects the "set" call with invalidProperties.
+# otherwise the JMAP server rejects the "set" call with invalidProperties. "vCard" is the raw
+# source echoed back by ContactCard/parse, not a settable Card property.
 SERVER_MANAGED_KEYS = (
 	"id",
 	"blobId",
+	"vCard",
 )
 
 
@@ -458,9 +460,11 @@ class ContactsExchange(Document):
 	def _load_vcf_cards(
 		self, service: ContactCardService, base_dir: str, logger: ExchangeLogger
 	) -> list[dict]:
-		"""Uploads every .vcf file and converts vCard -> JSContact via the JMAP server.
+		"""Splits the uploaded .vcf file(s) into individual vCards and converts them to JSContact.
 
-		Falls back to a local parser for any file the server can't parse, or for the whole set if
+		``ContactCard/parse`` returns a single Card per blob (the first vCard it finds), so a file
+		holding many contacts must be split into one blob per vCard for all of them to be imported.
+		Falls back to a local parser for any vCard the server can't parse, or for the whole set if
 		the server does not implement ``ContactCard/parse``."""
 
 		vcf_files = [
@@ -472,18 +476,27 @@ class ContactsExchange(Document):
 		if not vcf_files:
 			frappe.throw(_("No .vcf files found."))
 
+		vcards: list[str] = []
+		for path in vcf_files:
+			vcards.extend(_split_vcards(_read_text(path)))
+		if not vcards:
+			frappe.throw(_("No vCards found in the uploaded file(s)."))
+		# Reject early, before uploading a blob per vCard, if the file already exceeds the limit.
+		if len(vcards) > self.max_import:
+			frappe.throw(_("Import limit exceeded."))
+
 		cards: list[dict] = []
-
-		blob_to_file: dict[str, str] = {}
 		try:
-			for path in vcf_files:
-				with open(path, "rb") as f:
-					data = f.read()
-				blob_id = service.upload_blob(data, content_type="text/vcard; charset=utf-8").get("blobId")
-				if blob_id:
-					blob_to_file[blob_id] = path
+			# One blob per vCard so the server parses (and returns) every contact, not just the first.
+			uploads = service.upload_blobs_concurrently(
+				[(vcard.encode("utf-8"), "text/vcard; charset=utf-8") for vcard in vcards]
+			)
+			blob_to_vcard: dict[str, str] = {}
+			for vcard, upload in zip(vcards, uploads, strict=False):
+				if blob_id := (upload or {}).get("blobId"):
+					blob_to_vcard[blob_id] = vcard
 
-			response = service.parse(list(blob_to_file.keys()))
+			response = service.parse(list(blob_to_vcard.keys()))
 
 			for value in (response.get("parsed") or {}).values():
 				if isinstance(value, list):
@@ -496,18 +509,18 @@ class ContactsExchange(Document):
 				(response.get("notFound") or {}).keys()
 			)
 			for blob_id in unparsed:
-				if path := blob_to_file.get(blob_id):
-					cards.extend(parse_vcards(_read_text(path)))
+				if vcard := blob_to_vcard.get(blob_id):
+					cards.extend(parse_vcards(vcard))
 			if unparsed:
 				logger.warning("import-vcf-not-parsable", count=len(unparsed))
-				self._log_output(_("{0} file(s) were parsed locally as a fallback.").format(len(unparsed)))
+				self._log_output(_("{0} vCard(s) were parsed locally as a fallback.").format(len(unparsed)))
 		except Exception:
-			# The JMAP server does not support ContactCard/parse; parse every file locally instead.
+			# The JMAP server does not support ContactCard/parse; parse every vCard locally instead.
 			logger.warning("import-vcf-parse-unsupported")
-			self._log_output(_("Server-side parsing is unavailable; parsing files locally."))
+			self._log_output(_("Server-side parsing is unavailable; parsing vCards locally."))
 			cards = []
-			for path in vcf_files:
-				cards.extend(parse_vcards(_read_text(path)))
+			for vcard in vcards:
+				cards.extend(parse_vcards(vcard))
 
 		return cards
 
@@ -1027,6 +1040,31 @@ def _split_escaped(value: str, sep: str) -> list[str]:
 		i += 1
 	parts.append("".join(current))
 	return parts
+
+
+def _split_vcards(text: str) -> list[str]:
+	"""Splits a vCard document into its individual ``BEGIN:VCARD``…``END:VCARD`` blocks.
+
+	Line folding within each card is preserved so the blocks can be re-uploaded verbatim."""
+
+	blocks: list[str] = []
+	current: list[str] = []
+	in_card = False
+	for line in text.replace("\r\n", "\n").replace("\r", "\n").split("\n"):
+		marker = line.strip().upper()
+		if marker == "BEGIN:VCARD":
+			in_card = True
+			current = [line]
+		elif marker == "END:VCARD":
+			if in_card:
+				current.append(line)
+				blocks.append("\r\n".join(current))
+			in_card = False
+			current = []
+		elif in_card:
+			current.append(line)
+
+	return blocks
 
 
 def parse_vcards(text: str) -> list[dict]:

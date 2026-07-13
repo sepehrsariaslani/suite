@@ -179,10 +179,20 @@ class ContactCardService(ContactsService):
 		return {}
 
 	def parse(self, blob_ids: list[str]) -> dict:
-		"""Public method to parse vCard blobs into JSContact Cards via the JMAP 'ContactCard/parse' method, handling batching if the number of blob ids exceeds the server's maximum allowed in a single call."""
+		"""Public method to parse vCard blobs into JSContact Cards via the JMAP 'ContactCard/parse' method.
+
+		The number of blob ids allowed per 'ContactCard/parse' call is capped well below
+		'maxObjectsInGet' and is not advertised in the session capabilities, so we start from the
+		general object limit and halve the batch whenever the server responds with 'requestTooLarge',
+		reusing the largest size that succeeds for the remaining blobs. Any other error is raised so
+		the caller can fall back to local parsing."""
 
 		result = {"parsed": {}, "notFound": {}, "notParsable": {}}
-		for batch in self.create_batches(blob_ids, self.max_objects_in_get):
+
+		remaining = list(blob_ids)
+		batch_size = min(len(remaining), self.max_objects_in_get) or 1
+		while remaining:
+			batch = remaining[:batch_size]
 			response = self._call(
 				self.capabilities,
 				[
@@ -197,12 +207,24 @@ class ContactCardService(ContactsService):
 				],
 			)
 
-			if method_responses := response.get("methodResponses"):
-				result["parsed"].update(method_responses[0][1].get("parsed", {}))
-				if not_found := method_responses[0][1].get("notFound", {}):
-					result["notFound"].update(not_found)
-				if not_parsable := method_responses[0][1].get("notParsable", {}):
-					result["notParsable"].update(not_parsable)
+			method_responses = response.get("methodResponses")
+			if not method_responses:
+				break
+
+			name, body = method_responses[0][0], method_responses[0][1]
+			if name == "error":
+				if body.get("type") == "requestTooLarge" and batch_size > 1:
+					batch_size = max(1, batch_size // 2)
+					continue
+				raise RuntimeError(f"ContactCard/parse failed: {body}")
+
+			result["parsed"].update(body.get("parsed", {}))
+			if not_found := body.get("notFound", {}):
+				result["notFound"].update(not_found)
+			if not_parsable := body.get("notParsable", {}):
+				result["notParsable"].update(not_parsable)
+
+			remaining = remaining[batch_size:]
 
 		return result
 
