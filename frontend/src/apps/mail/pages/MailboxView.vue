@@ -855,9 +855,9 @@ const onResetSuccess = () => {
 		refreshMode.value = false
 		// A reset (mailbox switch, filter, undo) raced in and bumped the epoch — drop this stale merge.
 		if (refreshEpoch !== epoch.value) return
-		const window = threadsResource.value.data ?? []
+		const freshWindow = threadsResource.value.data ?? []
 		const existing = new Set(refreshSnapshot.map((t) => t.thread_id))
-		const fresh = window.filter((t: Thread) => !existing.has(t.thread_id))
+		const fresh = freshWindow.filter((t: Thread) => !existing.has(t.thread_id))
 		threadsResource.value.data = [...fresh, ...refreshSnapshot]
 		// Keep the reader where they were: shift scroll by the height the prepended rows added. If they
 		// were already at the top, leave them there so the new mail is visible.
