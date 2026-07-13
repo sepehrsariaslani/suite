@@ -13,9 +13,9 @@
             <template #default="{ editor }">
               <EditorBubbleMenu :editor :items="bubbleMenuButtons" :options="bubbleMenuOpts" />
               <EditorTableMenu :editor />
-              <EditorDropZone :editor :disabled="!editable">
+              <EditorDropZone :editor :disabled="!editable" class="grow flex flex-col">
                 <EditorContent :editor
-                  class="md:mx-auto bg-surface-base overflow-x-auto pt-10 pb-24 px-5 prose prose-sm prose-v3 prose-table:table-fixed prose-td:p-2 prose-th:p-2 prose-td:border prose-th:border prose-td:relative prose-th:relative prose-th:bg-surface-gray-2"
+                  class="grow md:mx-auto bg-surface-base overflow-x-auto pt-10 pb-24 px-5 prose prose-sm prose-v3 prose-table:table-fixed prose-td:p-2 prose-th:p-2 prose-td:border prose-th:border prose-td:relative prose-th:relative prose-th:bg-surface-gray-2"
                   :class="[
                     settings?.wide
                       ? 'md:min-w-[100ch] md:max-w-[100ch]'
