@@ -1030,6 +1030,11 @@ const refreshThreads = (reloadMailboxes = true) => {
 	if (threadsResource.value.loading) return
 
 	refreshMode.value = true
+	// Bump the epoch so an append still in flight is discarded (appendThreads checks it) instead of
+	// landing after the merge and clobbering it — the merge rebuilds from the snapshot taken just below,
+	// which wouldn't include that append. A new append can't start mid-refresh (loadMore bails while the
+	// resource is loading), so this fully closes the refresh/append race.
+	epoch.value++
 	refreshEpoch = epoch.value
 	refreshSnapshot = [...(threadsResource.value.data ?? [])]
 	refreshAnchor = {
