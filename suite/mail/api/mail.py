@@ -61,6 +61,12 @@ from suite.mail.utils.validation import normalize_screened_value, validate_scree
 AVATAR_CACHE_TTL = 60 * 60 * 24
 SCREENING_FETCH_LIMIT = 500
 
+# All Inboxes bounds. limit/start are user-supplied, and per_account_limit (= start + limit) is fetched
+# from *every* account and merged in memory, so both are clamped. MAX_FETCH caps the deepest reachable
+# position (page length ~25 → ~20 pages), which is far beyond any real unified-inbox scroll.
+ALL_INBOX_MAX_LIMIT = 100
+ALL_INBOX_MAX_FETCH = 500
+
 
 @frappe.whitelist()
 def get_mailboxes(account: str) -> list[dict]:
@@ -276,7 +282,13 @@ def get_all_inbox_threads(limit: int, start: int = 0, filter_by: str | None = No
 	if not accounts:
 		return []
 
+	# Clamp user input before it fans out across accounts: limit to a sane page size, and start so the
+	# per-account fetch (start + limit) can never exceed ALL_INBOX_MAX_FETCH — bounding both the JMAP
+	# fetch per account and the in-memory merge, regardless of what the client sends.
+	limit = min(max(cint(limit), 1), ALL_INBOX_MAX_LIMIT)
+	start = min(max(cint(start), 0), ALL_INBOX_MAX_FETCH - limit)
 	per_account_limit = start + limit
+
 	merged: list[dict] = []
 	for account in accounts:
 		account_id = account["name"]
