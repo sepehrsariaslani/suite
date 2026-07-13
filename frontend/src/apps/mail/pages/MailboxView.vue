@@ -810,8 +810,10 @@ let loadEpoch = 0 // epoch captured when the current append was triggered
 // scroll — set while such a reload is in flight so its onSuccess prepends instead of replacing.
 const refreshMode = ref(false)
 let refreshEpoch = 0 // epoch captured when the refresh was triggered (dropped if a reset intervenes)
-let refreshSnapshot: Thread[] = [] // the loaded list at refresh time, merged with the fresh window
-let refreshAnchor = { top: 0, height: 0 } // scroll position to re-anchor after prepending
+// The loaded list to merge the fresh window into. Captured at *response* time (in the resource
+// transform), not refresh-start, so it reflects any optimistic removals/undo-inserts that happened
+// while the refresh was in flight — otherwise a thread archived mid-refresh would reappear.
+let refreshSnapshot: Thread[] = []
 // Current mailbox's record (carries total_threads/unread_threads); used by the periodic poll to
 // detect count changes and by the tab title's unread badge.
 const mailboxObj = computed(() => mailboxes.data?.find((m) => m.id === mailbox))
@@ -855,6 +857,11 @@ const onResetSuccess = () => {
 		refreshMode.value = false
 		// A reset (mailbox switch, filter, undo) raced in and bumped the epoch — drop this stale merge.
 		if (refreshEpoch !== epoch.value) return
+		// Anchor to the current scroll before merging. The window replaced `data` a beat ago but the DOM
+		// hasn't re-rendered yet, so these still reflect the loaded list the reader is looking at.
+		const el = mailListRef.value
+		const prevTop = el?.scrollTop ?? 0
+		const prevHeight = el?.scrollHeight ?? 0
 		const freshWindow = threadsResource.value.data ?? []
 		const existing = new Set(refreshSnapshot.map((t) => t.thread_id))
 		const fresh = freshWindow.filter((t: Thread) => !existing.has(t.thread_id))
@@ -862,9 +869,7 @@ const onResetSuccess = () => {
 		// Keep the reader where they were: shift scroll by the height the prepended rows added. If they
 		// were already at the top, leave them there so the new mail is visible.
 		nextTick(() => {
-			const el = mailListRef.value
-			if (el && refreshAnchor.top > 0)
-				el.scrollTop = refreshAnchor.top + (el.scrollHeight - refreshAnchor.height)
+			if (el && prevTop > 0) el.scrollTop = prevTop + (el.scrollHeight - prevHeight)
 		})
 		return
 	}
@@ -882,6 +887,7 @@ const searchResults = createResource({
 		start: 0,
 	}),
 	transform: (data: [Thread[], number]) => {
+		if (refreshMode.value) refreshSnapshot = threadsResource.value.data ?? []
 		hasMore.value = data[0].length > PAGE_LENGTH
 		return data[0].slice(0, PAGE_LENGTH)
 	},
@@ -917,6 +923,9 @@ const threads = createResource({
 		filter_by: filter.value,
 	}),
 	transform: (data: [Thread[], string]) => {
+		// In refresh mode, snapshot the live loaded list now — before this window replaces it — so the
+		// merge in onResetSuccess reflects any optimistic removals/undo-inserts made during the fetch.
+		if (refreshMode.value) refreshSnapshot = threadsResource.value.data ?? []
 		const rows = data[0]
 		hasMore.value = rows.length > PAGE_LENGTH
 		return rows.slice(0, PAGE_LENGTH)
@@ -1031,16 +1040,12 @@ const refreshThreads = (reloadMailboxes = true) => {
 
 	refreshMode.value = true
 	// Bump the epoch so an append still in flight is discarded (appendThreads checks it) instead of
-	// landing after the merge and clobbering it — the merge rebuilds from the snapshot taken just below,
-	// which wouldn't include that append. A new append can't start mid-refresh (loadMore bails while the
-	// resource is loading), so this fully closes the refresh/append race.
+	// landing after the merge and clobbering it. A new append can't start mid-refresh (loadMore bails
+	// while the resource is loading), so this fully closes the refresh/append race. The merge base
+	// (refreshSnapshot) and scroll anchor are captured later, at response time, so they reflect the list
+	// as it actually is when the window arrives — not a stale start-of-refresh copy.
 	epoch.value++
 	refreshEpoch = epoch.value
-	refreshSnapshot = [...(threadsResource.value.data ?? [])]
-	refreshAnchor = {
-		top: mailListRef.value?.scrollTop ?? 0,
-		height: mailListRef.value?.scrollHeight ?? 0,
-	}
 	threadsResource.value.reload()
 	if (reloadMailboxes) mailboxes.reload()
 }
