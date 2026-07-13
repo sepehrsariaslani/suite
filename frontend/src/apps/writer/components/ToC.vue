@@ -1,7 +1,7 @@
 <template>
   <div v-if="editor && (hasContent || editor.isEditable)"
-    class="px-2.5 pt-3 gap-2 hidden md:block sticky top-0 self-start overflow-y-auto flex-shrink-0 h-full w-64"
-    :class="show && 'border-r border-outline-gray-2'">
+    class="px-2.5 pt-3 gap-2 hidden md:block overflow-y-auto overflow-x-hidden flex-shrink-0 h-full transition-[width] duration-200"
+    :class="show ? 'w-64' : 'w-12'">
     <div v-if="!show">
       <Button variant="ghost" :icon="h(show ? LucidePanelLeftClose : LucideTableOfContents, {
         class: 'text-ink-gray-6',
