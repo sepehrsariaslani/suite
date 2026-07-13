@@ -7,7 +7,7 @@ import { getIcon, raisePromiseToast, raiseToast } from '@/apps/mail/utils'
 import { useBlockSender, useUndo } from '@/apps/mail/utils/composables'
 import { userStore } from '@/apps/mail/stores/user'
 
-import type { Mail, Thread } from '@/apps/mail/types'
+import type { Mail, Mailbox, Thread } from '@/apps/mail/types'
 
 export type SetSeenParams = {
 	0?: string[]
@@ -214,11 +214,36 @@ export function useThreadActions(deps: {
 			})),
 	)
 
+	// Optimistically reflect an add/remove of a mailbox on the loaded list rows (thread summary + its
+	// nested messages) so MailListItem's folder tags update immediately, without waiting for a refetch.
+	// Mirrors MailThread.syncMailboxMembership, which does the same for the open thread's reading pane.
+	const syncListMailboxMembership = (mailboxId: string, threadIds: string[], add: boolean) => {
+		const mb = mailboxes.data?.find((m) => m.id === mailboxId)
+		if (!mb) return
+		const entry: Mailbox = { mailbox: mb.name, mailbox_id: mb.id, mailbox_name: mb._name }
+		const apply = (item: { mailboxes: Mailbox[] }) => {
+			if (add) {
+				if (!item.mailboxes.some((m) => m.mailbox_id === mailboxId))
+					item.mailboxes.push({ ...entry })
+			} else if (item.mailboxes.length > 1) {
+				item.mailboxes = item.mailboxes.filter((m) => m.mailbox_id !== mailboxId)
+			}
+		}
+		threadsResource.value.data
+			?.filter((t: Thread) => threadIds.includes(t.thread_id))
+			.forEach((t: Thread) => {
+				apply(t)
+				t.messages?.forEach(apply)
+			})
+	}
+
 	const handleAddThreadsToMailbox = (mailboxId: string, threadIds: string[], isUndo = false) => {
 		const mailboxName = mailboxes.data?.find((m) => m.id === mailboxId)?._name
 		const action = async () => {
 			await addMails.submit({ ids: allMailIds(threadIds), mailbox_id: mailboxId })
-			// The threads stay in the current view (only gain another mailbox) — no list refetch.
+			// The threads stay in the current view (only gain another mailbox) — no list refetch; update
+			// the list rows' folder tags in place instead, and refresh selections + sidebar counts.
+			syncListMailboxMembership(mailboxId, threadIds, true)
 			syncAfterAction()
 			if (threadID.value && threadIds.includes(threadID.value))
 				mailThreadRef.value?.syncMailboxMembership(mailboxId, true)
@@ -275,8 +300,9 @@ export function useThreadActions(deps: {
 				.map((m) => m.id)
 			await removeMails.submit({ ids, mailbox_id: mailboxId })
 			// Removing from the current mailbox drops the threads from the view; removing from another
-			// mailbox leaves them here (they just lose that membership).
+			// mailbox leaves them here (they just lose that membership) — drop the tag from the list rows.
 			if (mailboxId === mailbox.value) removeThreadsFromList(threadIdsToBeUpdated)
+			else syncListMailboxMembership(mailboxId, threadIdsToBeUpdated, false)
 			syncAfterAction()
 			if (threadID.value && threadIdsToBeUpdated.includes(threadID.value)) {
 				if (mailboxId === mailbox.value) goToNextThreadOrMailbox(threadIdsToBeUpdated)
