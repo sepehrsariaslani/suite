@@ -100,7 +100,7 @@
 							v-if="!selections.length"
 							variant="ghost"
 							:tooltip="__('Refresh')"
-							:disabled="threadsResource?.loading"
+							:disabled="threadsResource?.loading || loadingMore"
 							@click="refreshThreads()"
 						>
 							<template #icon>
