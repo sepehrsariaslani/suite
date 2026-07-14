@@ -45,7 +45,17 @@
 				</div>
 				<template v-if="showAdvancedFilters">
 					<div class="space-y-4 p-4">
+						<Switch
+							v-if="hasMultipleAccounts"
+							v-model="allAccounts"
+							:label="__('Search across all accounts')"
+							:description="
+								__('Look through every account you own — slower, but finds a mail wherever it landed.')
+							"
+							class="!p-0"
+						/>
 						<FormControl
+							v-if="!allAccounts"
 							v-model="filter.inMailbox"
 							type="select"
 							:label="__('Look In')"
@@ -107,13 +117,19 @@
 						v-for="(result, idx) in results.data[0]"
 						:key="idx"
 						class="hover:bg-surface-gray-1 group flex rounded p-2 hover:cursor-pointer"
-						@click="openThread(result.thread_id)"
+						@click="openThread(result)"
 					>
 						<div class="mr-2 space-y-1 truncate">
 							<p class="truncate text-base-semibold">
 								{{ result.subject || __('[No subject]') }}
 							</p>
 							<p class="truncate text-sm">{{ getInterlocutors(result) }}</p>
+							<div
+								v-if="allAccounts && result.account_name"
+								class="bg-surface-gray-3 group-hover:bg-surface-gray-4 mr-1.5 inline-flex rounded p-1 text-xs font-medium"
+							>
+								{{ result.account_name }}
+							</div>
 							<div
 								v-for="m in result.mailboxes"
 								:key="m.mailbox_id"
@@ -161,7 +177,7 @@ import { computed, nextTick, reactive, ref, useTemplateRef, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { watchDebounced } from '@vueuse/core'
 import { ChevronLeft, Paperclip, Search, SlidersHorizontal } from 'lucide-vue-next'
-import { Button, Dialog, FormControl, createResource } from 'frappe-ui'
+import { Button, Dialog, FormControl, Switch, createResource } from 'frappe-ui'
 
 import { getAttachmentOptions, getReadStatusOptions } from '@/apps/mail/constants'
 import { getFormattedDate } from '@/apps/mail/utils'
@@ -211,8 +227,28 @@ const filteredFilter = computed(() =>
 			.filter(([, v]) => Boolean(v)),
 	),
 )
+
+// Cross-account search: an opt-in that fans the query out across every account (defaulting off, so a
+// search stays scoped to the current account for speed). Persisted, and pre-checked when the search
+// page was opened with the flag set, so reopening the dialog reflects the active scope.
+const ALL_ACCOUNTS_STORAGE_KEY = 'mail-search-all-accounts'
+const hasMultipleAccounts = computed(() => (store.userResource.data?.accounts?.length ?? 0) > 1)
+const allAccounts = ref(
+	hasMultipleAccounts.value &&
+		(route.query.all_accounts != null ||
+			localStorage.getItem(ALL_ACCOUNTS_STORAGE_KEY) === 'true'),
+)
+watch(allAccounts, (val) => {
+	localStorage.setItem(ALL_ACCOUNTS_STORAGE_KEY, String(val))
+	// "Look In" targets a folder in the current account; it can't carry across accounts, so drop it.
+	if (val) filter.inMailbox = ''
+	if (filter.text) results.reload()
+})
+
 const advancedFiltersLength = computed(
-	() => Object.keys(filteredFilter.value).filter((k) => k !== 'text').length,
+	() =>
+		Object.keys(filteredFilter.value).filter((k) => k !== 'text').length +
+		(allAccounts.value ? 1 : 0),
 )
 const showAdvancedFilters = ref(false)
 
@@ -227,8 +263,19 @@ const mailboxOptions = computed(() =>
 
 const results = createResource({
 	url: 'suite.mail.api.mail.search_mails',
-	makeParams: () => ({ account: store.accountId, filter: filteredFilter.value }),
+	makeParams: () => ({
+		account: store.accountId,
+		filter: filteredFilter.value,
+		all_accounts: allAccounts.value,
+	}),
 })
+
+// The query the results page reads to reproduce this search: the trimmed filters plus, when on, the
+// cross-account flag (kept out of `filter` so it never becomes a JMAP search condition on the server).
+const searchQuery = computed(() => ({
+	...filteredFilter.value,
+	...(allAccounts.value ? { all_accounts: '1' } : {}),
+}))
 
 const noOfAttachments = (result) =>
 	result.attachments?.filter((m) => m.filename && m.disposition === 'attachment').length || 0
@@ -243,17 +290,23 @@ watchDebounced(
 )
 
 const openSearchPage = () => {
-	router.push({ name: 'mail-mailbox', params: { mailbox: 'search' }, query: filteredFilter.value })
+	router.push({
+		name: 'mail-mailbox',
+		params: { accountId: store.accountId, mailbox: 'search' },
+		query: searchQuery.value,
+	})
 	show.value = false
 }
 
 const router = useRouter()
 
-const openThread = (threadID: string) => {
+// Open the result in its own account (tagged by the server) — for a cross-account search that may
+// differ from the active account; the mailbox route's guard switches to it.
+const openThread = (result: { account: string; thread_id: string }) => {
 	router.push({
 		name: 'mail-mail',
-		params: { mailbox: 'search', threadID },
-		query: filteredFilter.value,
+		params: { accountId: result.account, mailbox: 'search', threadID: result.thread_id },
+		query: searchQuery.value,
 	})
 	show.value = false
 }

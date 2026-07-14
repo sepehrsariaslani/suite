@@ -63,7 +63,7 @@
 				<div
 					class="relative flex items-center border-b border-l-transparent px-3.5 py-2.5 sm:border-l sm:px-5"
 				>
-					<div class="mr-5 max-sm:ml-3">
+					<div v-if="!isAllAccountsSearch" class="mr-5 max-sm:ml-3">
 						<Tooltip
 							:text="
 								isAllSelected
@@ -188,6 +188,7 @@
 								@click="toggleGroupCollapse(key)"
 							>
 								<div
+									v-if="!isAllAccountsSearch"
 									class="pr-7.5 checkbox-hitbox -m-3 cursor-pointer py-3 pl-6 sm:pl-3"
 									@click.stop.prevent="
 										toggleSelect(getGroupThreads(key), !isGroupSelected(key))
@@ -222,38 +223,27 @@
 							<MailListItem
 								v-for="mail in group"
 								ref="mailItems"
-								:key="mail.name"
+								:key="isAllAccountsSearch ? `${mail.account}:${mail.name}` : mail.name"
 								:mailbox
 								:mail
+								:account-id="isAllAccountsSearch ? mail.account : undefined"
+								:account-label="isAllAccountsSearch ? mail.account_name : undefined"
+								:selectable="!isAllAccountsSearch"
 								:is-selected="selections.includes(mail.thread_id)"
 								class="border-l-transparent sm:border-l"
 								:class="{
 									'!bg-surface-blue-1': mail.thread_id === threadID && !isMobile,
 									'!border-l-blue-500': mail.thread_id === threadInFocus,
 								}"
-								@set-seen="
-									(seen: boolean) =>
-										handleSetSeen({ [Number(seen)]: [mail.thread_id] })
-								"
-								@archive-thread="
-									mailbox === mailboxIds.sent
-										? handleAddThreadsToMailbox(mailboxIds.archive, [
-												mail.thread_id,
-											])
-										: handleMoveThreads({
-												[mailboxIds.archive]: [mail.thread_id],
-											})
-								"
-								@trash-thread="
-									handleMoveThreads({ [mailboxIds.trash]: [mail.thread_id] })
-								"
+								@set-seen="(seen: boolean) => rowSetSeen(mail, seen)"
+								@archive-thread="rowArchive(mail)"
+								@trash-thread="rowTrash(mail)"
 								@delete-thread="junkOrDeleteThreads([mail.thread_id], false)"
-								@set-flagged="
-									(flagged: boolean) =>
-										setFlaggedByThreadIDs([mail.thread_id], flagged)
-								"
+								@set-flagged="(flagged: boolean) => rowSetFlagged(mail, flagged)"
 								@set-selected="
-									(selected: boolean) => toggleSelect([mail.thread_id], selected)
+									(selected: boolean) =>
+										!isAllAccountsSearch &&
+										toggleSelect([mail.thread_id], selected)
 								"
 							/>
 						</template>
@@ -378,11 +368,19 @@ import {
 	Dialog,
 	Dropdown,
 	Tooltip,
+	call,
 	createResource,
 	usePageMeta,
 } from 'frappe-ui'
 
-import { getFormattedDate, isMac, raiseToast, shouldIgnoreKeypress, startResizing } from '@/apps/mail/utils'
+import {
+	getFormattedDate,
+	isMac,
+	raisePromiseToast,
+	raiseToast,
+	shouldIgnoreKeypress,
+	startResizing,
+} from '@/apps/mail/utils'
 import { useScreenSize, useSidebar, useUndo } from '@/apps/mail/utils/composables'
 import { useThreadActions } from '@/apps/mail/utils/useThreadActions'
 import { type MailboxRole, userStore } from '@/apps/mail/stores/user'
@@ -877,6 +875,11 @@ const onResetSuccess = () => {
 	scrollListToTop()
 }
 
+// Cross-account search: when the search dialog's "all accounts" toggle was on, the flag rides along in
+// the query (kept out of the filter conditions on the server). The merged results carry their owning
+// account, so each row opens in — and acts within — its own account (see the row-action wrappers).
+const isAllAccountsSearch = computed(() => mailbox === 'search' && route.query.all_accounts != null)
+
 // Reset resource for search: always the first window, over-fetching one row to drive `hasMore`.
 const searchResults = createResource({
 	url: 'suite.mail.api.mail.search_mails',
@@ -885,6 +888,7 @@ const searchResults = createResource({
 		filter: route.query,
 		limit: PAGE_LENGTH + 1,
 		start: 0,
+		all_accounts: isAllAccountsSearch.value,
 	}),
 	transform: (data: [Thread[], number]) => {
 		if (refreshMode.value) refreshSnapshot = threadsResource.value.data ?? []
@@ -980,6 +984,7 @@ const loadMoreSearch = createResource({
 		filter: route.query,
 		limit: PAGE_LENGTH + 1,
 		start: threadsResource.value.data.length,
+		all_accounts: isAllAccountsSearch.value,
 	}),
 	onSuccess: (data: [Thread[], number]) => appendThreads(data[0]),
 	onError: () => (loadingMore.value = false),
@@ -1089,7 +1094,12 @@ const restoreThreadsToList = (restored: Thread[]) => {
 
 watch(
 	() => [mailbox, accountId],
-	() => {
+	(_new, old) => {
+		// Opening a result in an all-accounts search switches the route's account (so the reading pane
+		// loads the thread from the right account) while the mailbox stays 'search'. The merged list spans
+		// every account, so a mere account switch mustn't reset it — keep the results and scroll position.
+		if (isAllAccountsSearch.value && mailbox === 'search' && old?.[0] === 'search') return
+
 		isMailboxLoaded.value = false
 		threadsResource.value.data = []
 		filter.value = localStorage.getItem(`user:${user.data.name}:filter:${mailbox}`) || null
@@ -1235,6 +1245,93 @@ const {
 	goToMailbox,
 	goToNextThreadOrMailbox,
 })
+
+// ── Cross-account search row actions ──────────────────────────────────────────────────────────────
+// In an all-accounts search the merged rows can belong to any account, so the shared handlers above
+// (which target the single active account) can't drive them. These act on each row's own account via
+// stateless call()s — mirroring the All Inboxes view — with the active account left untouched. Star and
+// read/unread update optimistically in place; archive/trash re-run the search on success, since a
+// result's membership is server-determined (an archived mail may still match the query). Delete is
+// account-agnostic (it targets Mail Message names), so it stays on the shared junk/delete flow below.
+const crossAccountSetSeen = (mail: Thread, seen: boolean) => {
+	if (mail.seen === (seen ? 1 : 0)) return
+	mail.seen = seen ? 1 : 0
+	call('suite.mail.api.mail.set_mails_seen', { account: mail.account, ids: [mail.id], seen })
+		.then(() => mailboxes.reload())
+		.catch((error) => {
+			mail.seen = seen ? 0 : 1 // revert the optimistic update
+			raiseToast(error?.messages?.[0] || error?.message, 'error')
+		})
+}
+
+const crossAccountSetFlagged = (mail: Thread, flagged: boolean) => {
+	mail.flagged = flagged ? 1 : 0
+	call('suite.mail.api.mail.set_flagged', {
+		account: mail.account,
+		ids: [mail.id],
+		flagged,
+	}).catch((error) => {
+		mail.flagged = flagged ? 0 : 1 // revert the optimistic update
+		raiseToast(error?.messages?.[0] || error?.message, 'error')
+	})
+}
+
+const crossAccountMoveOut = (
+	mail: Thread,
+	target: string | undefined,
+	loading: string,
+	success: string,
+	missing: string,
+) => {
+	if (!target) return raiseToast(missing, 'error')
+	raisePromiseToast(
+		() =>
+			call('suite.mail.api.mail.move_mails', {
+				account: mail.account,
+				ids: [mail.id],
+				mailbox: target,
+				clear_junk: true,
+			}).then(() => resetThreads(false)),
+		loading,
+		success,
+	)
+}
+
+// Route a list row's action to the cross-account handler in an all-accounts search, else to the shared
+// active-account handler (keeping single-account search behaviour identical).
+const rowSetSeen = (mail: Thread, seen: boolean) =>
+	isAllAccountsSearch.value
+		? crossAccountSetSeen(mail, seen)
+		: handleSetSeen({ [Number(seen)]: [mail.thread_id] })
+
+const rowSetFlagged = (mail: Thread, flagged: boolean) =>
+	isAllAccountsSearch.value
+		? crossAccountSetFlagged(mail, flagged)
+		: setFlaggedByThreadIDs([mail.thread_id], flagged)
+
+const rowArchive = (mail: Thread) =>
+	isAllAccountsSearch.value
+		? crossAccountMoveOut(
+				mail,
+				mail.archive,
+				__('Archiving...'),
+				__('Thread archived.'),
+				__('No Archive folder for this account.'),
+			)
+		: mailbox === mailboxIds.sent
+			? handleAddThreadsToMailbox(mailboxIds.archive, [mail.thread_id])
+			: handleMoveThreads({ [mailboxIds.archive]: [mail.thread_id] })
+
+const rowTrash = (mail: Thread) =>
+	isAllAccountsSearch.value
+		? crossAccountMoveOut(
+				mail,
+				mail.trash,
+				__('Moving to Trash...'),
+				__('Thread moved to Trash.'),
+				__('No Trash folder for this account.'),
+			)
+		: handleMoveThreads({ [mailboxIds.trash]: [mail.thread_id] })
 
 const showEmptyMailbox = ref(false)
 
