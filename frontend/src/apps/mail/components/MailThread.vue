@@ -353,9 +353,9 @@
 		/>
 	</div>
 
-	<div v-else class="h-full overflow-hidden">
+	<div v-else class="h-full overflow-hidden p-5">
 		<div
-			class="bg-surface-gray-1 m-5 flex h-[calc(100%-2.9em)] items-center justify-center rounded-md"
+			class="bg-surface-gray-1 flex h-full items-center justify-center rounded-md"
 		>
 			<div class="flex flex-col items-center space-y-3">
 				<NoMails class="text-ink-gray-2 h-16 w-16" />

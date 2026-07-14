@@ -22,15 +22,7 @@
 		<Button :label="__('Review Now')" variant="ghost" @click="goToScreener" />
 	</div>
 
-	<div
-		v-if="
-			[mailboxIds.trash, mailboxIds.junk].includes(mailbox) &&
-			!threadsResource.data?.loading &&
-			threadsResource.data?.length &&
-			(showReadingPane || !threadID)
-		"
-		class="space-x-1 border-b px-3 py-2.5 sm:px-5"
-	>
+	<div v-if="showDeleteBanner" class="space-x-1 border-b px-3 py-2.5 sm:px-5">
 		<span class="text-ink-gray-5">
 			{{ __('Items in this mailbox will be automatically deleted after 30 days.') }}
 		</span>
@@ -40,7 +32,7 @@
 	<div
 		class="relative flex"
 		:class="
-			[mailboxIds.trash, mailboxIds.junk].includes(mailbox) || showScreenerBanner
+			showDeleteBanner || showScreenerBanner
 				? 'h-[calc(100dvh-6.1rem)]'
 				: 'h-[calc(100dvh-3.05rem)]'
 		"
@@ -946,6 +938,17 @@ const threads = createResource({
 })
 
 const threadsResource = computed(() => (mailbox === 'search' ? searchResults : threads))
+
+// The Trash/Junk "auto-deleted after 30 days" banner is about the whole mailbox, so show it whenever the
+// mailbox has threads — or a filter is applied (the filtered view may be empty while the mailbox isn't).
+// The layout below reserves height for it only when it's actually rendered, so the two stay in sync.
+const showDeleteBanner = computed(
+	() =>
+		[mailboxIds.trash, mailboxIds.junk].includes(mailbox) &&
+		!threadsResource.value.data?.loading &&
+		(!!threadsResource.value.data?.length || !!filter.value) &&
+		(showReadingPane.value || !threadID),
+)
 
 // ── Infinite scroll ─────────────────────────────────────────────────────────────────────────────
 // Two fetch paths that both write `threadsResource.value.data` — the single accumulated list every
