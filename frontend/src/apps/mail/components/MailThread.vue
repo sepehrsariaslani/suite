@@ -272,25 +272,30 @@
 									<div v-if="filteredAttachments(mail).length" class="mt-8">
 										<div
 											v-if="zippableAttachments(mail).length > 1"
-											class="mb-3 flex items-center justify-between"
+											class="text-ink-gray-5 mb-3 flex items-center gap-1.5 text-sm"
 										>
-											<span class="text-ink-gray-5 text-sm">
+											<span>
 												{{
 													__('{0} attachments', [
 														String(filteredAttachments(mail).length),
 													])
 												}}
 											</span>
-											<Button
-												variant="ghost"
-												:icon="Download"
-												:label="__('Download all')"
-												:tooltip="__('Download all')"
-												:loading="downloadingZipMail === mail.name"
+											<span aria-hidden="true">·</span>
+											<button
+												class="hover:text-ink-gray-8 disabled:opacity-70"
+												:disabled="downloadingZipMail === mail.name"
+												:title="__('Download all')"
 												@click.stop.prevent="
 													downloadAttachmentsAsZip(mail)
 												"
-											/>
+											>
+												<LoaderCircle
+													v-if="downloadingZipMail === mail.name"
+													class="h-3.5 w-3.5 animate-spin"
+												/>
+												<Download v-else class="h-3.5 w-3.5" />
+											</button>
 										</div>
 										<div class="flex flex-wrap">
 											<AttachmentCapsule
@@ -380,7 +385,7 @@ import {
 	watch,
 } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { ChevronDown, Download, Forward, Reply, ReplyAll } from 'lucide-vue-next'
+import { ChevronDown, Download, Forward, LoaderCircle, Reply, ReplyAll } from 'lucide-vue-next'
 import { Alert, Avatar, Badge, Button, createResource } from 'frappe-ui'
 
 import { getAttachmentsZipUrl } from '@/apps/mail/resources'
