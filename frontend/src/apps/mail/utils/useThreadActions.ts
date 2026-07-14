@@ -756,6 +756,12 @@ export function useThreadActions(deps: {
 					const restore = setMailsMailboxes
 						.submit({ mails: snapshot })
 						.then(() => mailboxes.reload())
+						.catch((error) => {
+							// The undo didn't land server-side — re-apply the move to the tags so they
+							// match the server instead of showing the stale pre-move folder.
+							syncListMove(threadIDs)
+							throw error
+						})
 					raiseOptimisticToast(restore, movedBack)
 				})(),
 			)
