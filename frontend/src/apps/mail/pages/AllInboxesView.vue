@@ -123,7 +123,7 @@
 				@click="refreshThreads()"
 			>
 				<template #prefix>
-					<RefreshCw class="icon" :class="{ 'animate-spin': threads.loading }" />
+					<RefreshCw class="icon" />
 				</template>
 			</Button>
 		</div>
