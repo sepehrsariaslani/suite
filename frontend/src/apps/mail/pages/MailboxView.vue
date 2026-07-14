@@ -323,6 +323,9 @@
 								: handleSetSpamStatus({ 0: [threadID!] })
 					"
 					@delete-thread="junkOrDeleteThreads([threadID!], false)"
+					@move-mail="handleMailMove"
+					@mark-mail-spam="handleMailSpam"
+					@delete-mail="handleMailDelete"
 					@prev-thread="goToThreadByOffset(-1)"
 					@next-thread="goToThreadByOffset(1)"
 				/>
@@ -814,6 +817,10 @@ let refreshEpoch = 0 // epoch captured when the refresh was triggered (dropped i
 // transform), not refresh-start, so it reflects any optimistic removals/undo-inserts that happened
 // while the refresh was in flight — otherwise a thread archived mid-refresh would reappear.
 let refreshSnapshot: Thread[] = []
+// Thread ids optimistically removed by an action whose request is still in flight. The server still
+// returns these for a moment, so a refresh/append landing in that window would re-insert the row; the
+// merges below skip them. Cleared on rollback (restoreThreadsToList) and after a short timeout.
+const recentlyRemoved = new Set<string>()
 // Current mailbox's record (carries total_threads/unread_threads); used by the periodic poll to
 // detect count changes and by the tab title's unread badge.
 const mailboxObj = computed(() => mailboxes.data?.find((m) => m.id === mailbox))
@@ -864,7 +871,9 @@ const onResetSuccess = () => {
 		const prevHeight = el?.scrollHeight ?? 0
 		const freshWindow = threadsResource.value.data ?? []
 		const existing = new Set(refreshSnapshot.map((t) => t.thread_id))
-		const fresh = freshWindow.filter((t: Thread) => !existing.has(t.thread_id))
+		const fresh = freshWindow.filter(
+			(t: Thread) => !existing.has(t.thread_id) && !recentlyRemoved.has(t.thread_id),
+		)
 		threadsResource.value.data = [...fresh, ...refreshSnapshot]
 		// Keep the reader where they were: shift scroll by the height the prepended rows added. If they
 		// were already at the top, leave them there so the new mail is visible.
@@ -951,7 +960,9 @@ const appendThreads = (rows: Thread[]) => {
 	// Discard a stale window that resolved after a reset began (mailbox switch, refresh, undo, …).
 	if (loadEpoch !== epoch.value) return
 	const seen = new Set(threadsResource.value.data.map((t: Thread) => t.thread_id))
-	const fresh = rows.slice(0, PAGE_LENGTH).filter((t) => !seen.has(t.thread_id))
+	const fresh = rows
+		.slice(0, PAGE_LENGTH)
+		.filter((t) => !seen.has(t.thread_id) && !recentlyRemoved.has(t.thread_id))
 	// Stop auto-loading if the window added nothing new (offset stuck behind heavy front-inserted mail);
 	// the next reset (poll/refresh/socket) reconciles. Guards against a tight reload loop while the
 	// sentinel stays in view.
@@ -1067,6 +1078,11 @@ const removeThreadsFromList = (thread_ids: string[]): Thread[] => {
 	threadsResource.value.data = data.filter(
 		(thread: Thread) => !thread_ids.includes(thread.thread_id),
 	)
+	// Suppress re-insertion by an in-flight refresh/append until the server-side removal lands.
+	thread_ids.forEach((id) => {
+		recentlyRemoved.add(id)
+		setTimeout(() => recentlyRemoved.delete(id), 15000)
+	})
 	if (!threadsResource.value.data.length && hasMore.value) resetThreads()
 	return removed
 }
@@ -1076,6 +1092,8 @@ const removeThreadsFromList = (thread_ids: string[]): Thread[] => {
 // scroll-anchoring holds the viewport as rows reappear above it.
 const restoreThreadsToList = (restored: Thread[]) => {
 	if (!restored.length) return
+	// A restored thread should be visible again — lift any removal suppression.
+	restored.forEach((t: Thread) => recentlyRemoved.delete(t.thread_id))
 	const list = [...(threadsResource.value.data ?? [])]
 	const present = new Set(list.map((t: Thread) => t.thread_id))
 	for (const thread of restored) {
@@ -1214,6 +1232,9 @@ const {
 	handleAddThreadsToMailbox,
 	handleRemoveThreadsFromMailbox,
 	junkOrDeleteThreads,
+	handleMailMove,
+	handleMailSpam,
+	handleMailDelete,
 	setFlagged,
 	moveToOptions,
 	addToOptions,

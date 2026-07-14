@@ -40,7 +40,7 @@ import {
 	Star,
 	Trash2,
 } from 'lucide-vue-next'
-import { Button, Dropdown, createResource, toast } from 'frappe-ui'
+import { Button, Dropdown, createResource } from 'frappe-ui'
 
 import {
 	downloadUrlAsFile,
@@ -48,7 +48,7 @@ import {
 	raisePromiseToast,
 	raiseToast,
 } from '@/apps/mail/utils'
-import { useBlockSender, useScreenSize, useUndo } from '@/apps/mail/utils/composables'
+import { useScreenSize, useUndo } from '@/apps/mail/utils/composables'
 import { userStore } from '@/apps/mail/stores/user'
 
 import type { ComposeMailData, Identity, Mail, ScreenedAddress } from '@/apps/mail/types'
@@ -79,7 +79,7 @@ const {
 	thread: Mail[]
 }>()
 
-const emit = defineEmits(['setFlagged', 'syncUnseen'])
+const emit = defineEmits(['setFlagged', 'syncUnseen', 'moveMail', 'markMailSpam', 'deleteMail'])
 
 const { isMobile } = useScreenSize()
 const route = useRoute()
@@ -89,7 +89,6 @@ const router = useRouter()
 const store = userStore()
 const { mailboxes, mailboxIds, identities, screenedAddresses } = store
 const { setUndoAction, undo } = useUndo()
-const { promptBlockSenders, willJunkSenders } = useBlockSender()
 const user = inject('$user')
 
 // A sender is "blocked" when screened with the Reject action (their mail is discarded) — either by their
@@ -180,25 +179,25 @@ const moreActions = (mail: Mail): GroupedAction[] => [
 			},
 			{
 				label: __('Mark as Junk'),
-				onClick: () => handleMarkAsSpam(true),
+				onClick: () => emit('markMailSpam', mail, true),
 				icon: CircleAlert,
 				condition: () => mailbox !== mailboxIds.drafts && mail.junk === 0,
 			},
 			{
 				label: __('Mark as Not Junk'),
-				onClick: () => handleMarkAsSpam(false),
+				onClick: () => emit('markMailSpam', mail, false),
 				icon: CircleCheck,
 				condition: () => mail.junk === 1,
 			},
 			{
 				label: __('Move to Trash'),
-				onClick: () => handleMoveMail(mailboxIds.trash),
+				onClick: () => emit('moveMail', mail, mailboxIds.trash),
 				icon: Trash2,
 				condition: () => mailbox !== mailboxIds.trash,
 			},
 			{
 				label: __('Delete Message'),
-				onClick: () => handleDeleteMail(),
+				onClick: () => emit('deleteMail', mail),
 				icon: Trash2,
 				condition: () => mailbox === mailboxIds.trash,
 			},
@@ -207,18 +206,6 @@ const moreActions = (mail: Mail): GroupedAction[] => [
 				onClick: () => handleMarkUnreadFromHere(),
 				icon: MailOpen,
 				condition: () => !mail.draft,
-			},
-			{
-				label: __('Accept Sender'),
-				onClick: () => handleScreenSender('Accepted'),
-				icon: CircleCheck,
-				condition: () => mailbox === mailboxIds.screener,
-			},
-			{
-				label: __('Reject Sender'),
-				onClick: () => handleScreenSender('Reject'),
-				icon: Ban,
-				condition: () => mailbox === mailboxIds.screener,
 			},
 			{
 				label: __('Block Sender'),
@@ -275,40 +262,6 @@ const downloadEmail = createResource({
 	onError: (error) => raiseToast(error.message, 'error'),
 })
 
-const markAsSpam = createResource({
-	url: 'suite.mail.api.mail.set_mails_spam_status',
-	makeParams: ({ spam }: { spam: boolean }) => ({ account: store.accountId, ids: [mail.id], spam }),
-})
-
-const handleMarkAsSpam = (spam: boolean, isUndo = false) => {
-	const action = () =>
-		markAsSpam.submit({ spam }).then(() => {
-			reloadMails(isUndo)
-			// After marking as Junk, apply the account's "on mark as junk" behaviour (silently junk the
-			// sender's future mail, or prompt to block). Not on the undo of Mark as Not Junk.
-			if (spam && !isUndo)
-				promptBlockSenders([{ name: mail.from_name, email: mail.from_email }])
-		})
-	// When the account auto-junks the sender, surface that as the single toast for the whole action.
-	const autoJunk =
-		spam && !isUndo && willJunkSenders([{ name: mail.from_name, email: mail.from_email }])
-	const successMessage = autoJunk
-		? __('Mails from sender will go to Junk.')
-		: spam
-			? __('Mail marked as Junk.')
-			: __('Mail marked as Not Junk.')
-
-	if (isUndo) return raisePromiseToast(action, __('Undoing...'), successMessage)
-
-	setUndoAction(() => handleMarkAsSpam(!spam, true))
-	raisePromiseToast(
-		action,
-		spam ? __('Marking as Junk...') : __('Marking as Not Junk...'),
-		successMessage,
-		undo,
-	)
-}
-
 const moveMail = createResource({
 	url: 'suite.mail.api.mail.move_mails',
 	makeParams: (mailbox: string) => ({
@@ -318,39 +271,6 @@ const moveMail = createResource({
 		clear_junk: mail.junk === 1 && mailbox !== mailboxIds.junk,
 	}),
 })
-
-const handleMoveMail = (mailbox: string, isUndo = false) => {
-	const action = () => moveMail.submit(mailbox).then(() => reloadMails(isUndo))
-	const mailboxName = mailboxes.data?.find((m) => m.id === mailbox)._name
-
-	if (isUndo)
-		return raisePromiseToast(
-			action,
-			__('Undoing...'),
-			__('Mail moved back to {0}.', [mailboxName]),
-		)
-
-	setUndoAction(() => handleMoveMail(mail.mailboxes[0].mailbox_id, true))
-	raisePromiseToast(
-		action,
-		__('Moving to {0}...', [mailboxName]),
-		__('Mail moved to {0}.', [mailboxName]),
-		undo,
-	)
-}
-
-const deleteMail = createResource({
-	url: 'suite.mail.doctype.mail_message.mail_message.bulk_delete',
-	makeParams: () => ({ names: [mail.name] }),
-	onSuccess: () => reloadMails(),
-})
-
-const handleDeleteMail = () =>
-	toast.promise(deleteMail.submit(), {
-		loading: __('Deleting...'),
-		success: __('Mail deleted.'),
-		error: __('Action failed. Please try again in some time.'),
-	})
 
 const setMailsSeen = createResource({
 	url: 'suite.mail.api.mail.set_mails_seen',
@@ -374,33 +294,6 @@ const handleMarkUnreadFromHere = () => {
 		.filter((m: Mail) => !m.draft)
 		.map((m: Mail) => m.id)
 	if (ids.length) setMailsSeen.submit({ ids })
-}
-
-// Screening-folder decisions: accept the sender (let future mail in, move this one to Inbox) or
-// reject them (discard future mail, move this one to Trash). The sieve regenerates from the list.
-const screenSender = createResource({
-	url: 'suite.mail.api.mail.screen_email_address',
-	makeParams: ({ action }: { action: string }) => ({
-		account: store.accountId,
-		email: mail.from_email,
-		action,
-	}),
-})
-
-const handleScreenSender = (action: 'Accepted' | 'Reject') => {
-	const accepted = action === 'Accepted'
-	const target = accepted ? mailboxIds.inbox : mailboxIds.trash
-	const run = async () => {
-		await screenSender.submit({ action })
-		screenedAddresses.reload()
-		await moveMail.submit(target)
-		reloadMails()
-	}
-	raisePromiseToast(
-		run,
-		accepted ? __('Accepting sender...') : __('Rejecting sender...'),
-		accepted ? __('Sender accepted.') : __('Sender rejected.'),
-	)
 }
 
 const blockEmailAddress = createResource({
