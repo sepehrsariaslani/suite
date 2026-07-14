@@ -106,6 +106,20 @@ describe("isConnected / getters", () => {
 	});
 });
 
+describe("event handler registration", () => {
+	it("registers pre-connect handlers with SignalChannel only once", () => {
+		const signalChannel = mockSignalChannel();
+		const client = new SFUClient(signalChannel);
+		client.on("custom_event", vi.fn());
+
+		client.registerEventHandlers();
+
+		expect(
+			signalChannel.on.mock.calls.filter(([event]) => event === "custom_event"),
+		).toHaveLength(1);
+	});
+});
+
 describe("isTokenExpiringSoon", () => {
 	it("returns false when tokenExpiresAt is far in the future", () => {
 		const client = createClient();
@@ -335,10 +349,13 @@ describe("on / off event handling", () => {
 		const client = createClient();
 		const handler = vi.fn();
 		client.on("participant_joined", handler);
-		expect(client.eventHandlers.get("participant_joined")).toBe(handler);
+		client.registerEventHandlers();
+		const dispatcher = client.eventHandlers.get("participant_joined");
+		dispatcher?.();
+		expect(handler).toHaveBeenCalledTimes(1);
 		expect(client.signalChannel.on).toHaveBeenCalledWith(
 			"participant_joined",
-			handler,
+			dispatcher,
 		);
 	});
 
@@ -350,8 +367,23 @@ describe("on / off event handling", () => {
 		expect(client.eventHandlers.has("participant_joined")).toBe(false);
 		expect(client.signalChannel.off).toHaveBeenCalledWith(
 			"participant_joined",
-			handler,
+			expect.any(Function),
 		);
+	});
+
+	it("keeps other listeners when removing one handler", () => {
+		const client = createClient();
+		const first = vi.fn();
+		const second = vi.fn();
+		client.on("reconnect", first);
+		client.on("reconnect", second);
+
+		client.off("reconnect", first);
+		client.eventHandlers.get("reconnect")?.(1);
+
+		expect(first).not.toHaveBeenCalled();
+		expect(second).toHaveBeenCalledWith(1);
+		expect(client.signalChannel.off).not.toHaveBeenCalled();
 	});
 });
 

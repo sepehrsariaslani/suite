@@ -329,6 +329,9 @@ test.describe("E2EE", () => {
 			"refresh_sfu_token",
 			"403 (FORBIDDEN)",
 			"request_consumer_keyframe",
+			"ERR_INTERNET_DISCONNECTED",
+			"Failed to load MediaPipe Selfie Segmentation model",
+			"Background effects processing error",
 		]);
 		const hostErrors = capturePageErrors(hostPage, ["request_consumer_keyframe"]);
 		await forceSFUReconnect(guest.page);
