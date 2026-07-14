@@ -232,13 +232,17 @@ export function useThreadActions(deps: {
 			})),
 	)
 
+	const mailboxEntry = (mailboxId: string): Mailbox | null => {
+		const mb = mailboxes.data?.find((m) => m.id === mailboxId)
+		return mb ? { mailbox: mb.name, mailbox_id: mb.id, mailbox_name: mb._name } : null
+	}
+
 	// Optimistically reflect an add/remove of a mailbox on the loaded list rows (thread summary + its
 	// nested messages) so MailListItem's folder tags update immediately, without waiting for a refetch.
 	// Mirrors MailThread.syncMailboxMembership, which does the same for the open thread's reading pane.
 	const syncListMailboxMembership = (mailboxId: string, threadIds: string[], add: boolean) => {
-		const mb = mailboxes.data?.find((m) => m.id === mailboxId)
-		if (!mb) return
-		const entry: Mailbox = { mailbox: mb.name, mailbox_id: mb.id, mailbox_name: mb._name }
+		const entry = mailboxEntry(mailboxId)
+		if (!entry) return
 		const apply = (item: { mailboxes: Mailbox[] }) => {
 			if (add) {
 				if (!item.mailboxes.some((m) => m.mailbox_id === mailboxId))
@@ -253,6 +257,32 @@ export function useThreadActions(deps: {
 				apply(t)
 				t.messages?.forEach(apply)
 			})
+	}
+
+	// Optimistically mirror a move on the rows that STAY in the list (Sent / Starred keptInList): each item
+	// (summary + nested messages) takes the target mailbox, keeping Sent for sent copies — exactly what the
+	// forward ops do server-side — so MailListItem's folder tags update at once instead of showing the old
+	// folder until a refetch. Returns a revert closure (restores the exact prior mailbox sets).
+	const syncListMove = (threadIDs: Record<string, string[]>) => {
+		const prev = new Map<{ mailboxes: Mailbox[] }, Mailbox[]>()
+		const sentEntry = mailboxEntry(mailboxIds.sent)
+		for (const [target, tids] of Object.entries(threadIDs)) {
+			const targetEntry = mailboxEntry(target)
+			if (!targetEntry) continue
+			threadsResource.value.data
+				?.filter((t: Thread) => tids.includes(t.thread_id))
+				.forEach((t: Thread) => {
+					;[t, ...(t.messages ?? [])].forEach((item: { mailboxes: Mailbox[] }) => {
+						prev.set(item, item.mailboxes)
+						const keepsSent = item.mailboxes.some((mb) => mb.mailbox_id === mailboxIds.sent)
+						item.mailboxes =
+							keepsSent && sentEntry
+								? [{ ...targetEntry }, { ...sentEntry }]
+								: [{ ...targetEntry }]
+					})
+				})
+		}
+		return () => prev.forEach((mailboxes, item) => (item.mailboxes = mailboxes))
 	}
 
 	const handleAddThreadsToMailbox = (mailboxId: string, threadIds: string[], isUndo = false) => {
@@ -623,17 +653,24 @@ export function useThreadActions(deps: {
 			}
 		}
 
-		// In Sent, a non-junk/trash move leaves the sent copies in Sent, so the threads stay here.
+		// In Sent, a non-junk/trash move leaves the sent copies in Sent; in Starred, any move other than to
+		// Trash keeps a non-junk/trash copy (and the flag), so the thread stays starred — either way the
+		// row stays in the list.
 		const keptInList =
-			mailbox.value === mailboxIds.sent && Object.keys(threadIDs).every((t) => !movesAll(t))
-		// In search/starred, membership is server-determined (a moved thread may still be starred / still
-		// match the query), so reconcile from the server *after* it responds instead of removing now.
-		const reconcileView = !keptInList && ['search', 'starred'].includes(mailbox.value)
+			(mailbox.value === mailboxIds.sent || mailbox.value === 'starred') &&
+			Object.keys(threadIDs).every((t) => !movesAll(t))
+		// Only Search stays server-reconciled: its membership is a text query we can't re-evaluate locally.
+		// Starred's rule (a non-junk/trash copy AND some flagged message) is computable from the loaded
+		// thread, so a move to Trash removes the row optimistically below.
+		const reconcileView = !keptInList && mailbox.value === 'search'
 
-		// Optimistic (plain mailbox): drop the rows now, before any request fires. Captured so a failure
-		// can restore them in place, and so undo can re-insert them.
+		// Optimistic (plain mailbox, or a Starred thread leaving via Trash): drop the rows now, before any
+		// request fires. Captured so a failure can restore them in place, and so undo can re-insert them.
+		// Pass excludeCommonMailboxes=false so the removal also applies in Starred (Search never reaches
+		// here — it's reconcileView).
 		let removedThreads: Thread[] = []
-		if (!keptInList && !reconcileView) removedThreads = handleSuccessAndRemoveFromList(threadIDs)
+		if (!keptInList && !reconcileView)
+			removedThreads = handleSuccessAndRemoveFromList(threadIDs, false)
 
 		const moveToMailboxName = mailboxes.data?.find(
 			(m) => m.id === Object.keys(threadIDs)[0],
@@ -686,8 +723,41 @@ export function useThreadActions(deps: {
 			return raiseOptimisticToast(forwardPromise, success, undo)
 		}
 
-		// Reconcile (search/starred) or keptInList (Sent): the list only changes once the server
-		// responds, so keep the loading → success toast.
+		if (keptInList) {
+			// The rows stay (Sent keeps its sent copy; a Starred thread keeps a non-junk/trash copy), but
+			// their folder tags change — update them now, before the request, and revert on failure/undo.
+			const revertMove = syncListMove(threadIDs)
+			let forwardOk = false
+			const forwardPromise = (async () => {
+				try {
+					for (const op of forward) await op()
+					forwardOk = true
+					mailboxes.reload()
+				} catch (error) {
+					revertMove()
+					setMailsMailboxes.submit({ mails: snapshot }).catch(() => {})
+					setUndoAction(undefined)
+					throw error
+				}
+			})()
+
+			setUndoAction(() =>
+				void (async () => {
+					await forwardPromise.catch(() => {})
+					if (!forwardOk) return
+					revertMove()
+					setUndoAction(undefined)
+					const restore = setMailsMailboxes
+						.submit({ mails: snapshot })
+						.then(() => mailboxes.reload())
+					raiseOptimisticToast(restore, movedBack)
+				})(),
+			)
+			return raiseOptimisticToast(forwardPromise, success, undo)
+		}
+
+		// Reconcile (Search only): membership is a server-side text query, so the list changes once the
+		// server responds — keep the loading → success toast.
 		const action = async () => {
 			try {
 				for (const op of forward) await op()
@@ -695,8 +765,7 @@ export function useThreadActions(deps: {
 				await setMailsMailboxes.submit({ mails: snapshot }).catch(() => {})
 				throw error
 			}
-			if (keptInList) syncAfterAction()
-			else handleSuccessAndRemoveFromList(threadIDs)
+			handleSuccessAndRemoveFromList(threadIDs)
 			setUndoAction(() => {
 				const undoAction = async () => {
 					await setMailsMailboxes.submit({ mails: snapshot })
@@ -734,12 +803,15 @@ export function useThreadActions(deps: {
 		// the same call as the mailbox restore.
 		const screenForward = spam ? (willJunkSenders(senders) ? 'Spam' : null) : 'Accepted'
 
-		// In search/starred, membership is server-determined — reconcile after the server responds.
-		const reconcileView = ['search', 'starred'].includes(mailbox.value)
+		// Only Search stays server-reconciled. Starred is computable: junking removes the last non-junk copy
+		// (→ the thread leaves), so junk there is optimistic; the rare Not-Junk-in-Starred keeps a non-junk
+		// copy (→ stays starred), so leave that one reconciled.
+		const reconcileView = mailbox.value === 'search' || (mailbox.value === 'starred' && !spam)
 
-		// Optimistic (plain mailbox): drop the rows now, before the request. Captured for rollback + undo.
+		// Optimistic (plain mailbox, or junking a Starred thread): drop the rows now, before the request.
+		// excludeCommonMailboxes=false so the removal also applies in Starred. Captured for rollback + undo.
 		let removedThreads: Thread[] = []
-		if (!reconcileView) removedThreads = handleSuccessAndRemoveFromList(threadIDs)
+		if (!reconcileView) removedThreads = handleSuccessAndRemoveFromList(threadIDs, false)
 
 		const restore = {
 			mails: snapshot,

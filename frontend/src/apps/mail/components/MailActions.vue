@@ -45,7 +45,7 @@ import { Button, Dropdown, createResource } from 'frappe-ui'
 import {
 	downloadUrlAsFile,
 	matchesScreenedValue,
-	raisePromiseToast,
+	raiseOptimisticToast,
 	raiseToast,
 } from '@/apps/mail/utils'
 import { useScreenSize, useUndo } from '@/apps/mail/utils/composables'
@@ -306,21 +306,37 @@ const unblockEmailAddress = createResource({
 	makeParams: () => ({ account: store.accountId, emails: [mail.from_email] }),
 })
 
+// Optimistically reflect the sender's blocked state so the immediate toast isn't lying, mirroring the
+// backend exactly: blocking adds an exact-address 'Reject' entry (overriding any existing rule for the
+// sender); unblocking removes the exact-address entry — a '@domain' rule that also covers the sender is
+// left in place, just as the unscreen API leaves it. Returns a revert to restore the list on failure.
+const applyScreenOptimistic = (block: boolean) => {
+	const prev = screenedAddresses.data
+	if (!prev) return () => {}
+	const isExact = (a: ScreenedAddress) =>
+		!a.email.startsWith('@') && matchesScreenedValue(mail.from_email, a.email)
+	const kept = prev.filter((a: ScreenedAddress) => !isExact(a))
+	const blocked: ScreenedAddress = { email: mail.from_email, action: 'Reject', creation: '', modified: '' }
+	screenedAddresses.data = block ? [...kept, blocked] : kept
+	return () => (screenedAddresses.data = prev)
+}
+
 const handleBlockAddress = (block: boolean, isUndo = false) => {
-	const action = () =>
-		(block ? blockEmailAddress : unblockEmailAddress)
-			.submit()
-			.then(() => screenedAddresses.reload())
+	const revert = applyScreenOptimistic(block) // optimistic: the menu item flips before the request
+	const forward = (async () => {
+		try {
+			await (block ? blockEmailAddress : unblockEmailAddress).submit()
+		} catch (error) {
+			revert()
+			throw error
+		}
+		screenedAddresses.reload()
+	})()
 	const successMessage = block ? __('Sender blocked.') : __('Sender unblocked.')
 
-	if (isUndo) return raisePromiseToast(action, __('Undoing...'), successMessage)
+	if (isUndo) return raiseOptimisticToast(forward, successMessage)
 
 	setUndoAction(() => handleBlockAddress(!block, true))
-	raisePromiseToast(
-		action,
-		block ? __('Blocking sender...') : __('Unblocking sender...'),
-		successMessage,
-		undo,
-	)
+	raiseOptimisticToast(forward, successMessage, undo)
 }
 </script>

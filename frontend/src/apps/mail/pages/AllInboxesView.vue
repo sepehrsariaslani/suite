@@ -145,7 +145,7 @@ import {
 } from 'lucide-vue-next'
 import { Breadcrumbs, Button, Dropdown, Tooltip, call, createResource, usePageMeta } from 'frappe-ui'
 
-import { getFormattedDate, raisePromiseToast, raiseToast } from '@/apps/mail/utils'
+import { getFormattedDate, raiseOptimisticToast, raiseToast } from '@/apps/mail/utils'
 import { useScreenSize, useSidebar } from '@/apps/mail/utils/composables'
 import { userStore } from '@/apps/mail/stores/user'
 import HeaderActions from '@/apps/mail/components/HeaderActions.vue'
@@ -356,10 +356,16 @@ const messageIds = (thread: Thread) => (thread.messages ?? []).map((m) => m.id)
 
 // Optimistically drop the row. Its server row leaves the current view too, so the append offset
 // (data.length) stays aligned. If the list empties while more remain, reset to top (the sentinel
-// unmounts with an empty list and couldn't otherwise re-trigger a load).
+// unmounts with an empty list and couldn't otherwise re-trigger a load). Returns a restore closure
+// that re-inserts the row at its original index (or falls back to resetThreads if we had to reset).
 const removeFromList = (thread: Thread) => {
+	const index = threads.data?.findIndex((t: Thread) => threadKey(t) === threadKey(thread)) ?? -1
 	threads.data = threads.data?.filter((t: Thread) => threadKey(t) !== threadKey(thread))
-	if (!threads.data?.length && hasMore.value) resetThreads()
+	if (!threads.data?.length && hasMore.value) {
+		resetThreads()
+		return () => resetThreads()
+	}
+	return () => threads.data?.splice(index, 0, thread)
 }
 
 // Each action is a stateless one-shot `call()` rather than a shared createResource: rows act on
@@ -397,38 +403,30 @@ const handleSetFlagged = (thread: Thread, flagged: boolean) => {
 	})
 }
 
-// Optimistically drop the row, then move on the server. On success just refresh counts (the row and its
-// server row are both gone, so the append offset stays aligned and scroll is preserved). On failure,
-// reset to restore the true list (the row reappears); rethrow so the toast reports the error.
-const moveThreadOut = (thread: Thread, mailbox: string) =>
+// The row is already dropped optimistically by the caller, so move on the server directly. On success just
+// refresh counts (the row and its server row are both gone, so the append offset stays aligned and scroll is
+// preserved). On failure, restore the row in place via the passed closure; rethrow so the toast reports the error.
+const moveThreadOut = (thread: Thread, mailbox: string, restore: () => void) =>
 	call('suite.mail.api.mail.move_mails', {
 		account: thread.account,
 		ids: messageIds(thread),
 		mailbox,
 		clear_junk: true,
 	}).then(refreshCounts, (error) => {
-		resetThreads()
+		restore()
 		throw error
 	})
 
 const handleArchive = (thread: Thread) => {
 	if (!thread.archive) return raiseToast(__('No Archive folder for this account.'), 'error')
-	removeFromList(thread)
-	raisePromiseToast(
-		() => moveThreadOut(thread, thread.archive!),
-		__('Archiving...'),
-		__('Thread archived.'),
-	)
+	const restore = removeFromList(thread)
+	raiseOptimisticToast(moveThreadOut(thread, thread.archive!, restore), __('Thread archived.'))
 }
 
 const handleTrash = (thread: Thread) => {
 	if (!thread.trash) return raiseToast(__('No Trash folder for this account.'), 'error')
-	removeFromList(thread)
-	raisePromiseToast(
-		() => moveThreadOut(thread, thread.trash!),
-		__('Moving to Trash...'),
-		__('Thread moved to Trash.'),
-	)
+	const restore = removeFromList(thread)
+	raiseOptimisticToast(moveThreadOut(thread, thread.trash!, restore), __('Thread moved to Trash.'))
 }
 
 // Filter
