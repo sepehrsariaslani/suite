@@ -976,7 +976,16 @@ export function useThreadActions(deps: {
 				restoreUi()
 				setUndoAction(undefined)
 				raiseOptimisticToast(
-					opts.undoReq!().then(() => mailboxes.reload()),
+					opts
+						.undoReq!()
+						.then(() => mailboxes.reload())
+						.catch((error) => {
+							// The undo didn't land server-side — re-remove so the UI matches the server
+							// instead of showing the mail (and its row) as restored.
+							mailThreadRef.value?.removeMailFromView(mail.id)
+							if (removed.length) removeThreadsFromList([mail.thread_id])
+							throw error
+						}),
 					opts.undoSuccess ?? success,
 				)
 			})(),
