@@ -300,6 +300,9 @@ const refreshCounts = () => store.mailboxes.reload()
 const resetThreads = () => {
 	refreshMode.value = false
 	epoch.value++
+	// A reset replaces the list with a fresh first window, so any prior collapse no longer maps to what's
+	// shown — clear it (else a group collapsed under one filter stays collapsed and hides its threads).
+	collapsedGroups.value = []
 	threads.reload()
 	refreshCounts()
 }
