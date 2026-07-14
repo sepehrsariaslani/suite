@@ -797,6 +797,9 @@ const selectActions = computed((): SelectAction[] => [
 const PAGE_LENGTH = 25
 const hasMore = ref(false) // lookahead: the last fetched window returned an extra row, so more exist
 const loadingMore = ref(false) // an append fetch is in flight (drives the bottom spinner)
+// An optimistic removal emptied the list but more threads exist, so a refill is coming once the server
+// mutation lands. Keeps the loading state (not the empty state) during the gap before the refill fetch.
+const refillPending = ref(false)
 // Bumped on every reset-to-top; an in-flight append captures it and discards its result if it changed
 // meanwhile, so a stale window can't land on a freshly reset list.
 const epoch = ref(0)
@@ -1023,6 +1026,7 @@ const canGoNext = computed(() => hasMore.value)
 const isLoading = computed(() => {
 	if (!isMailboxLoaded.value) return true
 	if (emptyMailbox.loading) return true
+	if (refillPending.value) return true
 	return !threadsResource.value.data.length && threadsResource.value?.loading
 })
 
@@ -1039,6 +1043,9 @@ const resetThreads: (reloadMailboxes?: boolean, mailboxRoles?: MailboxRole[]) =>
 ) => {
 	if (mailboxRoles.length && !mailboxRoles.map((m) => mailboxIds[m]).includes(mailbox)) return
 
+	// This reload supersedes any pending refill (its own, or an interrupting mailbox switch); from here
+	// the resource's `loading` drives isLoading, so the flag has done its job.
+	refillPending.value = false
 	refreshMode.value = false
 	epoch.value++
 	resetSelections()
@@ -1073,8 +1080,7 @@ const syncAfterAction = () => {
 
 // Drops threads from the loaded list optimistically and returns the removed rows (so an undo can put
 // them back). Their server rows leave the current view too, so the append offset (data.length) stays
-// aligned. If the list empties while more remain, reset to top (the sentinel unmounts with an empty
-// list and couldn't otherwise re-trigger a load).
+// aligned.
 const removeThreadsFromList = (thread_ids: string[]): Thread[] => {
 	const data = threadsResource.value.data ?? []
 	const removed = data.filter((thread: Thread) => thread_ids.includes(thread.thread_id))
@@ -1086,8 +1092,20 @@ const removeThreadsFromList = (thread_ids: string[]): Thread[] => {
 		recentlyRemoved.add(id)
 		setTimeout(() => recentlyRemoved.delete(id), 15000)
 	})
-	if (!threadsResource.value.data.length && hasMore.value) resetThreads()
+	// If this emptied the list but more exist, a refill is coming (refillIfEmpty, once the mutation
+	// lands) — flag it so the empty state doesn't flash in the meantime.
+	if (!threadsResource.value.data.length && hasMore.value) refillPending.value = true
 	return removed
+}
+
+// When an optimistic removal empties the loaded list while more threads exist server-side (e.g. select
+// all + delete/move), refetch the first window so the view refills — the sentinel unmounts with an empty
+// list and couldn't otherwise re-trigger a load. Must run *after* the server mutation lands: a reset
+// mid-request refetches start:0 and gets the same not-yet-removed rows back (they'd reappear).
+const refillIfEmpty = () => {
+	if (!threadsResource.value.data.length && hasMore.value) resetThreads()
+	// resetThreads sets the resource loading (so isLoading holds the spinner from here); clear the flag.
+	refillPending.value = false
 }
 
 // Re-insert threads (after undoing a move/junk) at their correct position by received_at, so they
@@ -1095,6 +1113,8 @@ const removeThreadsFromList = (thread_ids: string[]): Thread[] => {
 // scroll-anchoring holds the viewport as rows reappear above it.
 const restoreThreadsToList = (restored: Thread[]) => {
 	if (!restored.length) return
+	// Rows are back (removal failed / undo), so no refill is coming — drop the pending-refill hold.
+	refillPending.value = false
 	// A restored thread should be visible again — lift any removal suppression.
 	restored.forEach((t: Thread) => recentlyRemoved.delete(t.thread_id))
 	const list = [...(threadsResource.value.data ?? [])]
@@ -1256,6 +1276,7 @@ const {
 	syncAfterAction,
 	removeThreadsFromList,
 	restoreThreadsToList,
+	refillIfEmpty,
 	goToMailbox,
 	goToNextThreadOrMailbox,
 })

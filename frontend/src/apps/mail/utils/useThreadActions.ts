@@ -43,6 +43,9 @@ export function useThreadActions(deps: {
 	removeThreadsFromList: (threadIds: string[]) => Thread[]
 	// Re-insert threads at their sorted position (undo of a move/junk) without jumping to top.
 	restoreThreadsToList: (threads: Thread[]) => void
+	// Refetch the first window if an optimistic removal emptied the list while more threads exist. Call
+	// only after the server mutation lands, or the refetch returns the not-yet-removed rows.
+	refillIfEmpty: () => void
 	goToMailbox: () => void
 	goToNextThreadOrMailbox: (excludedThreads?: string[]) => void
 }) {
@@ -56,6 +59,7 @@ export function useThreadActions(deps: {
 		syncAfterAction,
 		removeThreadsFromList,
 		restoreThreadsToList,
+		refillIfEmpty,
 		goToMailbox,
 		goToNextThreadOrMailbox,
 	} = deps
@@ -409,6 +413,7 @@ export function useThreadActions(deps: {
 				throw error
 			}
 			syncAfterAction()
+			refillIfEmpty()
 		})()
 
 		const mailboxName = mailboxes.data?.find((m) => m.id === mailboxId)?._name
@@ -693,6 +698,7 @@ export function useThreadActions(deps: {
 					for (const op of forward) await op()
 					forwardOk = true
 					mailboxes.reload()
+					refillIfEmpty()
 				} catch (error) {
 					// Roll back the optimistic UI now, and undo any partial server move in the background
 					// (the snapshot restores the exact pre-move state) so the error toast isn't delayed.
@@ -844,6 +850,7 @@ export function useThreadActions(deps: {
 					await setMailsSpam.submit({ ids, spam, screen_action: screenForward })
 					forwardOk = true
 					mailboxes.reload()
+					refillIfEmpty()
 					maybePromptBlock()
 				} catch (error) {
 					// Single request: the server is unchanged on failure, so just restore the UI.
@@ -900,10 +907,13 @@ export function useThreadActions(deps: {
 		// Optimistic: drop the rows now (excludeCommonMailboxes=false removes locally even in
 		// search/starred — a hard delete is unambiguous). No undo; restore the rows if the request fails.
 		const removed = handleSuccessAndRemoveFromList(thread_ids, false)
-		const forward = bulkDelete.submit({ names }).catch((error) => {
-			if (removed.length) restoreThreadsToList(removed)
-			throw error
-		})
+		const forward = bulkDelete
+			.submit({ names })
+			.then(() => refillIfEmpty())
+			.catch((error) => {
+				if (removed.length) restoreThreadsToList(removed)
+				throw error
+			})
 		raiseOptimisticToast(
 			forward,
 			thread_ids.length === 1 ? __('Thread deleted.') : __('Threads deleted.'),
@@ -942,6 +952,7 @@ export function useThreadActions(deps: {
 				await req()
 				forwardOk = true
 				mailboxes.reload()
+				refillIfEmpty()
 				opts.afterSuccess?.()
 			} catch (error) {
 				restoreUi()
