@@ -64,7 +64,7 @@ const updateAccessLevel = async (isPublic) => {
 		value: isPublic,
 	}).then(() => {
 		isPublicPresentation.value = isPublic
-		toast.success('Access level updated')
+		toast.success(__('Access level updated'))
 	})
 }
 

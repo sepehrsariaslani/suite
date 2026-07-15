@@ -5,10 +5,10 @@
         v-model="onlyUnread"
         :buttons="[
           {
-            label: 'Unread',
+            label: __('Unread'),
             value: true,
           },
-          { label: 'All', value: false },
+          { label: __('All'), value: false },
         ]"
       />
     </div>
@@ -73,13 +73,13 @@ const options = {
 
 const columns = [
   {
-    label: 'Subject',
+    label: __('Subject'),
     key: 'subject',
     width: '80px',
     getLabel: ({ row }) => row.type,
   },
   {
-    label: 'Message',
+    label: __('Message'),
     key: 'message',
     width: 4,
     getLabel: ({ row }) => row.message,

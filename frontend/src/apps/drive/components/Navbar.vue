@@ -37,7 +37,7 @@
       " :button="{
           variant: 'solid',
           id: 'create-button',
-          label: 'Create',
+          label: __('Create'),
           iconLeft: h(LucidePlus, { class: 'size-4' }),
         }" :options="newEntityOptions" placement="right" />
       <Button v-else-if="$route.name === 'drive-Documents' || $route.name === 'drive-Presentations'" id="create-button"
@@ -293,41 +293,41 @@ const button = computed(() => possibleButtons.find((k) => k.route == route.name)
 
 const newEntityOptions = computed(() => [
   {
-    group: 'Create',
+    group: __('Create'),
     items: dynamicList([
       {
-        label: 'Document',
+        label: __('Document'),
         icon: LucideFilePlus2,
         onClick: () => newExternal('Document'),
       },
       {
-        label: 'Presentation',
+        label: __('Presentation'),
         icon: LucideGalleryVerticalEnd,
         onClick: () => newExternal('Presentation'),
         cond: isPrivate.value && apps.data?.find?.((k) => k.name === 'slides'),
       },
       {
-        label: 'Folder',
+        label: __('Folder'),
         icon: LucideFolderPlus,
         onClick: () => openListDialog('f'),
       },
       {
-        label: 'Link',
+        label: __('Link'),
         icon: LucideLink,
         onClick: () => openListDialog('l'),
       },
     ]),
   },
   {
-    group: 'Upload',
+    group: __('Upload'),
     items: [
       {
-        label: 'Upload File',
+        label: __('Upload File'),
         icon: LucideFileUp,
         onClick: () => emitter.emit('uploadFile'),
       },
       {
-        label: 'Upload Folder',
+        label: __('Upload Folder'),
         icon: LucideFolderUp,
         onClick: () => emitter.emit('uploadFolder'),
       },

@@ -1,3 +1,4 @@
+import { translate as __ } from '@/boot/translation'
 import { ref } from 'vue'
 import { toast, call } from 'frappe-ui'
 
@@ -36,7 +37,7 @@ const copiedFrom = ref({})
 const copySlide = (e) => {
 	const clipboardJSON = getCopiedSlideJSON()
 	e.clipboardData.setData('application/json', clipboardJSON)
-	toast.success('Slide copied to clipboard')
+	toast.success(__('Slide copied to clipboard'))
 }
 
 const copyElements = (e) => {
@@ -75,7 +76,7 @@ const copyToClipboard = async (text) => {
 	}
 
 	isCopyTriggeredByButton.value = false
-	toast.success('Copied to clipboard')
+	toast.success(__('Copied to clipboard'))
 }
 
 // Paste Handlers

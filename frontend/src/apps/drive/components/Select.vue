@@ -88,7 +88,7 @@ interface SelectProps {
 }
 
 const props = withDefaults(defineProps<SelectProps>(), {
-  placeholder: 'Select an option',
+  placeholder: __('Select an option'),
 })
 
 const selected = defineModel<Value>()

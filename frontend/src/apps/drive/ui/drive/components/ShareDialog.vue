@@ -4,12 +4,8 @@
       <div class="p-4">
         <!-- Header -->
         <div class="flex w-full justify-between gap-x-2 mb-4">
-          <div class=" text-4xl-semibold flex text-nowrap overflow-hidden">
-            Sharing "
-            <div class="truncate max-w-[80%]">
-              {{ entity?.file_name }}
-            </div>
-            "
+          <div class="text-4xl-semibold flex min-w-0 overflow-hidden">
+            <div class="truncate">{{ __('Sharing “{0}”', [entity?.file_name || '']) }}</div>
           </div>
           <div class="ml-auto flex gap-2">
             <Button class="shrink-0" variant="ghost" @click="open = false">
@@ -23,7 +19,7 @@
           <!-- General section -->
           <div class="border-b pb-4 mb-4">
             <div class="mb-2 text-ink-gray-5 text-base-medium">
-              General Access
+              {{ __('General Access') }}
             </div>
             <div class="flex justify-between mt-3">
               <div class="flex flex-col gap-2">
@@ -63,7 +59,7 @@
             </div>
           </div>
           <!-- Members section -->
-          <div class="text-ink-gray-5 text-base-medium mb-2">Members</div>
+          <div class="text-ink-gray-5 text-base-medium mb-2">{{ __('Members') }}</div>
           <div class="flex gap-3 pb-2">
             <TagInput
               v-model="usersToAdd"
@@ -76,7 +72,7 @@
                     size: 'xs',
                   })
               "
-              placeholder="Add people..."
+              :placeholder="__('Add people…')"
             />
             <Select
               v-if="usersToAdd.length"
@@ -114,9 +110,9 @@
                   class="mr-1 text-ink-gray-7"
                 >
                   <div v-if="user.user === entity.owner" class="flex gap-1">
-                    Owner (you)
+                    {{ __('Owner (you)') }}
                   </div>
-                  <template v-else>You</template>
+                  <template v-else>{{ __('You') }}</template>
                 </span>
                 <Select
                   v-else-if="user.user !== entity.owner"
@@ -128,7 +124,7 @@
                     {
                       group: true,
                       options: [
-                        { value: 'remove', label: 'Remove', theme: 'red' },
+                        { value: 'remove', label: __('Remove'), theme: 'red' },
                       ],
                     },
                   ]"
@@ -137,7 +133,7 @@
                   "
                 />
                 <span v-else class="flex items-center gap-1 text-ink-gray-5">
-                  Owner
+                  {{ __('Owner') }}
                   <LucideDiamond class="size-3" />
                 </span>
               </div>
@@ -163,11 +159,11 @@
                 <template #prefix>
                   <LucideLink2 class="w-4 text-ink-gray-6" />
                 </template>
-                Copy Link
+                {{ __('Copy Link') }}
               </Button>
               <Button
                 v-if="usersToAdd.length"
-                label="Invite"
+                :label="__('Invite')"
                 variant="solid"
                 @click="inviteUsers"
               />
@@ -220,29 +216,29 @@ props.users.fetch({ team: props.entity.team || 'all' })
 
 const levelOptions = [
   {
-    label: 'Accessible to invited members',
+    label: __('Accessible to invited members'),
     value: 'restricted',
     icon: markRaw(LucideLock),
   },
   {
-    label: 'Accessible to a team',
+    label: __('Accessible to a team'),
     value: 'team',
     icon: markRaw(LucideBuilding2),
   },
-  { label: 'Accessible to all', value: 'public', icon: markRaw(LucideGlobe2) },
+  { label: __('Accessible to all'), value: 'public', icon: markRaw(LucideGlobe2) },
 ]
 const accessOptions = computed(() =>
   dynamicList([
-    { value: 'reader', label: 'Can view', icon: LucideEye },
+    { value: 'reader', label: __('Can view'), icon: LucideEye },
     {
       value: 'upload',
-      label: 'Can upload',
+      label: __('Can upload'),
       cond: props.entity.is_folder && props.entity.upload,
       icon: LucideUpload,
     },
     {
       value: 'editor',
-      label: 'Can edit',
+      label: __('Can edit'),
       cond: props.entity.write,
       icon: LucidePencil,
     },

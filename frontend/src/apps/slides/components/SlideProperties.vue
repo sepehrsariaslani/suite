@@ -184,7 +184,7 @@ const applyTransitionToAllSlides = () => {
 		}),
 	)
 
-	toast.success('Applied transition to all slides')
+	toast.success(__('Applied transition to all slides'))
 }
 
 const { onStart: onBgUpdateStart, onEnd: onBgUpdateEnd } = setPropertyDeferred(

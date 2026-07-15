@@ -1,3 +1,4 @@
+import { translate as __ } from '@/boot/translation'
 import * as Y from 'yjs'
 import { IndexeddbPersistence } from 'y-indexeddb'
 import { WebrtcProvider } from 'y-webrtc'
@@ -130,7 +131,7 @@ export function useYjs(id, document, editor, edited) {
       if (isOffline.value) {
         console.warn('Skipping save as client is offline.')
       } else {
-        toast.error('Could not save the document.')
+        toast.error(__('Could not save the document.'))
         // ideally store in indexeddb
         localStorage.setItem('errored-save-out-' + id + '-' + Date.now(), html)
       }

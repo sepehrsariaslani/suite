@@ -1,5 +1,5 @@
 <template>
-  <Dialog v-model:open="open" title="Keyboard Shortcuts" size="4xl">
+  <Dialog v-model:open="open" :title="__('Keyboard Shortcuts')" size="4xl">
     <div class="w-full grid grid-cols-2 gap-10 py-1">
       <div v-for="group in shortcutGroups" :key="group.title" class="border-b pb-4">
         <h2 class="text-xl-semibold text-ink-gray-8 mb-4">
@@ -43,14 +43,14 @@ const metaKey = computed(() => {
 })
 const shortcutGroups = [
   {
-    title: 'General',
+    title: __('General'),
     shortcuts: [
       [[metaKey.value, 'K'], 'Find Files'],
       [['Ctrl', ','], 'Open Settings'],
     ],
   },
   {
-    title: 'Navigation',
+    title: __('Navigation'),
     shortcuts: [
       [getLabel('i'), 'Inbox'],
       [getLabel('h'), 'Home'],
@@ -61,7 +61,7 @@ const shortcutGroups = [
     ],
   },
   {
-    title: 'List',
+    title: __('List'),
     shortcuts: [
       [[metaKey.value, 'A'], 'Select all'],
       [['Esc'], 'Unselect all'],

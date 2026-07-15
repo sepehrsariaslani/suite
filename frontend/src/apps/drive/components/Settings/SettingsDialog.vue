@@ -50,16 +50,16 @@ import BackendSettings from './BackendSettings.vue'
 
 const allGroups = [
   {
-    label: 'General',
+    label: __('General'),
     items: [
       {
-        label: 'Profile',
+        label: __('Profile'),
         value: 'profile',
         icon: LucideUser,
         component: markRaw(ProfileSettings),
       },
       {
-        label: 'Preferences',
+        label: __('Preferences'),
         value: 'preferences',
         icon: LucideSlidersHorizontal,
         component: markRaw(PreferencesSettings),
@@ -67,16 +67,16 @@ const allGroups = [
     ],
   },
   {
-    label: 'Workspace',
+    label: __('Workspace'),
     items: [
       {
-        label: 'Teams',
+        label: __('Teams'),
         value: 'teams',
         icon: LucideUserPlus,
         component: markRaw(UserListSettings),
       },
       {
-        label: 'Statistics',
+        label: __('Statistics'),
         value: 'statistics',
         icon: LucideChartBar,
         component: markRaw(StorageSettings),
@@ -84,11 +84,11 @@ const allGroups = [
     ],
   },
   {
-    label: 'Administration',
+    label: __('Administration'),
     adminOnly: true,
     items: [
       {
-        label: 'Storage',
+        label: __('Storage'),
         value: 'storage',
         icon: LucideCloudCog,
         component: markRaw(BackendSettings),

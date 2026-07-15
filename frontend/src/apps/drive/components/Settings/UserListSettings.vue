@@ -65,23 +65,23 @@
       :options="
         dynamicList([
           {
-            label: 'Edit',
+            label: __('Edit'),
             icon: LucidePencil,
             onClick: () => (showEditTeam = true),
             cond: isAdmin.data,
           },
           {
-            label: 'Sync',
+            label: __('Sync'),
             icon: LucideRefreshCcw,
             cond: isAdmin.data && teamData.s3_bucket,
             onClick: () =>
               createDialog({
-                title: 'Sync files from S3',
+                title: __('Sync files from S3'),
                 component: h(SyncBreakdown, { team }),
               }),
           },
           {
-            label: 'Leave',
+            label: __('Leave'),
             icon: LucideLogOut,
             onClick: () => leaveTeam.submit({ team }),
           },
@@ -264,7 +264,7 @@
       {
         variant: 'solid',
         theme: 'red',
-        label: 'I confirm that I want to remove ' + selectedUser.full_name + '.',
+        label: __('I confirm that I want to remove ') + selectedUser.full_name + '.',
         loading: removeUser.loading,
         onClick: () => {
           removeUser.submit({
@@ -526,11 +526,11 @@ const leaveTeam = createResource({
 
 const tabs = [
   {
-    label: 'Members',
+    label: __('Members'),
     icon: h(LucideUsers, { class: 'size-4' }),
   },
   {
-    label: 'Invites',
+    label: __('Invites'),
     icon: h(LucideMail, { class: 'size-4' }),
   },
 ]
@@ -545,19 +545,19 @@ const updateAccess = (level) => {
 }
 const accessOptions = [
   {
-    label: 'Manager',
+    label: __('Manager'),
     onClick: () => updateAccess(2),
   },
   {
-    label: 'User',
+    label: __('User'),
     onClick: () => updateAccess(1),
   },
   {
-    label: 'Guest',
+    label: __('Guest'),
     onClick: () => updateAccess(0),
   },
   {
-    label: 'Remove',
+    label: __('Remove'),
     class: 'text-ink-red-6',
     component: () =>
       h(

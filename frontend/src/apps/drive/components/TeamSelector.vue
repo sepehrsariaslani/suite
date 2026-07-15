@@ -1,5 +1,5 @@
 <template>
-  <Combobox v-model="team" placeholder="Select a team" :options :disabled :open-on-click="true" />
+  <Combobox v-model="team" :placeholder="__('Select a team')" :options :disabled :open-on-click="true" />
 </template>
 <script setup lang="ts">
 import { getTeams } from '@/apps/drive/resources/files'
@@ -35,8 +35,8 @@ const options = computed<object[]>(() => {
     icon: icons[k.icon || 'building'],
   }))
   return dynamicList([
-    { cond: props.none === true, label: 'Everywhere', value: 'all' },
-    { cond: props.none, label: 'Home', value: 'home' },
+    { cond: props.none === true, label: __('Everywhere'), value: 'all' },
+    { cond: props.none, label: __('Home'), value: 'home' },
     ...res,
   ])
 })

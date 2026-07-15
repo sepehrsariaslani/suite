@@ -34,31 +34,31 @@ export default {
       const first = getRootSection()
       return [
         {
-          label: 'Home',
+          label: __('Home'),
           route: { name: 'drive-Home' },
           icon: LucideHome,
           highlight: () => first.name === 'drive-Home',
         },
         {
-          label: 'Team',
+          label: __('Team'),
           route: { name: 'drive-Teams' },
           icon: LucideBuilding2,
           highlight: () => this.$route.name === 'drive-Teams',
         },
         {
-          label: 'Recents',
+          label: __('Recents'),
           route: { name: 'drive-Recents' },
           icon: LucideClock,
           highlight: () => first.name === 'drive-Recents',
         },
         {
-          label: 'Shared',
+          label: __('Shared'),
           route: { name: 'drive-Shared' },
           icon: LucideUsers,
           highlight: () => first.name === 'drive-Shared',
         },
         {
-          label: 'Favourites',
+          label: __('Favourites'),
           route: { name: 'drive-Favourites' },
           icon: LucideStar,
           highlight: () => first.name === 'drive-Favourites',

@@ -1,3 +1,4 @@
+import { translate as __ } from '@/boot/translation'
 import { frappeRequest, toast } from "frappe-ui";
 import type { Ref } from "vue";
 import type { Router } from "vue-router";
@@ -242,12 +243,12 @@ export function useMeetingHandlers(deps: MeetingHandlersDeps) {
 			});
 
 			if ((response as { meeting_id?: string })?.meeting_id) {
-				toast.success("User promoted to co-host");
+				toast.success(__("User promoted to co-host"));
 				await deps.meetingDoc.reload();
 			}
 		} catch (error) {
 			console.error("Failed to promote participant:", error);
-			toast.error("Failed to promote user to co-host");
+			toast.error(__("Failed to promote user to co-host"));
 		}
 	};
 

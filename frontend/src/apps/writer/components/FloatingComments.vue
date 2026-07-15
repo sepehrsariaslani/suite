@@ -300,7 +300,7 @@ const updateComment = (comment, thread, editor) => {
   // const usersMentioned = comment.mentions.filter((k) => k.id)
 
   // if (usersMentioned.length)
-  //   toast.info('Share with the tagged people?', {
+  //   toast.info(__('Share with the tagged people?'), {
   //     action: {
   //       label: __('Go'),
   //       onClick: () => emitter.emit('share', usersMentioned),

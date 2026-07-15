@@ -3,8 +3,8 @@
     :get-entities="getTeam"
     :icon="LucideBuilding2"
     :empty="{
-      title: 'This team is empty',
-      description: 'Add files by dropping them here.',
+      title: __('This team is empty'),
+      description: __('Add files by dropping them here.'),
     }"
     :verify="{
       data: {

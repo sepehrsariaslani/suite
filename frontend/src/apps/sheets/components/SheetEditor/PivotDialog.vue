@@ -39,7 +39,7 @@
         <!-- Rows -->
         <div class="pv-bucket">
           <p class="pv-bucket-label">
-            <FeatherIcon name="align-left" class="pv-bucket-icon" /> Rows
+            <FeatherIcon name="align-left" class="pv-bucket-icon" /> {{ __('Rows') }}
           </p>
           <div class="pv-bucket-body">
             <div v-for="f in rowFields" :key="f" class="pv-chip">

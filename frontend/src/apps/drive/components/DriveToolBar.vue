@@ -49,7 +49,7 @@
         }))
           " :button="{
             icon: LucideFilter,
-            tooltip: 'Filter',
+            tooltip: __('Filter'),
           }" :disabled placement="right" />
         <Dropdown v-if="$route.name !== 'Recents'" :options="orderByItems" placement="right">
           <div class="flex items-center whitespace-nowrap">

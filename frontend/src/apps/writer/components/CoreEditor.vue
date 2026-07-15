@@ -306,7 +306,7 @@ const autoversion = async () => {
   await props.document.newVersion.submit({ data: html })
   const err = props.document.newVersion.error
   if (err && err !== 'Client is offline') {
-    toast.error('Something has gone wrong - please contact support.')
+    toast.error(__('Something has gone wrong - please contact support.'))
   }
 }
 const autoversionInterval = setInterval(autoversion, AUTOVERSION_INTERVAL_MS)
@@ -350,7 +350,7 @@ const autorename = () => {
 
 const addComment = () => {
   if (!props.yjsDoc) {
-    return toast.warning("New comments aren't supported on this doc.", {
+    return toast.warning(__("New comments aren't supported on this doc."), {
       duration: 1,
     })
   }
@@ -383,7 +383,7 @@ onKeyDown('p', (e) => {
 onKeyDown('s', (e) => {
   if (!props.editable || !isModKey(e) || e.shiftKey) return
   e.preventDefault()
-  manualSave(() => toast.success('Saved document'))
+  manualSave(() => toast.success(__('Saved document')))
 })
 
 onKeyDown('Enter', autorename)

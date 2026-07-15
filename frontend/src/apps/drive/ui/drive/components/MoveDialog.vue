@@ -69,7 +69,7 @@
                             let obj = {
                               parent: node.value,
                               value: null,
-                              label: 'New folder',
+                              label: __('New folder'),
                             }
                             node.children.push(obj)
                             if (isCollapsed) toggleCollapsed(e)
@@ -184,7 +184,7 @@ const tabIndex = ref(route.name == 'drive-Home' ? 0 : 1)
 const chosenTeam = ref(route.params.team || '')
 const tree = reactive({
   name: '',
-  label: 'Home',
+  label: __('Home'),
   children: [],
   options: {
     isCollapsed: true,
@@ -199,15 +199,15 @@ const breadcrumbs = ref([
 
 const tabs = [
   {
-    label: 'Home',
+    label: __('Home'),
     icon: h(LucideHome, { class: 'size-4' }),
   },
   {
-    label: 'Teams',
+    label: __('Teams'),
     icon: h(LucideBuilding2, { class: 'size-4' }),
   },
   // {
-  //   label: "Favourites",
+  //   label: __('Favourites'),
   //   icon: h(Star, { class: "size-4" }),
   // },
 ]
@@ -335,7 +335,7 @@ const createFolder = createResource({
     createdNode.value = null
   },
   onError() {
-    toast.error('There is already a folder with this name here.')
+    toast.error(__('There is already a folder with this name here.'))
   },
 })
 

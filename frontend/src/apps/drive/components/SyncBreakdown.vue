@@ -128,14 +128,14 @@ const syncFromDisk = createResource({
   beforeSubmit: () => {
     toast({
       icon: LucideFolderSync,
-      title: 'Starting syncing.',
+      title: __('Starting syncing.'),
       text: "We'll give you an update when it's done.",
     })
   },
   onSuccess: (d) => {
     toast({
       icon: LucideCloudCheck,
-      title: 'Successfully synced',
+      title: __('Successfully synced'),
       text: d.length
         ? `Added ${d.length} item${d.length > 1 ? 's' : ''}`
         : 'No new files were added.',
@@ -145,7 +145,7 @@ const syncFromDisk = createResource({
   onError: () => {
     toast({
       icon: LucideCloudAlert,
-      title: 'There was an error.',
+      title: __('There was an error.'),
       text: 'Is there an issue with your configuration?',
     })
   },

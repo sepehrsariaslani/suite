@@ -281,10 +281,10 @@ async function handleFileSelect(event: Event) {
 async function handleDeleteCustomImage(imageId: string) {
 	try {
 		await removeCustomBackgroundImage(imageId);
-		toast.success("Custom background removed");
+		toast.success(__("Custom background removed"));
 	} catch (error) {
 		console.error("Failed to remove custom image:", error);
-		toast.error("Failed to remove custom background");
+		toast.error(__("Failed to remove custom background"));
 	}
 }
 

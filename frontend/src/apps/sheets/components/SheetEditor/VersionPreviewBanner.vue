@@ -2,23 +2,23 @@
 	<div v-if="open" class="sn-vp-banner">
 		<div class="sn-vp-left">
 			<Button variant="ghost" size="sm" icon="arrow-left"
-			        :tooltip="'Exit version history'"
+			        :tooltip="__('Exit version history')"
 			        @click="$emit('exit')" />
 			<span class="sn-vp-text">
-				Previewing <b>{{ formatTimestamp(version?.timestamp) }}</b>
+				{{ __('Previewing {0}', [formatTimestamp(version?.timestamp)]) }}
 				<span v-if="version?.version_name"> · <em>{{ version.version_name }}</em></span>
 				<span v-if="version?.user"> · {{ shortUser(version.user) }}</span>
 			</span>
 			<span v-if="diff" class="sn-vp-diff">
 				·
-				<b>{{ diff.total_changed_cells }}</b> edit{{ diff.total_changed_cells === 1 ? '' : 's' }}
-				<span class="sn-vp-rows-meta">({{ diff.total_changed_rows }} row{{ diff.total_changed_rows === 1 ? '' : 's' }} changed)</span>
+				{{ __('{0} edited cells', [diff.total_changed_cells]) }}
+				<span class="sn-vp-rows-meta">{{ __('{0} changed rows', [diff.total_changed_rows]) }}</span>
 			</span>
 		</div>
 		<div class="sn-vp-mid">
 			<Button v-if="diff && diff.total_changed_cells > 0"
 			        size="sm" variant="ghost" icon="chevron-up"
-			        :tooltip="'Previous change'"
+			        :tooltip="__('Previous change')"
 			        :disabled="!canStep"
 			        @click="$emit('step', -1)" />
 			<span v-if="diff && diff.total_changed_cells > 0 && stepIndex !== null"
@@ -27,13 +27,13 @@
 			</span>
 			<Button v-if="diff && diff.total_changed_cells > 0"
 			        size="sm" variant="ghost" icon="chevron-down"
-			        :tooltip="'Next change'"
+			        :tooltip="__('Next change')"
 			        :disabled="!canStep"
 			        @click="$emit('step', +1)" />
 		</div>
 		<div class="sn-vp-right">
 			<Button size="sm" variant="ghost" iconLeft="edit-2"
-			        @click="$emit('name')">{{ version?.version_name ? 'Rename' : 'Name version' }}</Button>
+			        @click="$emit('name')">{{ version?.version_name ? __('Rename') : __('Name version') }}</Button>
 			<Button size="sm" variant="solid"
 			        :loading="restoring"
 			        @click="$emit('restore')">{{ __('Restore this version') }}</Button>
@@ -59,7 +59,7 @@ const canStep = computed(() => !!(props.diff && props.diff.total_changed_cells >
 function formatTimestamp(ts) {
 	if (!ts) return ''
 	const d = new Date(String(ts).replace(' ', 'T'))
-	return d.toLocaleString(undefined, {
+	return d.toLocaleString(window.language || undefined, {
 		month: 'short', day: 'numeric',
 		hour: 'numeric', minute: '2-digit',
 	})

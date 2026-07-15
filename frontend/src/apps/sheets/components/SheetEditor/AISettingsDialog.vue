@@ -15,9 +15,7 @@
 
       <template v-else>
         <p class="ai-help">
-          Lets people describe what they want in plain words and have it applied
-          to the grid. The API key is stored encrypted on the server and is
-          never sent back to the browser.
+          {{ __('Describe the desired change in plain language and apply it to the grid. The API key is encrypted on the server and is never sent back to the browser.') }}
         </p>
 
         <!-- Enable toggle -->
@@ -36,7 +34,7 @@
         <FormControl
           type="password"
           :modelValue="apiKey"
-          :placeholder="keyIsSet ? '•••••••••• key on file — leave blank to keep' : 'sk-ant-...'"
+          :placeholder="keyIsSet ? __('API key saved — leave blank to keep it') : 'sk-ant-...'"
           autocomplete="off"
           @update:modelValue="apiKey = $event"
         />
@@ -51,9 +49,7 @@
           @update:modelValue="model = $event"
         />
         <p class="ai-key-state">
-          Tip: set this to <code>{{ __('mock') }}</code> for a keyless local demo — sums, averages,
-          counts, min/max/median, running totals, % of total, and text transforms
-          (uppercase, trim, first/last name, email domain) over a selection. No API key, no spend.
+          {{ __('Tip: use {0} for a free local demo with common calculations and text transformations. No API key is required.', ['mock']) }}
         </p>
       </template>
 
@@ -64,12 +60,12 @@
         <Button
           variant="solid"
           size="sm"
-          label="Save"
+          :label="__('Save')"
           :loading="saving"
           :disabled="loading || saving"
           @click="save"
         />
-        <Button variant="outline" size="sm" label="Cancel" @click="show = false" />
+        <Button variant="outline" size="sm" :label="__('Cancel')" @click="show = false" />
       </div>
     </template>
   </Dialog>
@@ -99,7 +95,7 @@ const keyIsSet = ref(false)       // whether a key is already on file (the real 
 
 const errorMessage = ref('')
 function _flashError(err) {
-  const msg = (err && err.message) ? String(err.message) : 'Something went wrong'
+  const msg = (err && err.message) ? String(err.message) : __('Something went wrong')
   errorMessage.value = msg
   setTimeout(() => { if (errorMessage.value === msg) errorMessage.value = '' }, 5000)
 }

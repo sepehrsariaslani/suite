@@ -1,3 +1,4 @@
+import { translate as __ } from '@/boot/translation'
 import { confirmDialog, toast } from "frappe-ui";
 import { onUnmounted, type Ref, ref, watch } from "vue";
 import {
@@ -895,7 +896,7 @@ export function useMediaControls(deps: MediaControlsDeps): MediaControlsAPI {
 			}
 		} catch (error) {
 			console.error("Failed to toggle microphone:", error);
-			toast.error("Failed to toggle microphone");
+			toast.error(__("Failed to toggle microphone"));
 		}
 	};
 
@@ -1078,7 +1079,7 @@ export function useMediaControls(deps: MediaControlsDeps): MediaControlsAPI {
 			}
 		} catch (error) {
 			console.error("Failed to toggle camera:", error);
-			toast.error("Failed to toggle camera");
+			toast.error(__("Failed to toggle camera"));
 		}
 	};
 
@@ -1236,7 +1237,7 @@ export function useMediaControls(deps: MediaControlsDeps): MediaControlsAPI {
 				console.log("User cancelled screen share");
 			} else {
 				console.error("Screen share failed:", error);
-				toast.error("Failed to start screen sharing");
+				toast.error(__("Failed to start screen sharing"));
 			}
 		}
 	};

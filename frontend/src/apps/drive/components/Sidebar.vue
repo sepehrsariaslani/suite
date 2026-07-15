@@ -1,6 +1,6 @@
 <template>
   <Sidebar id="sidebar" v-model:collapsed="sidebarCollapsed" class="hidden sm:flex" :header="{
-    title: 'Drive',
+    title: __('Drive'),
     subtitle: currentUserFullName,
     menuItems: settingsItems,
     logo: FrappeDriveLogo,
@@ -205,31 +205,31 @@ const sidebarItems = computed(() => {
       ],
     },
     {
-      label: 'Drive',
+      label: __('Drive'),
       items: [
         {
-          label: 'Home',
+          label: __('Home'),
           to: { name: 'drive-Home' },
           icon: LucideHome,
           isActive: active('drive-Home'),
           accessKey: 'h',
         },
         {
-          label: 'Recents',
+          label: __('Recents'),
           to: { name: 'drive-Recents' },
           icon: LucideClock,
           isActive: active('drive-Recents'),
           accessKey: 'r',
         },
         {
-          label: 'Shared',
+          label: __('Shared'),
           to: { name: 'drive-Shared' },
           icon: LucideUsers,
           isActive: active('drive-Shared'),
           accessKey: 's',
         },
         {
-          label: 'Trash',
+          label: __('Trash'),
           to: { name: 'drive-Trash' },
           icon: LucideTrash,
           isActive: active('drive-Trash'),
@@ -237,7 +237,7 @@ const sidebarItems = computed(() => {
       ],
     },
     {
-      label: 'Teams',
+      label: __('Teams'),
       cond: getTeams.data && Object.keys(getTeams.data).length > 0,
       collapsible: true,
       items:
@@ -253,32 +253,32 @@ const sidebarItems = computed(() => {
         })),
     },
     {
-      label: 'Views',
+      label: __('Views'),
       collapsible: true,
       items: dynamicList([
         {
-          label: 'Attachments',
+          label: __('Attachments'),
           to: { name: 'drive-Attachments' },
           icon: LucidePaperclip,
           isActive: active('drive-Attachments'),
           accessKey: 'a',
         },
         {
-          label: 'Favourites',
+          label: __('Favourites'),
           to: { name: 'drive-Favourites' },
           icon: LucideStar,
           isActive: active('drive-Favourites'),
           accessKey: 'f',
         },
         {
-          label: 'Documents',
+          label: __('Documents'),
           to: { name: 'drive-Documents' },
           icon: LucideFileText,
           isActive: active('drive-Documents'),
           accessKey: 'd',
         },
         {
-          label: 'Presentations',
+          label: __('Presentations'),
           to: { name: 'drive-Presentations' },
           icon: LucideGalleryVerticalEnd,
           isActive: active('drive-Presentations'),

@@ -10,9 +10,9 @@
       <canvas ref="canvasRef" :class="{ hidden: loading }" class="rounded-sm" />
     </div>
     <div v-if="totalPages" class="flex gap-2 justify-center items-center">
-      <Button label="Prev" :disabled="currentPage <= 1" @click="currentPage--" />
+      <Button :label="__('Previous')" :disabled="currentPage <= 1" @click="currentPage--" />
       <span class="text-sm">{{ currentPage }} / {{ totalPages }}</span>
-      <Button label="Next" :disabled="currentPage >= totalPages" @click="currentPage++" />
+      <Button :label="__('Next')" :disabled="currentPage >= totalPages" @click="currentPage++" />
     </div>
   </div>
   <embed

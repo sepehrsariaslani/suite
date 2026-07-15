@@ -74,12 +74,12 @@
     <Dialog
       v-if="showErrorDialog"
       v-model:open="showErrorDialog"
-      title="Upload failed"
+      :title="__('Upload failed')"
       :message="selectedUpload.error"
       size="sm"
       :actions="[
         {
-          label: 'OK',
+          label: __('OK'),
           variant: 'solid',
           onClick: () => {
             showErrorDialog = false

@@ -41,7 +41,7 @@ const filteredOptions = computed(() => {
     {
       type: 'custom',
       key: 'add-email',
-      label: 'Add email',
+      label: __('Add email'),
       slotName: 'add-email',
       condition: ({ searchTerm }: any) => {
         if (!searchTerm) return false

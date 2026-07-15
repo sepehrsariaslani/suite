@@ -23,7 +23,7 @@ const checkboxTwo = ref(false)
 const person = ref('pedro')
 
 function handleClick() {
-  alert('hello!')
+  alert(__('hello!'))
 }
 </script>
 

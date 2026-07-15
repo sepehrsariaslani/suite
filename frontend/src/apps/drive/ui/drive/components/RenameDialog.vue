@@ -1,7 +1,7 @@
 <template>
-  <Dialog v-model:open="open" title="Rename" size="xs" :actions="[
+  <Dialog v-model:open="open" :title="__('Rename')" size="xs" :actions="[
     {
-      label: 'Confirm',
+      label: __('Confirm'),
       variant: 'solid',
       disabled: !newTitle || newTitle === entity.file_name || rename.loading,
       onClick: submit,

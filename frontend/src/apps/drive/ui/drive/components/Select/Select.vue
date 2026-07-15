@@ -30,7 +30,7 @@ import LucideCheck from '~icons/lucide/check'
 import { SelectProps, SelectValue as SelectValue_ } from './types'
 
 const props = withDefaults(defineProps<SelectProps>(), {
-  placeholder: 'Select an option',
+  placeholder: __('Select an option'),
 })
 
 const selected = defineModel<SelectValue_>()

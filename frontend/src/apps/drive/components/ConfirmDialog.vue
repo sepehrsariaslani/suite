@@ -3,7 +3,7 @@
     <div class="flex items-center justify-start">
         <div class="text-base text-ink-gray-6">
           <template v-if="props.entities.length">
-            {{ props.entities.length > 1 ? 'These items ' : `"${props.entities[0].file_name}" ` }}
+            {{ props.entities.length > 1 ? __('These items ') : __('“{0}” ', [props.entities[0].file_name]) }}
           </template>
           <span v-html="dialogData.message" />
         </div>
@@ -33,13 +33,13 @@ const dialogType = defineModel()
 const open = ref(true)
 
 const dialogData = computed(() => {
-  const itemString = props.entities.length === 1 ? 'an item' : `${props.entities.length} items`
+  const itemString = props.entities.length === 1 ? __('this item') : __('{0} items', [props.entities.length])
   const MAP = {
     restore: {
-      title: `Restore ${itemString}`,
-      message: `will be restored to ${
-        props.entities.length === 1 ? 'its original location' : 'their original locations'
-      }.`,
+      title: __('Restore {0}', [itemString]),
+      message: props.entities.length === 1
+        ? __('will be restored to its original location.')
+        : __('will be restored to their original locations.'),
       url: 'suite.drive.api.files.remove_or_restore',
       onSuccess: () => {
         getTrash.setData((d) =>
@@ -48,18 +48,17 @@ const dialogData = computed(() => {
       },
       button: {
         variant: 'solid',
-        label: 'Restore',
+        label: __('Restore'),
         iconLeft: LucideRotateCcw,
       },
-      toastMessage: `Restored ${itemString}.`,
+      toastMessage: __('Restored {0}.', [itemString]),
     },
     remove: {
-      title: `Move ${itemString} to Trash`,
-      message:
-        'will be moved to Trash.<br/><br/> Items in trash are deleted forever after 30 days.',
+      title: __('Move {0} to Trash', [itemString]),
+      message: __('will be moved to Trash.<br/><br/> Items in trash are deleted forever after 30 days.'),
       url: 'suite.drive.api.files.remove_or_restore',
       button: {
-        label: 'Move to Trash',
+        label: __('Move to Trash'),
         theme: 'red',
         variant: 'subtle',
       },
@@ -75,38 +74,36 @@ const dialogData = computed(() => {
           ])
         )
       },
-      toastMessage: `Moved ${itemString} to Trash.`,
+      toastMessage: __('Moved {0} to Trash.', [itemString]),
     },
     d: {
-      title: `Delete ${itemString}`,
+      title: __('Delete {0}', [itemString]),
       url: 'suite.drive.api.files.delete_entities',
-      message:
-        ' will be deleted - you can no longer access it.<br/><br/> <span class=font-semibold>This is an irreversible action.<span>',
+      message: __('will be deleted and will no longer be accessible.<br/><br/><span class=font-semibold>This action cannot be undone.</span>'),
       button: {
-        label: 'Delete — forever.',
+        label: __('Delete — forever.'),
         theme: 'red',
         iconLeft: LucideTrash,
         variant: 'solid',
       },
-      toastMessage: `Deleted ${itemString}.`,
+      toastMessage: __('Deleted {0}.', [itemString]),
     },
     'cta-recents': {
-      title: 'Are you sure?',
-      message: 'All your recently viewed files will be cleared.',
-      button: { label: 'Clear' },
+      title: __('Are you sure?'),
+      message: __('All your recently viewed files will be cleared.'),
+      button: { label: __('Clear') },
       resource: clearRecent,
     },
     'cta-favourites': {
-      title: 'Are you sure?',
-      message: 'All your favourite items will be cleared.',
-      button: { label: 'Clear' },
+      title: __('Are you sure?'),
+      message: __('All your favourite items will be cleared.'),
+      button: { label: __('Clear') },
       resource: toggleFav,
     },
     'cta-trash': {
-      title: 'Clear your Trash',
-      message:
-        'All items in your Trash will be deleted forever. <br/><br/> <span class=font-semibold>This is an irreversible process.</span>',
-      button: { label: 'Delete', variant: 'solid', iconLeft: LucideTrash },
+      title: __('Clear your Trash'),
+      message: __('All items in your Trash will be deleted forever. <br/><br/> <span class=font-semibold>This is an irreversible process.</span>'),
+      button: { label: __('Delete'), variant: 'solid', iconLeft: LucideTrash },
       resource: clearTrash,
     },
   }

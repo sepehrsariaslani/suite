@@ -23,9 +23,9 @@
         type="select"
         label="Team Prefix"
         :options="[
-          { label: 'Team ID', value: 'team_id' },
-          { label: 'Team Name', value: 'team_name' },
-          { label: 'None', value: 'none' },
+          { label: __('Team ID'), value: 'team_id' },
+          { label: __('Team Name'), value: 'team_name' },
+          { label: __('None'), value: 'none' },
         ]"
         description="The folder name for each team, defaults to the team name."
       />
@@ -35,8 +35,8 @@
         type="select"
         label="Backend Type"
         :options="[
-          { label: 'Disk', value: 'disk' },
-          { label: 'S3', value: 's3' },
+          { label: __('Disk'), value: 'disk' },
+          { label: __('S3'), value: 's3' },
         ]"
         description="Whether to store on disk or on an S3 bucket."
       />
@@ -131,7 +131,7 @@ watch(
 
 function confirmSync() {
   createDialog({
-    title: 'Sync files from S3',
+    title: __('Sync files from S3'),
     component: markRaw(SyncBreakdown),
   })
 }
@@ -154,7 +154,7 @@ const updateSettings = createResource({
   onSuccess() {
     edited.value = false
     toast({
-      title: 'S3 settings updated successfully',
+      title: __('S3 settings updated successfully'),
     })
   },
 })

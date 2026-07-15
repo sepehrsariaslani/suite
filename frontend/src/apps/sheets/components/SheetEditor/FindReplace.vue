@@ -1,7 +1,7 @@
 <template>
   <div class="fr-panel">
     <div class="fr-header">
-      <span class="fr-title">Find &amp; Replace</span>
+      <span class="fr-title">{{ __('Find & Replace') }}</span>
       <Button variant="ghost" size="sm" icon="x" @click="emit('close')" />
     </div>
     <FormControl
@@ -54,7 +54,7 @@ function _buildMatches() {
   }
   matches.value  = found
   matchIndex.value = found.length ? 0 : -1
-  status.value = found.length ? `1 of ${found.length}` : 'No matches'
+  status.value = found.length ? __('{0} of {1}', [1, found.length]) : __('No matches')
 }
 
 watch(findQuery, () => {
@@ -65,7 +65,7 @@ watch(findQuery, () => {
 function findNext() {
   if (!matches.value.length) { _buildMatches(); if (!matches.value.length) return }
   matchIndex.value = (matchIndex.value + 1) % matches.value.length
-  status.value = `${matchIndex.value + 1} of ${matches.value.length}`
+  status.value = __('{0} of {1}', [matchIndex.value + 1, matches.value.length])
   emit('navigateTo', matches.value[matchIndex.value])
 }
 
@@ -88,7 +88,7 @@ function replaceAll() {
     props.sheet.setCell(id, cur.replace(new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi'), replaceQuery.value))
     count++
   }
-  status.value = `Replaced ${count} cell(s)`
+  status.value = __('Replaced {0} cells', [count])
   _buildMatches()
 }
 </script>

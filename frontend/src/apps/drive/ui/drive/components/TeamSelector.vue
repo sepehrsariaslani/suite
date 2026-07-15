@@ -1,7 +1,7 @@
 <template>
   <Combobox
     v-model="team"
-    placeholder="Select a team"
+    :placeholder="__('Select a team')"
     :options
     :disabled
     :open-on-click="true"
@@ -47,8 +47,8 @@ const options = computed<DropdownItem[]>(() => {
     icon: icons[k.icon || 'building'],
   }))
   return dynamicList([
-    { cond: props.none === true, label: 'Everywhere', value: 'all' },
-    { cond: props.none, label: 'Home', value: 'home' },
+    { cond: props.none === true, label: __('Everywhere'), value: 'all' },
+    { cond: props.none, label: __('Home'), value: 'home' },
     ...res,
   ])
 })

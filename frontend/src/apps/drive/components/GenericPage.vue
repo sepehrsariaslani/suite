@@ -113,12 +113,12 @@ const sortId = computed(
 const inIframe = inject('inIframe')
 const DEFAULT_SORT = inIframe.value
   ? {
-    label: 'Name',
+    label: __('Name'),
     field: 'name',
     ascending: true,
   }
   : {
-    label: 'Modified',
+    label: __('Modified'),
     field: 'modified',
     ascending: false,
   }
@@ -241,14 +241,14 @@ const actionItems = computed(() => {
   if (route.name === 'drive-Trash') {
     return [
       {
-        label: 'Restore',
+        label: __('Restore'),
         icon: LucideRotateCcw,
         action: () => (listDialog.value = 'restore'),
         multi: true,
         important: true,
       },
       {
-        label: 'Delete forever',
+        label: __('Delete forever'),
         icon: LucideTrash,
         action: () => (listDialog.value = 'd'),
         isEnabled: () => route.name === 'drive-Trash',
@@ -402,11 +402,11 @@ async function newLink() {
     const url = new URL(text)
     if (url.host)
       toast({
-        title: 'Link detected',
+        title: __('Link detected'),
         text,
         buttons: [
           {
-            label: 'Add',
+            label: __('Add'),
             onClick: () => {
               listDialog.value = 'l'
             },

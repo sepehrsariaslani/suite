@@ -8,7 +8,7 @@
     <span class="text-base text-center text-ink-gray-7">
       {{ error }}
     </span>
-    <Button class="w-full" variant="solid" @click="download"> Download </Button>
+    <Button class="w-full" variant="solid" @click="download">{{ __('Download') }}</Button>
   </div>
   <component :is="previewComponent" v-else :preview-entity="previewEntity" />
 </template>

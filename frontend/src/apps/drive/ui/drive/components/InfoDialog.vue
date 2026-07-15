@@ -180,17 +180,17 @@ const accessConfig = {
   team: {
     icon: LucideBuilding2,
     color: 'bg-surface-blue-2 text-ink-blue-5',
-    label: 'Team',
+    label: __('Team'),
   },
   public: {
     icon: LucideGlobe2,
     color: 'bg-surface-red-2 text-ink-red-6',
-    label: 'Public',
+    label: __('Public'),
   },
   restricted: {
     icon: LucideLock,
     color: 'text-ink-gray-7 bg-surface-gray-4',
-    label: 'Restricted',
+    label: __('Restricted'),
   },
 }
 </script>

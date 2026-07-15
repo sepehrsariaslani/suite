@@ -7,7 +7,7 @@
       resizeColumn: false,
       getRowRoute: (row) => getLink(row, false, false),
       emptyState: {
-        description: 'Nothing found - try something else?',
+        description: __('Nothing found - try something else?'),
       },
     }" @update:selections="handleSelections" @update:active-row="setActive">
     <ListHeader class="mb-[1px]" />

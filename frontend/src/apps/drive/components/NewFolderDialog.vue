@@ -1,14 +1,14 @@
 <template>
-  <Dialog v-model:open="open" title="Create a folder" size="xs" :actions="[
+  <Dialog v-model:open="open" :title="__('Create a folder')" size="xs" :actions="[
     {
-      label: 'Create',
+      label: __('Create'),
       variant: 'solid',
       disabled: folderName.length === 0,
       loading: createFolder.loading,
       onClick: submit,
     },
   ]" @close="dialogType = ''">
-    <FormControl v-model="folderName" autofocus label="Name:" @keyup.enter="submit"
+    <FormControl v-model="folderName" autofocus :label="__('Name:')" @keyup.enter="submit"
       @keydown="createFolder.error = null">
       <template #prefix>
         <LucideFolderClosed class="size-4" />

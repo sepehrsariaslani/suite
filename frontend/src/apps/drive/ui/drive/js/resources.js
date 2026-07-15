@@ -1,3 +1,4 @@
+import { translate as __ } from '@/boot/translation'
 import { createResource, toast } from 'frappe-ui'
 import { openEntity } from './utils'
 
@@ -13,15 +14,15 @@ export const getTeams = createResource({
 export const move = createResource({
   url: 'suite.drive.api.files.move',
   onSuccess(data) {
-    toast.success('Moved to ' + data.file_name, {
+    toast.success(__('Moved to ') + data.file_name, {
       action: {
-        label: 'Go to folder',
+        label: __('Go to folder'),
         onClick: () => openEntity({ name: data.name, is_folder: true }),
       },
     })
   },
   onError() {
-    toast.error('Could not move this file.')
+    toast.error(__('Could not move this file.'))
   },
 })
 

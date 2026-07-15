@@ -1,15 +1,15 @@
 <template>
-  <Dialog v-model:open="open" title="New Link" size="xs" :actions="[
+  <Dialog v-model:open="open" :title="__('New Link')" size="xs" :actions="[
     {
-      label: 'Create',
+      label: __('Create'),
       variant: 'solid',
       loading: createLink.loading,
       onClick: createLink.submit,
     },
   ]" @close="dialogType = ''">
     <div class="flex flex-col gap-4">
-      <FormControl v-model="file_name" autofocus label="Link name" type="text" @keydown="createLink.error = null" />
-      <FormControl v-model="link" label="URL" type="url" @keydown.enter="createLink.submit"
+      <FormControl v-model="file_name" autofocus :label="__('Link name')" type="text" @keydown="createLink.error = null" />
+      <FormControl v-model="link" :label="__('URL')" type="url" @keydown.enter="createLink.submit"
         @keydown="createLink.error = null" />
     </div>
     <div v-if="createLink.error" class="pt-4 text-base font-sm text-ink-red-6">

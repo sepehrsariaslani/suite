@@ -4,7 +4,7 @@
     :icon="LucideFileText"
     :empty="{
       icon: LucideFileText,
-      title: 'No documents yet',
+      title: __('No documents yet'),
       description: `Use Writer to create documents.`,
     }"
   />

@@ -1,3 +1,4 @@
+import { translate as __ } from '@/boot/translation'
 import { ref, computed, reactive } from 'vue'
 import { v4 as uuid4 } from 'uuid'
 import {
@@ -112,7 +113,7 @@ const changeSlide = async (index, focus = true) => {
 const resetAndSave = async () => {
 	await resetFocus()
 	if (!dirty.value) {
-		toast.info('No changes to save')
+		toast.info(__('No changes to save'))
 		return
 	}
 	const toastProps = {

@@ -235,7 +235,7 @@ msgstr ""
 
 #: frontend/src/apps/sheets/components/SheetEditor/ShareDialog.vue
 msgid "Accessible to all"
-msgstr ""
+msgstr "همه دسترسی دارند"
 
 #: frontend/src/apps/mail/components/Modals/SettingsModal.vue frontend/src/apps/mail/components/Settings/Account.vue suite/mail/doctype/address_book/address_book.json suite/mail/doctype/calendar/calendar.json suite/mail/doctype/calendar_event/calendar_event.json suite/mail/doctype/calendar_exchange/calendar_exchange.json suite/mail/doctype/contact_card/contact_card.json suite/mail/doctype/contacts_exchange/contacts_exchange.json
 msgid "Account"
@@ -387,7 +387,7 @@ msgstr "افزودن"
 
 #: frontend/src/apps/sheets/components/SheetEditor/index.vue
 msgid "Add / edit comment"
-msgstr ""
+msgstr "افزودن یا ویرایش دیدگاه"
 
 #: frontend/src/apps/mail/components/Modals/AddContactAddressModal.vue
 msgid "Add Address"
@@ -411,7 +411,7 @@ msgstr "افزودن مخاطب"
 
 #: frontend/src/apps/meet/data/backgroundEffects.ts
 msgid "Add Custom"
-msgstr ""
+msgstr "افزودن پس‌زمینه دلخواه"
 
 #: frontend/src/apps/mail/components/Modals/AddDomainModal.vue frontend/src/apps/mail/pages/dashboard/DomainsView.vue
 msgid "Add Domain"
@@ -587,15 +587,15 @@ msgstr ""
 
 #: frontend/src/apps/sheets/components/SheetEditor/index.vue
 msgid "AI"
-msgstr ""
+msgstr "هوش مصنوعی"
 
 #: frontend/src/apps/sheets/components/SheetEditor/AISettingsDialog.vue
 msgid "AI Assist"
-msgstr ""
+msgstr "دستیار هوش مصنوعی"
 
 #: frontend/src/apps/sheets/components/SheetEditor/index.vue
 msgid "AI settings"
-msgstr ""
+msgstr "تنظیمات هوش مصنوعی"
 
 #: frontend/src/apps/calendar/components/EventAlertList.vue
 msgid "Alert"
@@ -623,7 +623,7 @@ msgstr "همه"
 
 #: frontend/src/apps/sheets/components/SheetEditor/toolbar.config.js
 msgid "All borders"
-msgstr ""
+msgstr "همه کادرها"
 
 #: frontend/src/apps/mail/components/Modals/ContactsModal.vue
 msgid "All Contacts"
@@ -659,7 +659,7 @@ msgstr ""
 
 #: frontend/src/apps/sheets/components/SheetEditor/VersionHistory.vue
 msgid "All versions"
-msgstr ""
+msgstr "همه نسخه‌ها"
 
 #: frontend/src/apps/mail/pages/ScreenerView.vue
 msgid "Allow"
@@ -679,7 +679,7 @@ msgstr ""
 
 #: frontend/src/apps/meet/components/settings/MeetingAccessSettingsTab.vue
 msgid "Allow Guests"
-msgstr ""
+msgstr "اجازه ورود مهمانان"
 
 #: suite/mail/doctype/mail_cluster_store/mail_cluster_store.json
 msgid "Allow Invalid Certs"
@@ -707,7 +707,7 @@ msgstr ""
 
 #: frontend/src/apps/writer/extensions/components/MathPopup.vue
 msgid "Alpha"
-msgstr ""
+msgstr "آلفا (α)"
 
 #: frontend/src/apps/mail/pages/InviteSetupView.vue frontend/src/apps/mail/pages/SignupView.vue
 msgid "Already have an account? Log in."
@@ -779,7 +779,7 @@ msgstr ""
 
 #: frontend/src/apps/sheets/components/SheetEditor/AISettingsDialog.vue
 msgid "Anthropic API key"
-msgstr ""
+msgstr "کلید API آنتروپیک"
 
 #: suite/mail/doctype/mail_queue/mail_queue.json
 msgid "API"
@@ -811,7 +811,7 @@ msgstr ""
 
 #: frontend/src/apps/calendar/components/Modals/SettingsModal.vue frontend/src/apps/calendar/components/Settings/AppearanceSettings.vue frontend/src/apps/mail/components/Modals/SettingsModal.vue frontend/src/apps/mail/components/Settings/AppearanceSettings.vue frontend/src/apps/slides/components/AppearanceProperties.vue suite/mail/doctype/user_settings/user_settings.json
 msgid "Appearance"
-msgstr ""
+msgstr "ظاهر"
 
 #: frontend/src/apps/calendar/components/Settings/AppearanceSettings.vue frontend/src/apps/mail/components/Settings/AppearanceSettings.vue
 msgid "Appearance updated."
@@ -835,15 +835,15 @@ msgstr ""
 
 #: frontend/src/apps/slides/components/SlideProperties.vue
 msgid "Apply To All Slides"
-msgstr ""
+msgstr "اعمال روی همه اسلایدها"
 
 #: frontend/src/apps/sheets/components/SheetEditor/toolbar.config.js
 msgid "Apply to selection"
-msgstr ""
+msgstr "اعمال روی محدوده انتخاب‌شده"
 
 #: frontend/src/apps/writer/components/WriterSettings.vue
 msgid "Apply watermark to PDF"
-msgstr ""
+msgstr "افزودن واترمارک به PDF"
 
 #: frontend/src/apps/calendar/components/AppSidebar.vue frontend/src/apps/drive/components/Sidebar.vue frontend/src/apps/mail/components/AppSidebar.vue frontend/src/apps/meet/components/MeetSidebar.vue
 msgid "Apps"
@@ -927,7 +927,7 @@ msgstr "آیا مطمئن هستید که می خواهید برای همیشه 
 
 #: frontend/src/apps/drive/components/FileTypePreview/MSOfficePreview.vue
 msgid "Are you sure you want to preview?"
-msgstr ""
+msgstr "از نمایش پیش‌نمایش مطمئن هستید؟"
 
 #: suite/mail/doctype/mail_server/mail_server.js
 msgid "Are you sure you want to proceed?"
@@ -971,7 +971,7 @@ msgstr "پیکان"
 
 #: frontend/src/apps/sheets/components/SheetEditor/index.vue
 msgid "Arrows (red/grey/green)"
-msgstr ""
+msgstr "پیکان‌ها (قرمز/خاکستری/سبز)"
 
 #: suite/drive/doctype/drive_user_invitation/drive_user_invitation.json
 msgid "As Guest"
@@ -991,7 +991,7 @@ msgstr ""
 
 #: frontend/src/apps/meet/components/CreatePollModal.vue
 msgid "Ask your audience something..."
-msgstr ""
+msgstr "پرسش خود را از شرکت‌کنندگان بنویسید…"
 
 #: frontend/src/apps/mail/components/Modals/EditInviteModal.vue frontend/src/apps/mail/pages/dashboard/InvitesView.vue
 msgid "Assigned Email"
@@ -1015,11 +1015,11 @@ msgstr "پیوست‌ها"
 
 #: frontend/src/apps/meet/components/settings/AudioSettingsTab.vue frontend/src/apps/meet/components/settings/SettingsDialog.vue
 msgid "Audio"
-msgstr ""
+msgstr "صدا"
 
 #: frontend/src/apps/meet/pages/AudioTest.vue
 msgid "Audio Notification Test"
-msgstr ""
+msgstr "آزمایش صدای اعلان‌ها"
 
 #: frontend/src/apps/mail/components/AttachmentViewer.vue
 msgid "Audio Preview"
@@ -1051,7 +1051,7 @@ msgstr ""
 
 #: frontend/src/apps/sheets/components/SheetEditor/index.vue
 msgid "Auto (locale)"
-msgstr ""
+msgstr "خودکار (بر اساس زبان)"
 
 #: suite/drive/doctype/drive_settings/drive_settings.json
 msgid "Auto Detect Links"
@@ -1063,7 +1063,7 @@ msgstr ""
 
 #: frontend/src/apps/meet/components/settings/LayoutSettingsTab.vue
 msgid "Auto-hide header and controls"
-msgstr ""
+msgstr "پنهان‌کردن خودکار سربرگ و کنترل‌ها"
 
 #: frontend/src/apps/mail/components/Settings/VacationResponseSettings.vue
 msgid "Auto-reply to incoming mails while you’re away."
@@ -1095,7 +1095,7 @@ msgstr ""
 
 #: frontend/src/apps/drive/components/Settings/PreferencesSettings.vue
 msgid "Automatically detect links"
-msgstr ""
+msgstr "تشخیص خودکار پیوندها"
 
 #: frontend/src/apps/mail/components/Modals/FolderModal.vue
 msgid "Automatically mark emails as read when they are moved to this folder."
@@ -1123,7 +1123,7 @@ msgstr ""
 
 #: frontend/src/apps/slides/components/VideoProperties.vue
 msgid "Autoplay"
-msgstr ""
+msgstr "پخش خودکار"
 
 #: frontend/src/apps/calendar/components/Modals/EventModal.vue
 msgid "Availability"
@@ -1139,7 +1139,7 @@ msgstr ""
 
 #: frontend/src/apps/sheets/engine/pivot.js
 msgid "AVERAGE"
-msgstr ""
+msgstr "میانگین (AVERAGE)"
 
 #: suite/drive/doctype/drive_disk_settings/drive_disk_settings.json
 msgid "AWS Key"
@@ -1163,7 +1163,7 @@ msgstr "بازگشت به فهرست برنامه‌ها"
 
 #: frontend/src/apps/meet/components/settings/BackgroundSettingsTab.vue frontend/src/apps/meet/components/settings/SettingsDialog.vue suite/slides/doctype/slide/slide.json
 msgid "Background"
-msgstr ""
+msgstr "پس‌زمینه"
 
 #: frontend/src/apps/slides/components/SlideProperties.vue
 msgid "Background Color"
@@ -1179,11 +1179,11 @@ msgstr ""
 
 #: frontend/src/apps/slides/components/LayoutProperties.vue
 msgid "Backward"
-msgstr ""
+msgstr "یک لایه عقب‌تر"
 
 #: frontend/src/apps/meet/components/KickParticipantDialog.vue
 msgid "Ban from this meeting?"
-msgstr ""
+msgstr "از ورود دوباره به این جلسه جلوگیری شود؟"
 
 #: suite/meet/doctype/sae_meeting/sae_meeting.json
 msgid "Banned Users"
@@ -1211,7 +1211,7 @@ msgstr ""
 
 #: frontend/src/apps/meet/data/backgroundEffects.ts
 msgid "Beach"
-msgstr ""
+msgstr "ساحل"
 
 #: suite/mail/doctype/mail_cluster_store_http_auth/mail_cluster_store_http_auth.json
 msgid "Bearer Token"
@@ -1499,11 +1499,11 @@ msgstr "می‌تواند حاوی هر مقدار متا مورد نیاز بر
 
 #: frontend/src/apps/sheets/components/SheetEditor/ShareDialog.vue
 msgid "Can edit"
-msgstr "می تواند ویرایش کند"
+msgstr "امکان ویرایش"
 
 #: frontend/src/apps/sheets/components/SheetEditor/ShareDialog.vue
 msgid "Can view"
-msgstr "می تواند مشاهده کند"
+msgstr "امکان مشاهده"
 
 #: frontend/src/apps/calendar/components/Modals/EventModal.vue frontend/src/apps/mail/components/Modals/ScreenedEmailAddressModal.vue frontend/src/apps/mail/components/Modals/SetSieveScriptStateModal.vue frontend/src/apps/sheets/components/SheetEditor/NamedRangesDialog.vue frontend/src/apps/sheets/components/SheetEditor/SplitTextPopover.vue frontend/src/apps/sheets/pages/Home.vue
 msgid "Cancel"
@@ -1531,7 +1531,7 @@ msgstr "نمی‌توان یک رویداد موجود را به‌عنوان پ
 
 #: frontend/src/apps/drive/components/FileRender.vue
 msgid "Cannot open file"
-msgstr ""
+msgstr "فایل باز نمی‌شود"
 
 #: suite/mail/doctype/mail_queue/mail_queue.py
 msgid "Cannot retry a mail with status {0}"
@@ -1615,11 +1615,11 @@ msgstr "Charset"
 
 #: frontend/src/apps/sheets/components/SheetEditor/ChartDialog.vue
 msgid "Chart type"
-msgstr ""
+msgstr "نوع نمودار"
 
 #: frontend/src/apps/sheets/components/SheetEditor/toolbar.config.js
 msgid "Chart…"
-msgstr ""
+msgstr "نمودار…"
 
 #: frontend/src/apps/meet/components/ChatPanel.vue frontend/src/apps/meet/components/MeetingToolbar.vue
 msgid "Chat"
@@ -1635,7 +1635,7 @@ msgstr ""
 
 #: frontend/src/apps/sheets/components/SheetEditor/index.vue
 msgid "Checkbox"
-msgstr ""
+msgstr "کادر انتخاب"
 
 #: suite/mail/doctype/address_book/address_book.json
 msgid "Checked if the user has indicated they wish to see this Address Book in their client."
@@ -1659,11 +1659,11 @@ msgstr ""
 
 #: frontend/src/apps/sheets/components/SheetEditor/index.vue
 msgid "Circles (empty → full)"
-msgstr ""
+msgstr "دایره‌ها (خالی تا پُر)"
 
 #: frontend/src/apps/sheets/components/SheetEditor/AISettingsDialog.vue
 msgid "claude-opus-4-8"
-msgstr ""
+msgstr "claude-opus-4-8"
 
 #: frontend/src/apps/drive/components/Navbar.vue
 msgid "Clear"
@@ -1691,7 +1691,7 @@ msgstr "پاک‌کردن حافظه موقت"
 
 #: frontend/src/apps/sheets/components/SheetEditor/index.vue
 msgid "Clear cell"
-msgstr ""
+msgstr "پاک‌کردن سلول"
 
 #: frontend/src/apps/mail/components/Modals/SearchModal.vue
 msgid "Clear Filters"
@@ -1699,7 +1699,7 @@ msgstr "پاک کردن فیلترها"
 
 #: frontend/src/apps/sheets/components/SheetEditor/toolbar.config.js frontend/src/apps/writer/components/core-editor/menu-buttons.js
 msgid "Clear formatting"
-msgstr ""
+msgstr "پاک‌کردن قالب‌بندی"
 
 #: suite/mail/doctype/user_settings/user_settings.js
 msgid "Clear JMAP Session"
@@ -2187,7 +2187,7 @@ msgstr "ساخت نظرسنجی"
 
 #: frontend/src/apps/writer/components/ContextMenu.vue
 msgid "Create Shortcut…"
-msgstr ""
+msgstr "ساخت میان‌بر…"
 
 #: frontend/src/apps/writer/components/VersionsSidebar.vue
 msgid "Create Version"
@@ -2359,7 +2359,7 @@ msgstr "اعشاری - هندی (1,23,456)"
 
 #: frontend/src/apps/sheets/components/SheetEditor/toolbar.config.js
 msgid "Decrease decimal places"
-msgstr ""
+msgstr "کاهش رقم‌های اعشار"
 
 #: suite/mail/doctype/push_subscription/push_subscription.py
 msgid "Decrypted payload exceeds maximum allowed size."
@@ -2371,7 +2371,7 @@ msgstr ""
 
 #: frontend/src/apps/writer/components/core-editor/menu-buttons.js
 msgid "Dedent"
-msgstr ""
+msgstr "کاهش تورفتگی"
 
 #: suite/mail/doctype/mail_exchange/mail_exchange.json
 msgid "Deduplicate by Message-ID"
@@ -2467,7 +2467,7 @@ msgstr ""
 
 #: frontend/src/apps/sheets/components/SheetEditor/ChartOverlay.vue
 msgid "Delete chart"
-msgstr ""
+msgstr "حذف نمودار"
 
 #: frontend/src/apps/mail/pages/ContactView.vue
 msgid "Delete Contact"
@@ -2667,7 +2667,7 @@ msgstr "توسعه‌دهنده"
 
 #: frontend/src/apps/writer/components/ContextMenu.vue
 msgid "Developer Tools"
-msgstr ""
+msgstr "ابزارهای توسعه‌دهنده"
 
 #: frontend/src/apps/mail/components/Modals/AddPushSubscriptionModal.vue frontend/src/apps/mail/components/Settings/PushSubscriptionSettings.vue suite/mail/doctype/push_subscription/push_subscription.json
 msgid "Device Client ID"
@@ -2751,7 +2751,7 @@ msgstr "دیسک"
 
 #: frontend/src/apps/meet/components/JoinRequestNotifications.vue
 msgid "Dismiss request"
-msgstr ""
+msgstr "بستن درخواست"
 
 #: frontend/src/apps/mail/components/IdentitySettingsListView.vue frontend/src/apps/mail/components/Settings/IdentitySettings.vue suite/mail/doctype/email_address/email_address.json suite/mail/doctype/mail_message_recipient/mail_message_recipient.json suite/meet/doctype/sae_meeting_user/sae_meeting_user.json
 msgid "Display Name"
@@ -2955,7 +2955,7 @@ msgstr "فایل‌ها را برای آپلود رها کنید"
 
 #: frontend/src/apps/drive/components/GenericPage.vue
 msgid "Drop to upload"
-msgstr ""
+msgstr "برای بارگذاری اینجا رها کنید"
 
 #: frontend/src/apps/sheets/pages/Home.vue frontend/src/apps/slides/components/Navbar.vue frontend/src/apps/slides/components/PresentationList.vue frontend/src/apps/slides/components/PresentationPreview.vue
 msgid "Duplicate"
@@ -2991,23 +2991,23 @@ msgstr ""
 
 #: frontend/src/apps/sheets/components/SheetEditor/SplitTextPopover.vue
 msgid "e.g. ::"
-msgstr ""
+msgstr "مثلاً ::"
 
 #: frontend/src/apps/sheets/components/SheetEditor/ChartDialog.vue
 msgid "e.g. A1:D20"
-msgstr ""
+msgstr "مثلاً A1:D20"
 
 #: frontend/src/apps/sheets/components/SheetEditor/PivotDialog.vue
 msgid "e.g. A1:F100"
-msgstr ""
+msgstr "مثلاً A1:F100"
 
 #: frontend/src/apps/sheets/components/SheetEditor/NamedRangesDialog.vue
 msgid "e.g. B2:B100"
-msgstr ""
+msgstr "مثلاً B2:B100"
 
 #: frontend/src/apps/sheets/components/SheetEditor/NamedRangesDialog.vue
 msgid "e.g. Revenue"
-msgstr ""
+msgstr "مثلاً درآمد"
 
 #: suite/meet/doctype/sae_meeting/sae_meeting.json
 msgid "E2EE"
@@ -3019,11 +3019,11 @@ msgstr ""
 
 #: frontend/src/apps/meet/data/backgroundEffects.ts
 msgid "Earth & Moon"
-msgstr ""
+msgstr "زمین و ماه"
 
 #: frontend/src/apps/writer/utils/index.js
 msgid "EB Garamond"
-msgstr ""
+msgstr "EB Garamond"
 
 #: suite/mail/doctype/push_subscription/push_subscription.py
 msgid "ECDH key exchange failed."
@@ -3051,11 +3051,11 @@ msgstr "ویرایش"
 
 #: frontend/src/apps/sheets/components/SheetEditor/index.vue
 msgid "Edit cell"
-msgstr ""
+msgstr "ویرایش سلول"
 
 #: frontend/src/apps/sheets/components/SheetEditor/ChartOverlay.vue
 msgid "Edit chart"
-msgstr ""
+msgstr "ویرایش نمودار"
 
 #: frontend/src/apps/mail/components/MailActions.vue
 msgid "Edit Draft"
@@ -3079,7 +3079,7 @@ msgstr ""
 
 #: frontend/src/apps/sheets/components/SheetEditor/usePivotIntegration.js
 msgid "Edit pivot"
-msgstr ""
+msgstr "ویرایش جدول محوری"
 
 #: frontend/src/apps/mail/pages/MailboxView.vue
 msgid "Edit search"
@@ -3223,7 +3223,7 @@ msgstr "فعال‌سازی"
 
 #: frontend/src/apps/sheets/components/SheetEditor/AISettingsDialog.vue suite/sheets/doctype/sheets_ai_settings/sheets_ai_settings.json
 msgid "Enable AI Assist"
-msgstr ""
+msgstr "فعال‌کردن دستیار هوش مصنوعی"
 
 #: suite/mail/doctype/mail_settings/mail_settings.json
 msgid "Enable Gravatar"
@@ -3235,7 +3235,7 @@ msgstr ""
 
 #: frontend/src/apps/meet/components/settings/NotificationSettingsTab.vue
 msgid "Enable notification sounds"
-msgstr ""
+msgstr "فعال‌کردن صدای اعلان‌ها"
 
 #: suite/mail/doctype/mail_settings/mail_settings.json
 msgid "Enable Push Encryption"
@@ -3275,7 +3275,7 @@ msgstr ""
 
 #: frontend/src/apps/meet/components/MeetingInfoDialog.vue
 msgid "Encryption fingerprint"
-msgstr ""
+msgstr "اثر انگشت رمزنگاری"
 
 #: frontend/src/apps/calendar/components/EventAlertList.vue frontend/src/apps/calendar/components/Modals/EventRepeatSettingsModal.vue frontend/src/apps/meet/pages/Home.vue
 msgid "End"
@@ -3291,7 +3291,7 @@ msgstr "زمان پایان"
 
 #: frontend/src/apps/meet/components/settings/E2EESettingsSection.vue
 msgid "End-to-end encryption"
-msgstr ""
+msgstr "رمزنگاری سرتاسری"
 
 #: suite/mail/doctype/server_ansible_play/server_ansible_play.json suite/mail/doctype/server_ansible_play_task/server_ansible_play_task.json suite/mail/doctype/server_deployment/server_deployment.json suite/mail/doctype/server_job/server_job.json suite/mail/doctype/server_job_command/server_job_command.json
 msgid "Ended At"
@@ -3331,11 +3331,11 @@ msgstr "نوع موجودیت"
 
 #: frontend/src/apps/meet/components/RejectionOverlay.vue
 msgid "Entry denied"
-msgstr ""
+msgstr "درخواست ورود رد شد"
 
 #: frontend/src/apps/sheets/components/SheetEditor/index.vue
 msgid "Equal to"
-msgstr ""
+msgstr "برابر با"
 
 #: frontend/src/apps/sheets/components/SheetEditor/index.vue
 msgid "Equals"
@@ -3359,7 +3359,7 @@ msgstr ""
 
 #: frontend/src/apps/sheets/components/SheetEditor/index.vue
 msgid "EUR (€)"
-msgstr ""
+msgstr "یورو (€)"
 
 #: suite/mail/doctype/event_notification/event_notification.json
 msgid "Event"
@@ -3439,11 +3439,11 @@ msgstr "هر {0} {1}"
 
 #: frontend/src/apps/meet/components/ParticipantTile.vue
 msgid "Everyone else can see what you are presenting"
-msgstr ""
+msgstr "همه می‌توانند محتوای ارائه‌شده را ببینند"
 
 #: frontend/src/apps/meet/components/MeetingInfoDialog.vue
 msgid "Everyone in this encrypted meeting should see the same fingerprint."
-msgstr ""
+msgstr "همه افراد این جلسه رمزنگاری‌شده باید اثر انگشت یکسانی ببینند."
 
 #: frontend/src/apps/writer/components/WriterSettings.vue
 msgid "Everywhere"
@@ -3943,7 +3943,7 @@ msgstr ""
 
 #: frontend/src/apps/writer/utils/index.js
 msgid "Fantasy"
-msgstr ""
+msgstr "فانتزی"
 
 #: frontend/src/apps/drive/components/GenericPage.vue frontend/src/apps/drive/components/Navbar.vue frontend/src/apps/writer/components/Navbar.vue
 msgid "Favourite"
@@ -3995,11 +3995,11 @@ msgstr ""
 
 #: frontend/src/apps/slides/components/ShapeProperties.vue
 msgid "Fill Color"
-msgstr ""
+msgstr "رنگ زمینه"
 
 #: frontend/src/apps/sheets/components/SheetEditor/index.vue
 msgid "Fill down / right"
-msgstr ""
+msgstr "پرکردن به پایین یا راست"
 
 #: suite/mail/doctype/calendar_exchange/calendar_exchange.json suite/mail/doctype/contacts_exchange/contacts_exchange.json suite/mail/doctype/mail_exchange/mail_exchange.json
 msgid "Filter"
@@ -4011,7 +4011,7 @@ msgstr ""
 
 #: frontend/src/apps/sheets/components/SheetEditor/ChartDialog.vue
 msgid "Filter columns…"
-msgstr ""
+msgstr "فیلتر ستون‌ها…"
 
 #: frontend/src/apps/mail/pages/MailboxView.vue suite/mail/doctype/calendar_exchange/calendar_exchange.json suite/mail/doctype/contacts_exchange/contacts_exchange.json suite/mail/doctype/mail_exchange/mail_exchange.json
 msgid "Filters"
@@ -4023,11 +4023,11 @@ msgstr "پیدا کردن"
 
 #: frontend/src/apps/sheets/components/SheetEditor/index.vue
 msgid "Find & replace"
-msgstr ""
+msgstr "یافتن و جایگزینی"
 
 #: frontend/src/apps/sheets/components/SheetEditor/FindReplace.vue
 msgid "Find next"
-msgstr ""
+msgstr "یافتن مورد بعدی"
 
 #: frontend/src/apps/calendar/components/Modals/EventRepeatSettingsModal.vue
 msgid "First"
@@ -4047,7 +4047,7 @@ msgstr ""
 
 #: frontend/src/apps/sheets/components/SheetEditor/ChartDialog.vue
 msgid "First row is header"
-msgstr ""
+msgstr "ردیف اول سربرگ است"
 
 #: suite/mail/doctype/mail_message/mail_message.json
 msgid "Flagged"
@@ -4055,11 +4055,11 @@ msgstr ""
 
 #: frontend/src/apps/slides/components/ImageProperties.vue
 msgid "Flip Horizontal"
-msgstr ""
+msgstr "وارونگی افقی"
 
 #: frontend/src/apps/slides/components/ImageProperties.vue
 msgid "Flip Vertical"
-msgstr ""
+msgstr "وارونگی عمودی"
 
 #: frontend/src/apps/mail/components/Modals/SearchModal.vue frontend/src/apps/mail/components/Settings/MailExportSettings.vue frontend/src/apps/mail/components/Settings/MailImportSettings.vue frontend/src/apps/writer/components/Navbar.vue
 msgid "Folder"
@@ -4107,7 +4107,7 @@ msgstr ""
 
 #: frontend/src/apps/writer/components/WriterSettings.vue
 msgid "Font Family"
-msgstr ""
+msgstr "خانواده قلم"
 
 #: frontend/src/apps/writer/components/WriterSettings.vue
 msgid "Font Size"
@@ -4115,19 +4115,19 @@ msgstr "اندازه فونت"
 
 #: frontend/src/apps/writer/components/core-editor/menu-buttons.js
 msgid "FontOptions"
-msgstr ""
+msgstr "گزینه‌های قلم"
 
 #: frontend/src/apps/writer/components/WriterSettings.vue
 msgid "Footer Left"
-msgstr ""
+msgstr "پابرگ سمت چپ"
 
 #: frontend/src/apps/writer/components/WriterSettings.vue
 msgid "Footer Right"
-msgstr ""
+msgstr "پابرگ سمت راست"
 
 #: frontend/src/apps/writer/components/WriterSettings.vue
 msgid "Footer separator line"
-msgstr ""
+msgstr "خط جداکننده پابرگ"
 
 #: suite/mail/doctype/mail_account_request/mail_account_request.js
 msgid "Force Verify and Create Account"
@@ -4147,11 +4147,11 @@ msgstr ""
 
 #: frontend/src/apps/sheets/components/SheetEditor/toolbar.config.js
 msgid "Format painter"
-msgstr ""
+msgstr "انتقال قالب‌بندی"
 
 #: frontend/src/apps/sheets/components/SheetEditor/index.vue
 msgid "Formatting"
-msgstr ""
+msgstr "قالب‌بندی"
 
 #: frontend/src/apps/mail/components/ComposeMailEditor.vue frontend/src/apps/mail/components/MailActions.vue frontend/src/apps/mail/components/MailThread.vue frontend/src/apps/slides/components/LayoutProperties.vue
 msgid "Forward"
@@ -4275,11 +4275,11 @@ msgstr "نام و نام خانوادگی"
 
 #: frontend/src/apps/sheets/components/SheetEditor/index.vue
 msgid "GBP (£)"
-msgstr ""
+msgstr "پوند بریتانیا (£)"
 
 #: frontend/src/apps/writer/utils/index.js
 msgid "Geist"
-msgstr ""
+msgstr "Geist"
 
 #: frontend/src/apps/drive/ui/drive/components/InfoDialog.vue frontend/src/apps/mail/components/Modals/FolderModal.vue frontend/src/apps/mail/components/Modals/SettingsModal.vue frontend/src/apps/meet/pages/MeetLayout.vue frontend/src/apps/sheets/components/SheetEditor/index.vue suite/drive/doctype/drive_disk_settings/drive_disk_settings.json suite/meet/doctype/sae_meeting/sae_meeting.json
 msgid "General"
@@ -4287,7 +4287,7 @@ msgstr "عمومی"
 
 #: frontend/src/apps/sheets/components/SheetEditor/ShareDialog.vue
 msgid "General Access"
-msgstr ""
+msgstr "دسترسی عمومی"
 
 #: frontend/src/apps/mail/pages/AddressBookView.vue frontend/src/apps/mail/pages/ContactView.vue
 msgid "General Information"
@@ -4331,11 +4331,11 @@ msgstr "برگرد"
 
 #: frontend/src/apps/slides/pages/errorPages/NotPermitted.vue
 msgid "Go back to Home"
-msgstr ""
+msgstr "بازگشت به خانه"
 
 #: frontend/src/apps/drive/components/ErrorPage.vue
 msgid "Go Home"
-msgstr ""
+msgstr "رفتن به خانه"
 
 #: suite/drive/workspace/drive/drive.json
 msgid "Go to Drive"
@@ -4355,7 +4355,7 @@ msgstr ""
 
 #: frontend/src/apps/drive/components/GenericPage.vue frontend/src/apps/drive/components/Navbar.vue
 msgid "Go to original"
-msgstr ""
+msgstr "رفتن به فایل اصلی"
 
 #: frontend/src/apps/mail/components/Modals/ShortcutsModal.vue
 msgid "Go to Previous Mail"
@@ -4375,15 +4375,15 @@ msgstr "خاکستری"
 
 #: frontend/src/apps/sheets/components/SheetEditor/index.vue
 msgid "Greater or equal"
-msgstr ""
+msgstr "بزرگ‌تر یا مساوی"
 
 #: frontend/src/apps/sheets/components/SheetEditor/index.vue
 msgid "Greater than"
-msgstr ""
+msgstr "بزرگ‌تر از"
 
 #: frontend/src/apps/sheets/components/SheetEditor/index.vue
 msgid "Greater than or equal"
-msgstr ""
+msgstr "بزرگ‌تر یا مساوی"
 
 #: frontend/src/apps/mail/components/Modals/FolderModal.vue
 msgid "Green"
@@ -4391,7 +4391,7 @@ msgstr "سبز"
 
 #: frontend/src/apps/writer/components/RoundedListView.vue
 msgid "Grid"
-msgstr ""
+msgstr "شبکه‌ای"
 
 #: frontend/src/apps/sheets/pages/Home.vue
 msgid "Grid view"
@@ -4583,7 +4583,7 @@ msgstr "آستانه اسکن ترکیبی"
 
 #: frontend/src/apps/drive/pages/Signup.vue
 msgid "I accept the"
-msgstr ""
+msgstr "می‌پذیرم:"
 
 #: frontend/src/apps/writer/utils/index.js
 msgid "IBM Plex Sans"
@@ -4699,7 +4699,7 @@ msgstr ""
 
 #: frontend/src/apps/sheets/components/SheetEditor/index.vue
 msgid "Import CSV"
-msgstr ""
+msgstr "ورود فایل CSV"
 
 #: suite/mail/doctype/calendar_exchange/calendar_exchange.py suite/mail/doctype/contacts_exchange/contacts_exchange.py suite/mail/doctype/mail_exchange/mail_exchange.py
 msgid "Import failed. See the error details below."
@@ -4727,7 +4727,7 @@ msgstr ""
 
 #: frontend/src/apps/sheets/components/SheetEditor/index.vue
 msgid "Import XLSX"
-msgstr ""
+msgstr "ورود فایل XLSX"
 
 #: suite/mail/doctype/contacts_exchange/contacts_exchange.py
 msgid "Imported {0} of {1} contact(s)."
@@ -4767,7 +4767,7 @@ msgstr ""
 
 #: frontend/src/apps/meet/components/AvatarGroup.vue
 msgid "in the meeting"
-msgstr ""
+msgstr "در جلسه هستند"
 
 #: frontend/src/apps/mail/components/MailListItem.vue frontend/src/apps/mail/components/Modals/SearchModal.vue
 msgid "in {0}"
@@ -4819,7 +4819,7 @@ msgstr "ورودی"
 
 #: frontend/src/apps/sheets/components/SheetEditor/toolbar.config.js
 msgid "Increase decimal places"
-msgstr ""
+msgstr "افزایش رقم‌های اعشار"
 
 #: frontend/src/apps/writer/components/core-editor/menu-buttons.js
 msgid "Indent"
@@ -4879,15 +4879,15 @@ msgstr "شخصی"
 
 #: frontend/src/apps/writer/extensions/components/MathPopup.vue
 msgid "Infinity"
-msgstr ""
+msgstr "بی‌نهایت (∞)"
 
 #: frontend/src/apps/sheets/components/SheetEditor/toolbar.config.js
 msgid "Inner borders"
-msgstr ""
+msgstr "کادرهای داخلی"
 
 #: frontend/src/apps/sheets/components/SheetEditor/index.vue
 msgid "INR (₹)"
-msgstr ""
+msgstr "روپیه هند (₹)"
 
 #: frontend/src/apps/mail/components/Modals/ContactsModal.vue frontend/src/apps/sheets/components/SheetEditor/commandPalette.config.js frontend/src/apps/sheets/components/SheetEditor/toolbar.config.js
 msgid "Insert"
@@ -4895,11 +4895,11 @@ msgstr "درج"
 
 #: frontend/src/apps/sheets/components/SheetEditor/index.vue frontend/src/apps/sheets/components/SheetEditor/toolbar.config.js
 msgid "Insert hyperlink"
-msgstr ""
+msgstr "افزودن پیوند"
 
 #: frontend/src/apps/slides/components/Toolbar.vue
 msgid "Insert Slide"
-msgstr ""
+msgstr "افزودن اسلاید"
 
 #: frontend/src/apps/mail/components/InstallPrompt.vue
 msgid "Install"
@@ -4951,7 +4951,7 @@ msgstr "جلسه فوری"
 
 #: frontend/src/apps/writer/extensions/components/MathPopup.vue
 msgid "Integral"
-msgstr ""
+msgstr "انتگرال (∫)"
 
 #: frontend/src/apps/sheets/components/SheetEditor/index.vue frontend/src/apps/writer/utils/index.js
 msgid "Inter"
@@ -4959,7 +4959,7 @@ msgstr "Inter"
 
 #: frontend/src/apps/meet/components/settings/SettingsDialog.vue
 msgid "Interface"
-msgstr ""
+msgstr "رابط کاربری"
 
 #: suite/mail/doctype/mail_cluster_store/mail_cluster_store.json
 msgid "Interval between polling for task status."
@@ -5099,7 +5099,7 @@ msgstr "دعوت شده توسط"
 
 #: frontend/src/apps/mail/pages/dashboard/MembersView.vue
 msgid "Invites"
-msgstr ""
+msgstr "دعوت‌ها"
 
 #: frontend/src/apps/mail/pages/dashboard/InvitesView.vue
 msgid "Invites deleted."
@@ -5135,7 +5135,7 @@ msgstr ""
 
 #: frontend/src/apps/sheets/components/SheetEditor/index.vue
 msgid "Is empty"
-msgstr ""
+msgstr "خالی است"
 
 #: suite/mail/doctype/mail_account_request/mail_account_request.json
 msgid "Is Expired"
@@ -5143,7 +5143,7 @@ msgstr ""
 
 #: frontend/src/apps/sheets/components/SheetEditor/index.vue
 msgid "Is not empty"
-msgstr ""
+msgstr "خالی نیست"
 
 #: suite/mail/doctype/jmap_account/jmap_account.json
 msgid "Is Personal"
@@ -5175,7 +5175,7 @@ msgstr ""
 
 #: frontend/src/apps/sheets/components/SheetEditor/index.vue
 msgid "Italic"
-msgstr ""
+msgstr "مورب"
 
 #: frontend/src/apps/drive/components/DriveToolBar.vue
 msgid "item"
@@ -5191,7 +5191,7 @@ msgstr ""
 
 #: frontend/src/apps/writer/utils/index.js
 msgid "JetBrains Mono"
-msgstr ""
+msgstr "JetBrains Mono"
 
 #: suite/mail/doctype/user_account/user_account.py
 msgid "JMAP account {0} does not belong to any user."
@@ -5255,7 +5255,7 @@ msgstr ""
 
 #: frontend/src/apps/mail/components/Modals/AddContactModal.vue frontend/src/apps/meet/components/MeetingPreview.vue
 msgid "John Doe"
-msgstr ""
+msgstr "نام و نام خانوادگی"
 
 #: suite/mail/doctype/user_settings/user_settings.json
 msgid "john@example.com"
@@ -5287,15 +5287,15 @@ msgstr "ورود با کد جلسه"
 
 #: frontend/src/apps/sheets/components/SheetEditor/index.vue
 msgid "JPY (¥)"
-msgstr ""
+msgstr "ین ژاپن (¥)"
 
 #: frontend/src/apps/sheets/components/SheetEditor/index.vue
 msgid "Jump to data-region edge"
-msgstr ""
+msgstr "رفتن به لبه محدوده داده"
 
 #: frontend/src/apps/sheets/components/SheetEditor/index.vue
 msgid "Jump to start / end"
-msgstr ""
+msgstr "رفتن به ابتدا یا انتها"
 
 #: frontend/src/apps/mail/utils/useThreadActions.ts suite/mail/doctype/mail_message/mail_message.json
 msgid "Junk"
@@ -5303,7 +5303,7 @@ msgstr "هرزنامه"
 
 #: frontend/src/apps/drive/pages/Setup.vue
 msgid "Just a minute..."
-msgstr ""
+msgstr "کمی صبر کنید…"
 
 #: frontend/src/apps/sheets/pages/Home.vue
 msgid "just now"
@@ -5311,7 +5311,7 @@ msgstr "همین حالا"
 
 #: frontend/src/apps/sheets/components/SheetEditor/AskBar.vue
 msgid "Keep"
-msgstr ""
+msgstr "نگه‌داشتن"
 
 #: suite/mail/doctype/mail_settings/mail_settings.json suite/mail/doctype/rate_limit/rate_limit.json suite/mail/doctype/rate_limit/rate_limit.py suite/mail/doctype/server_ansible_play_variable/server_ansible_play_variable.json
 msgid "Key"
@@ -5331,7 +5331,7 @@ msgstr ""
 
 #: frontend/src/apps/sheets/components/SheetEditor/index.vue
 msgid "Keyboard shortcuts"
-msgstr ""
+msgstr "میان‌برهای صفحه‌کلید"
 
 #: suite/writer/doctype/writer_template/writer_template.json
 msgid "Keymap"
@@ -5403,7 +5403,7 @@ msgstr ""
 
 #: frontend/src/apps/writer/components/WriterDocumentsSkeleton.vue
 msgid "Last seven days"
-msgstr ""
+msgstr "هفت روز گذشته"
 
 #: frontend/src/apps/calendar/components/Modals/EventRepeatSettingsModal.vue
 msgid "Last {0} of Month"
@@ -5415,7 +5415,7 @@ msgstr ""
 
 #: frontend/src/apps/writer/extensions/components/MathPopup.vue
 msgid "LaTeX"
-msgstr ""
+msgstr "لاتک (LaTeX)"
 
 #: frontend/src/apps/meet/components/settings/LayoutSettingsTab.vue frontend/src/apps/meet/components/settings/SettingsDialog.vue frontend/src/apps/slides/components/LayoutProperties.vue
 msgid "Layout"
@@ -5431,7 +5431,7 @@ msgstr "چپ"
 
 #: frontend/src/apps/sheets/components/SheetEditor/toolbar.config.js
 msgid "Left border"
-msgstr ""
+msgstr "کادر چپ"
 
 #: suite/drive/doctype/drive_disk_settings/drive_disk_settings.json
 msgid "Legacy option.\n<br>\n<br>\nBy default, Drive stores files the way you see it. If this option is checked, the files are store flatly, with randomized names.\n"
@@ -5439,15 +5439,15 @@ msgstr "گزینه‌ی قدیمی.\n<br>\n<br>\nبه طور پیش‌فرض، �
 
 #: frontend/src/apps/sheets/components/SheetEditor/index.vue
 msgid "Less or equal"
-msgstr ""
+msgstr "کوچک‌تر یا مساوی"
 
 #: frontend/src/apps/sheets/components/SheetEditor/index.vue
 msgid "Less than"
-msgstr ""
+msgstr "کوچک‌تر از"
 
 #: frontend/src/apps/sheets/components/SheetEditor/index.vue
 msgid "Less than or equal"
-msgstr ""
+msgstr "کوچک‌تر یا مساوی"
 
 #: suite/drive/public/js/ff_integration.bundle.js
 msgid "Library"
@@ -5479,7 +5479,7 @@ msgstr "خط"
 
 #: frontend/src/apps/writer/components/WriterSettings.vue
 msgid "Line Height"
-msgstr ""
+msgstr "ارتفاع خط"
 
 #: suite/mail/doctype/event_link/event_link.json
 msgid "Link"
@@ -5499,7 +5499,7 @@ msgstr "فهرست"
 
 #: frontend/src/apps/sheets/components/SheetEditor/index.vue
 msgid "List of items"
-msgstr ""
+msgstr "فهرست گزینه‌ها"
 
 #: suite/mail/doctype/server_deployment_service/server_deployment_service.json
 msgid "List of port mappings, e.g. [\"25:25\", \"8080:8080\"]."
@@ -5539,7 +5539,7 @@ msgstr ""
 
 #: frontend/src/apps/meet/components/settings/BackgroundSettingsTab.vue
 msgid "Loading preview..."
-msgstr ""
+msgstr "در حال آماده‌سازی پیش‌نمایش…"
 
 #: frontend/src/apps/drive/components/SyncBreakdown.vue frontend/src/apps/mail/pages/AllInboxesView.vue frontend/src/apps/mail/pages/ContactsView.vue frontend/src/apps/mail/pages/MailboxView.vue frontend/src/apps/mail/pages/ScreenerView.vue frontend/src/apps/writer/components/DocumentList.vue suite/drive/public/js/TreeNode.vue suite/mail/doctype/mail_message/mail_message.js
 msgid "Loading..."
@@ -5603,19 +5603,19 @@ msgstr ""
 
 #: frontend/src/apps/slides/components/VideoProperties.vue
 msgid "Loop"
-msgstr ""
+msgstr "تکرار پخش"
 
 #: frontend/src/apps/writer/utils/index.js
 msgid "Lora"
-msgstr ""
+msgstr "Lora"
 
 #: frontend/src/apps/slides/SlidesShell.vue
 msgid "Lost internet connection."
-msgstr ""
+msgstr "اتصال اینترنت قطع شد."
 
 #: frontend/src/apps/meet/components/PeopleParticipantTile.vue
 msgid "Lower Hand"
-msgstr ""
+msgstr "پایین‌آوردن دست"
 
 #: suite/mail/doctype/mail_cluster_store/mail_cluster_store.json
 msgid "Machine ID"
@@ -5851,7 +5851,7 @@ msgstr ""
 
 #: frontend/src/apps/sheets/components/SheetEditor/VersionHistory.vue
 msgid "Make a copy"
-msgstr ""
+msgstr "ساخت یک نسخه کپی"
 
 #: suite/drive/doctype/drive_disk_settings/drive_disk_settings.json
 msgid "Make all uploaded files to be managed through Drive, instead of Framework."
@@ -5931,7 +5931,7 @@ msgstr ""
 
 #: frontend/src/apps/sheets/engine/pivot.js
 msgid "MAX"
-msgstr ""
+msgstr "بیشینه (MAX)"
 
 #: suite/mail/doctype/mail_cluster_store/mail_cluster_store.json
 msgid "Max Allowed Packet"
@@ -6071,11 +6071,11 @@ msgstr "شاید"
 
 #: frontend/src/apps/sheets/pages/Home.vue
 msgid "me"
-msgstr ""
+msgstr "من"
 
 #: frontend/src/apps/meet/components/settings/SettingsDialog.vue
 msgid "Media"
-msgstr ""
+msgstr "صدا و تصویر"
 
 #: frontend/src/apps/sheets/components/SheetEditor/index.vue
 msgid "Medium"
@@ -6091,7 +6091,7 @@ msgstr "جلسه"
 
 #: frontend/src/apps/meet/components/MeetingToolbar.vue frontend/src/apps/meet/composables/useKeyboardShortcuts.ts
 msgid "Meeting controls"
-msgstr ""
+msgstr "کنترل‌های جلسه"
 
 #: frontend/src/apps/meet/pages/Home.vue
 msgid "Meeting created successfully!"
@@ -6103,11 +6103,11 @@ msgstr "شناسه جلسه"
 
 #: frontend/src/apps/meet/components/MeetingToolbar.vue
 msgid "Meeting information"
-msgstr ""
+msgstr "اطلاعات جلسه"
 
 #: frontend/src/apps/meet/components/MeetingInfoDialog.vue
 msgid "Meeting Information"
-msgstr ""
+msgstr "اطلاعات جلسه"
 
 #: frontend/src/apps/calendar/components/Modals/EventModal.vue
 msgid "Meeting location {0}"
@@ -6159,11 +6159,11 @@ msgstr ""
 
 #: frontend/src/apps/sheets/components/SheetEditor/toolbar.config.js
 msgid "Merge / unmerge"
-msgstr ""
+msgstr "ادغام یا جداسازی سلول‌ها"
 
 #: frontend/src/apps/writer/utils/index.js
 msgid "Merriweather"
-msgstr ""
+msgstr "Merriweather"
 
 #: frontend/src/apps/mail/components/Settings/VacationResponseSettings.vue suite/drive/doctype/drive_entity_activity_log/drive_entity_activity_log.json suite/drive/doctype/drive_notification/drive_notification.json suite/mail/doctype/mail_message/mail_message.json suite/mail/doctype/mail_queue/mail_queue.json suite/mail/doctype/spam_check_log/spam_check_log.json suite/mail/workspace_sidebar/client.json
 msgid "Message"
@@ -6227,11 +6227,11 @@ msgstr ""
 
 #: frontend/src/apps/drive/components/FileTypePreview/MSOfficePreview.vue
 msgid "Microsoft"
-msgstr ""
+msgstr "مایکروسافت"
 
 #: frontend/src/apps/sheets/components/SheetEditor/toolbar.config.js
 msgid "Middle"
-msgstr ""
+msgstr "وسط"
 
 #: frontend/src/apps/mail/pages/MimeMessageView.vue
 msgid "MIME Message"
@@ -6243,7 +6243,7 @@ msgstr "MIME Type"
 
 #: frontend/src/apps/sheets/engine/pivot.js
 msgid "MIN"
-msgstr ""
+msgstr "کمینه (MIN)"
 
 #: suite/mail/doctype/mail_cluster_store/mail_cluster_store.json
 msgid "Min Retry Wait (Seconds)"
@@ -6279,11 +6279,11 @@ msgstr ""
 
 #: frontend/src/apps/sheets/components/SheetEditor/index.vue
 msgid "MM/DD/YYYY"
-msgstr ""
+msgstr "MM/DD/YYYY"
 
 #: frontend/src/apps/sheets/components/SheetEditor/AISettingsDialog.vue
 msgid "mock"
-msgstr ""
+msgstr "mock"
 
 #: frontend/src/apps/sheets/components/SheetEditor/AISettingsDialog.vue suite/sheets/doctype/sheets_ai_settings/sheets_ai_settings.json
 msgid "Model"
@@ -6299,11 +6299,11 @@ msgstr ""
 
 #: frontend/src/apps/sheets/components/SheetEditor/index.vue
 msgid "Mon, 15 Jan 2025"
-msgstr ""
+msgstr "دوشنبه، ۱۵ ژانویه ۲۰۲۵"
 
 #: frontend/src/apps/sheets/components/SheetEditor/index.vue
 msgid "Mono"
-msgstr ""
+msgstr "تک‌عرض"
 
 #: suite/sheets/doctype/sheet_op_log/sheet_op_log.json
 msgid "Monotonic per-sheet sequence number."
@@ -6327,11 +6327,11 @@ msgstr "اطلاعات بیشتر"
 
 #: frontend/src/apps/writer/components/ContextMenu.vue
 msgid "More Tools"
-msgstr ""
+msgstr "ابزارهای بیشتر"
 
 #: frontend/src/apps/meet/data/backgroundEffects.ts
 msgid "Mountains"
-msgstr ""
+msgstr "کوهستان"
 
 #: frontend/src/apps/drive/components/GenericPage.vue frontend/src/apps/drive/components/Navbar.vue frontend/src/apps/writer/components/Navbar.vue suite/mail/doctype/mail_message/mail_message.js
 msgid "Move"
@@ -6339,7 +6339,7 @@ msgstr "انتقال"
 
 #: frontend/src/apps/sheets/components/SheetEditor/index.vue
 msgid "Move selection"
-msgstr ""
+msgstr "جابه‌جایی محدوده انتخاب‌شده"
 
 #: frontend/src/apps/mail/components/Settings/Account.vue
 msgid "Move the sender's future emails to Junk automatically"
@@ -6363,7 +6363,7 @@ msgstr ""
 
 #: frontend/src/apps/mail/components/MailActions.vue frontend/src/apps/mail/components/MailListItemActions.vue frontend/src/apps/mail/components/Modals/ShortcutsModal.vue frontend/src/apps/writer/components/RemoveDialog.vue
 msgid "Move to Trash"
-msgstr ""
+msgstr "انتقال به زباله‌دان"
 
 #: frontend/src/apps/mail/components/ThreadHeader.vue frontend/src/apps/mail/pages/MailboxView.vue
 msgid "Move to Trash (Delete)"
@@ -6383,7 +6383,7 @@ msgstr ""
 
 #: frontend/src/apps/meet/components/PeopleParticipantTile.vue
 msgid "Mute"
-msgstr ""
+msgstr "بی‌صداکردن"
 
 #: frontend/src/apps/drive/components/DriveToolBar.vue frontend/src/apps/drive/components/ListView.vue frontend/src/apps/mail/components/Modals/AddAddressBookContactsModal.vue frontend/src/apps/mail/components/Modals/AddAddressBookModal.vue frontend/src/apps/mail/components/Modals/AddContactModal.vue frontend/src/apps/mail/components/Modals/ContactsModal.vue frontend/src/apps/mail/components/Modals/EditAddressBookModal.vue frontend/src/apps/mail/components/Modals/EditContactModal.vue
 msgid "Name"
@@ -6411,27 +6411,27 @@ msgstr ""
 
 #: frontend/src/apps/writer/components/ContextMenu.vue
 msgid "Name Window…"
-msgstr ""
+msgstr "نام‌گذاری پنجره…"
 
 #: frontend/src/apps/writer/components/NewVersionDialog.vue
 msgid "Name:"
-msgstr ""
+msgstr "نام:"
 
 #: frontend/src/apps/sheets/components/SheetEditor/NamedRangesDialog.vue
 msgid "Named ranges"
-msgstr ""
+msgstr "محدوده‌های نام‌گذاری‌شده"
 
 #: frontend/src/apps/sheets/components/SheetEditor/toolbar.config.js
 msgid "Named ranges…"
-msgstr ""
+msgstr "محدوده‌های نام‌گذاری‌شده…"
 
 #: frontend/src/apps/sheets/components/SheetEditor/VersionHistory.vue
 msgid "Named versions only"
-msgstr ""
+msgstr "فقط نسخه‌های نام‌گذاری‌شده"
 
 #: frontend/src/apps/mail/components/Modals/ShortcutsModal.vue frontend/src/apps/sheets/components/SheetEditor/index.vue
 msgid "Navigation"
-msgstr ""
+msgstr "پیمایش"
 
 #: suite/mail/doctype/server_deployment_service/server_deployment_service.json
 msgid "Network Mode"
@@ -6487,7 +6487,7 @@ msgstr ""
 
 #: frontend/src/apps/writer/components/ContextMenu.vue
 msgid "New Private Window"
-msgstr ""
+msgstr "پنجره خصوصی جدید"
 
 #: frontend/src/apps/mail/components/Modals/AddPushSubscriptionModal.vue
 msgid "New Push Subscription"
@@ -6511,7 +6511,7 @@ msgstr ""
 
 #: frontend/src/apps/writer/components/ContextMenu.vue
 msgid "New Tab"
-msgstr ""
+msgstr "زبانه جدید"
 
 #: frontend/src/apps/drive/components/Settings/UserListSettings.vue
 msgid "New Team"
@@ -6527,7 +6527,7 @@ msgstr "مقدار جدید"
 
 #: frontend/src/apps/writer/components/ContextMenu.vue
 msgid "New Window"
-msgstr ""
+msgstr "پنجره جدید"
 
 #: frontend/src/apps/mail/components/Settings/MailExportSettings.vue
 msgid "Newest Emails"
@@ -6619,7 +6619,7 @@ msgstr ""
 
 #: frontend/src/apps/sheets/components/SheetEditor/toolbar.config.js
 msgid "No border"
-msgstr ""
+msgstr "بدون کادر"
 
 #: suite/mail/doctype/calendar_exchange/calendar_exchange.py
 msgid "No calendar events found for export."
@@ -6687,7 +6687,7 @@ msgstr "سندی پیدا نشد"
 
 #: frontend/src/apps/writer/components/RoundedListView.vue
 msgid "No documents yet."
-msgstr ""
+msgstr "هنوز سندی ندارید."
 
 #: suite/mail/stalwart/domain.py
 msgid "No domain IDs provided"
@@ -6703,7 +6703,7 @@ msgstr ""
 
 #: frontend/src/apps/sheets/components/SheetEditor/CellHistoryPopover.vue
 msgid "No edits recorded for this cell yet."
-msgstr ""
+msgstr "هنوز ویرایشی برای این سلول ثبت نشده است."
 
 #: suite/mail/doctype/mail_exchange/mail_exchange.py
 msgid "No emails found for export."
@@ -6763,7 +6763,7 @@ msgstr ""
 
 #: frontend/src/apps/mail/components/Modals/SearchModal.vue suite/drive/public/js/FileUploader.vue
 msgid "No matches"
-msgstr ""
+msgstr "موردی پیدا نشد"
 
 #: frontend/src/apps/sheets/pages/Home.vue
 msgid "No matches for “{0}”"
@@ -6771,7 +6771,7 @@ msgstr "موردی برای «{0}» پیدا نشد"
 
 #: frontend/src/apps/sheets/components/SheetEditor/PivotFieldPicker.vue
 msgid "No matching fields"
-msgstr ""
+msgstr "فیلد منطبقی پیدا نشد"
 
 #: frontend/src/apps/mail/pages/dashboard/UsersView.vue
 msgid "No members found."
@@ -6783,11 +6783,11 @@ msgstr ""
 
 #: frontend/src/apps/sheets/components/SheetEditor/NamedRangesDialog.vue
 msgid "No named ranges defined yet."
-msgstr ""
+msgstr "هنوز محدوده‌ای نام‌گذاری نشده است."
 
 #: frontend/src/apps/drive/pages/Notifications.vue
 msgid "No Notifications"
-msgstr ""
+msgstr "اعلانی وجود ندارد"
 
 #: suite/mail/doctype/participant_identity/participant_identity.py
 msgid "No participant identities found."
@@ -6867,7 +6867,7 @@ msgstr ""
 
 #: frontend/src/apps/meet/components/settings/AudioSettingsTab.vue
 msgid "Noise Cancellation"
-msgstr ""
+msgstr "حذف نویز"
 
 #: frontend/src/apps/mail/components/Settings/AppearanceSettings.vue frontend/src/apps/meet/data/backgroundEffects.ts frontend/src/apps/slides/components/ShapeProperties.vue
 msgid "None"
@@ -6875,7 +6875,7 @@ msgstr "هیچ کدام"
 
 #: frontend/src/apps/writer/components/VersionsSidebar.vue
 msgid "None yet."
-msgstr ""
+msgstr "هنوز موردی نیست."
 
 #: suite/meet/api/meeting.py
 msgid "Not a guest token"
@@ -6891,11 +6891,11 @@ msgstr ""
 
 #: frontend/src/apps/sheets/components/SheetEditor/index.vue
 msgid "Not between"
-msgstr ""
+msgstr "بین دو مقدار نیست"
 
 #: frontend/src/apps/sheets/components/SheetEditor/index.vue
 msgid "Not equal to"
-msgstr ""
+msgstr "برابر نیست با"
 
 #: suite/drive/api/s3.py
 msgid "Not found"
@@ -6959,15 +6959,15 @@ msgstr ""
 
 #: frontend/src/apps/sheets/components/SheetEditor/toolbar.config.js
 msgid "Numbers"
-msgstr ""
+msgstr "اعداد"
 
 #: frontend/src/apps/sheets/components/SheetEditor/ChartDialog.vue
 msgid "Numeric only"
-msgstr ""
+msgstr "فقط عددی"
 
 #: frontend/src/apps/writer/utils/index.js
 msgid "Nunito"
-msgstr ""
+msgstr "Nunito"
 
 #: suite/drive/doctype/account_request/account_request.json
 msgid "OAuth Signup"
@@ -6987,7 +6987,7 @@ msgstr "افست Y"
 
 #: suite/mail/doctype/server_ansible_play/server_ansible_play.json
 msgid "OK"
-msgstr ""
+msgstr "تأیید"
 
 #: suite/drive/doctype/drive_entity_activity_log/drive_entity_activity_log.json
 msgid "Old Value"
@@ -7115,7 +7115,7 @@ msgstr ""
 
 #: frontend/src/apps/slides/components/AppearanceProperties.vue
 msgid "Opacity"
-msgstr ""
+msgstr "شفافیت"
 
 #: suite/sheets/doctype/sheet_collab_state/sheet_collab_state.json
 msgid "Opaque base64-encoded Y.Doc binary update. Written and read exclusively by the collab server via the internal collab endpoints; never edited directly."
@@ -7127,7 +7127,7 @@ msgstr "باز کردن"
 
 #: frontend/src/apps/drive/components/GenericPage.vue frontend/src/apps/drive/components/Navbar.vue
 msgid "Open in Desk"
-msgstr ""
+msgstr "باز کردن در میزکار"
 
 #: suite/drive/doctype/drive_team/drive_team.js suite/drive/public/js/file.js
 msgid "Open in Drive"
@@ -7139,7 +7139,7 @@ msgstr ""
 
 #: frontend/src/apps/sheets/pages/SheetEditor.vue
 msgid "Open on desktop"
-msgstr ""
+msgstr "باز کردن در دسکتاپ"
 
 #: frontend/src/apps/mail/components/Modals/ShortcutsModal.vue
 msgid "Open Settings"
@@ -7227,7 +7227,7 @@ msgstr ""
 
 #: frontend/src/apps/writer/components/CoreEditor.vue
 msgid "Outdated"
-msgstr ""
+msgstr "قدیمی"
 
 #: frontend/src/apps/mail/components/Settings/Account.vue suite/mail/doctype/jmap_account/jmap_account.json
 msgid "Outgoing"
@@ -7239,15 +7239,15 @@ msgstr "خروجی"
 
 #: frontend/src/apps/sheets/components/SheetEditor/toolbar.config.js
 msgid "Outside borders"
-msgstr ""
+msgstr "کادرهای بیرونی"
 
 #: frontend/src/apps/slides/components/ShapesDropdown.vue
 msgid "Oval"
-msgstr ""
+msgstr "بیضی"
 
 #: frontend/src/apps/sheets/components/SheetEditor/index.vue
 msgid "Overflow"
-msgstr ""
+msgstr "سرریز"
 
 #: frontend/src/apps/drive/components/DriveToolBar.vue frontend/src/apps/drive/components/ListView.vue frontend/src/apps/drive/ui/drive/components/InfoDialog.vue frontend/src/apps/sheets/pages/Home.vue
 msgid "Owner"
@@ -7283,11 +7283,11 @@ msgstr "صفحه پیدا نشد"
 
 #: frontend/src/apps/writer/components/core-editor/menu-buttons.js
 msgid "Paint Styles"
-msgstr ""
+msgstr "سبک‌های رنگ‌آمیزی"
 
 #: frontend/src/apps/writer/components/WriterSettings.vue
 msgid "Paragraph Spacing"
-msgstr ""
+msgstr "فاصله بندها"
 
 #: suite/mail/doctype/mailbox/mailbox.json
 msgid "Parent"
@@ -7407,7 +7407,7 @@ msgstr "انتظار"
 
 #: frontend/src/apps/slides/components/ShapesDropdown.vue
 msgid "Pentagon"
-msgstr ""
+msgstr "پنج‌ضلعی"
 
 #: frontend/src/apps/mail/components/AppSidebar.vue frontend/src/apps/meet/components/MeetingToolbar.vue frontend/src/apps/meet/components/PeoplePanel.vue frontend/src/apps/writer/components/ContextMenu.vue
 msgid "People"
@@ -7423,7 +7423,7 @@ msgstr "درصد"
 
 #: frontend/src/apps/meet/components/settings/BackgroundSettingsTab.vue
 msgid "Performance Warning:"
-msgstr ""
+msgstr "هشدار عملکرد:"
 
 #: frontend/src/apps/sheets/components/SheetEditor/SplitTextPopover.vue
 msgid "Period"
@@ -7455,15 +7455,15 @@ msgstr ""
 
 #: frontend/src/apps/writer/extensions/components/MathPopup.vue
 msgid "Pi"
-msgstr ""
+msgstr "عدد پی (π)"
 
 #: frontend/src/apps/sheets/components/SheetEditor/ChartDialog.vue
 msgid "Pick a column"
-msgstr ""
+msgstr "یک ستون انتخاب کنید"
 
 #: frontend/src/apps/sheets/components/SheetEditor/ChartDialog.vue
 msgid "Pick a series to see a preview"
-msgstr ""
+msgstr "برای دیدن پیش‌نمایش یک سری انتخاب کنید"
 
 #: suite/sheets/doctype/sheet_snapshot/sheet_snapshot.json
 msgid "Pinned"
@@ -7471,11 +7471,11 @@ msgstr ""
 
 #: frontend/src/apps/sheets/components/SheetEditor/toolbar.config.js
 msgid "Pivot table…"
-msgstr ""
+msgstr "جدول محوری…"
 
 #: frontend/src/apps/sheets/components/SheetEditor/index.vue
 msgid "Plain text"
-msgstr ""
+msgstr "متن ساده"
 
 #: suite/mail/doctype/server_ansible_play/server_ansible_play.json suite/mail/doctype/server_ansible_play_task/server_ansible_play_task.json
 msgid "Play"
@@ -7487,7 +7487,7 @@ msgstr ""
 
 #: frontend/src/apps/slides/components/VideoProperties.vue
 msgid "Playback"
-msgstr ""
+msgstr "پخش"
 
 #: suite/mail/doctype/server_ansible_play/server_ansible_play.json
 msgid "Playbook"
@@ -7639,7 +7639,7 @@ msgstr ""
 
 #: frontend/src/apps/meet/components/CreatePollModal.vue
 msgid "Polls are temporary and will be deleted once everyone leaves the meeting."
-msgstr ""
+msgstr "نظرسنجی‌ها موقت‌اند و پس از خروج همه افراد حذف می‌شوند."
 
 #: suite/mail/doctype/mail_cluster_store/mail_cluster_store.json
 msgid "Pool Max Connections"
@@ -7703,7 +7703,7 @@ msgstr ""
 
 #: frontend/src/apps/drive/components/Settings/PreferencesSettings.vue
 msgid "Preferences"
-msgstr ""
+msgstr "ترجیحات"
 
 #: suite/drive/doctype/drive_team/drive_team.json
 msgid "Prefix"
@@ -7715,7 +7715,7 @@ msgstr ""
 
 #: frontend/src/apps/slides/components/EditorNavbar.vue frontend/src/apps/slides/components/PresentationPreview.vue
 msgid "Present"
-msgstr ""
+msgstr "ارائه"
 
 #: frontend/src/apps/slides/components/Navbar.vue suite/slides/doctype/reference_presentation/reference_presentation.json
 msgid "Presentation"
@@ -7823,7 +7823,7 @@ msgstr ""
 
 #: frontend/src/apps/meet/components/PeopleParticipantTile.vue
 msgid "Promote to Co-host"
-msgstr ""
+msgstr "ارتقا به میزبان مشترک"
 
 #: suite/mail/doctype/mail_client_configuration/mail_client_configuration.json
 msgid "Protocol"
@@ -7979,15 +7979,15 @@ msgstr ""
 
 #: frontend/src/apps/meet/components/settings/AudioSettingsTab.vue
 msgid "Push to Talk"
-msgstr ""
+msgstr "نگه‌داشتن برای صحبت"
 
 #: frontend/src/apps/meet/composables/useKeyboardShortcuts.ts
 msgid "Push to talk"
-msgstr ""
+msgstr "نگه‌داشتن برای صحبت"
 
 #: frontend/src/apps/meet/components/CreatePollModal.vue
 msgid "Question"
-msgstr ""
+msgstr "پرسش"
 
 #: frontend/src/apps/mail/pages/CalendarExchangesView.vue frontend/src/apps/mail/pages/ContactsExchangesView.vue frontend/src/apps/mail/pages/MailExchangesView.vue
 msgid "Queued"
@@ -8007,7 +8007,7 @@ msgstr ""
 
 #: frontend/src/apps/sheets/components/SheetEditor/index.vue
 msgid "Quick filter on column"
-msgstr ""
+msgstr "فیلتر سریع ستون"
 
 #: suite/drive/doctype/drive_team/drive_team.json suite/mail/workspace_sidebar/client.json
 msgid "Quota"
@@ -8027,11 +8027,11 @@ msgstr ""
 
 #: frontend/src/apps/slides/components/MediaProperties.vue
 msgid "Radius"
-msgstr ""
+msgstr "شعاع گوشه"
 
 #: frontend/src/apps/meet/components/MeetingToolbar.vue
 msgid "Raise Hand"
-msgstr ""
+msgstr "بالابردن دست"
 
 #: frontend/src/apps/sheets/components/SheetEditor/NamedRangesDialog.vue
 msgid "Range"
@@ -8047,7 +8047,7 @@ msgstr ""
 
 #: frontend/src/apps/meet/components/MeetingToolbar.vue
 msgid "Reactions"
-msgstr ""
+msgstr "واکنش‌ها"
 
 #: frontend/src/apps/mail/utils/useThreadActions.ts
 msgid "read"
@@ -8119,7 +8119,7 @@ msgstr ""
 
 #: frontend/src/apps/slides/components/ShapesDropdown.vue
 msgid "Rectangle"
-msgstr ""
+msgstr "مستطیل"
 
 #: suite/mail/doctype/calendar_event/calendar_event.json
 msgid "Recurrence"
@@ -8175,7 +8175,7 @@ msgstr "تازه‌سازی"
 
 #: frontend/src/apps/sheets/components/SheetEditor/ChartOverlay.vue
 msgid "Refresh data"
-msgstr ""
+msgstr "تازه‌سازی داده‌ها"
 
 #: suite/mail/doctype/mail_server/mail_server.json
 msgid "Regenerate"
@@ -8223,7 +8223,7 @@ msgstr "حذف"
 
 #: frontend/src/apps/sheets/components/SheetEditor/ShareDialog.vue
 msgid "Remove access"
-msgstr ""
+msgstr "حذف دسترسی"
 
 #: frontend/src/apps/mail/pages/ContactView.vue
 msgid "Remove Addresses"
@@ -8267,7 +8267,7 @@ msgstr ""
 
 #: frontend/src/apps/meet/components/KickParticipantDialog.vue
 msgid "Remove Participant"
-msgstr ""
+msgstr "حذف شرکت‌کننده"
 
 #: frontend/src/apps/mail/pages/ContactView.vue
 msgid "Remove Phones"
@@ -8315,7 +8315,7 @@ msgstr ""
 
 #: frontend/src/apps/sheets/components/SheetEditor/index.vue
 msgid "Repeat last action"
-msgstr ""
+msgstr "تکرار آخرین عملیات"
 
 #: frontend/src/apps/calendar/components/Modals/EventRepeatSettingsModal.vue
 msgid "Repeat On"
@@ -8339,7 +8339,7 @@ msgstr "جایگزین کردن"
 
 #: frontend/src/apps/sheets/components/SheetEditor/FindReplace.vue
 msgid "Replace with"
-msgstr ""
+msgstr "جایگزینی با"
 
 #: frontend/src/apps/mail/components/ComposeMailEditor.vue frontend/src/apps/mail/components/MailActions.vue frontend/src/apps/mail/components/MailThread.vue
 msgid "Reply"
@@ -8379,7 +8379,7 @@ msgstr ""
 
 #: frontend/src/apps/meet/components/MeetingToolbar.vue
 msgid "Report an issue"
-msgstr ""
+msgstr "گزارش مشکل"
 
 #: frontend/src/apps/mail/pages/dashboard/DomainView.vue
 msgid "Request failed."
@@ -8391,7 +8391,7 @@ msgstr "درخواست کلید"
 
 #: frontend/src/apps/meet/components/settings/MeetingAccessSettingsTab.vue
 msgid "Require host approval"
-msgstr ""
+msgstr "نیاز به تأیید میزبان"
 
 #: frontend/src/apps/mail/pages/dashboard/DomainView.vue
 msgid "Required"
@@ -8407,7 +8407,7 @@ msgstr "بازنشانی گذرواژه"
 
 #: frontend/src/apps/sheets/components/SheetEditor/toolbar.config.js
 msgid "Reset zoom"
-msgstr ""
+msgstr "بازنشانی بزرگ‌نمایی"
 
 #: frontend/src/apps/writer/components/CoreEditor.vue
 msgid "Resolved"
@@ -8435,11 +8435,11 @@ msgstr "بازگرداندن"
 
 #: frontend/src/apps/sheets/components/SheetEditor/VersionHistory.vue frontend/src/apps/sheets/components/SheetEditor/VersionPreviewBanner.vue
 msgid "Restore this version"
-msgstr ""
+msgstr "بازیابی این نسخه"
 
 #: frontend/src/apps/sheets/components/SheetEditor/ShareDialog.vue
 msgid "Restricted"
-msgstr ""
+msgstr "محدود"
 
 #: frontend/src/apps/meet/pages/Home.vue
 msgid "Restricted meet"
@@ -8479,11 +8479,11 @@ msgstr "راست"
 
 #: frontend/src/apps/sheets/components/SheetEditor/toolbar.config.js
 msgid "Right border"
-msgstr ""
+msgstr "کادر راست"
 
 #: frontend/src/apps/writer/components/ContextMenu.vue
 msgid "Right click here."
-msgstr ""
+msgstr "اینجا راست‌کلیک کنید."
 
 #: suite/mail/doctype/address_book/address_book.json suite/mail/doctype/calendar/calendar.json suite/mail/doctype/mailbox/mailbox.json
 msgid "Rights"
@@ -8555,7 +8555,7 @@ msgstr ""
 
 #: frontend/src/apps/meet/data/backgroundEffects.ts
 msgid "Saturn"
-msgstr ""
+msgstr "زحل"
 
 #: frontend/src/apps/calendar/components/Modals/EventModal.vue frontend/src/apps/calendar/components/Settings/AppearanceSettings.vue frontend/src/apps/mail/components/Modals/AddAddressBookModal.vue frontend/src/apps/mail/components/Modals/AddContactAddressBookModal.vue frontend/src/apps/mail/components/Modals/AddContactAddressModal.vue frontend/src/apps/mail/components/Modals/AddContactEmailModal.vue frontend/src/apps/mail/components/Modals/AddContactModal.vue frontend/src/apps/mail/components/Modals/AddContactPhoneModal.vue
 msgid "Save"
@@ -8567,7 +8567,7 @@ msgstr ""
 
 #: frontend/src/apps/writer/components/ContextMenu.vue
 msgid "Save Page As…"
-msgstr ""
+msgstr "ذخیره صفحه با نام…"
 
 #: suite/mail/doctype/mail_settings/mail_settings.json
 msgid "Scan Message Timeout"
@@ -8659,7 +8659,7 @@ msgstr ""
 
 #: frontend/src/apps/sheets/components/SheetEditor/PivotFieldPicker.vue
 msgid "Search fields…"
-msgstr ""
+msgstr "جستجوی فیلدها…"
 
 #: frontend/src/apps/mail/components/Modals/ShortcutsModal.vue
 msgid "Search Mail"
@@ -8667,7 +8667,7 @@ msgstr ""
 
 #: frontend/src/apps/meet/components/PeoplePanel.vue
 msgid "Search people"
-msgstr ""
+msgstr "جستجوی افراد"
 
 #: suite/drive/public/js/FileUploader.vue
 msgid "Search results"
@@ -8687,11 +8687,11 @@ msgstr ""
 
 #: frontend/src/apps/writer/components/TemplateDialog.vue
 msgid "Search templates..."
-msgstr ""
+msgstr "جستجوی الگوها…"
 
 #: frontend/src/apps/writer/components/SearchDialog.vue
 msgid "Search through documents..."
-msgstr ""
+msgstr "جستجو در سندها…"
 
 #: frontend/src/apps/mail/components/Modals/AddAddressBookContactsModal.vue frontend/src/apps/mail/components/Modals/ContactsModal.vue
 msgid "Search..."
@@ -8751,11 +8751,11 @@ msgstr ""
 
 #: suite/drive/public/js/FileUploader.vue
 msgid "Select a team"
-msgstr ""
+msgstr "انتخاب تیم"
 
 #: frontend/src/apps/slides/components/LayoutDialog.vue
 msgid "Select a Template Layout"
-msgstr ""
+msgstr "انتخاب چیدمان الگو"
 
 #: frontend/src/apps/mail/components/Modals/ScreenedEmailAddressModal.vue
 msgid "Select all"
@@ -8775,7 +8775,7 @@ msgstr ""
 
 #: frontend/src/apps/meet/components/settings/DeviceSettingsTab.vue
 msgid "Select camera"
-msgstr ""
+msgstr "انتخاب دوربین"
 
 #: frontend/src/apps/mail/components/Modals/AddAddressBookContactsModal.vue frontend/src/apps/mail/components/Modals/ContactsModal.vue
 msgid "Select Contacts"
@@ -8803,7 +8803,7 @@ msgstr ""
 
 #: frontend/src/apps/sheets/components/SheetEditor/SplitTextPopover.vue
 msgid "Semicolon"
-msgstr ""
+msgstr "نقطه‌ویرگول"
 
 #: frontend/src/apps/mail/components/ComposeMailToolbar.vue
 msgid "Send"
@@ -8911,7 +8911,7 @@ msgstr ""
 
 #: frontend/src/apps/sheets/components/SheetEditor/index.vue
 msgid "Serif"
-msgstr ""
+msgstr "سریف"
 
 #: suite/mail/doctype/server_ansible_play/server_ansible_play.json suite/mail/doctype/server_deployment/server_deployment.json suite/mail/doctype/server_job/server_job.json suite/mail/workspace_sidebar/server.json
 msgid "Server"
@@ -8999,11 +8999,11 @@ msgstr ""
 
 #: frontend/src/apps/writer/components/WriterSettings.vue
 msgid "Set the default spacing around paragraphs."
-msgstr ""
+msgstr "فاصله پیش‌فرض اطراف بندها را تعیین کنید."
 
 #: frontend/src/apps/writer/components/WriterSettings.vue
 msgid "Set the text to appear in headers and footers when printing."
-msgstr ""
+msgstr "متن سربرگ و پابرگ نسخه چاپی را تعیین کنید."
 
 #: frontend/src/apps/meet/pages/Home.vue
 msgid "Set up Calendar before scheduling a Meet."
@@ -9027,7 +9027,7 @@ msgstr "تنظیمات"
 
 #: frontend/src/apps/drive/components/Settings/UserListSettings.vue
 msgid "Settings - "
-msgstr ""
+msgstr "تنظیمات — "
 
 #: frontend/src/shell/LauncherView.vue
 msgid "Settings logo"
@@ -9047,7 +9047,7 @@ msgstr ""
 
 #: frontend/src/apps/slides/components/ShadowProperties.vue
 msgid "Shadow"
-msgstr ""
+msgstr "سایه"
 
 #: frontend/src/apps/drive/components/GenericPage.vue frontend/src/apps/drive/components/Navbar.vue frontend/src/apps/slides/components/SharePopover.vue frontend/src/apps/writer/components/Navbar.vue suite/drive/doctype/drive_permission/drive_permission.json
 msgid "Share"
@@ -9063,11 +9063,11 @@ msgstr "اشتراکی"
 
 #: frontend/src/apps/drive/components/ListView.vue
 msgid "Shared with {0} users"
-msgstr ""
+msgstr "اشتراک‌گذاری‌شده با {0} کاربر"
 
 #: frontend/src/apps/sheets/components/SheetEditor/NamedRangesDialog.vue frontend/src/apps/sheets/components/SheetEditor/commandPalette.config.js suite/sheets/doctype/sheet_collab_state/sheet_collab_state.json suite/sheets/doctype/sheet_op_log/sheet_op_log.json suite/sheets/doctype/sheet_seq/sheet_seq.json suite/sheets/doctype/sheet_snapshot/sheet_snapshot.json
 msgid "Sheet"
-msgstr ""
+msgstr "برگه"
 
 #: suite/sheets/doctype/sheet_cell/sheet_cell.json
 msgid "Sheet Name"
@@ -9083,7 +9083,7 @@ msgstr ""
 
 #: frontend/src/apps/sheets/components/SheetEditor/index.vue
 msgid "Shortcut help"
-msgstr ""
+msgstr "راهنمای میان‌برها"
 
 #: frontend/src/apps/mail/components/AppSidebar.vue frontend/src/apps/mail/components/Modals/ShortcutsModal.vue frontend/src/apps/meet/components/MeetSidebar.vue
 msgid "Shortcuts"
@@ -9111,7 +9111,7 @@ msgstr ""
 
 #: frontend/src/apps/writer/components/ContextMenu.vue
 msgid "Show Bookmarks"
-msgstr ""
+msgstr "نمایش نشانک‌ها"
 
 #: suite/mail/doctype/mail_settings/mail_settings.json
 msgid "Show Connection Details in Mail UI"
@@ -9119,19 +9119,19 @@ msgstr ""
 
 #: frontend/src/apps/sheets/components/SheetEditor/ChartDialog.vue
 msgid "Show data labels"
-msgstr ""
+msgstr "نمایش برچسب داده‌ها"
 
 #: frontend/src/apps/sheets/components/SheetEditor/index.vue
 msgid "Show formulas"
-msgstr ""
+msgstr "نمایش فرمول‌ها"
 
 #: frontend/src/apps/writer/components/ContextMenu.vue
 msgid "Show Full URLs"
-msgstr ""
+msgstr "نمایش نشانی کامل"
 
 #: frontend/src/apps/sheets/components/SheetEditor/ChartDialog.vue
 msgid "Show grid lines"
-msgstr ""
+msgstr "نمایش خطوط شبکه"
 
 #: frontend/src/apps/drive/components/GenericPage.vue frontend/src/apps/drive/components/Navbar.vue frontend/src/apps/writer/components/Navbar.vue
 msgid "Show Info"
@@ -9139,7 +9139,7 @@ msgstr "نمایش اطلاعات"
 
 #: frontend/src/apps/sheets/components/SheetEditor/ChartDialog.vue
 msgid "Show legend"
-msgstr ""
+msgstr "نمایش راهنما"
 
 #: frontend/src/apps/calendar/components/EventPopoverContent.vue
 msgid "Show more"
@@ -9147,7 +9147,7 @@ msgstr "نمایش بیشتر"
 
 #: frontend/src/apps/writer/components/WriterSettings.vue
 msgid "Show page numbers"
-msgstr ""
+msgstr "نمایش شماره صفحه"
 
 #: suite/mail/doctype/mail_cluster/mail_cluster.js
 msgid "Show Password"
@@ -9163,7 +9163,7 @@ msgstr ""
 
 #: frontend/src/apps/sheets/components/SheetEditor/AISettingsDialog.vue
 msgid "Show the “Ask” entry point for everyone on this site."
-msgstr ""
+msgstr "نمایش گزینه «درخواست» برای همه کاربران این سایت"
 
 #: suite/mail/doctype/calendar_event/calendar_event.json
 msgid "Show Without Time"
@@ -9307,11 +9307,11 @@ msgstr ""
 
 #: frontend/src/apps/sheets/components/SheetEditor/index.vue
 msgid "Single colour rule"
-msgstr ""
+msgstr "قانون تک‌رنگ"
 
 #: frontend/src/apps/sheets/components/SheetEditor/toolbar.config.js
 msgid "Single side"
-msgstr ""
+msgstr "یک ضلع"
 
 #: frontend/src/apps/drive/components/DriveToolBar.vue suite/drive/public/js/FileUploader.vue
 msgid "Site"
@@ -9355,7 +9355,7 @@ msgstr "نمایش اسلایدها"
 
 #: frontend/src/apps/meet/data/backgroundEffects.ts
 msgid "Slight Blur"
-msgstr ""
+msgstr "تاری ملایم"
 
 #: suite/slides/doctype/presentation/presentation.json
 msgid "Slug"
@@ -9367,15 +9367,15 @@ msgstr "هوشمند"
 
 #: frontend/src/apps/sheets/components/SheetEditor/toolbar.config.js
 msgid "Smart Fill (Ctrl+E)"
-msgstr ""
+msgstr "پرکردن هوشمند (Ctrl+E)"
 
 #: frontend/src/apps/sheets/components/SheetEditor/index.vue
 msgid "Smart Fill from examples"
-msgstr ""
+msgstr "پرکردن هوشمند از روی نمونه‌ها"
 
 #: frontend/src/apps/sheets/components/SheetEditor/ChartDialog.vue
 msgid "Smooth curves"
-msgstr ""
+msgstr "منحنی‌های نرم"
 
 #: suite/writer/doctype/writer_doc_version/writer_doc_version.json suite/writer/doctype/writer_version/writer_version.json
 msgid "Snapshot Data"
@@ -9387,11 +9387,11 @@ msgstr ""
 
 #: frontend/src/apps/meet/composables/useMediaControls.ts
 msgid "Someone is already sharing their screen. Starting yours may result in multiple active screen shares."
-msgstr ""
+msgstr "فرد دیگری در حال اشتراک‌گذاری صفحه است. با شروع اشتراک شما، چند صفحه هم‌زمان نمایش داده می‌شود."
 
 #: frontend/src/apps/meet/pages/AudioTest.vue
 msgid "Someone joins the meeting"
-msgstr ""
+msgstr "هنگام ورود فردی به جلسه"
 
 #: suite/mail/doctype/calendar_exchange/calendar_exchange.json suite/mail/doctype/mail_exchange/mail_exchange.json
 msgid "Sort"
@@ -9423,11 +9423,11 @@ msgstr ""
 
 #: frontend/src/apps/sheets/components/SheetEditor/ChartDialog.vue
 msgid "Source range"
-msgstr ""
+msgstr "محدوده منبع"
 
 #: frontend/src/apps/sheets/components/SheetEditor/SplitTextPopover.vue
 msgid "Space"
-msgstr ""
+msgstr "فاصله"
 
 #: suite/mail/workspace_sidebar/server.json
 msgid "Spam Check Log"
@@ -9467,7 +9467,7 @@ msgstr ""
 
 #: frontend/src/apps/slides/components/VideoProperties.vue
 msgid "Speed"
-msgstr ""
+msgstr "سرعت"
 
 #: suite/mail/api/mail.py suite/mail/doctype/mail_message/mail_message.json
 msgid "SPF"
@@ -9479,11 +9479,11 @@ msgstr ""
 
 #: frontend/src/apps/slides/components/ShadowProperties.vue
 msgid "Spread"
-msgstr ""
+msgstr "گسترش"
 
 #: frontend/src/apps/writer/extensions/components/MathPopup.vue
 msgid "Square root"
-msgstr ""
+msgstr "ریشه دوم (√)"
 
 #: suite/mail/doctype/mail_cluster/mail_cluster.json suite/mail/doctype/mail_server/mail_server.json
 msgid "SSH"
@@ -9515,7 +9515,7 @@ msgstr ""
 
 #: frontend/src/apps/sheets/components/SheetEditor/ChartDialog.vue
 msgid "Stacked"
-msgstr ""
+msgstr "انباشته"
 
 #: suite/mail/doctype/mail_settings/mail_settings.json
 msgid "Stalwart CLI Command Timeout"
@@ -9595,11 +9595,11 @@ msgstr ""
 
 #: frontend/src/apps/meet/composables/useMediaControls.ts
 msgid "Start Screen Share Anyway?"
-msgstr ""
+msgstr "اشتراک‌گذاری صفحه شروع شود؟"
 
 #: frontend/src/apps/writer/components/CoreEditor.vue
 msgid "Start thinking..."
-msgstr ""
+msgstr "شروع به نوشتن کنید…"
 
 #: frontend/src/apps/calendar/components/Modals/EventModal.vue
 msgid "Start Time"
@@ -9683,19 +9683,19 @@ msgstr ""
 
 #: frontend/src/apps/sheets/components/SheetEditor/index.vue frontend/src/apps/sheets/components/SheetEditor/toolbar.config.js
 msgid "Strikethrough"
-msgstr ""
+msgstr "خط‌خورده"
 
 #: frontend/src/apps/slides/components/ShapeProperties.vue
 msgid "Stroke Color"
-msgstr ""
+msgstr "رنگ خط دور"
 
 #: frontend/src/apps/slides/components/ShapeProperties.vue
 msgid "Stroke Width"
-msgstr ""
+msgstr "ضخامت خط دور"
 
 #: frontend/src/apps/sheets/components/SheetEditor/commandPalette.config.js
 msgid "Structure"
-msgstr ""
+msgstr "ساختار"
 
 #: frontend/src/apps/slides/components/ShapeProperties.vue frontend/src/apps/slides/components/TextProperties.vue
 msgid "Style"
@@ -9743,7 +9743,7 @@ msgstr ""
 
 #: frontend/src/apps/writer/extensions/components/MathPopup.vue
 msgid "Subscript"
-msgstr ""
+msgstr "زیرنویس"
 
 #: frontend/src/apps/mail/components/Settings/PushSubscriptionSettings.vue
 msgid "Subscription ID"
@@ -9751,7 +9751,7 @@ msgstr ""
 
 #: frontend/src/apps/slides/components/TextProperties.vue
 msgid "Subtitle"
-msgstr ""
+msgstr "زیرعنوان"
 
 #: suite/mail/doctype/server_job/server_job.json
 msgid "Success"
@@ -9771,7 +9771,7 @@ msgstr "مجموع"
 
 #: frontend/src/apps/sheets/engine/pivot.js
 msgid "SUM"
-msgstr ""
+msgstr "جمع (SUM)"
 
 #: suite/sheets/doctype/sheet_op_log/sheet_op_log.json
 msgid "Summary"
@@ -9783,7 +9783,7 @@ msgstr ""
 
 #: frontend/src/apps/writer/extensions/components/MathPopup.vue
 msgid "Superscript"
-msgstr ""
+msgstr "بالانویس"
 
 #: frontend/src/apps/drive/components/Sidebar.vue
 msgid "Support"
@@ -9859,7 +9859,7 @@ msgstr "تسک"
 
 #: frontend/src/apps/writer/components/core-editor/menu-buttons.js
 msgid "Task List"
-msgstr ""
+msgstr "فهرست کارها"
 
 #: suite/mail/doctype/server_ansible_play_task/server_ansible_play_task.py
 msgid "Task {0} already exists in play {1}"
@@ -9891,7 +9891,7 @@ msgstr "تیم‌ها"
 
 #: frontend/src/apps/slides/components/Navbar.vue
 msgid "Template Theme"
-msgstr ""
+msgstr "پوسته الگو"
 
 #: frontend/src/apps/writer/components/Navbar.vue
 msgid "Templates"
@@ -9903,15 +9903,15 @@ msgstr ""
 
 #: frontend/src/apps/drive/pages/Signup.vue
 msgid "Terms and Policies"
-msgstr ""
+msgstr "شرایط و سیاست‌ها"
 
 #: frontend/src/apps/meet/pages/AudioTest.vue
 msgid "Test and tune the meeting notification sounds"
-msgstr ""
+msgstr "صدای اعلان‌های جلسه را آزمایش و تنظیم کنید"
 
 #: frontend/src/apps/calendar/routes.ts frontend/src/apps/mail/routes.ts frontend/src/apps/writer/routes.ts frontend/src/env.d.ts
 msgid "text"
-msgstr ""
+msgstr "متن"
 
 #: suite/mail/doctype/identity/identity.json suite/mail/doctype/mail_message/mail_message.json suite/mail/doctype/mail_queue/mail_queue.json suite/mail/doctype/vacation_response/vacation_response.json
 msgid "Text"
@@ -9923,7 +9923,7 @@ msgstr ""
 
 #: frontend/src/apps/sheets/components/SheetEditor/index.vue
 msgid "Text length"
-msgstr ""
+msgstr "طول متن"
 
 #: suite/mail/doctype/identity/identity.json
 msgid "The \"From\" email address the client must use when creating a new Email from this Identity."
@@ -10123,7 +10123,7 @@ msgstr ""
 
 #: frontend/src/apps/meet/components/RejectionOverlay.vue
 msgid "The meeting host has denied your request to join this meeting."
-msgstr ""
+msgstr "میزبان درخواست ورود شما به جلسه را رد کرده است."
 
 #: frontend/src/apps/meet/components/LobbyOverlay.vue
 msgid "The meeting host will let you in soon."
@@ -10479,15 +10479,15 @@ msgstr "دوست عزیز"
 
 #: frontend/src/apps/writer/extensions/components/MathPopup.vue
 msgid "Theta"
-msgstr ""
+msgstr "تتا (θ)"
 
 #: frontend/src/apps/sheets/components/SheetEditor/index.vue
 msgid "Thick"
-msgstr ""
+msgstr "ضخیم"
 
 #: frontend/src/apps/sheets/components/SheetEditor/index.vue
 msgid "Thin"
-msgstr ""
+msgstr "نازک"
 
 #: frontend/src/apps/calendar/components/Modals/EventRepeatSettingsModal.vue
 msgid "Third"
@@ -10503,11 +10503,11 @@ msgstr ""
 
 #: frontend/src/apps/writer/components/WriterSettings.vue
 msgid "This document"
-msgstr ""
+msgstr "این سند"
 
 #: frontend/src/apps/writer/pages/Document.vue
 msgid "This document uses an old schema. Collaborative editing is disabled."
-msgstr ""
+msgstr "این سند از ساختار قدیمی استفاده می‌کند؛ ویرایش هم‌زمان غیرفعال است."
 
 #: frontend/src/apps/calendar/components/EventPopoverContent.vue
 msgid "This instance"
@@ -10515,7 +10515,7 @@ msgstr ""
 
 #: frontend/src/apps/writer/components/VersionsSidebar.vue
 msgid "This is the current version."
-msgstr ""
+msgstr "این نسخه فعلی است."
 
 #: suite/mail/www/mail.py
 msgid "This method is only meant for developer mode"
@@ -10699,7 +10699,7 @@ msgstr "به"
 
 #: frontend/src/apps/slides/components/LayoutProperties.vue
 msgid "To Back"
-msgstr ""
+msgstr "انتقال به پشت"
 
 #: frontend/src/apps/mail/components/Modals/SearchModal.vue frontend/src/apps/mail/components/Settings/CalendarExportSettings.vue frontend/src/apps/mail/components/Settings/MailExportSettings.vue frontend/src/apps/mail/components/Settings/VacationResponseSettings.vue suite/mail/doctype/vacation_response/vacation_response.json
 msgid "To Date"
@@ -10711,7 +10711,7 @@ msgstr ""
 
 #: frontend/src/apps/slides/components/LayoutProperties.vue
 msgid "To Front"
-msgstr ""
+msgstr "انتقال به جلو"
 
 #: suite/drive/doctype/drive_notification/drive_notification.json
 msgid "To User"
@@ -10731,19 +10731,19 @@ msgstr "امروز"
 
 #: frontend/src/apps/meet/composables/useKeyboardShortcuts.ts
 msgid "Toggle camera"
-msgstr ""
+msgstr "روشن یا خاموش‌کردن دوربین"
 
 #: frontend/src/apps/sheets/components/SheetEditor/toolbar.config.js
 msgid "Toggle filter"
-msgstr ""
+msgstr "فعال یا غیرفعال‌کردن فیلتر"
 
 #: frontend/src/apps/meet/composables/useKeyboardShortcuts.ts
 msgid "Toggle microphone"
-msgstr ""
+msgstr "روشن یا خاموش‌کردن میکروفن"
 
 #: frontend/src/apps/meet/components/MeetingToolbar.vue
 msgid "Toggle Screen Share"
-msgstr ""
+msgstr "شروع یا توقف اشتراک صفحه"
 
 #: frontend/src/apps/mail/components/Modals/ShortcutsModal.vue
 msgid "Toggle Select Downwards"
@@ -10771,7 +10771,7 @@ msgstr "بالا"
 
 #: frontend/src/apps/sheets/components/SheetEditor/toolbar.config.js
 msgid "Top border"
-msgstr ""
+msgstr "کادر بالا"
 
 #: suite/mail/doctype/jmap_account/jmap_account.json
 msgid "Total Cached Blobs"
@@ -10811,7 +10811,7 @@ msgstr ""
 
 #: frontend/src/apps/sheets/components/SheetEditor/index.vue
 msgid "Traffic lights"
-msgstr ""
+msgstr "چراغ راهنمایی"
 
 #: suite/mail/doctype/mail_cluster_store/mail_cluster_store.json
 msgid "Transaction maximum retry delay."
@@ -10839,7 +10839,7 @@ msgstr ""
 
 #: frontend/src/apps/slides/components/SlideProperties.vue suite/slides/doctype/slide/slide.json
 msgid "Transition"
-msgstr ""
+msgstr "گذار"
 
 #: suite/slides/doctype/slide/slide.json
 msgid "Transition Duration"
@@ -10847,7 +10847,7 @@ msgstr ""
 
 #: frontend/src/apps/slides/components/ShapesDropdown.vue
 msgid "Triangle"
-msgstr ""
+msgstr "مثلث"
 
 #: frontend/src/apps/sheets/pages/Home.vue
 msgid "Try a different name."
@@ -10899,7 +10899,7 @@ msgstr ""
 
 #: frontend/src/apps/drive/components/ErrorPage.vue frontend/src/apps/writer/components/ErrorPage.vue
 msgid "Uh oh!"
-msgstr ""
+msgstr "مشکلی پیش آمد!"
 
 #: suite/mail/doctype/user_settings/user_settings.json
 msgid "UI"
@@ -10927,7 +10927,7 @@ msgstr ""
 
 #: frontend/src/apps/sheets/components/SheetEditor/index.vue frontend/src/apps/writer/components/core-editor/menu-buttons.js
 msgid "Underline"
-msgstr ""
+msgstr "زیرخط"
 
 #: frontend/src/apps/calendar/utils/index.ts frontend/src/apps/mail/utils/index.ts frontend/src/apps/sheets/components/SheetEditor/AskBar.vue
 msgid "Undo"
@@ -10935,7 +10935,7 @@ msgstr "واگرد"
 
 #: frontend/src/apps/sheets/components/SheetEditor/index.vue
 msgid "Undo / Redo"
-msgstr ""
+msgstr "واگردانی یا انجام دوباره"
 
 #: frontend/src/apps/mail/components/Modals/ShortcutsModal.vue
 msgid "Undo Last Action"
@@ -10947,7 +10947,7 @@ msgstr ""
 
 #: frontend/src/apps/drive/components/GenericPage.vue frontend/src/apps/drive/components/Navbar.vue frontend/src/apps/writer/components/Navbar.vue
 msgid "Unfavourite"
-msgstr ""
+msgstr "حذف از علاقه‌مندی‌ها"
 
 #: suite/mail/doctype/mail_settings/mail_settings.json
 msgid "Unique identifier for your DNS zone."
@@ -11063,7 +11063,7 @@ msgstr ""
 
 #: frontend/src/apps/slides/components/PresentationActionDialog.vue
 msgid "Update Title"
-msgstr ""
+msgstr "به‌روزرسانی عنوان"
 
 #: suite/mail/doctype/calendar_event/calendar_event.json
 msgid "Updated (UTC)"
@@ -11095,7 +11095,7 @@ msgstr ""
 
 #: suite/drive/public/js/FileUploader.vue
 msgid "Upload failed"
-msgstr ""
+msgstr "بارگذاری انجام نشد"
 
 #: frontend/src/apps/mail/utils/useChunkedUpload.ts
 msgid "Upload failed."
@@ -11103,7 +11103,7 @@ msgstr ""
 
 #: frontend/src/apps/mail/components/Settings/CalendarImportSettings.vue frontend/src/apps/mail/components/Settings/ContactsImportSettings.vue frontend/src/apps/mail/components/Settings/MailImportSettings.vue
 msgid "Upload File"
-msgstr ""
+msgstr "بارگذاری فایل"
 
 #: suite/drive/public/js/FileUploader.vue
 msgid "Upload new"
@@ -11127,7 +11127,7 @@ msgstr ""
 
 #: frontend/src/apps/mail/components/Modals/AddPushSubscriptionModal.vue suite/mail/doctype/mail_cluster_store/mail_cluster_store.json suite/mail/doctype/mail_message_part/mail_message_part.json suite/mail/doctype/push_subscription/push_subscription.json
 msgid "URL"
-msgstr "URL"
+msgstr "نشانی اینترنتی (URL)"
 
 #: suite/drive/doctype/account_request/account_request.json
 msgid "URL Args"
@@ -11155,7 +11155,7 @@ msgstr ""
 
 #: frontend/src/apps/sheets/components/SheetEditor/index.vue
 msgid "USD ($)"
-msgstr ""
+msgstr "دلار آمریکا ($)"
 
 #: suite/mail/doctype/calendar_event/calendar_event.json
 msgid "Use Default Alerts"
@@ -11231,7 +11231,7 @@ msgstr ""
 
 #: frontend/src/apps/meet/pages/AudioTest.vue
 msgid "User Joined"
-msgstr ""
+msgstr "ورود کاربر"
 
 #: suite/meet/doctype/sae_meeting/sae_meeting.py
 msgid "User promoted to co-host successfully"
@@ -11399,7 +11399,7 @@ msgstr ""
 
 #: frontend/src/apps/sheets/components/SheetEditor/VersionHistory.vue frontend/src/apps/sheets/components/SheetEditor/index.vue
 msgid "Version history"
-msgstr ""
+msgstr "تاریخچه نسخه‌ها"
 
 #: frontend/src/apps/writer/components/Navbar.vue suite/writer/doctype/writer_document/writer_document.json
 msgid "Versions"
@@ -11407,7 +11407,7 @@ msgstr "نسخه‌ها"
 
 #: frontend/src/apps/sheets/components/SheetEditor/toolbar.config.js frontend/src/apps/slides/components/AlignmentControls.vue
 msgid "Vertical"
-msgstr ""
+msgstr "عمودی"
 
 #: frontend/src/apps/mail/components/AttachmentViewer.vue
 msgid "Video Preview"
@@ -11419,11 +11419,11 @@ msgstr "نمایش"
 
 #: frontend/src/apps/sheets/components/SheetEditor/index.vue
 msgid "View / Tools"
-msgstr ""
+msgstr "نمایش و ابزارها"
 
 #: frontend/src/apps/drive/components/FileTypePreview/MSOfficePreview.vue
 msgid "View anyway"
-msgstr ""
+msgstr "با این حال نمایش بده"
 
 #: suite/mail/doctype/calendar_exchange/calendar_exchange.py suite/mail/doctype/contacts_exchange/contacts_exchange.py suite/mail/doctype/mail_exchange/mail_exchange.py
 msgid "View details for this exchange."
@@ -11451,7 +11451,7 @@ msgstr ""
 
 #: frontend/src/apps/meet/pages/MeetLayout.vue
 msgid "View shortcuts"
-msgstr ""
+msgstr "نمایش میان‌برها"
 
 #: frontend/src/apps/mail/components/Modals/ShortcutsModal.vue
 msgid "View Shortcuts"
@@ -11487,7 +11487,7 @@ msgstr "در انتظار ورود"
 
 #: frontend/src/apps/meet/components/JoinRequestNotifications.vue
 msgid "wants to join the meeting"
-msgstr ""
+msgstr "می‌خواهد وارد جلسه شود"
 
 #: suite/mail/doctype/quota/quota.json
 msgid "Warn Limit"
@@ -11499,7 +11499,7 @@ msgstr ""
 
 #: frontend/src/apps/drive/pages/Setup.vue
 msgid "We're glad you're here."
-msgstr ""
+msgstr "خوشحالیم که اینجا هستید."
 
 #: frontend/src/apps/calendar/components/Modals/EventRepeatSettingsModal.vue
 msgid "Wed"
@@ -11515,7 +11515,7 @@ msgstr "هفته"
 
 #: frontend/src/apps/drive/pages/Setup.vue
 msgid "Welcome to Drive"
-msgstr ""
+msgstr "به فضای فایل خوش آمدید"
 
 #: suite/mail/doctype/calendar/calendar.json
 msgid "What calendar's events be used as part of availability calculation?"
@@ -11595,7 +11595,7 @@ msgstr "عرض"
 
 #: frontend/src/apps/writer/components/RemoveDialog.vue
 msgid "will be moved to Trash.<br/><br/> Items in trash are deleted forever after 30 days."
-msgstr ""
+msgstr "به زباله‌دان منتقل می‌شود.<br/><br/> موارد زباله‌دان پس از ۳۰ روز برای همیشه حذف می‌شوند."
 
 #: frontend/src/apps/mail/constants.ts frontend/src/apps/mail/pages/AllInboxesView.vue frontend/src/apps/mail/pages/MailboxView.vue
 msgid "With Attachments"
@@ -11631,15 +11631,15 @@ msgstr ""
 
 #: frontend/src/apps/sheets/components/SheetEditor/toolbar.config.js
 msgid "Workbook"
-msgstr ""
+msgstr "دفتر کار"
 
 #: frontend/src/apps/sheets/components/SheetEditor/index.vue
 msgid "Wrap"
-msgstr ""
+msgstr "شکستن متن"
 
 #: frontend/src/apps/sheets/components/SheetEditor/toolbar.config.js
 msgid "Wrap text"
-msgstr ""
+msgstr "شکستن متن در سلول"
 
 #: suite/drive/doctype/drive_permission/drive_permission.json
 msgid "Write"
@@ -11695,7 +11695,7 @@ msgstr "شما"
 
 #: frontend/src/apps/slides/SlidesShell.vue
 msgid "You are back online."
-msgstr ""
+msgstr "اتصال اینترنت برقرار شد."
 
 #: suite/meet/api/meeting.py
 msgid "You are banned from this meeting"
@@ -11707,11 +11707,11 @@ msgstr ""
 
 #: frontend/src/apps/meet/components/ParticipantTile.vue
 msgid "You are sharing your screen"
-msgstr ""
+msgstr "در حال اشتراک‌گذاری صفحه هستید"
 
 #: frontend/src/apps/writer/components/VersionsSidebar.vue
 msgid "You are viewing the version history of"
-msgstr ""
+msgstr "در حال مشاهده تاریخچه نسخه‌های این سند هستید:"
 
 #: suite/mail/api/mail.py
 msgid "You can only upload JPG, PNG, GIF, PDF, TXT, CSV or Microsoft documents."
@@ -11747,7 +11747,7 @@ msgstr ""
 
 #: frontend/src/apps/sheets/components/SheetEditor/index.vue
 msgid "You don't have access to this sheet"
-msgstr ""
+msgstr "شما به این برگه دسترسی ندارید"
 
 #: suite/drive/api/product.py suite/drive/api/storage.py
 msgid "You don't have access to this team."
@@ -11795,7 +11795,7 @@ msgstr ""
 
 #: frontend/src/apps/meet/components/AvatarGroup.vue
 msgid "You'll be the first to join this meeting"
-msgstr ""
+msgstr "شما نخستین فرد این جلسه خواهید بود"
 
 #: frontend/src/apps/writer/components/Navbar.vue
 msgid "You're offline"
@@ -11803,11 +11803,11 @@ msgstr "اتصال شما قطع است"
 
 #: frontend/src/apps/meet/components/MeetingPreview.vue
 msgid "Your name"
-msgstr ""
+msgstr "نام شما"
 
 #: frontend/src/apps/sheets/components/SheetEditor/index.vue
 msgid "YYYY-MM-DD"
-msgstr ""
+msgstr "YYYY-MM-DD"
 
 #: suite/mail/doctype/mail_settings/mail_settings.json
 msgid "Zone ID"
@@ -11819,7 +11819,7 @@ msgstr "بزرگ‌نمایی"
 
 #: frontend/src/apps/sheets/components/SheetEditor/index.vue
 msgid "Zoom in / out / reset"
-msgstr ""
+msgstr "بزرگ‌نمایی، کوچک‌نمایی یا بازنشانی"
 
 #: frontend/src/apps/sheets/components/SheetEditor/toolbar.config.js
 msgid "Zoom out"
@@ -12016,3 +12016,480 @@ msgstr ""
 #: frontend/src/apps/sheets/pages/Home.vue
 msgid "“{0}” will be permanently deleted."
 msgstr "«{0}» برای همیشه حذف می‌شود."
+
+msgid "Admit"
+msgstr "اجازه ورود"
+
+msgid "API key saved — leave blank to keep it"
+msgstr "کلید API ذخیره شده است؛ برای حفظ آن این قسمت را خالی بگذارید"
+
+msgid "Ask your site administrator to set the access key in Drive settings."
+msgstr "از مدیر سایت بخواهید کلید دسترسی را در تنظیمات فضای فایل وارد کند."
+
+msgid "Continue"
+msgstr "ادامه"
+
+msgid "Copy"
+msgstr "کپی"
+
+msgid "Create a folder"
+msgstr "ساخت پوشه"
+
+msgid "Deny"
+msgstr "رد کردن"
+
+msgid "Describe the desired change in plain language and apply it to the grid. The API key is encrypted on the server and is never sent back to the browser."
+msgstr "تغییر دلخواه را با زبان ساده توضیح دهید تا روی جدول اعمال شود. کلید API به‌صورت رمزنگاری‌شده روی سرور نگهداری می‌شود و هرگز به مرورگر بازگردانده نمی‌شود."
+
+msgid "Desk"
+msgstr "میزکار"
+
+msgid "Documents"
+msgstr "سندها"
+
+msgid "Done"
+msgstr "تمام"
+
+msgid "Drafts"
+msgstr "پیش‌نویس‌ها"
+
+msgid "Embedded Microsoft Office document powered by Office Online."
+msgstr "سند Microsoft Office با نمایش آنلاین Office Online"
+
+msgid "Exit version history"
+msgstr "خروج از تاریخچه نسخه‌ها"
+
+msgid "Files"
+msgstr "فایل‌ها"
+
+msgid "Find & Replace"
+msgstr "یافتن و جایگزینی"
+
+msgid "First name example"
+msgstr "مثلاً علی"
+
+msgid "Frappe Suite"
+msgstr "مجموعه فرپ"
+
+msgid "Jump to"
+msgstr "رفتن به"
+
+msgid "Keyboard Shortcuts"
+msgstr "میان‌برهای صفحه‌کلید"
+
+msgid "Last name example"
+msgstr "مثلاً رضایی"
+
+msgid "Leave"
+msgstr "خروج از جلسه"
+
+msgid "Link name"
+msgstr "نام پیوند"
+
+msgid "Name version"
+msgstr "نام‌گذاری نسخه"
+
+msgid "name@example.com"
+msgstr "name@example.com"
+
+msgid "New Link"
+msgstr "پیوند جدید"
+
+msgid "New Presentation"
+msgstr "ارائه جدید"
+
+msgid "Next change"
+msgstr "تغییر بعدی"
+
+msgid "No messages yet"
+msgstr "هنوز پیامی نیست"
+
+msgid "No results"
+msgstr "نتیجه‌ای پیدا نشد"
+
+msgid "No results for “{0}”"
+msgstr "نتیجه‌ای برای «{0}» پیدا نشد"
+
+msgid "Previewing {0}"
+msgstr "پیش‌نمایش نسخه {0}"
+
+msgid "Previous"
+msgstr "قبلی"
+
+msgid "Previous change"
+msgstr "تغییر قبلی"
+
+msgid "Print"
+msgstr "چاپ"
+
+msgid "Remove from meeting"
+msgstr "حذف از جلسه"
+
+msgid "Remove {0} from the meeting?"
+msgstr "{0} از جلسه حذف شود؟"
+
+msgid "Replaced {0} cells"
+msgstr "{0} سلول جایگزین شد"
+
+msgid "Results for “{0}”"
+msgstr "نتایج «{0}»"
+
+msgid "Rows"
+msgstr "ردیف‌ها"
+
+msgid "Sent"
+msgstr "ارسال‌شده"
+
+msgid "Set up Drive settings first."
+msgstr "ابتدا تنظیمات فضای فایل را انجام دهید."
+
+msgid "Sheets"
+msgstr "صفحه‌گسترده"
+
+msgid "Sign Out"
+msgstr "خروج"
+
+msgid "Start Presentation"
+msgstr "شروع ارائه"
+
+msgid "This preview is generated by Microsoft, an external service. For better privacy, download the file instead."
+msgstr "این پیش‌نمایش را سرویس خارجی مایکروسافت می‌سازد. برای حفظ بهتر حریم خصوصی، فایل را دریافت کنید."
+
+msgid "Tip: use {0} for a free local demo with common calculations and text transformations. No API key is required."
+msgstr "نکته: برای اجرای محلی رایگانِ محاسبات و تبدیل‌های متنی رایج، از {0} استفاده کنید. نیازی به کلید API نیست."
+
+msgid "Trash"
+msgstr "زباله‌دان"
+
+msgid "Try Again"
+msgstr "تلاش دوباره"
+
+msgid "Type more…"
+msgstr "عبارت کامل‌تری بنویسید…"
+
+msgid "Upload Folder"
+msgstr "بارگذاری پوشه"
+
+msgid "{0} changed rows"
+msgstr "{0} ردیف تغییر کرده"
+
+msgid "{0} edited cells"
+msgstr "{0} سلول ویرایش شده"
+
+msgid "Confirm Password"
+msgstr "تکرار گذرواژه"
+
+msgid "Favourites"
+msgstr "علاقه‌مندی‌ها"
+
+msgid "Recents"
+msgstr "موارد اخیر"
+
+msgid "Something went wrong"
+msgstr "مشکلی پیش آمد"
+
+msgid "Accessible to a team"
+msgstr "یک تیم دسترسی دارد"
+
+msgid "Accessible to invited members"
+msgstr "فقط اعضای دعوت‌شده دسترسی دارند"
+
+msgid "Add people…"
+msgstr "افزودن افراد…"
+
+msgid "Can upload"
+msgstr "امکان بارگذاری"
+
+msgid "Owner (you)"
+msgstr "مالک (شما)"
+
+msgid "Sharing “{0}”"
+msgstr "اشتراک‌گذاری «{0}»"
+
+msgid "Add email"
+msgstr "افزودن ایمیل"
+
+msgid "Add files by dropping them here."
+msgstr "فایل‌ها را اینجا رها کنید."
+
+msgid "Add files to this folder."
+msgstr "فایل‌ها را به این پوشه اضافه کنید."
+
+msgid "Administration"
+msgstr "مدیریت سامانه"
+
+msgid "All items in your Trash will be deleted forever. <br/><br/> <span class=font-semibold>This is an irreversible process.</span>"
+msgstr "همه موارد زباله‌دان برای همیشه حذف می‌شوند.<br/><br/><span class=font-semibold>این عملیات قابل بازگشت نیست.</span>"
+
+msgid "All your favourite items will be cleared."
+msgstr "همه علاقه‌مندی‌های شما پاک می‌شوند."
+
+msgid "All your recently viewed files will be cleared."
+msgstr "فهرست فایل‌های اخیراً مشاهده‌شده پاک می‌شود."
+
+msgid "Clear your Trash"
+msgstr "خالی‌کردن زباله‌دان"
+
+msgid "Create presentations using Slides."
+msgstr "با بخش ارائه‌ها، ارائه جدید بسازید."
+
+msgid "Delete forever"
+msgstr "حذف برای همیشه"
+
+msgid "Delete — forever."
+msgstr "حذف برای همیشه"
+
+msgid "Deleted {0}."
+msgstr "{0} حذف شد."
+
+msgid "Go to folder"
+msgstr "رفتن به پوشه"
+
+msgid "I confirm that I want to remove "
+msgstr "تأیید می‌کنم که می‌خواهم حذف کنم: "
+
+msgid "Link detected"
+msgstr "پیوند شناسایی شد"
+
+msgid "Manager"
+msgstr "مدیر"
+
+msgid "Move {0} to Trash"
+msgstr "انتقال {0} به زباله‌دان"
+
+msgid "Moved to "
+msgstr "منتقل شد به "
+
+msgid "Moved {0} to Trash."
+msgstr "{0} به زباله‌دان منتقل شد."
+
+msgid "New folder"
+msgstr "پوشه جدید"
+
+msgid "No documents yet"
+msgstr "هنوز سندی وجود ندارد"
+
+msgid "No favourites yet"
+msgstr "هنوز موردی به علاقه‌مندی‌ها اضافه نشده"
+
+msgid "No files on site yet"
+msgstr "هنوز فایلی در سایت وجود ندارد"
+
+msgid "No files yet"
+msgstr "هنوز فایلی وجود ندارد"
+
+msgid "No presentations yet"
+msgstr "هنوز ارائه‌ای وجود ندارد"
+
+msgid "No recent files"
+msgstr "فایل اخیری وجود ندارد"
+
+msgid "No shared files"
+msgstr "فایل اشتراکی وجود ندارد"
+
+msgid "Nothing found - try something else?"
+msgstr "چیزی پیدا نشد؛ عبارت دیگری را امتحان کنید."
+
+msgid "Nothing here"
+msgstr "اینجا خالی است"
+
+msgid "Restore {0}"
+msgstr "بازیابی {0}"
+
+msgid "Restored {0}."
+msgstr "{0} بازیابی شد."
+
+msgid "S3 settings updated successfully"
+msgstr "تنظیمات S3 با موفقیت به‌روزرسانی شد"
+
+msgid "Select an option"
+msgstr "یک گزینه انتخاب کنید"
+
+msgid "Starting syncing."
+msgstr "همگام‌سازی در حال شروع است."
+
+msgid "Successfully synced"
+msgstr "همگام‌سازی با موفقیت انجام شد"
+
+msgid "Sync files from S3"
+msgstr "همگام‌سازی فایل‌ها از S3"
+
+msgid "Team ID"
+msgstr "شناسه تیم"
+
+msgid "Team Name"
+msgstr "نام تیم"
+
+msgid "There was an error while clearing recents."
+msgstr "هنگام پاک‌کردن موارد اخیر خطایی رخ داد."
+
+msgid "There was an error."
+msgstr "خطایی رخ داد."
+
+msgid "These items "
+msgstr "این موارد "
+
+msgid "this item"
+msgstr "این مورد"
+
+msgid "This team is empty"
+msgstr "این تیم فایلی ندارد"
+
+msgid "Trash is empty"
+msgstr "زباله‌دان خالی است"
+
+msgid "Trashed files will show up here - you can restore them."
+msgstr "فایل‌های حذف‌شده اینجا نمایش داده می‌شوند و امکان بازیابی دارند."
+
+msgid "Try opening something to see it here."
+msgstr "برای نمایش در این بخش، فایلی را باز کنید."
+
+msgid "Upload to get started!"
+msgstr "برای شروع فایلی بارگذاری کنید."
+
+msgid "Views"
+msgstr "نماها"
+
+msgid "will be deleted and will no longer be accessible.<br/><br/><span class=font-semibold>This action cannot be undone.</span>"
+msgstr "حذف می‌شود و دیگر در دسترس نخواهد بود.<br/><br/><span class=font-semibold>این عملیات قابل بازگشت نیست.</span>"
+
+msgid "will be restored to its original location."
+msgstr "به محل اصلی خود بازگردانده می‌شود."
+
+msgid "will be restored to their original locations."
+msgstr "به محل‌های اصلی خود بازگردانده می‌شوند."
+
+msgid "Workspace"
+msgstr "فضای کاری"
+
+msgid "You can save your favourites here."
+msgstr "موارد دلخواه خود را اینجا نگه دارید."
+
+msgid "You can share files easily on Drive - try it out!"
+msgstr "می‌توانید فایل‌ها را به‌سادگی به اشتراک بگذارید."
+
+msgid "{0} items"
+msgstr "{0} مورد"
+
+msgid "“{0}” "
+msgstr "«{0}» "
+
+msgid "Access level updated"
+msgstr "سطح دسترسی به‌روزرسانی شد"
+
+msgid "Applied transition to all slides"
+msgstr "گذار روی همه اسلایدها اعمال شد"
+
+msgid "Background blur failed due to WebGL error. Blur effects have been disabled."
+msgstr "تاری پس‌زمینه به‌دلیل خطای WebGL انجام نشد و این جلوه غیرفعال شد."
+
+msgid "Background blur requires WebGL but it's not available on this device. Blur effects have been disabled."
+msgstr "تاری پس‌زمینه به WebGL نیاز دارد که در این دستگاه در دسترس نیست؛ این جلوه غیرفعال شد."
+
+msgid "Copied to clipboard"
+msgstr "در حافظه موقت کپی شد"
+
+msgid "Copied to clipboard!"
+msgstr "در حافظه موقت کپی شد."
+
+msgid "Copied to your clipboard."
+msgstr "در حافظه موقت کپی شد."
+
+msgid "Could not move this file."
+msgstr "فایل منتقل نشد."
+
+msgid "Could not save the document."
+msgstr "سند ذخیره نشد."
+
+msgid "Custom background removed"
+msgstr "پس‌زمینه دلخواه حذف شد"
+
+msgid "E2EE requires encoded media transform support."
+msgstr "رمزنگاری سرتاسری به پشتیبانی مرورگر از تبدیل رسانه رمزگذاری‌شده نیاز دارد."
+
+msgid "Encrypted chat is not ready yet. Wait for encryption to finish, then try again."
+msgstr "گفتگوی رمزنگاری‌شده هنوز آماده نیست. پس از تکمیل رمزنگاری دوباره تلاش کنید."
+
+msgid "Failed to apply background effects. Using original video."
+msgstr "جلوه پس‌زمینه اعمال نشد؛ تصویر اصلی نمایش داده می‌شود."
+
+msgid "Failed to enable E2EE for this meeting"
+msgstr "رمزنگاری سرتاسری برای این جلسه فعال نشد"
+
+msgid "Failed to join meeting after approval"
+msgstr "ورود به جلسه پس از تأیید انجام نشد"
+
+msgid "Failed to load the background effects model. Please try again."
+msgstr "مدل جلوه‌های پس‌زمینه بارگذاری نشد. دوباره تلاش کنید."
+
+msgid "Failed to promote user to co-host"
+msgstr "ارتقای کاربر به میزبان مشترک انجام نشد"
+
+msgid "Failed to remove custom background"
+msgstr "پس‌زمینه دلخواه حذف نشد"
+
+msgid "Failed to send message"
+msgstr "پیام ارسال نشد"
+
+msgid "Failed to start screen sharing"
+msgstr "اشتراک‌گذاری صفحه شروع نشد"
+
+msgid "Failed to toggle camera"
+msgstr "وضعیت دوربین تغییر نکرد"
+
+msgid "Failed to toggle microphone"
+msgstr "وضعیت میکروفن تغییر نکرد"
+
+msgid "Failed to update meeting settings"
+msgstr "تنظیمات جلسه به‌روزرسانی نشد"
+
+msgid "Failed to update the selected background image. Reverting to original."
+msgstr "تصویر پس‌زمینه انتخاب‌شده به‌روزرسانی نشد و تصویر قبلی بازگردانده شد."
+
+msgid "hello!"
+msgstr "سلام!"
+
+msgid "Meeting is now end-to-end encrypted."
+msgstr "رمزنگاری سرتاسری جلسه فعال شد."
+
+msgid "New comments aren't supported on this doc."
+msgstr "این سند از دیدگاه جدید پشتیبانی نمی‌کند."
+
+msgid "No changes to save"
+msgstr "تغییری برای ذخیره وجود ندارد"
+
+msgid "Not connected to meeting server"
+msgstr "اتصال به سرور جلسه برقرار نیست"
+
+msgid "Poll created!"
+msgstr "نظرسنجی ساخته شد."
+
+msgid "Saved document"
+msgstr "سند ذخیره شد"
+
+msgid "Share with the tagged people?"
+msgstr "سند با افراد برچسب‌خورده به اشتراک گذاشته شود؟"
+
+msgid "Slide copied to clipboard"
+msgstr "اسلاید در حافظه موقت کپی شد"
+
+msgid "Something has gone wrong - please contact support."
+msgstr "مشکلی رخ داده است؛ با پشتیبانی تماس بگیرید."
+
+msgid "The host has restricted chat to hosts and co-hosts only."
+msgstr "میزبان، گفتگو را به میزبان‌ها و میزبان‌های مشترک محدود کرده است."
+
+msgid "There is already a folder with this name here."
+msgstr "پوشه‌ای با این نام در این محل وجود دارد."
+
+msgid "User promoted to co-host"
+msgstr "کاربر به میزبان مشترک ارتقا یافت"
+
+msgid "WebGL is not available. Background blur effects will be disabled."
+msgstr "WebGL در دسترس نیست؛ جلوه تاری پس‌زمینه غیرفعال می‌شود."
+
+msgid "You have been removed from the meeting by the host"
+msgstr "میزبان شما را از جلسه حذف کرد"
+
+msgid "Your join request was denied by the meeting host"
+msgstr "میزبان درخواست ورود شما را رد کرد"

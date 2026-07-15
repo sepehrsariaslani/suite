@@ -17,13 +17,13 @@ const empty = computed(() =>
   shareView.value
     ? {
       icon: LucideUsers,
-      title: 'No shared files',
-      description: 'You can share files easily on Drive - try it out!',
+      title: __('No shared files'),
+      description: __('You can share files easily on Drive - try it out!'),
     }
     : {
       icon: LucideFiles,
-      title: 'No files on site yet',
-      description: 'Upload to get started!',
+      title: __('No files on site yet'),
+      description: __('Upload to get started!'),
     }
 )
 </script>
