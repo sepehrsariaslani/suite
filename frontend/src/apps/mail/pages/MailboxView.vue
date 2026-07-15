@@ -15,6 +15,7 @@
 		<HeaderActions
 			v-model:show-search="showSearchModal"
 			v-model:show-advanced="showSearchAdvanced"
+			v-model:edit-filter="searchEditFilter"
 			@reload-mails="resetThreads(true, ['drafts', 'sent'])"
 		/>
 	</header>
@@ -49,7 +50,7 @@
 			</div>
 		</div>
 
-		<template v-else-if="threadsResource?.data?.length || filter">
+		<template v-else-if="threadsResource?.data?.length || filter || mailbox === 'search'">
 			<div
 				ref="mailSidebar"
 				class="sticky top-16 flex flex-col border-r"
@@ -77,7 +78,7 @@
 						</template>
 						<template #suffix>
 							<button
-								class="text-ink-gray-5 hover:text-ink-gray-8 flex"
+								class="text-ink-gray-5 hover:text-ink-gray-8 -m-1 flex p-1"
 								:aria-label="__('Filters')"
 								@mousedown.stop.prevent="openSearch(true)"
 							>
@@ -89,12 +90,15 @@
 						<span
 							v-for="chip in searchFilterChips"
 							:key="chip.key"
-							@click="openSearch(true)"
-							class="bg-surface-gray-2 inline-flex h-7 cursor-pointer items-center gap-1 rounded pl-2 pr-1 text-xs"
+							class="bg-surface-gray-2 inline-flex h-7 items-center gap-1 rounded pl-2 pr-1 text-xs"
+							:class="{
+								'hover:bg-surface-gray-3 cursor-pointer': isClickableChip(chip.key),
+							}"
+							@click="isClickableChip(chip.key) && handleChipClick(chip.key)"
 						>
 							<span class="max-w-40 truncate">{{ chip.label }}</span>
 							<button
-								class="text-ink-gray-5 hover:text-ink-gray-8 rounded p-0.5"
+								class="text-ink-gray-5 hover:text-ink-gray-8 rounded p-1"
 								:aria-label="__('Remove filter')"
 								@click.stop="removeSearchFilter(chip.key)"
 							>
@@ -102,16 +106,6 @@
 							</button>
 						</span>
 
-						<Button
-							variant="outline"
-							class="text-xs"
-							@click="openSearch(true)"
-						>
-							<span class="flex items-center gap-1">
-								<Plus class="size-3" />
-								{{ __('Add filter') }}
-							</span>
-						</Button>
 						<Button variant="ghost" class="text-xs" :label="__('Clear all')" @click="clearSearch" />
 					</div>
 				</div>
@@ -315,7 +309,11 @@
 				</div>
 				<div v-else class="flex h-full items-center justify-center">
 					<p class="text-ink-gray-5">
-						{{ __('No mails found for the selected filter.') }}
+						{{
+							mailbox === 'search'
+								? __('No results found for the given query.')
+								: __('No mails found for the selected filter.')
+						}}
 					</p>
 				</div>
 			</div>
@@ -379,16 +377,10 @@
 			</div>
 		</template>
 
-		<!-- No mails -->
+		<!-- No mails (the search view keeps its header and shows an inline message instead) -->
 		<div v-else class="text-ink-gray-5 flex w-full flex-col items-center justify-center">
 			<NoMails class="text-ink-gray-2 mb-2 h-16 w-16" />
-			<p>
-				{{
-					mailbox === 'search'
-						? __('No results found for the given query.')
-						: __('You have no mails in this folder.')
-				}}
-			</p>
+			<p>{{ __('You have no mails in this folder.') }}</p>
 		</div>
 	</div>
 
@@ -416,7 +408,6 @@ import {
 	MailOpen,
 	Mails,
 	Paperclip,
-	Plus,
 	RefreshCw,
 	Search,
 	SlidersHorizontal,
@@ -1566,11 +1557,42 @@ const title = computed(() => {
 // searchTotal drives the result count. Labels mirror the search dialog.
 const showSearchModal = ref(false)
 const showSearchAdvanced = ref(false)
+// Set when a filter chip is clicked; the modal reopens that filter inline for editing (see editSearchFilter).
+const searchEditFilter = ref('')
 // Open the search modal — to the filter form when `advanced` (clicking a pill / "Add filter"), or to the
 // plain search input otherwise (clicking the query).
 const openSearch = (advanced = false) => {
 	showSearchAdvanced.value = advanced
 	showSearchModal.value = true
+}
+// Filter chips whose value can be edited inline in the modal (operator-backed: folder + contacts). The
+// rest (subject/dates) have no inline form, so their chips only remove — matching the modal, where only
+// these keys are clickable.
+const EDITABLE_FILTER_KEYS = ['inMailbox', 'from', 'to', 'cc', 'bcc']
+const isEditableChip = (key: string) => EDITABLE_FILTER_KEYS.includes(key)
+// Two-state chips (attachment/read) flip between their values on click — With ↔ Without Attachments,
+// Read ↔ Unread — instead of opening the modal.
+const TOGGLEABLE_FILTER_KEYS = ['hasAttachment', 'isRead']
+const isToggleableChip = (key: string) => TOGGLEABLE_FILTER_KEYS.includes(key)
+const isClickableChip = (key: string) => isEditableChip(key) || isToggleableChip(key)
+// Route a chip click to editing (operator chips) or toggling (attachment/read chips); non-clickable
+// chips only expose the remove button.
+const handleChipClick = (key: string) => {
+	if (isToggleableChip(key)) return toggleSearchFilter(key)
+	if (isEditableChip(key)) return editSearchFilter(key)
+}
+// Clicking an editable chip opens the modal (plain search view) with that filter dropped back into the
+// query as an editable token — the same effect as clicking the chip inside the modal.
+const editSearchFilter = (key: string) => {
+	showSearchAdvanced.value = false
+	searchEditFilter.value = key
+	showSearchModal.value = true
+}
+// Re-run the search with the chip's value flipped between its two states ('true' ⇄ 'false').
+const toggleSearchFilter = (key: string) => {
+	const query = { ...route.query } as Record<string, string>
+	query[key] = query[key] === 'true' ? 'false' : 'true'
+	searchWith(query)
 }
 const searchTotal = ref(0)
 
