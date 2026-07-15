@@ -26,7 +26,7 @@ class AccountRequest(Document):
 		self.email = self.email.strip()
 
 	def set_otp(self):
-		self.otp = generate_otp(length=5)
+		self.otp = generate_otp(length=6)
 		self.otp_generated_at = frappe.utils.now_datetime()
 		self.save(ignore_permissions=True)
 
