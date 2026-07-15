@@ -15,8 +15,10 @@ from suite.mail.doctype.calendar_event.calendar_event import (
 
 
 @frappe.whitelist()
-def get_calendars(account: str) -> list[dict[str, str]]:
+def get_calendars(account: str | None = None) -> list[dict[str, str]]:
 	"""Returns a list of the specified account's calendars."""
+	if not account:
+		return []
 
 	calendars = fetch_calendars(account)
 
@@ -24,8 +26,12 @@ def get_calendars(account: str) -> list[dict[str, str]]:
 
 
 @frappe.whitelist()
-def get_calendar_events(account: str, from_date: str, to_date: str, time_zone: str) -> list[dict]:
+def get_calendar_events(
+	account: str | None = None, from_date: str | None = None, to_date: str | None = None, time_zone: str | None = None
+) -> list[dict]:
 	"""Fetches calendar events between from_date and to_date for the specified account."""
+	if not account or not from_date or not to_date or not time_zone:
+		return []
 
 	events = fetch_calendar_events(
 		account,

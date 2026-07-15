@@ -49,13 +49,18 @@ export function useMeetingPreviewPresence(meetingId: string) {
 			}
 		},
 		onError(err: FrappeRequestError) {
-			error.value = err.messages?.length
+			const message = err.messages?.length
 				? err.messages[err.messages.length - 1]
 				: "Failed to fetch presence token";
+			if (message === "SFU secret not configured") {
+				error.value = null;
+				return;
+			}
+			error.value = message;
 		},
 	});
 
-	if (session.isLoggedIn) {
+	if (session.isLoggedIn && window.sfu_enabled) {
 		fetchPresenceToken.fetch();
 	}
 

@@ -3,6 +3,7 @@ import type { RouteLocationNormalized, Router } from 'vue-router'
 import suiteRouter from '@/router'
 
 import { userStore } from '@/apps/calendar/stores/user'
+import { resolveCalendarRouteTarget } from '@/apps/calendar/routing'
 
 /**
  * Calendar router compat + guard.
@@ -20,27 +21,6 @@ import { userStore } from '@/apps/calendar/stores/user'
  */
 export const router = suiteRouter
 
-type Params = Record<string, string | string[]>
-
-const resolveShortcut = (
-	name: string | symbol | null | undefined,
-	params: Params,
-	accountId: string,
-) => {
-	const defaultRoute = { name: 'calendar-month', params: { accountId } }
-
-	switch (name) {
-		case 'calendar-month-shortcut':
-			return { name: 'calendar-month', params: { accountId, ...params } }
-		case 'calendar-week-shortcut':
-			return { name: 'calendar-week', params: { accountId, ...params } }
-		case 'calendar-day-shortcut':
-			return { name: 'calendar-day', params: { accountId, ...params } }
-		default:
-			return defaultRoute
-	}
-}
-
 function installCalendarGuard(r: Router) {
 	r.beforeEach(async (to: RouteLocationNormalized) => {
 		// Only act on calendar routes; let the suite handle everything else.
@@ -54,8 +34,10 @@ function installCalendarGuard(r: Router) {
 		store.resolveAccount(user?.accounts, to.params.accountId as string | undefined)
 		const accountId = store.accountId
 
+		if (!accountId && to.name !== 'calendar-setup') return { name: 'calendar-setup' }
+
 		// Expand shortcut routes to their full account-scoped equivalents.
-		if (to.meta.shortcut) return resolveShortcut(to.name, to.params, accountId)
+		if (to.meta.shortcut) return resolveCalendarRouteTarget(to.name, to.params, accountId)
 	})
 }
 

@@ -20,6 +20,12 @@ import dayjs from '@/apps/mail/utils/dayjs'
 import { userStore } from '@/apps/mail/stores/user'
 import DefaultLayout from '@/apps/mail/components/DefaultLayout.vue'
 import InstallPrompt from '@/apps/mail/components/InstallPrompt.vue'
+import {
+	buildServiceWorkerURL,
+	hasPushRelayServerURL,
+	isInvalidServiceWorkerScriptURL,
+	isMailServiceWorkerScriptURL,
+} from '@/apps/mail/utils/pushNotificationConfig'
 
 import type { NotificationPayload } from '@/apps/mail/types'
 
@@ -91,31 +97,44 @@ const handleThemeShortcut = (e: KeyboardEvent) => {
 const registerServiceWorker = async () => {
 	try {
 		if (!('serviceWorker' in navigator)) return
+		const registrations = await navigator.serviceWorker.getRegistrations()
+		for (const registration of registrations) {
+			const scriptURL =
+				registration.active?.scriptURL ||
+				registration.waiting?.scriptURL ||
+				registration.installing?.scriptURL ||
+				''
+			if (
+				isInvalidServiceWorkerScriptURL(scriptURL) ||
+				(!hasPushRelayServerURL(window.push_relay_server_url) &&
+					isMailServiceWorkerScriptURL(scriptURL))
+			) {
+				await registration.unregister()
+			}
+		}
+		if (!hasPushRelayServerURL(window.push_relay_server_url)) return
 
 		const { default: FrappePushNotification } = await import(
 			'@/apps/mail/utils/frappe-push-notification'
 		)
 		window.frappePushNotification = new FrappePushNotification('mail')
-
-		let serviceWorkerURL = '/assets/suite/frontend/sw.js'
-		let config: unknown = ''
+		let config: unknown
 
 		try {
 			config = await window.frappePushNotification.fetchWebConfig()
-			serviceWorkerURL = `${serviceWorkerURL}?config=${encodeURIComponent(
-				JSON.stringify(config),
-			)}`
 		} catch (err) {
-			console.error('Failed to fetch FCM config', err)
+			console.warn('Push notifications are unavailable for this site', err)
+			return
 		}
+
+		const serviceWorkerURL = buildServiceWorkerURL('/assets/suite/frontend/sw.js', config)
 
 		const registration = await navigator.serviceWorker.register(serviceWorkerURL, {
 			type: 'module',
 		})
-		if (config)
-			window.frappePushNotification
-				.initialize(registration)
-				.then(() => console.log('Frappe Push Notification initialized'))
+		window.frappePushNotification
+			.initialize(registration)
+			.then(() => console.log('Frappe Push Notification initialized'))
 	} catch (err) {
 		console.error('Failed to register service worker', err)
 	}

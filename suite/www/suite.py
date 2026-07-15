@@ -1,4 +1,5 @@
 import frappe
+from suite.meet.utils.sfu_config import get_sfu_config
 
 no_cache = 1
 
@@ -29,6 +30,7 @@ def get_desk_theme():
 
 
 def get_boot():
+	sfu_config = get_sfu_config()
 	return frappe._dict(
 		{
 			"site_name": frappe.local.site,
@@ -37,5 +39,6 @@ def get_boot():
 			# (frappe-push-notification.ts / PWASettings.vue). Mirrors the old
 			# standalone www/mail.py boot, which the suite shell replaced.
 			"push_relay_server_url": frappe.conf.get("push_relay_server_url") or "",
+			"sfu_enabled": bool(sfu_config.get("sfu_server_url") and sfu_config.get("sfu_secret")),
 		}
 	)

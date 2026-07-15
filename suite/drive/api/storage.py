@@ -3,14 +3,17 @@ from frappe import _
 from pypika import functions as fn
 
 from suite.drive.api.permissions import get_teams
-from suite.drive.utils import default_team, STATUS_ACTIVE
+from suite.drive.utils import STATUS_ACTIVE, default_team, get_default_team
 
 MEGA_BYTE = 1024**2
 DriveFile = frappe.qb.DocType("File")
 
 
 @frappe.whitelist()
-def storage_breakdown(team: str, owned_only: bool):
+def storage_breakdown(team: str | None = None, owned_only: bool = False):
+    if not team or team == "home":
+        team = get_default_team()
+
     if team not in get_teams():
         frappe.throw(_("You don't have access to this team."), frappe.PermissionError)
 

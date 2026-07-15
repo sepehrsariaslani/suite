@@ -1,4 +1,5 @@
 import frappe
+from suite.meet.utils.sfu_config import get_sfu_config
 
 no_cache = 1
 
@@ -20,8 +21,10 @@ def get_context_for_dev():
 
 
 def get_boot():
+	sfu_config = get_sfu_config()
 	return frappe._dict(
 		frappe_version=frappe.__version__,
 		site_name=frappe.local.site,
 		is_system_user=frappe.session.data.user_type == "System User",
+		sfu_enabled=bool(sfu_config.get("sfu_server_url") and sfu_config.get("sfu_secret")),
 	)

@@ -38,6 +38,11 @@ export const routes: RouteRecordRaw[] = [
 		component: () => import('@/apps/calendar/pages/CalendarLayout.vue'),
 		children: [
 			{
+				path: 'setup',
+				name: 'calendar-setup',
+				component: () => import('@/apps/calendar/pages/CalendarSetupView.vue'),
+			},
+			{
 				path: 'account/:accountId/month/:year?/:month?/:day?',
 				name: 'calendar-month',
 				component: () => import('@/apps/calendar/pages/CalendarView.vue'),

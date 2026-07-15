@@ -50,6 +50,7 @@ watch(
 watch(
 	() => store.accountId,
 	() => {
+		if (!store.accountId) return
 		calendars.reload()
 		events.reload()
 	},
@@ -119,7 +120,7 @@ const getEventRole = (event) => {
 const calendars = createResource({
 	url: 'suite.calendar.api.get_calendars',
 	makeParams: () => ({ account: store.accountId }),
-	auto: true,
+	auto: false,
 	onSuccess: (data) => (visibleCalendars.value = data.map((cal) => cal.name)),
 	onError: (error) => raiseToast(error.message, 'error'),
 })
@@ -141,6 +142,7 @@ const events = createResource({
 	},
 	transform: (data) => data.map(transformEvent),
 	onError: (error) => raiseToast(error.message, 'error'),
+	auto: false,
 })
 
 const visibleEvents = computed(
