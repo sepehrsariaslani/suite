@@ -1265,6 +1265,7 @@ const crossAccountSetSeen = (mail: Thread, seen: boolean) => {
 }
 
 const crossAccountSetFlagged = (mail: Thread, flagged: boolean) => {
+	if (mail.flagged === (flagged ? 1 : 0)) return
 	mail.flagged = flagged ? 1 : 0
 	call('suite.mail.api.mail.set_flagged', {
 		account: mail.account,
