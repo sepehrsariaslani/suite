@@ -13,12 +13,12 @@
           <div class="flex size-[3.375rem] items-center justify-center">
             <img
               :src="app.logo"
-              :alt="`${app.name} logo`"
+              :alt="__('{0} logo', [app.name])"
               class="size-[3.375rem] object-contain"
               draggable="false"
             />
           </div>
-          <div class="mt-3 text-sm-medium leading-none text-ink-gray-9">{{ app.name }}</div>
+          <div class="mt-3 text-sm-medium leading-none text-ink-gray-9">{{ __(app.name) }}</div>
         </router-link>
 
         <a
@@ -28,12 +28,12 @@
           <div class="flex size-[3.375rem] items-center justify-center">
             <img
               :src="suiteLogo"
-              alt="Settings logo"
+              :alt="__('Settings logo')"
               class="size-[3.375rem] object-contain"
               draggable="false"
             />
           </div>
-          <div class="mt-3 text-sm-medium leading-none text-ink-gray-9">Settings</div>
+          <div class="mt-3 text-sm-medium leading-none text-ink-gray-9">{{ __('Settings') }}</div>
         </a>
       </div>
     </div>

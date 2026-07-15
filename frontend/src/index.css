@@ -37,7 +37,7 @@
 }
 
 :root {
-  --suite-font-sans: 'Peyda', 'Vazirmatn', system-ui, -apple-system, sans-serif;
+  --suite-font-sans: 'Peyda', system-ui, -apple-system, sans-serif;
 }
 
 html,
@@ -56,4 +56,28 @@ input,
 textarea,
 select {
   font-family: inherit;
+}
+
+/* Baseline bidi safety for user data that is naturally LTR inside an RTL UI. */
+[dir='rtl'] input,
+[dir='rtl'] textarea,
+[dir='rtl'] [contenteditable='true'] {
+  text-align: start;
+}
+
+[dir='rtl'] input[type='email'],
+[dir='rtl'] input[type='url'],
+[dir='rtl'] input[type='tel'],
+[dir='rtl'] input[type='number'],
+[dir='rtl'] code,
+[dir='rtl'] pre,
+[dir='rtl'] .dir-ltr {
+  direction: ltr;
+  text-align: left;
+  unicode-bidi: isolate;
+}
+
+[dir='rtl'] .dir-auto {
+  direction: auto;
+  unicode-bidi: plaintext;
 }

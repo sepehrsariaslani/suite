@@ -7,6 +7,7 @@ import {
 
 import { SUITE_APPS, SUITE_LOGO } from '@/apps/registry'
 import { useSessionStore } from '@/boot/session'
+import { translate } from '@/boot/translation'
 
 /**
  * ONE Vue Router for the whole suite.
@@ -136,7 +137,7 @@ router.afterEach((to) => {
 function setDocumentTitle(to: RouteLocationNormalizedLoaded) {
   const title = to.meta.title
   if (typeof title === 'string' && title) {
-    document.title = title
+    document.title = translate(title)
   }
 }
 
