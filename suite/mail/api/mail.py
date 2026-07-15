@@ -54,9 +54,10 @@ from suite.mail.jmap import (
 	get_mailbox_id_by_role,
 	get_mailbox_service,
 )
-from suite.mail.utils import convert_html_to_text, get_config, log_error
+from suite.mail.utils import get_config, log_mail_error
 from suite.mail.utils.user import get_account_emails, is_jmap_configured
 from suite.mail.utils.validation import normalize_screened_value, validate_screened_value
+from suite.utils import convert_html_to_text
 
 AVATAR_CACHE_TTL = 60 * 60 * 24
 SCREENING_FETCH_LIMIT = 500
@@ -381,7 +382,15 @@ def serialize_thread(messages: list[dict], thread_messages: list[dict], latest: 
 	# From the current-mailbox message: identity + state (so star/junk actions target the right mail).
 	current_fields = ["name", "id", "mailboxes", "seen", "junk", "flagged"]
 	# From the most recent activity: what the row displays.
-	activity_fields = ["thread_id", "from_name", "from_email", "received_at", "recipients", "draft", "preview"]
+	activity_fields = [
+		"thread_id",
+		"from_name",
+		"from_email",
+		"received_at",
+		"recipients",
+		"draft",
+		"preview",
+	]
 	return {
 		**{field: current[field] for field in current_fields},
 		**{field: latest[field] for field in activity_fields},
@@ -1150,7 +1159,7 @@ def auto_accept_recipients(account: str, recipients: list) -> None:
 		if emails:
 			_screen_email_addresses(account, emails, action="Accepted", override=False)
 	except Exception:
-		log_error(
+		log_mail_error(
 			_("Screening Auto-Accept Error"),
 			_("Failed to auto-accept recipients for account {0}").format(account),
 		)
