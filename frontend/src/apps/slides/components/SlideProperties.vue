@@ -2,14 +2,14 @@
 	<div :class="sectionClasses">
 		<div class="flex flex-col gap-3">
 			<div class="flex items-center justify-between">
-				<div :class="sectionTitleClasses">Slide</div>
+				<div :class="sectionTitleClasses">{{ __('Slide') }}</div>
 				<div class="pe-0.5 text-2xs-semibold text-gray-700">
 					{{ slideIndex + 1 + ' of ' + slides.length }}
 				</div>
 			</div>
 
 			<div class="flex items-center justify-between">
-				<div :class="fieldLabelClasses">Background Color</div>
+				<div :class="fieldLabelClasses">{{ __('Background Color') }}</div>
 				<ColorPicker
 					v-model="currentSlide.background"
 					@colordown="onBgUpdateStart"
@@ -19,7 +19,7 @@
 		</div>
 	</div>
 
-	<CollapsibleSection title="Transition">
+	<CollapsibleSection :title="__('Transition')">
 		<template #default>
 			<Select
 				:options="['Magic Move', 'Fade', 'Slide In', 'None']"
@@ -29,7 +29,7 @@
 
 			<SliderInput
 				v-show="currentSlide.transition && currentSlide.transition != 'None'"
-				label="Duration"
+				:label="__('Duration')"
 				:rangeStart="0"
 				:rangeEnd="4"
 				:rangeStep="0.1"
@@ -43,7 +43,7 @@
 				class="flex items-center justify-between"
 				v-if="currentSlide.transition == 'Magic Move'"
 			>
-				<div :class="fieldLabelClasses">Fade In Other Elements</div>
+				<div :class="fieldLabelClasses">{{ __('Fade In Other Elements') }}</div>
 
 				<Checkbox
 					size="sm"
@@ -54,7 +54,7 @@
 			</div>
 
 			<Button
-				label="Apply To All Slides"
+				:label="__('Apply To All Slides')"
 				variant="outline"
 				class="text-sm"
 				@click="applyTransitionToAllSlides"

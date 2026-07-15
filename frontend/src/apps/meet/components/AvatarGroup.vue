@@ -47,12 +47,12 @@
 				<span v-if="displayedParticipants.length > 0">
 					{{ displayedParticipants.length > 1 ? ' are' : ' is' }}
 				</span>
-				in the meeting
+				{{ __('in the meeting') }}
 			</div>
 		</div>
 		<div v-else-if="showText">
 			<p class="text-base text-ink-gray-7">
-				You'll be the first to join this meeting
+				{{ __('You\'ll be the first to join this meeting') }}
 			</p>
 		</div>
 	</div>

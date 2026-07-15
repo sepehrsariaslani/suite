@@ -21,13 +21,13 @@
           v-model="thumbnail"
           :options="[
             {
-              label: 'Grid',
+              label: __('Grid'),
               value: 'grid',
               icon: LucideGrid,
               hideLabel: true,
             },
             {
-              label: 'List',
+              label: __('List'),
               value: 'list',
               icon: LucideList,
               hideLabel: true,

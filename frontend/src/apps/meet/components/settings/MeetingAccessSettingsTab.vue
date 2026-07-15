@@ -1,6 +1,6 @@
 <template>
 	<AppSettingsHeader
-		title="Controls"
+		:title="__('Controls')"
 		description="Manage join rules, chat, and security for this meeting."
 	/>
 	<AppSettingsBody>
@@ -9,7 +9,7 @@
 				<div class="space-y-3">
 					<Switch
 						class="w-full !px-0"
-						label="Allow Guests"
+						:label="__('Allow Guests')"
 						description="Allow non-registered users to join this meeting"
 						v-model="allowGuest"
 						:disabled="meetingDoc.updateSettings.loading || meetingDoc.get.loading"
@@ -19,7 +19,7 @@
 				<div class="space-y-3">
 					<Switch
 						class="w-full !px-0"
-						label="Require host approval"
+						:label="__('Require host approval')"
 						description="People wait in the lobby until a host or co-host admits them"
 						v-model="requireHostApproval"
 						:disabled="meetingDoc.updateSettings.loading || meetingDoc.get.loading"
@@ -29,7 +29,7 @@
 				<div class="space-y-3">
 					<Switch
 						class="w-full !px-0"
-						label="Host Only Chat"
+						:label="__('Host Only Chat')"
 						description="Restrict chat so only hosts and co-hosts can send messages"
 						v-model="hostOnlyChat"
 						:disabled="meetingDoc.updateSettings.loading || meetingDoc.get.loading"

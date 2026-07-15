@@ -10,7 +10,7 @@ function item(name, title, description, fn) {
 
 function buildFormatGroup({ toggleFmt, setAlign, setValign, adjustDecimals, toggleWrap, clearFormatting }) {
   return {
-    title: 'Format',
+    title: __('Format'),
     component: CommandPaletteItem,
     items: [
       item('bold',          'Bold',                    'Ctrl+B',       () => toggleFmt('bold')),
@@ -33,7 +33,7 @@ function buildFormatGroup({ toggleFmt, setAlign, setValign, adjustDecimals, togg
 
 function buildEditGroup({ undo, redo, repeatLast, showFindReplace, showFormulas, repopulateGrid, showShortcutsHelp }) {
   return {
-    title: 'Edit',
+    title: __('Edit'),
     component: CommandPaletteItem,
     items: [
       item('undo',      'Undo',               'Ctrl+Z', () => undo()),
@@ -56,7 +56,7 @@ function buildStructureGroup({
   toggleMerge, addRowsCount, doAddMoreRows,
 }) {
   return {
-    title: 'Structure',
+    title: __('Structure'),
     component: CommandPaletteItem,
     items: [
       item('row-above',  'Insert row above',      '', () => { contextMenu.targetRow = getGrid().getSelection().r0; doInsertRow(false) }),
@@ -79,7 +79,7 @@ function buildStructureGroup({
 
 function buildViewGroup({ contextMenu, getGrid, doFreezeRow, doFreezeCol, doUnfreezeRows, doUnfreezeCols, showSortFilter }) {
   return {
-    title: 'View',
+    title: __('View'),
     component: CommandPaletteItem,
     items: [
       item('freeze-row',   'Freeze rows up to selection', '', () => { contextMenu.targetRow = getGrid().getSelection().r0; doFreezeRow()  }),
@@ -93,7 +93,7 @@ function buildViewGroup({ contextMenu, getGrid, doFreezeRow, doFreezeCol, doUnfr
 
 function buildInsertGroup({ openPivotDialog }) {
   return {
-    title: 'Insert',
+    title: __('Insert'),
     component: CommandPaletteItem,
     items: [
       item('pivot-insert', 'Insert pivot table', '', () => openPivotDialog()),
@@ -103,7 +103,7 @@ function buildInsertGroup({ openPivotDialog }) {
 
 function buildSheetGroup({ addSheet, currentSheet, openRenameDialog, doDuplicateSheet, doDeleteSheet }) {
   return {
-    title: 'Sheet',
+    title: __('Sheet'),
     component: CommandPaletteItem,
     items: [
       item('sheet-add',       'Add sheet',       '', () => addSheet()),
@@ -116,7 +116,7 @@ function buildSheetGroup({ addSheet, currentSheet, openRenameDialog, doDuplicate
 
 function buildFileGroup({ onSave, exportCSV, exportXLSX, exportPDF, csvInputRef, xlsxInputRef }) {
   return {
-    title: 'File',
+    title: __('File'),
     component: CommandPaletteItem,
     items: [
       item('save',        'Save',        'Ctrl+S', () => onSave()),

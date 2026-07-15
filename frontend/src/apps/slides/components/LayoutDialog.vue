@@ -3,7 +3,7 @@
 		v-model:open="showLayoutDialog"
 		class="pb-0"
 		size="4xl"
-		title="Select a Template Layout"
+		:title="__('Select a Template Layout')"
 	>
 		<template #default>
 			<div class="grid max-h-[32rem] grid-cols-3 gap-6 overflow-y-auto">

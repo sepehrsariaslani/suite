@@ -1,13 +1,13 @@
 <template>
 	<AppSettingsHeader
-		title="Layout"
+		:title="__('Layout')"
 		description="Customize the meeting interface layout"
 	/>
 	<AppSettingsBody>
 		<div class="space-y-6">
 			<Switch
 				class="w-full !px-0"
-				label="Auto-hide header and controls"
+				:label="__('Auto-hide header and controls')"
 				description="Automatically hide the header and toolbar after 10 seconds of inactivity"
 				v-model="autoHideToolbarLocal"
 			/>

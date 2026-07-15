@@ -1,5 +1,5 @@
 <template>
-	<CollapsibleSection title="Playback">
+	<CollapsibleSection :title="__('Playback')">
 		<template #default>
 			<div class="flex gap-4">
 				<div
@@ -23,7 +23,7 @@
 			</div>
 
 			<SliderInput
-				label="Speed"
+				:label="__('Speed')"
 				:rangeStart="0.5"
 				:rangeEnd="2"
 				:rangeStep="0.1"
@@ -56,12 +56,12 @@ const hoverOption = ref(null)
 const playbackProperties = [
 	{
 		property: 'autoplay',
-		label: 'Autoplay',
+		label: __('Autoplay'),
 		icon: TvMinimalPlay,
 	},
 	{
 		property: 'loop',
-		label: 'Loop',
+		label: __('Loop'),
 		icon: Repeat2,
 	},
 ]

@@ -1,22 +1,22 @@
 <template>
-	<Dialog v-model="show" title="Meeting Information">
+	<Dialog v-model="show" :title="__('Meeting Information')">
 		<template #default>
 			<div class="space-y-4">
 				<div class="space-y-2">
-					<label class="text-sm-medium text-ink-gray-8">Meeting ID</label>
+					<label class="text-sm-medium text-ink-gray-8">{{ __('Meeting ID') }}</label>
 					<ClickToCopyField :textContent="meetingId" :breakLines="false" />
 				</div>
 
 				<div class="space-y-2">
-					<label class="text-sm-medium text-ink-gray-8">Meeting URL</label>
+					<label class="text-sm-medium text-ink-gray-8">{{ __('Meeting URL') }}</label>
 					<ClickToCopyField :textContent="meetingUrl" :breakLines="false" />
 				</div>
 
 				<div v-if="e2eeFingerprint" class="space-y-2">
-					<label class="text-sm-medium text-ink-gray-8">Encryption fingerprint</label>
+					<label class="text-sm-medium text-ink-gray-8">{{ __('Encryption fingerprint') }}</label>
 					<ClickToCopyField :textContent="e2eeFingerprint" :breakLines="false" />
 					<p class="text-xs text-ink-gray-6">
-						Everyone in this encrypted meeting should see the same fingerprint.
+						{{ __('Everyone in this encrypted meeting should see the same fingerprint.') }}
 					</p>
 				</div>
 

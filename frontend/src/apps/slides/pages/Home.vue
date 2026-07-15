@@ -2,7 +2,7 @@
 	<div class="flex h-screen w-screen flex-col">
 		<Navbar
 			:primaryButton="{
-				label: 'New',
+				label: __('New'),
 				icon: Plus,
 				onClick: () => navigateToEditor(),
 			}"

@@ -19,11 +19,11 @@
           v-else
           variant="solid"
           size="sm"
-          label="Ask"
+          :label="__('Ask')"
           :disabled="!text.trim()"
           @click="onEnter"
         />
-        <button type="button" class="ab-close" aria-label="Close" @click="emit('close')">×</button>
+        <button type="button" class="ab-close" :aria-label="__('Close')" @click="emit('close')">×</button>
       </div>
 
       <!-- Error -->
@@ -44,8 +44,8 @@
           Applied to {{ pending.count }} cell{{ pending.count === 1 ? '' : 's' }}.
         </span>
         <div class="ab-keep-actions">
-          <Button variant="ghost" size="sm" label="Undo" @click="emit('undo')" />
-          <Button variant="solid" size="sm" label="Keep" @click="emit('keep')" />
+          <Button variant="ghost" size="sm" :label="__('Undo')" @click="emit('undo')" />
+          <Button variant="solid" size="sm" :label="__('Keep')" @click="emit('keep')" />
         </div>
       </div>
     </div>

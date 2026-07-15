@@ -1,7 +1,7 @@
 <template>
 	<aside v-if="open" class="sn-vh-panel" @click.stop>
 		<header class="sn-vh-header">
-			<div class="sn-vh-title">Version history</div>
+			<div class="sn-vh-title">{{ __('Version history') }}</div>
 			<Button variant="ghost" size="sm" icon="x" @click="$emit('close')" />
 		</header>
 
@@ -9,7 +9,7 @@
 			<Select v-model="filter" :options="FILTER_OPTIONS" size="sm" />
 		</div>
 
-		<div v-if="loading" class="sn-vh-empty">Loading…</div>
+		<div v-if="loading" class="sn-vh-empty">{{ __('Loading…') }}</div>
 		<div v-else-if="error" class="sn-vh-empty sn-vh-error">{{ error }}</div>
 		<div v-else-if="!visibleGroups.length" class="sn-vh-empty">
 			<div class="sn-vh-empty-title">
@@ -72,10 +72,10 @@
 				{{ menuRow?.version_name ? 'Rename this version' : 'Name this version' }}
 			</button>
 			<button class="sn-vh-menu-item" @click="actionFromMenu('copy')">
-				Make a copy
+				{{ __('Make a copy') }}
 			</button>
 			<button class="sn-vh-menu-item" @click="actionFromMenu('restore')">
-				Restore this version
+				{{ __('Restore this version') }}
 			</button>
 		</div>
 	</aside>
@@ -86,8 +86,8 @@ import { computed, ref, watch } from 'vue'
 import { Avatar, Button, Select } from 'frappe-ui'
 
 const FILTER_OPTIONS = [
-	{ label: 'All versions',          value: 'all' },
-	{ label: 'Named versions only',   value: 'named' },
+	{ label: __('All versions'),          value: 'all' },
+	{ label: __('Named versions only'),   value: 'named' },
 ]
 
 const props = defineProps({

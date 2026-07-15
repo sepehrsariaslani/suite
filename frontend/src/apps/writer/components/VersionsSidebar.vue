@@ -4,7 +4,7 @@
   >
     <div class="flex flex-col gap-1">
       <div v-if="!versionPreview">
-        <span class="text-ink-gray-6">You are viewing the version history of</span>
+        <span class="text-ink-gray-6">{{ __('You are viewing the version history of') }}</span>
         {{ file.doc.file_name }}
       </div>
       <div v-else-if="versionPreview[0].manual">
@@ -14,19 +14,19 @@
         This is an automatic snapshot of this document from
         {{ formatDateDDMMYY(versionPreview[0].title) }}.
       </div>
-      <div class="text-xs text-ink-gray-5">Editing is disabled until you exit.</div>
+      <div class="text-xs text-ink-gray-5">{{ __('Editing is disabled until you exit.') }}</div>
     </div>
     <div class="flex gap-2">
       <Button
         variant="ghost"
-        label="Exit"
+        :label="__('Exit')"
         class="hover:!bg-surface-gray-2 hover:underline"
         @click="showVersions = false"
       />
       <Button
         v-if="versionPreview"
         variant="solid"
-        label="Restore"
+        :label="__('Restore')"
         @click="restore(versionPreview[0])"
       />
     </div>
@@ -38,7 +38,7 @@
           v-model="tab"
           class="w-full"
           as="div"
-          :tabs="[{ label: 'Automatic' }, { label: 'Manual' }]"
+          :tabs="[{ label: __('Automatic') }, { label: __('Manual') }]"
         />
         <Button
           :icon="LucideX"
@@ -56,7 +56,7 @@
           @click="
             () =>
               createDialog({
-                title: 'Create Version',
+                title: __('Create Version'),
                 size: 'sm',
                 component: h(NewVersionDialog, {
                   data: editor.getHTML(),
@@ -71,7 +71,7 @@
           "
           class="text-ink-gray-5 text-sm text-center mt-1"
         >
-          None yet.
+          {{ __('None yet.') }}
         </div>
         <div
           v-for="[title, group] in Object.entries(groupedVersions)"
@@ -101,7 +101,7 @@
     </div>
     <div class="flex-1 overflow-hidden">
       <div v-if="!versionPreview" class="text-base border-b text-ink-gray-8 p-3 select-none">
-        This is the current version.
+        {{ __('This is the current version.') }}
       </div>
       <Editor
         v-if="editor?.getHTML"
@@ -287,14 +287,14 @@ const getPrevious = (version) => {
 
 const restore = (version) => {
   createDialog({
-    title: 'Are you sure?',
+    title: __('Are you sure?'),
     size: 'sm',
     message: version.manual
       ? `You are restoring to a previous version: ${version.title}.`
       : `You are restoring the document to how it was at ${formatDateDDMMYY(version.title)}.`,
     actions: [
       {
-        label: 'Confirm',
+        label: __('Confirm'),
         variant: 'solid',
         onClick: () => {
           props.editor.commands.setContent(version.snapshot)

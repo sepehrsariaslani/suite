@@ -1,6 +1,6 @@
 <template>
 	<AppSettingsHeader
-		title="Background"
+		:title="__('Background')"
 		description="Customize your video background with blur effects or virtual backgrounds"
 	/>
 	<AppSettingsBody>
@@ -19,7 +19,7 @@
 						<div v-if="isLoadingPreview" class="text-white text-center">
 							<lucide-loader class="mx-auto mb-2 w-8 h-8 animate-spin" />
 							<p class="text-sm">
-								Loading preview...
+								{{ __('Loading preview...') }}
 							</p>
 						</div>
 					</div>
@@ -94,7 +94,7 @@
 					</div>
 					<div class="ml-3">
 						<p class="text-sm text-ink-amber-8">
-							<strong>Performance Warning:</strong> Enabling background effects may slow down your computer,
+							<strong>{{ __('Performance Warning:') }}</strong> Enabling background effects may slow down your computer,
 							especially on older devices.
 						</p>
 					</div>

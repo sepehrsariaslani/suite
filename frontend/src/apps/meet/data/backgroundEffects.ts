@@ -55,22 +55,22 @@ export const customBackgroundImages: Ref<BackgroundImage[]> = ref([]);
 export const availableBackgroundImages: BackgroundImage[] = [
 	{
 		name: "beach",
-		label: "Beach",
+		label: __('Beach'),
 		url: "/assets/suite/meet/frontend/backgrounds/beach.webp",
 	},
 	{
 		name: "mountains",
-		label: "Mountains",
+		label: __('Mountains'),
 		url: "/assets/suite/meet/frontend/backgrounds/mountains.webp",
 	},
 	{
 		name: "space",
-		label: "Earth & Moon",
+		label: __('Earth & Moon'),
 		url: "/assets/suite/meet/frontend/backgrounds/earth-and-moon.webp",
 	},
 	{
 		name: "saturn",
-		label: "Saturn",
+		label: __('Saturn'),
 		url: "/assets/suite/meet/frontend/backgrounds/saturn.webp",
 	},
 ];
@@ -79,19 +79,19 @@ export const availableBackgroundImages: BackgroundImage[] = [
 export const allBackgroundOptions = computed(() => [
 	{
 		name: "none",
-		label: "None",
+		label: __('None'),
 		url: null,
 		type: "none" as const,
 	},
 	{
 		name: "blur-low",
-		label: "Slight Blur",
+		label: __('Slight Blur'),
 		url: null,
 		type: "blur" as const,
 	},
 	{
 		name: "blur-high",
-		label: "Blur",
+		label: __('Blur'),
 		url: null,
 		type: "blur" as const,
 	},
@@ -99,7 +99,7 @@ export const allBackgroundOptions = computed(() => [
 	...customBackgroundImages.value,
 	{
 		name: "add-custom",
-		label: "Add Custom",
+		label: __('Add Custom'),
 		url: null,
 		isAddButton: true,
 	},

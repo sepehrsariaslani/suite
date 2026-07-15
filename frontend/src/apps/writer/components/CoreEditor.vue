@@ -9,7 +9,7 @@
         <div class="self-start flex flex-col flex-grow min-h-full border-x border-outline-gray-2"
           @click="onBackgroundClick" @keydown="onEditorKeydown">
           <FTextEditor ref="textEditor" :upload-function="uploadFunction"
-            :autofocus="true" v-model="localContent" placeholder="Start thinking..." :extensions="editorExtensions"
+            :autofocus="true" v-model="localContent" :placeholder="__('Start thinking...')" :extensions="editorExtensions"
             :editable @change="(val) => emit('editor-change', val)">
             <template #default="{ editor }">
               <EditorBubbleMenu :editor :items="bubbleMenuButtons" :options="bubbleMenuOpts" />
@@ -164,21 +164,21 @@ const commentFilterOptions = computed(() => {
   )
   return [
     {
-      label: 'Comments',
+      label: __('Comments'),
       switch: true,
       switchValue: showComments.value,
       onClick: () => (showComments.value = !showComments.value),
     },
     hasResolved &&
     showComments.value && {
-      label: 'Resolved',
+      label: __('Resolved'),
       switch: true,
       switchValue: showResolved.value,
       onClick: () => (showResolved.value = !showResolved.value),
     },
     showUnanchoredButton.value &&
     showComments.value && {
-      label: 'Outdated',
+      label: __('Outdated'),
       switch: true,
       switchValue: showUnanchored.value,
       onClick: () => (showUnanchored.value = !showUnanchored.value),
@@ -259,7 +259,7 @@ const menuButtons = computed(() =>
 
 const bubbleMenuButtons = [
   {
-    label: 'Comment',
+    label: __('Comment'),
     icon: 'lucide-message-square-plus',
     action: () => addComment(),
   },

@@ -1,5 +1,5 @@
 <template>
-	<CollapsibleSection title="Style">
+	<CollapsibleSection :title="__('Style')">
 		<template #default>
 			<Select
 				:options="presetTextStyles"
@@ -196,7 +196,7 @@ const textAlignProperties = [
 
 const presetTextStyles = [
 	{
-		label: 'Title',
+		label: __('Title'),
 		value: 'title',
 		bold: true,
 		fontSize: 60,
@@ -204,7 +204,7 @@ const presetTextStyles = [
 		textAlign: 'center',
 	},
 	{
-		label: 'Subtitle',
+		label: __('Subtitle'),
 		value: 'subtitle',
 		bold: true,
 		fontSize: 40,
@@ -212,7 +212,7 @@ const presetTextStyles = [
 		textAlign: 'center',
 	},
 	{
-		label: 'Body',
+		label: __('Body'),
 		value: 'body',
 		bold: false,
 		fontSize: 20,

@@ -72,12 +72,12 @@ const userName = computed(
 
 const settingsItems = computed(() => [
 	{
-		group: "Manage",
+		group: __('Manage'),
 		hideLabel: true,
 		items: [
 			{
 				icon: LucideLayoutGrid,
-				label: "Apps",
+				label: __('Apps'),
 				submenu:
 					apps.data?.map((app: any) => ({
 						label: app.title,
@@ -105,25 +105,25 @@ const settingsItems = computed(() => [
 			},
 			{
 				icon: LucideKeyboard,
-				label: "Shortcuts",
+				label: __('Shortcuts'),
 				onClick: () => (showShortcutsDialog.value = true),
 			},
 			{
 				icon: LucideSunMoon,
-				label: "Theme",
+				label: __('Theme'),
 				submenu: [
 					{
-						label: "Light",
+						label: __('Light'),
 						icon: themeMode.value === "light" ? LucideCheck : LucideSun,
 						onClick: () => selectTheme("Light"),
 					},
 					{
-						label: "Dark",
+						label: __('Dark'),
 						icon: themeMode.value === "dark" ? LucideCheck : LucideMoon,
 						onClick: () => selectTheme("Dark"),
 					},
 					{
-						label: "Automatic",
+						label: __('Automatic'),
 						icon: themeMode.value === "automatic" ? LucideCheck : LucideMonitor,
 						onClick: () => selectTheme("Automatic"),
 					},
@@ -132,12 +132,12 @@ const settingsItems = computed(() => [
 		],
 	},
 	{
-		group: "Others",
+		group: __('Others'),
 		hideLabel: true,
 		items: [
 			{
 				icon: "lucide-log-out",
-				label: "Log out",
+				label: __('Log out'),
 				onClick: () => sessionStore.logout.submit(),
 			},
 		],
@@ -148,13 +148,13 @@ const sidebarSections = computed(() => [
 	{
 		items: [
 			{
-				label: "Home",
+				label: __('Home'),
 				to: "/meet",
 				icon: LucideHome,
 				isActive: route.name === "meet-home",
 			},
 			{
-				label: "Calendar",
+				label: __('Calendar'),
 				to: "/calendar",
 				icon: LucideCalendar,
 			},
@@ -170,7 +170,7 @@ const showShortcutsDialog = inject("showShortcutsDialog") as unknown as ReturnTy
 		v-model:collapsed="isCollapsed"
 		class="hidden sm:flex"
 		:header="{
-			title: 'Meet',
+			title: __('Meet'),
 			subtitle: userName,
 			menuItems: settingsItems,
 			logo: FrappeMeetingLogo,

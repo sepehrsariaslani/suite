@@ -22,17 +22,17 @@ import { Skeleton } from 'frappe-ui'
 
 const groups = [
   {
-    label: 'Today',
+    label: __('Today'),
     headerWidth: '3rem',
     rows: [{ nameWidth: '55%' }, { nameWidth: '40%' }, { nameWidth: '62%' }],
   },
   {
-    label: 'Yesterday',
+    label: __('Yesterday'),
     headerWidth: '4.5rem',
     rows: [{ nameWidth: '48%' }, { nameWidth: '35%' }],
   },
   {
-    label: 'Last seven days',
+    label: __('Last seven days'),
     headerWidth: '6.5rem',
     rows: [{ nameWidth: '57%' }, { nameWidth: '44%' }, { nameWidth: '38%' }],
   },

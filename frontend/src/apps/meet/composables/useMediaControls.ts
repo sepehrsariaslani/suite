@@ -187,9 +187,8 @@ export function useMediaControls(deps: MediaControlsDeps): MediaControlsAPI {
 	const confirmScreenShareOverride = () =>
 		new Promise<boolean>((resolve) => {
 			confirmDialog({
-				title: "Start Screen Share Anyway?",
-				message:
-					"Someone is already sharing their screen. Starting yours may result in multiple active screen shares.",
+				title: __('Start Screen Share Anyway?'),
+				message: __('Someone is already sharing their screen. Starting yours may result in multiple active screen shares.'),
 				onConfirm: ({ hideDialog }: { hideDialog: () => void }) => {
 					hideDialog();
 					resolve(true);

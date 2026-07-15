@@ -2,7 +2,7 @@
 	<div class="space-y-3">
 		<Switch
 			class="w-full !px-0"
-			label="End-to-end encryption"
+			:label="__('End-to-end encryption')"
 			:description="e2eeDescription"
 			v-model="e2eeEnabled"
 			:disabled="isToggleDisabled"

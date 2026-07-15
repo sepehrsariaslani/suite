@@ -5,7 +5,7 @@
 		size="5xl"
 		:shortcut="false"
 	>
-		<template #title>Settings</template>
+		<template #title>{{ __('Settings') }}</template>
 		<SettingsSidebar>
 			<SettingsNavGroup
 				v-for="group in tabs"
@@ -118,10 +118,10 @@ const tabs = computed((): TabGroup[] => {
 		!props.isPreview
 	) {
 		allTabs.push({
-			label: "Meeting",
+			label: __('Meeting'),
 			items: [
 				{
-					label: "Controls",
+					label: __('Controls'),
 					value: "meeting-access",
 					icon: h(LucideUser),
 					component: markRaw(MeetingAccessSettingsTab),
@@ -132,22 +132,22 @@ const tabs = computed((): TabGroup[] => {
 
 	allTabs.push(
 		{
-			label: "Media",
+			label: __('Media'),
 			items: [
 				{
-					label: "Devices",
+					label: __('Devices'),
 					value: "devices",
 					icon: h(LucideMonitorSmartphone),
 					component: markRaw(DeviceSettingsTab),
 				},
 				{
-					label: "Audio",
+					label: __('Audio'),
 					value: "audio",
 					icon: h(LucideAudioLines),
 					component: markRaw(AudioSettingsTab),
 				},
 				{
-					label: "Background",
+					label: __('Background'),
 					value: "background",
 					icon: h(LucideCamera),
 					component: markRaw(BackgroundSettingsTab),
@@ -155,16 +155,16 @@ const tabs = computed((): TabGroup[] => {
 			],
 		},
 		{
-			label: "Interface",
+			label: __('Interface'),
 			items: [
 				{
-					label: "Notifications",
+					label: __('Notifications'),
 					value: "notifications",
 					icon: h(LucideBell),
 					component: markRaw(NotificationSettingsTab),
 				},
 				{
-					label: "Layout",
+					label: __('Layout'),
 					value: "layout",
 					icon: h(LucideLayoutDashboard),
 					condition: () => !props.isPreview,

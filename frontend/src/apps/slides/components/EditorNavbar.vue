@@ -45,7 +45,7 @@ const emit = defineEmits(['startSlideShow', 'performDropdownAction'])
 const route = useRoute()
 
 const primaryButtonProps = computed(() => ({
-	label: 'Present',
+	label: __('Present'),
 	icon: Presentation,
 	onClick: () => emit('startSlideShow'),
 	hide: route.name === 'slides-editor-new',

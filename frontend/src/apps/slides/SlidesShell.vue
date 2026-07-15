@@ -17,7 +17,7 @@ const isOnline = ref(navigator?.onLine ?? true)
 const handleOffline = () => {
   isOnline.value = false
   toast.create({
-    message: 'Lost internet connection.',
+    message: __('Lost internet connection.'),
     icon: h(WifiOff, { color: 'white' }),
   })
 }
@@ -26,7 +26,7 @@ const handleOnline = () => {
   isOnline.value = true
   saveCurrentState()
   toast.create({
-    message: 'You are back online.',
+    message: __('You are back online.'),
     icon: h(Wifi, { color: 'white' }),
   })
 }

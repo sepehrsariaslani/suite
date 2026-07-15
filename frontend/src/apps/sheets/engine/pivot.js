@@ -2,12 +2,12 @@ import { parseCellId, colLabel, cellId } from '../utils/cells.js'
 import { deepClone } from '../utils/deep-clone.js'
 
 export const AGG_OPTIONS = [
-  { value: 'sum',    label: 'SUM'     },
-  { value: 'count',  label: 'COUNT'   },
-  { value: 'avg',    label: 'AVERAGE' },
-  { value: 'min',    label: 'MIN'     },
-  { value: 'max',    label: 'MAX'     },
-  { value: 'counta', label: 'COUNTA'  },
+  { value: 'sum',    label: __('SUM')     },
+  { value: 'count',  label: __('COUNT')   },
+  { value: 'avg',    label: __('AVERAGE') },
+  { value: 'min',    label: __('MIN')     },
+  { value: 'max',    label: __('MAX')     },
+  { value: 'counta', label: __('COUNTA')  },
 ]
 
 // ── Pure helpers ────────────────────────────────────────────────────────────

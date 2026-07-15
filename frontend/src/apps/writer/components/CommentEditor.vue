@@ -73,6 +73,6 @@ const bubbleItems = [
   InlineCode,
   Blockquote,
   Separator,
-  { type: 'group', label: 'List', icon: 'lucide-list', items: [BulletList, OrderedList] },
+  { type: 'group', label: __('List'), icon: 'lucide-list', items: [BulletList, OrderedList] },
 ]
 </script>

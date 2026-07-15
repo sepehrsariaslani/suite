@@ -4,21 +4,21 @@
 
       <!-- ── Source range ─────────────────────────────────────────────── -->
       <div class="cd-section">
-        <p class="cd-label">Source range</p>
+        <p class="cd-label">{{ __('Source range') }}</p>
         <div class="cd-range-row">
           <FormControl
             v-model="rangeInput"
             type="text"
-            placeholder="e.g. A1:D20"
+            :placeholder="__('e.g. A1:D20')"
             class="cd-range-input"
             @blur="detect"
             @keydown.enter.prevent="detect"
           />
-          <Button size="sm" variant="outline" label="Detect" @click="detect" />
+          <Button size="sm" variant="outline" :label="__('Detect')" @click="detect" />
           <FormControl
             type="checkbox"
             v-model="hasHeader"
-            label="First row is header"
+            :label="__('First row is header')"
             class="cd-header-toggle"
             @change="detect"
           />
@@ -28,7 +28,7 @@
 
       <!-- ── Chart type picker ────────────────────────────────────────── -->
       <div class="cd-section">
-        <p class="cd-label">Chart type</p>
+        <p class="cd-label">{{ __('Chart type') }}</p>
         <div class="cd-type-grid">
           <button
             v-for="t in CHART_TYPES"
@@ -46,7 +46,7 @@
       <!-- ── Encoding + Preview side by side ────────────────────────────-->
       <div v-if="columns.length" class="cd-grid">
         <div class="cd-encoding">
-          <p class="cd-label">Title</p>
+          <p class="cd-label">{{ __('Title') }}</p>
           <FormControl v-model="title" type="text" placeholder="(optional)" />
 
           <p class="cd-label" style="margin-top:14px">
@@ -58,7 +58,7 @@
           <Autocomplete
             :model-value="xAxisOption"
             :options="columnOptions"
-            placeholder="Pick a column"
+            :placeholder="__('Pick a column')"
             @update:model-value="onXAxisChange"
           />
 
@@ -67,12 +67,12 @@
               {{ chartType === 'pie' ? 'Values' : 'Series' }}
               <span class="cd-series-count">{{ yCols.length }} / {{ columns.length - 1 }}</span>
             </p>
-            <Button size="sm" variant="ghost" label="Numeric only" @click="selectNumericSeries" />
+            <Button size="sm" variant="ghost" :label="__('Numeric only')" @click="selectNumericSeries" />
           </div>
           <FormControl
             v-model="seriesFilter"
             type="text"
-            placeholder="Filter columns…"
+            :placeholder="__('Filter columns…')"
             class="cd-series-filter"
           />
           <div class="cd-series-list" ref="seriesListRef">
@@ -112,21 +112,21 @@
             </div>
           </div>
 
-          <p class="cd-label" style="margin-top:14px">Options</p>
+          <p class="cd-label" style="margin-top:14px">{{ __('Options') }}</p>
           <div class="cd-options">
-            <FormControl v-if="chartType !== 'pie'" type="checkbox" v-model="opts.showLegend"  label="Show legend" />
-            <FormControl                            type="checkbox" v-model="opts.dataLabels"  label="Show data labels" />
-            <FormControl v-if="chartType !== 'pie'" type="checkbox" v-model="opts.gridLines"   label="Show grid lines" />
-            <FormControl v-if="chartType === 'line' || chartType === 'area'" type="checkbox" v-model="opts.smooth"  label="Smooth curves" />
-            <FormControl v-if="chartType === 'bar'  || chartType === 'area'" type="checkbox" v-model="opts.stacked" label="Stacked" />
+            <FormControl v-if="chartType !== 'pie'" type="checkbox" v-model="opts.showLegend"  :label="__('Show legend')" />
+            <FormControl                            type="checkbox" v-model="opts.dataLabels"  :label="__('Show data labels')" />
+            <FormControl v-if="chartType !== 'pie'" type="checkbox" v-model="opts.gridLines"   :label="__('Show grid lines')" />
+            <FormControl v-if="chartType === 'line' || chartType === 'area'" type="checkbox" v-model="opts.smooth"  :label="__('Smooth curves')" />
+            <FormControl v-if="chartType === 'bar'  || chartType === 'area'" type="checkbox" v-model="opts.stacked" :label="__('Stacked')" />
           </div>
         </div>
 
         <div class="cd-preview">
-          <p class="cd-label">Preview</p>
+          <p class="cd-label">{{ __('Preview') }}</p>
           <div class="cd-preview-frame">
             <ChartView v-if="previewConfig" :config="previewConfig" :matrix="previewMatrix" width="auto" height="auto" />
-            <div v-else class="cd-preview-placeholder">Pick a series to see a preview</div>
+            <div v-else class="cd-preview-placeholder">{{ __('Pick a series to see a preview') }}</div>
           </div>
         </div>
       </div>

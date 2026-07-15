@@ -1,8 +1,8 @@
 <template>
-	<CollapsibleSection title="Shadow" :initialState="false">
+	<CollapsibleSection :title="__('Shadow')" :initialState="false">
 		<template #default>
 			<div class="flex items-center justify-between">
-				<div :class="fieldLabelClasses">Color</div>
+				<div :class="fieldLabelClasses">{{ __('Color') }}</div>
 				<ColorPicker
 					class="pe-[0.2px]"
 					v-model="activeElement.shadowColor"
@@ -12,7 +12,7 @@
 			</div>
 
 			<SliderInput
-				label="Spread"
+				:label="__('Spread')"
 				:rangeStart="0"
 				:rangeEnd="500"
 				v-model="activeElement.shadowSpread"
@@ -21,7 +21,7 @@
 			/>
 
 			<SliderInput
-				label="Offset X"
+				:label="__('Offset X')"
 				:rangeStart="-50"
 				:rangeEnd="50"
 				v-model="activeElement.shadowOffsetX"
@@ -30,7 +30,7 @@
 			/>
 
 			<SliderInput
-				label="Offset Y"
+				:label="__('Offset Y')"
 				:rangeStart="-50"
 				:rangeEnd="50"
 				v-model="activeElement.shadowOffsetY"

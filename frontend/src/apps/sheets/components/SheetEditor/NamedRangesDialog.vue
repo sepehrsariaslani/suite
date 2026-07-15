@@ -1,5 +1,5 @@
 <template>
-  <Dialog v-model="show" :options="{ title: 'Named ranges', size: 'lg' }">
+  <Dialog v-model="show" :options="{ title: __('Named ranges'), size: 'lg' }">
     <template #body-content>
 
       <!-- ── Add new ────────────────────────────────────────────────────── -->
@@ -9,13 +9,13 @@
           <FormControl
             v-model="form.name"
             type="text"
-            label="Name"
-            placeholder="e.g. Revenue"
+            :label="__('Name')"
+            :placeholder="__('e.g. Revenue')"
             class="nr-form-input"
           />
           <FormControl
             type="select"
-            label="Sheet"
+            :label="__('Sheet')"
             :model-value="form.sheet"
             :options="sheetOptions"
             @update:model-value="(v) => form.sheet = v"
@@ -24,12 +24,12 @@
           <FormControl
             v-model="form.range"
             type="text"
-            label="Range"
-            placeholder="e.g. B2:B100"
+            :label="__('Range')"
+            :placeholder="__('e.g. B2:B100')"
             class="nr-form-range"
           />
           <div class="nr-form-actions">
-            <Button v-if="editing" @click="_resetForm">Cancel</Button>
+            <Button v-if="editing" @click="_resetForm">{{ __('Cancel') }}</Button>
             <Button variant="solid" :disabled="!_canSubmit" @click="_submit">
               {{ editing ? 'Save' : 'Add' }}
             </Button>
@@ -44,19 +44,19 @@
 
       <!-- ── Existing list ──────────────────────────────────────────────── -->
       <div class="nr-section">
-        <p class="nr-label">Existing</p>
-        <div v-if="!entries.length" class="nr-empty">No named ranges defined yet.</div>
+        <p class="nr-label">{{ __('Existing') }}</p>
+        <div v-if="!entries.length" class="nr-empty">{{ __('No named ranges defined yet.') }}</div>
         <div v-else class="nr-list">
           <div class="nr-row nr-row--head">
-            <div>Name</div><div>Sheet</div><div>Range</div><div></div>
+            <div>{{ __('Name') }}</div><div>{{ __('Sheet') }}</div><div>{{ __('Range') }}</div><div></div>
           </div>
           <div v-for="e in entries" :key="e.name" class="nr-row">
             <div class="nr-name"><code>{{ e.name }}</code></div>
             <div class="nr-sheet">{{ e.sheet || '(current)' }}</div>
             <div class="nr-range"><code>{{ e.range }}</code></div>
             <div class="nr-row-actions">
-              <Button size="sm" variant="ghost" icon="edit-2"  @click="_edit(e)"  tooltip="Edit"   />
-              <Button size="sm" variant="ghost" icon="trash-2" @click="_delete(e)" theme="red" tooltip="Delete" />
+              <Button size="sm" variant="ghost" icon="edit-2"  @click="_edit(e)"  :tooltip="__('Edit')"   />
+              <Button size="sm" variant="ghost" icon="trash-2" @click="_delete(e)" theme="red" :tooltip="__('Delete')" />
             </div>
           </div>
         </div>

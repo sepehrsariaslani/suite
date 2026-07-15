@@ -1,9 +1,9 @@
 <template>
-	<CollapsibleSection title="Appearance">
+	<CollapsibleSection :title="__('Appearance')">
 		<template #default>
 			<SliderInput
 				v-if="activeElement.type == 'text'"
-				label="Opacity"
+				:label="__('Opacity')"
 				:rangeStart="0"
 				:rangeEnd="100"
 				:modelValue="parseFloat(editorStyles.opacity)"
@@ -11,7 +11,7 @@
 			/>
 			<SliderInput
 				v-else
-				label="Opacity"
+				:label="__('Opacity')"
 				:rangeStart="0"
 				:rangeEnd="100"
 				v-model="activeElement.opacity"

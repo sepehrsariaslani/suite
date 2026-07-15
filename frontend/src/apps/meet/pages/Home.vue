@@ -7,10 +7,10 @@
 				<div class="w-[760px] max-w-full px-6">
 					<div class="mb-2 flex flex-col gap-0.5">
 						<h1 class="text-xl-semibold text-ink-gray-8 tracking-[0.2px]">
-							Hey {{ firstName }},
+							{{ __('Hey {0},', [firstName]) }}
 						</h1>
 						<p class="text-sm text-ink-gray-6 tracking-[0.28px] leading-[1.5]">
-							Start an open meeting, create a restricted meeting, or join with a code.
+							{{ __('Start an open meeting, create a restricted meeting, or join with a code.') }}
 						</p>
 					</div>
 
@@ -24,7 +24,7 @@
 									<LucideZap class="size-6 text-ink-gray-8" />
 								</div>
 							</div>
-							<span class="text-sm-medium w-full truncate text-center text-ink-gray-8 tracking-[0.21px]">Instant meet</span>
+							<span class="text-sm-medium w-full truncate text-center text-ink-gray-8 tracking-[0.21px]">{{ __('Instant meet') }}</span>
 						</button>
 
 						<button
@@ -36,7 +36,7 @@
 									<LucideLock class="size-6 text-ink-gray-8" />
 								</div>
 							</div>
-							<span class="text-sm-medium w-full truncate text-center text-ink-gray-8 tracking-[0.21px]">Restricted meet</span>
+							<span class="text-sm-medium w-full truncate text-center text-ink-gray-8 tracking-[0.21px]">{{ __('Restricted meet') }}</span>
 						</button>
 
 						<button
@@ -48,7 +48,7 @@
 									<LucideCalendarPlus class="size-6 text-ink-gray-8" />
 								</div>
 							</div>
-							<span class="text-sm-medium w-full truncate text-center text-ink-gray-8 tracking-[0.21px]">Schedule meet</span>
+							<span class="text-sm-medium w-full truncate text-center text-ink-gray-8 tracking-[0.21px]">{{ __('Schedule meet') }}</span>
 						</button>
 
 						<button
@@ -60,7 +60,7 @@
 									<LucideLink class="size-6 text-ink-gray-8" />
 								</div>
 							</div>
-							<span class="text-sm-medium w-full truncate text-center text-ink-gray-8 tracking-[0.21px]">Join with code</span>
+							<span class="text-sm-medium w-full truncate text-center text-ink-gray-8 tracking-[0.21px]">{{ __('Join with code') }}</span>
 						</button>
 					</div>
 
@@ -71,13 +71,13 @@
 
 		<Dialog
 			v-model="showJoinDialog"
-			:title="'Join with meeting code'"
+			:title="__('Join with meeting code')"
 			:dismissable="true"
 		>
 			<template #default>
 				<FormControl
 					v-model="meetingCode"
-					placeholder="abcd-efgh-ijkl"
+					:placeholder="__('abcd-efgh-ijkl')"
 					:error="meetingCodeError"
 					@keydown.enter="joinWithCode"
 					data-testid="meeting-code-input"
@@ -90,20 +90,20 @@
 						@click="joinWithCode"
 						data-testid="join-meeting-button"
 					>
-						Join
+						{{ __('Join') }}
 					</Button>
 				</div>
 			</template>
 		</Dialog>
 
-		<Dialog v-model="showScheduleDialog" :title="'Schedule meet'" :dismissable="true">
+		<Dialog v-model="showScheduleDialog" :title="__('Schedule meet')" :dismissable="true">
 			<template #default>
 				<div class="space-y-4">
-					<FormControl v-model="scheduleTitle" label="Title" placeholder="Team meeting" />
+					<FormControl v-model="scheduleTitle" :label="__('Title')" :placeholder="__('Team meeting')" />
 					<div class="grid grid-cols-1 gap-3 md:grid-cols-3">
-						<FormControl v-model="scheduleDate" label="Date" type="date" />
-						<FormControl v-model="scheduleStartTime" label="Start" type="time" />
-						<FormControl v-model="scheduleEndTime" label="End" type="time" />
+						<FormControl v-model="scheduleDate" :label="__('Date')" type="date" />
+						<FormControl v-model="scheduleStartTime" :label="__('Start')" type="time" />
+						<FormControl v-model="scheduleEndTime" :label="__('End')" type="time" />
 					</div>
 					<ParticipantSelector
 						v-model="scheduleParticipants"
@@ -121,7 +121,7 @@
 						:disabled="!isScheduleTimeValid"
 						@click="submitScheduledMeeting"
 					>
-						Schedule
+						{{ __('Schedule') }}
 					</Button>
 				</div>
 			</template>
@@ -173,7 +173,7 @@ const userResource = createResource({
 
 const firstName = computed(() => {
 	const name = userResource.data?.full_name || userResource.data?.name || "";
-	return name.split(" ")[0] || "there";
+	return name.split(" ")[0] || __("there");
 });
 
 const createMeeting = createResource({
@@ -188,7 +188,7 @@ const createMeeting = createResource({
 	},
 	onError: (error: any) => {
 		console.error("Error creating meeting:", error);
-		toast.error("Failed to create meeting. Please try again.");
+		toast.error(__("Failed to create meeting. Please try again."));
 	},
 });
 
@@ -245,7 +245,7 @@ const scheduleMeeting = createResource({
 	}),
 	onSuccess: () => {
 		showScheduleDialog.value = false;
-		toast.success("Meeting scheduled.");
+		toast.success(__("Meeting scheduled."));
 		upcomingMeetingsRef.value?.reload();
 	},
 	onError: (error: any) => {
@@ -255,17 +255,17 @@ const scheduleMeeting = createResource({
 
 const startInstantMeeting = () => {
 	toast.promise(createMeeting.submit({ meeting_type: "open" }), {
-		loading: "Creating meeting...",
-		success: "Meeting created successfully!",
-		error: "Failed to create meeting. Please try again.",
+		loading: __("Creating meeting..."),
+		success: __("Meeting created successfully!"),
+		error: __("Failed to create meeting. Please try again."),
 	});
 };
 
 const startRestrictedMeeting = () => {
 	toast.promise(createMeeting.submit({ meeting_type: "restricted" }), {
-		loading: "Creating restricted meeting...",
-		success: "Restricted meeting created successfully!",
-		error: "Failed to create meeting. Please try again.",
+		loading: __("Creating restricted meeting..."),
+		success: __("Restricted meeting created successfully!"),
+		error: __("Failed to create meeting. Please try again."),
 	});
 };
 
@@ -273,28 +273,28 @@ const openScheduleDialog = async () => {
 	try {
 		await calendarStore.userResource.promise;
 		if (!calendarStore.accountId) {
-			toast.error("Set up Calendar before scheduling a Meet.");
+			toast.error(__("Set up Calendar before scheduling a Meet."));
 			return;
 		}
 		showScheduleDialog.value = true;
 	} catch (error) {
 		console.error("Failed to load calendar account:", error);
-		toast.error("Could not load Calendar account.");
+		toast.error(__("Could not load Calendar account."));
 	}
 };
 
 const submitScheduledMeeting = () => {
 	if (!calendarStore.accountId) {
-		toast.error("Set up Calendar before scheduling a Meet.");
+		toast.error(__("Set up Calendar before scheduling a Meet."));
 		return;
 	}
 	if (!isScheduleTimeValid.value) {
-		toast.error("Enter a valid date and an end time after the start time.");
+		toast.error(__("Enter a valid date and an end time after the start time."));
 		return;
 	}
 	toast.promise(scheduleMeeting.submit(), {
-		loading: "Scheduling meeting...",
-		error: "Failed to schedule meeting. Please try again.",
+		loading: __("Scheduling meeting..."),
+		error: __("Failed to schedule meeting. Please try again."),
 	});
 };
 
@@ -302,13 +302,13 @@ const joinWithCode = () => {
 	meetingCodeError.value = "";
 
 	if (!meetingCode.value.trim()) {
-		meetingCodeError.value = "Please enter a meeting code";
+		meetingCodeError.value = __("Please enter a meeting code");
 		return;
 	}
 
 	if (!isMeetingCodeValid(meetingCode.value.trim())) {
 		meetingCodeError.value =
-			"Please enter a valid meeting code (format: xxxx-xxxx-xxxx)";
+			__("Please enter a valid meeting code (format: xxxx-xxxx-xxxx)");
 		return;
 	}
 

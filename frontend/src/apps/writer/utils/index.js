@@ -439,7 +439,7 @@ export function getLink(entity, copy = true, withDomain = true) {
       toast({
         icon: 'alert-triangle',
         iconClasses: 'text-red-700',
-        title: 'Clipboard permission denied',
+        title: __('Clipboard permission denied'),
         position: 'bottom-right',
       })
     } else {
@@ -473,7 +473,7 @@ async function uploadImage(file, params) {
 
 export const FONT_FAMILIES = [
   {
-    label: 'Caveat',
+    label: __('Caveat'),
     key: 'caveat',
     action: (editor) =>
       editor.chain().focus().setFontFamily('var(--font-caveat)').run(),
@@ -483,7 +483,7 @@ export const FONT_FAMILIES = [
       }),
   },
   {
-    label: 'Comic Sans',
+    label: __('Comic Sans'),
     key: 'comic-sans',
     action: (editor) =>
       editor.chain().focus().setFontFamily('var(--font-comic-sans)').run(),
@@ -493,7 +493,7 @@ export const FONT_FAMILIES = [
       }),
   },
   {
-    label: 'Comfortaa',
+    label: __('Comfortaa'),
     key: 'comfortaa',
     action: (editor) =>
       editor.chain().focus().setFontFamily('var(--font-comfortaa)').run(),
@@ -503,7 +503,7 @@ export const FONT_FAMILIES = [
       }),
   },
   {
-    label: 'EB Garamond',
+    label: __('EB Garamond'),
     key: 'eb-garamond',
     action: (editor) =>
       editor.chain().focus().setFontFamily('var(--font-eb-garamond)').run(),
@@ -513,7 +513,7 @@ export const FONT_FAMILIES = [
       }),
   },
   {
-    label: 'Fantasy',
+    label: __('Fantasy'),
     key: 'fantasy',
     action: (editor) => editor.chain().focus().setFontFamily('fantasy').run(),
     isActive: (editor) =>
@@ -522,7 +522,7 @@ export const FONT_FAMILIES = [
       }),
   },
   {
-    label: 'Geist',
+    label: __('Geist'),
     key: 'geist',
     action: (editor) =>
       editor.chain().focus().setFontFamily('var(--font-geist)').run(),
@@ -532,7 +532,7 @@ export const FONT_FAMILIES = [
       }),
   },
   {
-    label: 'IBM Plex Sans',
+    label: __('IBM Plex Sans'),
     key: 'ibm-plex',
     action: (editor) =>
       editor.chain().focus().setFontFamily('var(--font-ibm-plex)').run(),
@@ -542,7 +542,7 @@ export const FONT_FAMILIES = [
       }),
   },
   {
-    label: 'Inter',
+    label: __('Inter'),
     key: 'inter',
     action: (editor) =>
       editor.chain().focus().setFontFamily('var(--font-inter)').run(),
@@ -552,7 +552,7 @@ export const FONT_FAMILIES = [
       }),
   },
   {
-    label: 'JetBrains Mono',
+    label: __('JetBrains Mono'),
     key: 'jetbrains',
     action: (editor) =>
       editor.chain().focus().setFontFamily('var(--font-jetbrains)').run(),
@@ -562,7 +562,7 @@ export const FONT_FAMILIES = [
       }),
   },
   {
-    label: 'Lora',
+    label: __('Lora'),
     key: 'lora',
     action: (editor) =>
       editor.chain().focus().setFontFamily('var(--font-lora)').run(),
@@ -572,7 +572,7 @@ export const FONT_FAMILIES = [
       }),
   },
   {
-    label: 'Merriweather',
+    label: __('Merriweather'),
     key: 'merriweather',
     action: (editor) =>
       editor.chain().focus().setFontFamily('var(--font-merriweather)').run(),
@@ -582,7 +582,7 @@ export const FONT_FAMILIES = [
       }),
   },
   {
-    label: 'Nunito',
+    label: __('Nunito'),
     key: 'nunito',
     action: (editor) =>
       editor.chain().focus().setFontFamily('var(--font-nunito)').run(),

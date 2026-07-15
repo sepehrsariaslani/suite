@@ -13,7 +13,7 @@
       />
 
       <!-- ── General Access ────────────────────────────────────────────────── -->
-      <p class="sd-label">General Access</p>
+      <p class="sd-label">{{ __('General Access') }}</p>
       <div class="sd-access-row">
         <Dropdown :options="generalAccessOpts" placement="bottom-start">
           <template #default>
@@ -244,12 +244,12 @@ const generalAccess = ref('restricted')
 const generalRole   = ref('0')
 
 const generalAccessOpts = computed(() => [
-  { label: 'Restricted',        onClick: () => applyGeneralAccess('restricted') },
-  { label: 'Accessible to all', onClick: () => applyGeneralAccess('all') },
+  { label: __('Restricted'),        onClick: () => applyGeneralAccess('restricted') },
+  { label: __('Accessible to all'), onClick: () => applyGeneralAccess('all') },
 ])
 const generalRoleOpts = computed(() => [
-  { label: 'Can view', onClick: () => { generalRole.value = '0'; applyGeneralAccess('all') } },
-  { label: 'Can edit', onClick: () => { generalRole.value = '1'; applyGeneralAccess('all') } },
+  { label: __('Can view'), onClick: () => { generalRole.value = '0'; applyGeneralAccess('all') } },
+  { label: __('Can edit'), onClick: () => { generalRole.value = '1'; applyGeneralAccess('all') } },
 ])
 
 async function applyGeneralAccess(type) {
@@ -302,9 +302,9 @@ async function fetchShares() {
 
 function memberRoleOpts(s) {
   return [
-    { label: 'Can view',      onClick: () => changeRole(s, false) },
-    { label: 'Can edit',      onClick: () => changeRole(s, true)  },
-    { label: 'Remove access', onClick: () => removeShare(s)       },
+    { label: __('Can view'),      onClick: () => changeRole(s, false) },
+    { label: __('Can edit'),      onClick: () => changeRole(s, true)  },
+    { label: __('Remove access'), onClick: () => removeShare(s)       },
   ]
 }
 
@@ -385,8 +385,8 @@ const pendingRole = ref('0')        // '0' = Can view, '1' = Can edit
 const inviting    = ref(false)
 
 const pendingRoleOpts = computed(() => [
-  { label: 'Can view', onClick: () => { pendingRole.value = '0' } },
-  { label: 'Can edit', onClick: () => { pendingRole.value = '1' } },
+  { label: __('Can view'), onClick: () => { pendingRole.value = '0' } },
+  { label: __('Can edit'), onClick: () => { pendingRole.value = '1' } },
 ])
 
 function addChip(u) {

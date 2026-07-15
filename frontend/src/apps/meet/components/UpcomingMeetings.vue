@@ -105,7 +105,7 @@ defineExpose({ reload })
 
 <template>
 	<div class="mt-10">
-		<h2 class="mb-3 text-base-medium text-ink-gray-8">Upcoming meetings</h2>
+		<h2 class="mb-3 text-base-medium text-ink-gray-8">{{ __('Upcoming meetings') }}</h2>
 		<div
 			v-if="meetings.length"
 			class="overflow-hidden rounded-xl border border-outline-gray-1 bg-surface-gray-1"
@@ -160,12 +160,12 @@ defineExpose({ reload })
 				</div>
 
 				<Button v-if="isJoinable(event)" variant="outline" @click="joinMeeting(event)">
-					Join
+					{{ __('Join') }}
 				</Button>
 			</div>
 		</div>
 		<p v-else class="rounded-xl border border-outline-gray-1 bg-surface-gray-1 px-4 py-5 text-sm text-ink-gray-6">
-			No upcoming Meet meetings
+			{{ __('No upcoming Meet meetings') }}
 		</p>
 	</div>
 </template>

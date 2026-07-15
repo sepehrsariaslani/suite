@@ -8,7 +8,7 @@
       type="text"
       size="sm"
       v-model="findQuery"
-      placeholder="Find"
+      :placeholder="__('Find')"
       autocomplete="off"
       @keydown.enter="findNext"
     />
@@ -16,13 +16,13 @@
       type="text"
       size="sm"
       v-model="replaceQuery"
-      placeholder="Replace with"
+      :placeholder="__('Replace with')"
       autocomplete="off"
     />
     <div class="fr-actions">
-      <Button class="fr-grow" variant="solid"   size="sm" label="Find next" @click="findNext" />
-      <Button class="fr-grow" variant="outline" size="sm" label="Replace"   @click="replaceCurrent" />
-      <Button class="fr-grow" variant="outline" size="sm" label="All"       @click="replaceAll" />
+      <Button class="fr-grow" variant="solid"   size="sm" :label="__('Find next')" @click="findNext" />
+      <Button class="fr-grow" variant="outline" size="sm" :label="__('Replace')"   @click="replaceCurrent" />
+      <Button class="fr-grow" variant="outline" size="sm" :label="__('All')"       @click="replaceAll" />
     </div>
     <div v-if="status" class="fr-status">{{ status }}</div>
   </div>

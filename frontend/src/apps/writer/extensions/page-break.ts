@@ -31,7 +31,7 @@ export const PageBreakExtension = Node.create<PageBreakRuleOptions>({
     }
   },
 
-  group: 'block',
+  group: __('block'),
 
   parseHTML() {
     return [

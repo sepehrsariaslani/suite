@@ -6,11 +6,11 @@
 			</div>
 
 			<h2 class="text-3xl-semibold text-ink-gray-9">
-				Entry denied
+				{{ __('Entry denied') }}
 			</h2>
 
 			<p class="text-ink-gray-6 text-base">
-				The meeting host has denied your request to join this meeting.
+				{{ __('The meeting host has denied your request to join this meeting.') }}
 			</p>
 
 			<div class="flex flex-col gap-3">

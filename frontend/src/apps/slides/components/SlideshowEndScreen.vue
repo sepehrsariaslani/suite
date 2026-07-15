@@ -1,7 +1,7 @@
 <template>
 	<div class="flex gap-8">
 		<Button
-			label="Back"
+			:label="__('Back')"
 			size="lg"
 			:variant="'outline'"
 			class="bg-transparent text-white opacity-70 transition-opacity duration-300 hover:opacity-100"

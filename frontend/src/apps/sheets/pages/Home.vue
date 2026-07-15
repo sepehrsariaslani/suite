@@ -11,7 +11,7 @@
           <path d="M53.8678 59.6958H43.3672V70.0914H53.8678V59.6958Z" fill="white"/>
           <path d="M73.6617 50.6653H63.1611V70.1439H73.6617V50.6653Z" fill="white"/>
         </svg>
-        <span class="home-brand-name">Frappe Sheets</span>
+        <span class="home-brand-name">{{ __('Frappe Sheets') }}</span>
       </div>
       <!-- Right-aligned controls. Wrapped in an explicit container with
            `margin-left: auto` because frappe-ui 1.0-beta's TextInput
@@ -28,7 +28,7 @@
           size="sm"
           class="home-search"
           v-model="searchQuery"
-          placeholder="Search sheets…"
+          :placeholder="__('Search sheets…')"
         >
           <template #prefix>
             <FeatherIcon name="search" class="home-search-icon" />
@@ -38,11 +38,11 @@
              localStorage so the user's choice survives reloads. Uses two
              Frappe UI Buttons inside a thin segmented frame; the active
              one switches to `subtle` so it inverts against the row. -->
-        <div class="home-viewtoggle" role="tablist" aria-label="View mode">
+        <div class="home-viewtoggle" role="tablist" :aria-label="__('View mode')">
           <Button
             :variant="viewMode === 'list' ? 'subtle' : 'ghost'"
             size="sm" icon="list"
-            tooltip="List view"
+            :tooltip="__('List view')"
             role="tab"
             :aria-selected="viewMode === 'list'"
             @click="setViewMode('list')"
@@ -50,13 +50,13 @@
           <Button
             :variant="viewMode === 'grid' ? 'subtle' : 'ghost'"
             size="sm" icon="grid"
-            tooltip="Grid view"
+            :tooltip="__('Grid view')"
             role="tab"
             :aria-selected="viewMode === 'grid'"
             @click="setViewMode('grid')"
           />
         </div>
-        <Button variant="solid" @click="newSheet()">New Sheet</Button>
+        <Button variant="solid" @click="newSheet()">{{ __('New Sheet') }}</Button>
       </div>
     </div>
 
@@ -78,16 +78,16 @@
             <rect x="25" y="25" width="13" height="13" rx="2" fill="#e2e2e2"/>
           </svg>
         </div>
-        <p class="home-empty-title">No sheets yet</p>
-        <p class="home-empty-sub">Create one to get started</p>
-        <Button variant="solid" @click="newSheet()">New Sheet</Button>
+        <p class="home-empty-title">{{ __('No sheets yet') }}</p>
+        <p class="home-empty-sub">{{ __('Create one to get started') }}</p>
+        <Button variant="solid" @click="newSheet()">{{ __('New Sheet') }}</Button>
       </div>
 
       <!-- No search match (grid only — list mode delegates to ListView's
            built-in emptyState option). -->
       <div v-else-if="viewMode === 'grid' && !filteredSheets.length" class="home-empty">
-        <p class="home-empty-title">No matches for “{{ searchQuery }}”</p>
-        <p class="home-empty-sub">Try a different name.</p>
+        <p class="home-empty-title">{{ __('No matches for “{0}”', [searchQuery]) }}</p>
+        <p class="home-empty-sub">{{ __('Try a different name.') }}</p>
       </div>
 
       <!-- Sheet grid -->
@@ -123,13 +123,13 @@
             <div class="home-card-info">
               <span class="home-card-title">{{ sheet.title }}</span>
               <span class="home-card-date">
-                <template v-if="!isOwnedByMe(sheet)">Shared · </template>{{ formatDate(sheet.modified) }}
+                <template v-if="!isOwnedByMe(sheet)">{{ __('Shared') }} · </template>{{ formatDate(sheet.modified) }}
               </span>
             </div>
             <div class="home-card-menu" @click.stop>
               <Dropdown :options="cardActions(sheet)" placement="right">
                 <template #default="{ open }">
-                  <Button :variant="open ? 'subtle' : 'ghost'" size="sm" icon="lucide-ellipsis-vertical" tooltip="Actions" />
+                  <Button :variant="open ? 'subtle' : 'ghost'" size="sm" icon="lucide-ellipsis-vertical" :tooltip="__('Actions')" />
                 </template>
               </Dropdown>
             </div>
@@ -159,7 +159,7 @@
                   :variant="open ? 'subtle' : 'ghost'"
                   size="sm"
                   icon="lucide-ellipsis-vertical"
-                  tooltip="Actions"
+                  :tooltip="__('Actions')"
                 />
               </template>
             </Dropdown>
@@ -176,14 +176,14 @@
     </div>
 
     <!-- Rename dialog -->
-    <Dialog v-model="showRenameDialog" :options="{ title: 'Rename sheet', size: 'sm' }">
+    <Dialog v-model="showRenameDialog" :options="{ title: __('Rename sheet'), size: 'sm' }">
       <template #body-content>
-        <FormControl v-model="renameValue" label="New title" placeholder="Untitled Sheet" @keydown.enter="confirmRename" />
+        <FormControl v-model="renameValue" :label="__('New title')" :placeholder="__('Untitled Sheet')" @keydown.enter="confirmRename" />
       </template>
       <template #actions>
         <div class="flex flex-row-reverse gap-2">
-          <Button variant="solid" :loading="renaming" @click="confirmRename">Rename</Button>
-          <Button @click="showRenameDialog = false">Cancel</Button>
+          <Button variant="solid" :loading="renaming" @click="confirmRename">{{ __('Rename') }}</Button>
+          <Button @click="showRenameDialog = false">{{ __('Cancel') }}</Button>
         </div>
       </template>
     </Dialog>
@@ -191,11 +191,11 @@
     <!-- Delete confirm dialog -->
     <Dialog
       v-model="showDeleteDialog"
-      :options="{ title: 'Delete sheet?', size: 'sm' }"
+      :options="{ title: __('Delete sheet?'), size: 'sm' }"
     >
       <template #body-content>
         <p class="home-confirm-text">
-          "<strong>{{ deleteTarget?.title }}</strong>" will be permanently deleted.
+          {{ __('“{0}” will be permanently deleted.', [deleteTarget?.title || '']) }}
         </p>
       </template>
       <template #actions>
@@ -205,8 +205,8 @@
             theme="red"
             :loading="deleting"
             @click="doDelete"
-          >Delete</Button>
-          <Button @click="showDeleteDialog = false">Cancel</Button>
+          >{{ __('Delete') }}</Button>
+          <Button @click="showDeleteDialog = false">{{ __('Cancel') }}</Button>
         </div>
       </template>
     </Dialog>
@@ -287,7 +287,7 @@ function isOwnedByMe(sheet) { return !!sheet.is_owner }
 function shortOwner(sheet) {
   const u = sheet.owner
   if (!u) return ''
-  if (sheet.is_owner) return 'me'
+  if (sheet.is_owner) return __('me')
   return u.includes('@') ? u.split('@')[0] : u
 }
 
@@ -306,7 +306,7 @@ function ownerInitials(sheet) {
 // Dropdown trigger directly.
 const listColumns = [
   {
-    label: 'Name',
+    label: __('Name'),
     key: 'title',
     width: 3,
     prefix: () =>
@@ -316,7 +316,7 @@ const listColumns = [
       }),
   },
   {
-    label: 'Owner',
+    label: __('Owner'),
     key: 'owner',
     width: 1,
     getLabel: ({ row }) => shortOwner(row),
@@ -324,7 +324,7 @@ const listColumns = [
       h(Avatar, { label: ownerInitials(row), size: 'xs', shape: 'circle' }),
   },
   {
-    label: 'Last Modified',
+    label: __('Last Modified'),
     key: 'modified',
     width: 1,
     getLabel: ({ row }) => formatDate(row.modified),
@@ -342,14 +342,14 @@ const listOptions = computed(() => ({
   onRowClick: (row) => openSheet(row.name),
   emptyState: searchQuery.value
     ? {
-        title: `No matches for "${searchQuery.value}"`,
-        description: 'Try a different name.',
+        title: __('No matches for “{0}”', [searchQuery.value]),
+        description: __('Try a different name.'),
       }
     : {
-        title: 'No sheets yet',
-        description: 'Create one to get started.',
+        title: __('No sheets yet'),
+        description: __('Create one to get started.'),
         button: {
-          label: 'New Sheet',
+          label: __('New Sheet'),
           variant: 'solid',
           onClick: () => newSheet(),
         },
@@ -371,11 +371,11 @@ const filteredSheets = computed(() => {
 function cardActions(sheet) {
   const actions = []
   if (isOwnedByMe(sheet)) {
-    actions.push({ label: 'Rename', icon: 'edit-2', onClick: () => openRenameDialog(sheet) })
+    actions.push({ label: __('Rename'), icon: 'edit-2', onClick: () => openRenameDialog(sheet) })
   }
-  actions.push({ label: 'Duplicate', icon: 'copy', onClick: () => duplicate(sheet) })
+  actions.push({ label: __('Duplicate'), icon: 'copy', onClick: () => duplicate(sheet) })
   if (isOwnedByMe(sheet)) {
-    actions.push({ label: 'Delete', icon: 'trash-2', onClick: () => confirmDelete(sheet) })
+    actions.push({ label: __('Delete'), icon: 'trash-2', onClick: () => confirmDelete(sheet) })
   }
   return actions
 }
@@ -404,11 +404,11 @@ function formatDate(iso) {
   const d = new Date(iso)
   const now = new Date()
   const diff = (now - d) / 1000
-  if (diff < 60)           return 'just now'
-  if (diff < 3600)         return `${Math.floor(diff / 60)}m ago`
-  if (diff < 86400)        return `${Math.floor(diff / 3600)}h ago`
-  if (diff < 86400 * 7)   return `${Math.floor(diff / 86400)}d ago`
-  return d.toLocaleDateString()
+  if (diff < 60)           return __('just now')
+  if (diff < 3600)         return __('{0}m ago', [Math.floor(diff / 60)])
+  if (diff < 86400)        return __('{0}h ago', [Math.floor(diff / 3600)])
+  if (diff < 86400 * 7)   return __('{0}d ago', [Math.floor(diff / 86400)])
+  return d.toLocaleDateString(window.language || undefined)
 }
 
 function confirmDelete(sheet) {
@@ -425,7 +425,7 @@ async function doDelete() {
     showDeleteDialog.value = false
   } catch (err) {
     console.error('Delete failed:', err)
-    _flashError(err?.message || 'Delete failed')
+    _flashError(err?.message || __('Delete failed'))
   } finally {
     deleting.value = false
   }
@@ -461,7 +461,7 @@ async function duplicate(sheet) {
     // Surface the failure instead of silently swallowing — keeps "nothing
     // happened" from being indistinguishable from server errors.
     console.error('Duplicate failed:', err)
-    _flashError(err?.message || 'Duplicate failed')
+    _flashError(err?.message || __('Duplicate failed'))
   }
 }
 </script>
@@ -476,7 +476,6 @@ async function duplicate(sheet) {
      scroll: a fixed-height column where the body region scrolls. */
   height: 100vh;
   background: var(--surface-base);
-  font-family: InterVar, ui-sans-serif, system-ui, sans-serif;
   color: var(--ink-gray-9);
 }
 

@@ -1,6 +1,6 @@
 <template>
 	<AppSettingsHeader
-		title="Devices"
+		:title="__('Devices')"
 		description="Select your preferred camera, microphone, and speaker"
 	/>
 	<AppSettingsBody>
@@ -11,8 +11,8 @@
 		/>
 		<div v-else class="space-y-6">
 			<div class="space-y-2">
-				<FormControl label="Camera" type="autocomplete" v-model="selectedCameraIdLocal"
-					:options="cameraSelectOptions" placeholder="Select camera">
+				<FormControl :label="__('Camera')" type="autocomplete" v-model="selectedCameraIdLocal"
+					:options="cameraSelectOptions" :placeholder="__('Select camera')">
 					<template #prefix>
 						<lucide-camera class="mr-2 h-4 w-4 text-ink-gray-7" />
 					</template>

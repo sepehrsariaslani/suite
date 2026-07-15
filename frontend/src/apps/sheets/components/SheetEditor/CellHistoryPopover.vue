@@ -1,10 +1,10 @@
 <template>
 	<Dialog v-model="model" :options="{ title: `Edit history for ${cellRef}`, size: 'sm' }">
 		<template #body-content>
-			<div v-if="loading" class="sn-ch-empty">Loading…</div>
+			<div v-if="loading" class="sn-ch-empty">{{ __('Loading…') }}</div>
 			<div v-else-if="error" class="sn-ch-empty sn-ch-error">{{ error }}</div>
 			<div v-else-if="!entries.length" class="sn-ch-empty">
-				No edits recorded for this cell yet.
+				{{ __('No edits recorded for this cell yet.') }}
 			</div>
 			<ul v-else class="sn-ch-list">
 				<li v-for="e in entries" :key="e.version" class="sn-ch-item">

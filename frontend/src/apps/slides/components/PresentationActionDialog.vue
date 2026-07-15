@@ -57,11 +57,11 @@ const newPresentationTitle = ref('')
 
 const actions = {
 	Rename: {
-		label: 'Update Title',
+		label: __('Update Title'),
 		icon: PenLine,
 	},
 	Delete: {
-		label: 'Delete Presentation',
+		label: __('Delete Presentation'),
 		icon: Trash,
 	},
 }

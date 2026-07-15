@@ -41,7 +41,7 @@
     style="transform: translate(0, -42px)"
   >
     <LucideInbox class="w-14 h-auto text-ink-gray-4 pb-4" />
-    <span class="text-base-medium text-ink-gray-5">No Notifications</span>
+    <span class="text-base-medium text-ink-gray-5">{{ __('No Notifications') }}</span>
   </div>
 </template>
 <script setup>

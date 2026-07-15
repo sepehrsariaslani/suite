@@ -7,7 +7,7 @@ import { v4 } from 'uuid'
 
 export const TabsExtension = Node.create({
   name: 'tab',
-  group: 'block',
+  group: __('block'),
   content: 'block+',
   defining: true,
   isolating: true,

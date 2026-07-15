@@ -65,12 +65,12 @@
                 <label class="mt-2 flex items-center gap-2 text-sm text-ink-gray-7">
                   <FormControl v-model="terms_accepted" type="checkbox" />
                   <span>
-                    I accept the
+                    {{ __('I accept the') }}
                     <a
                       class="text-ink-gray-9 underline"
                       href="https://frappecloud.com/policies"
                       target="_blank"
-                    >Terms and Policies</a>
+                    >{{ __('Terms and Policies') }}</a>
                   </span>
                 </label>
                 <ErrorMessage
@@ -87,7 +87,7 @@
                   "
                   @click="signup.submit()"
                 >
-                  Sign up
+                  {{ __('Sign up') }}
                 </Button>
               </template>
 

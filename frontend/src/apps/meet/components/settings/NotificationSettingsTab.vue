@@ -1,13 +1,13 @@
 <template>
 	<AppSettingsHeader
-		title="Notifications"
+		:title="__('Notifications')"
 		description="Customize notification sounds for meeting events"
 	/>
 	<AppSettingsBody>
 		<div class="space-y-6">
 			<Switch
 				class="w-full"
-				label="Enable notification sounds"
+				:label="__('Enable notification sounds')"
 				description="Play sounds for all meeting events"
 				v-model="notificationChimesEnabledLocal"
 			/>

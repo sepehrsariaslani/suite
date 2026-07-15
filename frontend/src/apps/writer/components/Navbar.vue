@@ -10,7 +10,7 @@
         v-if="$route.name !== 'writer-home'"
         :options="[
           {
-            label: 'Back to Home',
+            label: __('Back to Home'),
             icon: LucideChevronLeft,
             route: { name: 'writer-home' },
           },
@@ -32,7 +32,7 @@
       <slot name="content" />
       <Button
         v-if="isOffline"
-        label="You're offline"
+        :label="__('You\'re offline')"
         variant="solid"
         size="sm"
         class="pointer-events-none"
@@ -52,13 +52,13 @@
       />
       <template v-if="!isLoggedIn">
         <Button variant="outline" @click="signIn">
-          Sign In
+          {{ __('Sign In') }}
         </Button>
         <Button
           v-if="!isLoggedIn"
           class="hidden md:block"
           variant="solid"
-          label="Try out Drive"
+          :label="__('Try out Drive')"
           @click="
             open('https://frappecloud.com/dashboard/signup?product=drive')
           "
@@ -66,7 +66,7 @@
       </template>
       <Button
         v-else-if="$route.name === 'writer-home'"
-        label="New"
+        :label="__('New')"
         variant="solid"
         :icon-left="h(LucidePlus, { class: 'size-4' })"
         @click="
@@ -165,8 +165,8 @@ const route = useRoute()
 const formattedCrumbs = computed(() => {
   const ORIG =
     route.name === 'writer-home'
-      ? { label: 'Writer', href: '/writer' }
-      : { label: 'Drive', href: '/drive' }
+      ? { label: __('Writer'), href: '/writer' }
+      : { label: __('Drive'), href: '/drive' }
   if (!props.breadcrumbs.length) return [ORIG]
   return [
     ORIG,
@@ -256,12 +256,12 @@ const fileActions = computed(() =>
           hideLabel: true,
           items: dynamicList([
             {
-              label: 'View',
+              label: __('View'),
               icon: LucideView,
               cond: props.file.doc.write,
               submenu: [
                 {
-                  label: 'Lock',
+                  label: __('Lock'),
                   switch: true,
                   switchValue: props.document.doc.settings.lock,
                   icon: LucideLock,
@@ -273,7 +273,7 @@ const fileActions = computed(() =>
                   },
                 },
                 {
-                  label: 'Wide',
+                  label: __('Wide'),
                   icon: LucideRulerDimensionLine,
                   switch: true,
                   switchValue: props.document.doc.settings.wide,
@@ -287,18 +287,18 @@ const fileActions = computed(() =>
               ],
             },
             {
-              label: 'Export',
+              label: __('Export'),
               icon: LucideDownload,
               submenu: [
                 {
-                  label: 'PDF',
+                  label: __('PDF'),
                   icon: LucideFile,
                   onClick: () => {
                     emitter.emit('print-file')
                   },
                 },
                 {
-                  label: 'DOCX',
+                  label: __('DOCX'),
                   icon: LucideFileText,
                   onClick: () => {
                     downloadDocxFromHtml(
@@ -309,7 +309,7 @@ const fileActions = computed(() =>
                   },
                 },
                 {
-                  label: 'Folder',
+                  label: __('Folder'),
                   icon: LucideFolderArchive,
                   onClick: () => {
                     downloadZippedHTML(
@@ -320,13 +320,13 @@ const fileActions = computed(() =>
                   },
                 },
                 {
-                  label: 'Markdown',
+                  label: __('Markdown'),
                   icon: LucideMarkdown,
                   onClick: () => downloadMD(editor, props.file.doc.file_name),
                 },
                 {
                   onClick: exportBlog,
-                  label: 'Blog',
+                  label: __('Blog'),
                   icon: LucideFileUser,
                   cond: apps.data && apps.data.find((k) => k.name === 'blog'),
                 },
@@ -334,13 +334,13 @@ const fileActions = computed(() =>
             },
             {
               icon: LucideHistory,
-              label: 'Versions',
+              label: __('Versions'),
               cond: props.file.doc.write,
               onClick: () => (showVersions.value = true),
             },
             {
               icon: LucideLayoutTemplate,
-              label: 'Templates',
+              label: __('Templates'),
               cond: props.file.doc.write,
               onClick: () => (showTemplates.value = true),
             },
@@ -352,7 +352,7 @@ const fileActions = computed(() =>
           items: [
             {
               onClick: () => clearCache(),
-              label: 'Clear Cache',
+              label: __('Clear Cache'),
               icon: LucideListRestart,
             },
             {

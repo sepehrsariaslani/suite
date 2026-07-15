@@ -1,12 +1,12 @@
 <template>
 	<CollapsibleSection
-		title="Layout"
+		:title="__('Layout')"
 		:key="activeElements?.length"
 		:initialState="activeElement?.type != 'text'"
 	>
 		<template #default>
 			<div class="flex flex-col gap-1.5">
-				<div :class="fieldLabelClasses">Position</div>
+				<div :class="fieldLabelClasses">{{ __('Position') }}</div>
 				<div class="flex items-center gap-3">
 					<NumberInput
 						:modelValue="Math.round(selectionBounds.left)"
@@ -28,7 +28,7 @@
 			</div>
 
 			<div v-if="activeElement" class="flex flex-col gap-1.5">
-				<div :class="fieldLabelClasses">Dimensions</div>
+				<div :class="fieldLabelClasses">{{ __('Dimensions') }}</div>
 				<div class="flex items-center gap-3">
 					<NumberInput
 						:modelValue="Math.round(selectionBounds.width)"
@@ -51,7 +51,7 @@
 			</div>
 
 			<div class="flex flex-col gap-1.5">
-				<div :class="fieldLabelClasses">Arrange</div>
+				<div :class="fieldLabelClasses">{{ __('Arrange') }}</div>
 				<div class="grid grid-cols-2 gap-3">
 					<Button
 						v-for="option in arrangeOptions"
@@ -101,22 +101,22 @@ import { commandHistory } from '@/apps/slides/stores/historyMeta'
 
 const arrangeOptions = [
 	{
-		label: 'Backward',
+		label: __('Backward'),
 		icon: Backward,
 		action: () => sendBackward(),
 	},
 	{
-		label: 'Forward',
+		label: __('Forward'),
 		icon: Forward,
 		action: () => bringForward(),
 	},
 	{
-		label: 'To Back',
+		label: __('To Back'),
 		icon: SendToBack,
 		action: () => sendToBack(),
 	},
 	{
-		label: 'To Front',
+		label: __('To Front'),
 		icon: BringToFront,
 		action: () => bringToFront(),
 	},

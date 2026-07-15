@@ -2,7 +2,7 @@
 	<div :class="backgroundClasses">
 		<!-- Header -->
 		<div class="cursor-default px-32 text-xl-semibold text-gray-800 lg:px-40">
-			Presentations
+			{{ __('Presentations') }}
 		</div>
 
 		<div class="px-32 pb-16 pt-8 lg:px-40">
@@ -43,7 +43,7 @@
 				</div>
 			</div>
 			<LoadingIndicator v-else-if="loading" class="w-3" />
-			<div v-else class="text-sm text-gray-600">No presentations created yet.</div>
+			<div v-else class="text-sm text-gray-600">{{ __('No presentations created yet.') }}</div>
 		</div>
 	</div>
 </template>
@@ -72,35 +72,35 @@ const contextMenuIconClasses = 'stroke-[1.5] !size-3.5'
 const getContextMenuOptions = (presentation) => {
 	return [
 		{
-			group: 'Actions',
+			group: __('Actions'),
 			options: [
 				{
-					label: 'Rename',
+					label: __('Rename'),
 					icon: h(PenLine, { class: contextMenuIconClasses }),
 					onClick: () => emit('openDialog', 'Rename', presentation),
 				},
 				{
-					label: 'Duplicate',
+					label: __('Duplicate'),
 					icon: h(Copy, { class: contextMenuIconClasses }),
 					onClick: () => emit('duplicatePresentation', presentation.name),
 				},
 				{
-					label: 'Delete',
+					label: __('Delete'),
 					icon: h(Trash, { class: contextMenuIconClasses }),
 					onClick: () => emit('openDialog', 'Delete', presentation),
 				},
 			],
 		},
 		{
-			group: 'Explore',
+			group: __('Explore'),
 			options: [
 				{
-					label: 'Preview',
+					label: __('Preview'),
 					icon: h(Eye, { class: contextMenuIconClasses }),
 					onClick: () => emit('setPreview', presentation),
 				},
 				{
-					label: 'Slideshow',
+					label: __('Slideshow'),
 					icon: h(TvMinimalPlay, { class: contextMenuIconClasses }),
 					onClick: () => emit('navigate', presentation.name, true),
 				},

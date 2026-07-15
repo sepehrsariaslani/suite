@@ -4,7 +4,7 @@
   >
     <div class="text-sm absolute top-5 right-5 flex gap-1.5 text-ink-gray-8">
       <LucideLogOut class="w-3 h-3 my-auto" />
-      <a href="#" @click="logout">Log out</a>
+      <a href="#" @click="logout">{{ __('Log out') }}</a>
     </div>
     <div class="flex flex-col items-center">
       <FrappeDriveLogo class="inline-block h-12 w-12 rounded-md" />
@@ -14,7 +14,7 @@
       Welcome, {{ currentUserFullName.split(' ')[0] }}
     </h2>
     <div>
-      <p class=" text-sm-semibold text-ink-gray-8 mb-1 ms-1">Teams</p>
+      <p class=" text-sm-semibold text-ink-gray-8 mb-1 ms-1">{{ __('Teams') }}</p>
       <ul class="flex flex-col">
         <template v-for="team in Object.values(getTeams?.data)" :key="team.id">
           <router-link class="my-auto" :to="{ name: 'drive-Team', params: { team: team.name } }">

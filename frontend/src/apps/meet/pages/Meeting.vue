@@ -20,7 +20,7 @@
 						size="sm"
 						@click="redirectToLogin"
 					>
-						Sign In
+						{{ __('Sign In') }}
 					</Button>
 				</template>
 			</MeetingHeader>

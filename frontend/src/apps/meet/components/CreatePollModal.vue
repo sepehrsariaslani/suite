@@ -1,19 +1,19 @@
 <template>
-    <Dialog v-model="isOpen" title="Create a Poll">
+    <Dialog v-model="isOpen" :title="__('Create a Poll')">
         <template #default>
             <div class="space-y-4">
                 <div>
                     <FormControl
                         type="textarea"
                         v-model="question"
-                        placeholder="Ask your audience something..."
+                        :placeholder="__('Ask your audience something...')"
                         required
-                        label="Question"
+                        :label="__('Question')"
                     />
                 </div>
 
                 <div class="space-y-2">
-                    <label class="block text-sm font-medium text-ink-gray-7 mb-1">Options</label>
+                    <label class="block text-sm font-medium text-ink-gray-7 mb-1">{{ __('Options') }}</label>
                     <div 
                         v-for="(option, index) in options" 
                         :key="index" 
@@ -41,7 +41,7 @@
                             @click="addOption"
                             icon-left="lucide-plus"
                         >
-                            Add Option
+                            {{ __('Add Option') }}
                         </Button>
                     </div>
                 </div>
@@ -49,7 +49,7 @@
                 <div class="rounded-md border border-outline-gray-2 bg-surface-gray-1 p-4 text-sm flex gap-4">
                     <lucide-alert-triangle class="h-5 w-5 text-ink-gray-6"/>
                     <span class="text-ink-gray-8">
-                        Polls are temporary and will be deleted once everyone leaves the meeting.
+                        {{ __('Polls are temporary and will be deleted once everyone leaves the meeting.') }}
                     </span>
                 </div>
             </div>

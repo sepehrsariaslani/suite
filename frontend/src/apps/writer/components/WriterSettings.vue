@@ -1,7 +1,7 @@
 <template>
   <Dialog
     v-model:open="open"
-    title="Settings"
+    :title="__('Settings')"
     @close="model = false"
   >
     <Tabs v-model="tabIndex" :tabs>
@@ -11,7 +11,7 @@
               <div class="overflow-y-auto max-h-96 px-2 pt-3">
                 <div class="flex flex-col gap-4 pb-5 pr-5">
                   <div class="space-y-1.5">
-                    <FormLabel label="Font Family" />
+                    <FormLabel :label="__('Font Family')" />
                     <FontSelect
                       v-model="settings.font_family"
                       variant="subtle"
@@ -28,21 +28,21 @@
                   <FormControl
                     v-model="settings.font_size"
                     type="number"
-                    label="Font Size"
+                    :label="__('Font Size')"
                     autocomplete="off"
-                    placeholder="Automatic"
+                    :placeholder="__('Automatic')"
                     description="Set the font size of the editor (px)."
                   />
                   <FormControl
                     v-model="settings.line_height"
                     type="number"
-                    label="Line Height"
+                    :label="__('Line Height')"
                     autocomplete="off"
-                    placeholder="Automatic"
+                    :placeholder="__('Automatic')"
                     description="Set the line height of the editor."
                   />
                   <div class="space-y-1.5">
-                    <FormLabel label="Paragraph Spacing" />
+                    <FormLabel :label="__('Paragraph Spacing')" />
                     <div class="grid grid-cols-2 gap-2">
                       <FormControl
                         v-model.number="settings.paragraph_spacing_before"
@@ -64,7 +64,7 @@
                       />
                     </div>
                     <div class="text-xs text-ink-gray-5">
-                      Set the default spacing around paragraphs.
+                      {{ __('Set the default spacing around paragraphs.') }}
                     </div>
                   </div>
                 </div>
@@ -72,28 +72,28 @@
                 <!-- Print Settings Section -->
                 <div class="flex flex-col gap-3 pb-5 pr-5">
                   <template v-if="tabIndex === 1">
-                    <h3 class="text-sm-medium text-ink-gray-7">Print Settings</h3>
+                    <h3 class="text-sm-medium text-ink-gray-7">{{ __('Print Settings') }}</h3>
                     <div class="space-y-2">
-                      <FormLabel label="Header & Footer" />
+                      <FormLabel :label="__('Header & Footer')" />
                       <div class="grid grid-cols-2 gap-2">
                         <FormControl
                           v-model="settings.print_header_left"
                           type="text"
-                          placeholder="Header Left"
+                          :placeholder="__('Header Left')"
                           description="Top Left"
                           autocomplete="off"
                         />
                         <FormControl
                           v-model="settings.print_header_right"
                           type="text"
-                          placeholder="Header Right"
+                          :placeholder="__('Header Right')"
                           description="Top Right"
                           autocomplete="off"
                         />
                         <FormControl
                           v-model="settings.print_footer_left"
                           type="text"
-                          placeholder="Footer Left"
+                          :placeholder="__('Footer Left')"
                           description="Bottom Left"
                           autocomplete="off"
                         />
@@ -101,38 +101,38 @@
                           v-model="settings.print_footer_right"
                           :disabled="settings.print_show_pages"
                           type="text"
-                          placeholder="Footer Right"
+                          :placeholder="__('Footer Right')"
                           description="Bottom Right"
                           autocomplete="off"
                         />
                       </div>
                       <div class="text-xs text-ink-gray-5 mt-2">
-                        Set the text to appear in headers and footers when printing.
+                        {{ __('Set the text to appear in headers and footers when printing.') }}
                       </div>
                     </div>
                     <div class="flex flex-col gap-3">
                       <FormControl
                         v-model="settings.print_show_pages"
                         type="checkbox"
-                        label="Show page numbers"
+                        :label="__('Show page numbers')"
                         description="Add a line below the header when printing."
                       />
                       <FormControl
                         v-model="settings.print_header_separator"
                         type="checkbox"
-                        label="Header separator line"
+                        :label="__('Header separator line')"
                         description="Add a line below the header when printing."
                       />
                       <FormControl
                         v-model="settings.print_footer_separator"
                         type="checkbox"
-                        label="Footer separator line"
+                        :label="__('Footer separator line')"
                         description="Add a line above the footer when printing."
                       />
                       <FormControl
                         v-model="settings.apply_watermark"
                         type="checkbox"
-                        label="Apply watermark to PDF"
+                        :label="__('Apply watermark to PDF')"
                         :description="'Enable this to automatically apply watermark when downloading PDF for this document.'"
                       />
                     </div>
@@ -222,15 +222,15 @@ const props = defineProps({
   editable: Boolean,
 })
 const tabs = dynamicList([
-  { label: 'Everywhere', icon: LucideGlobe2 },
-  { label: 'This document', icon: LucideFileText },
+  { label: __('Everywhere'), icon: LucideGlobe2 },
+  { label: __('This document'), icon: LucideFileText },
 ])
 const tabIndex = ref(props.editable ? 1 : 0)
 
 const fontOptions = computed(() =>
   dynamicList([
     {
-      label: 'Automatic',
+      label: __('Automatic'),
       value: 'global',
       key: 'global',
       cond: tabIndex.value === 1,

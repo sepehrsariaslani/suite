@@ -1,5 +1,5 @@
 <template>
-	<CollapsibleSection title="Orientation">
+	<CollapsibleSection :title="__('Orientation')">
 		<template #default>
 			<div
 				v-for="(direction, index) in imageOrientationProperties"
@@ -29,12 +29,12 @@ import { inject } from 'vue'
 const imageOrientationProperties = [
 	{
 		property: 'invertX',
-		label: 'Flip Horizontal',
+		label: __('Flip Horizontal'),
 		icon: FlipHorizontal,
 	},
 	{
 		property: 'invertY',
-		label: 'Flip Vertical',
+		label: __('Flip Vertical'),
 		icon: FlipVertical,
 	},
 ]

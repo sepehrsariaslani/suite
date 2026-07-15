@@ -28,13 +28,13 @@
 				v-if="showScreenShareCopy"
 				class="text-white text-xl-medium mb-1"
 			>
-				You are sharing your screen
+				{{ __('You are sharing your screen') }}
 			</div>
 			<div
 				v-if="showScreenShareCopy"
 				class="text-white text-sm-medium"
 			>
-				Everyone else can see what you are presenting
+				{{ __('Everyone else can see what you are presenting') }}
 			</div>
 		</div>
 

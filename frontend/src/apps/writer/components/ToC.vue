@@ -10,7 +10,7 @@
     </div>
     <div v-if="show" class="grow flex flex-col gap-0.5">
       <div v-if="hasContent" class="flex justify-between items-center ps-2 pr-1 pb-1">
-        <span class="text-base-medium text-ink-gray-8 select-none">Table of Contents</span>
+        <span class="text-base-medium text-ink-gray-8 select-none">{{ __('Table of Contents') }}</span>
         <Button :icon="LucideLeftClose" variant="ghost" @click="show = !show"
           :tooltip="show ? 'Hide' : 'Table of Contents'" />
       </div>
@@ -83,7 +83,7 @@
           :icon-left="h(LucidePlus, { class: 'size-4' })" :label="tabs.length ? 'Add tab' : 'Create tab'"
           variant="ghost" @click="
             tabs.length
-              ? editor.commands.createTab({ label: 'Untitled' })
+              ? editor.commands.createTab({ label: __('Untitled') })
               : editor.commands.wrapInTab()
             " />
         <Button v-if="!hasContent" :icon="LucideLeftClose" variant="ghost" @click="show = !show" tooltip="Hide" />
@@ -337,12 +337,12 @@ const activeAnchorId = computed(() => {
 
 const tabActions = [
   {
-    label: 'Rename',
+    label: __('Rename'),
     icon: LucidePencil,
     onClick: () => startRenaming(activeTabId.value),
   },
   {
-    label: 'Copy Link',
+    label: __('Copy Link'),
     icon: LucideLink,
     onClick: () =>
       copyToClipboard(
@@ -354,7 +354,7 @@ const tabActions = [
     hideLabel: true,
     items: [
       {
-        label: 'Delete',
+        label: __('Delete'),
         icon: LucideTrash,
         theme: 'red',
         onClick: () => props.editor.commands.deleteTab(activeTabId.value),

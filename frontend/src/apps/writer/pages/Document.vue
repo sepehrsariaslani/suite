@@ -180,8 +180,7 @@ let toasted
 watch(isOldSchema, (v) => {
   if (document.value?.doc?.settings && file.doc.write && v && !toasted) {
     toast({
-      title:
-        'This document uses an old schema. Collaborative editing is disabled.',
+      title: __('This document uses an old schema. Collaborative editing is disabled.'),
       type: 'warning',
       duration: 8000,
     })

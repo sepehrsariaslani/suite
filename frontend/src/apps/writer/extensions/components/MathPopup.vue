@@ -4,8 +4,8 @@
     @click.stop
   >
     <div class="flex items-center justify-between px-3 border-b border-surface-gray-2">
-      <span class="text-xs-medium text-gray-700">LaTeX</span>
-      <Button :icon="IconX" variant="ghost" @click="handleClose" tooltip="Close (Esc)" />
+      <span class="text-xs-medium text-gray-700">{{ __('LaTeX') }}</span>
+      <Button :icon="IconX" variant="ghost" @click="handleClose" :tooltip="__('Close (Esc)')" />
     </div>
 
     <div class="p-3 flex flex-col gap-2">
@@ -31,8 +31,8 @@
     </div>
 
     <div class="flex items-center justify-between px-3 py-2 border-t border-gray-200">
-      <Checkbox v-model="isBlock" label="Block" />
-      <Button label="Apply" variant="solid" @click="handleSubmit" />
+      <Checkbox v-model="isBlock" :label="__('Block')" />
+      <Button :label="__('Apply')" variant="solid" @click="handleSubmit" />
     </div>
   </div>
 </template>
@@ -56,18 +56,18 @@ const textareaRef = ref<any>(null)
 const localType = computed(() => (isBlock.value ? 'block' : 'inline'))
 
 const quickSymbols = [
-  { latex: '\\frac{a}{b}', display: '½', label: 'Fraction' },
-  { latex: 'x^{2}', display: 'x²', label: 'Superscript' },
-  { latex: 'x_{i}', display: 'xᵢ', label: 'Subscript' },
-  { latex: '\\sqrt{x}', display: '√x', label: 'Square root' },
-  { latex: '\\sum', display: '∑', label: 'Sum' },
-  { latex: '\\int', display: '∫', label: 'Integral' },
-  { latex: '\\infty', display: '∞', label: 'Infinity' },
-  { latex: '\\alpha', display: 'α', label: 'Alpha' },
-  { latex: '\\beta', display: 'β', label: 'Beta' },
-  { latex: '\\theta', display: 'θ', label: 'Theta' },
-  { latex: '\\pi', display: 'π', label: 'Pi' },
-  { latex: '\\Delta', display: 'Δ', label: 'Delta' },
+  { latex: '\\frac{a}{b}', display: '½', label: __('Fraction') },
+  { latex: 'x^{2}', display: 'x²', label: __('Superscript') },
+  { latex: 'x_{i}', display: 'xᵢ', label: __('Subscript') },
+  { latex: '\\sqrt{x}', display: '√x', label: __('Square root') },
+  { latex: '\\sum', display: '∑', label: __('Sum') },
+  { latex: '\\int', display: '∫', label: __('Integral') },
+  { latex: '\\infty', display: '∞', label: __('Infinity') },
+  { latex: '\\alpha', display: 'α', label: __('Alpha') },
+  { latex: '\\beta', display: 'β', label: __('Beta') },
+  { latex: '\\theta', display: 'θ', label: __('Theta') },
+  { latex: '\\pi', display: 'π', label: __('Pi') },
+  { latex: '\\Delta', display: 'Δ', label: __('Delta') },
 ]
 
 onMounted(() => {

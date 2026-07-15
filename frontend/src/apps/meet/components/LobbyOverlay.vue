@@ -6,11 +6,11 @@
 			</div>
 
 			<h2 class="text-3xl-semibold text-ink-gray-9">
-				Waiting to be admitted
+				{{ __('Waiting to be admitted') }}
 			</h2>
 
 			<p class="text-ink-gray-6 text-base">
-				The meeting host will let you in soon.
+				{{ __('The meeting host will let you in soon.') }}
 			</p>
 
 			<div class="flex flex-col gap-3">

@@ -14,7 +14,7 @@
 			>
 				<div class="flex items-center justify-between gap-3 px-4 py-5 shrink-0">
 					<div class="min-w-0 truncate text-sm-medium text-ink-gray-8 tracking-[0.21px]">
-						Chat
+						{{ __('Chat') }}
 					</div>
 					<div class="flex shrink-0 items-center gap-1">
 						<Dropdown
@@ -260,7 +260,7 @@ const showPollModal = ref(false);
 const activePolls = computed(() => pollStore.activePolls);
 const pollMenuOptions = [
 	{
-		label: "Create Poll",
+		label: __('Create Poll'),
 		icon: markRaw(LucideChartColumn),
 		onClick: () => {
 			showPollModal.value = true;

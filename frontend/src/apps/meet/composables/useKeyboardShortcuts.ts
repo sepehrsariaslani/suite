@@ -17,8 +17,8 @@ export function useKeyboardShortcuts(isActive?: () => boolean) {
 		{
 			key: "d",
 			ctrl: true,
-			description: "Toggle microphone",
-			group: "Meeting controls",
+			description: __('Toggle microphone'),
+			group: __('Meeting controls'),
 			condition: isNotTyping,
 			handler: () => {
 				if (isActiveFn()) meetingControls.toggleMicrophone();
@@ -27,8 +27,8 @@ export function useKeyboardShortcuts(isActive?: () => boolean) {
 		{
 			key: "e",
 			ctrl: true,
-			description: "Toggle camera",
-			group: "Meeting controls",
+			description: __('Toggle camera'),
+			group: __('Meeting controls'),
 			condition: isNotTyping,
 			handler: () => {
 				if (isActiveFn()) meetingControls.toggleCamera();
@@ -36,8 +36,8 @@ export function useKeyboardShortcuts(isActive?: () => boolean) {
 		},
 		{
 			key: " ",
-			description: "Push to talk",
-			group: "Meeting controls",
+			description: __('Push to talk'),
+			group: __('Meeting controls'),
 			triggeredOn: "hold",
 			condition: isNotTyping,
 			onHold: () => {

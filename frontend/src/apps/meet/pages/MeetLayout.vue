@@ -21,8 +21,8 @@ provide("showShortcutsDialog", showShortcutsDialog);
 
 useShortcut({
 	key: "?",
-	description: "View shortcuts",
-	group: "General",
+	description: __('View shortcuts'),
+	group: __('General'),
 	allowInDialog: true,
 	handler: () => (showShortcutsDialog.value = true),
 });

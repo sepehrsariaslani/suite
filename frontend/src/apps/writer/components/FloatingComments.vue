@@ -99,12 +99,12 @@
                     'opacity-100'
                     " :options="dynamicList([
                       {
-                        label: 'Edit',
+                        label: __('Edit'),
                         onClick: () => (reply.edit = true),
                         cond: comment.owner == currentUserId,
                       },
                       {
-                        label: 'Delete',
+                        label: __('Delete'),
                         onClick: () => removeReply(comment.id, reply.id),
                         cond:
                           comment.owner == currentUserId &&
@@ -302,7 +302,7 @@ const updateComment = (comment, thread, editor) => {
   // if (usersMentioned.length)
   //   toast.info('Share with the tagged people?', {
   //     action: {
-  //       label: 'Go',
+  //       label: __('Go'),
   //       onClick: () => emitter.emit('share', usersMentioned),
   //     },
   //   })

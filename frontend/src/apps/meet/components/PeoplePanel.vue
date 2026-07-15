@@ -14,7 +14,7 @@
 			>
 				<div class="flex items-center justify-between gap-3 px-4 py-5 shrink-0">
 					<div class="min-w-0 truncate text-sm-medium text-ink-gray-8 tracking-[0.21px]">
-						People
+						{{ __('People') }}
 					</div>
 					<Button
 						variant="ghost"
@@ -27,7 +27,7 @@
 					<FormControl
 						v-model="searchQuery"
 						type="text"
-						placeholder="Search people"
+						:placeholder="__('Search people')"
 						autocomplete="off"
 						data-testid="people-search"
 					>

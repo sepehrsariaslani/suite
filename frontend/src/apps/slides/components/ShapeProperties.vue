@@ -1,11 +1,11 @@
 <template>
-	<CollapsibleSection title="Style">
+	<CollapsibleSection :title="__('Style')">
 		<template #default>
 			<div
 				class="flex items-center justify-between"
 				v-if="activeElement.shapeType == 'rectangle'"
 			>
-				<div :class="fieldLabelClasses">Border Radius</div>
+				<div :class="fieldLabelClasses">{{ __('Border Radius') }}</div>
 				<div class="w-28">
 					<NumberInput
 						:modelValue="activeElement.borderRadius"
@@ -19,7 +19,7 @@
 			</div>
 
 			<div v-if="activeElement.shapeType == 'line'" class="flex items-center justify-between">
-				<div :class="fieldLabelClasses">Arrows</div>
+				<div :class="fieldLabelClasses">{{ __('Arrows') }}</div>
 				<div class="w-28">
 					<FormControl
 						type="select"
@@ -31,7 +31,7 @@
 			</div>
 
 			<div class="flex items-center justify-between">
-				<div :class="fieldLabelClasses">Stroke Width</div>
+				<div :class="fieldLabelClasses">{{ __('Stroke Width') }}</div>
 				<div class="w-28">
 					<NumberInput
 						:modelValue="activeElement.strokeWidth"
@@ -45,7 +45,7 @@
 			</div>
 
 			<div v-if="activeElement.shapeType != 'line'" class="flex items-center justify-between">
-				<div :class="fieldLabelClasses">Fill Color</div>
+				<div :class="fieldLabelClasses">{{ __('Fill Color') }}</div>
 				<ColorPicker
 					v-model="activeElement.fillColor"
 					@colordown="onFillColorUpdateStart"
@@ -54,7 +54,7 @@
 			</div>
 
 			<div class="flex items-center justify-between">
-				<div :class="fieldLabelClasses">Stroke Color</div>
+				<div :class="fieldLabelClasses">{{ __('Stroke Color') }}</div>
 
 				<ColorPicker
 					v-model="activeElement.strokeColor"
@@ -93,10 +93,10 @@ const arrowDirection = computed(() => {
 })
 
 const arrowOptions = [
-	{ label: 'None', value: 'none' },
-	{ label: 'Left', value: 'left' },
-	{ label: 'Right', value: 'right' },
-	{ label: 'Both', value: 'both' },
+	{ label: __('None'), value: 'none' },
+	{ label: __('Left'), value: 'left' },
+	{ label: __('Right'), value: 'right' },
+	{ label: __('Both'), value: 'both' },
 ]
 
 const updateArrowDirection = (val) => {

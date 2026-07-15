@@ -10,15 +10,15 @@
             class="mx-auto w-full bg-surface-base px-4 py-8 sm:mt-6 sm:w-112 sm:rounded-2xl sm:px-6 sm:py-6 sm:shadow-2xl"
           >
             <div class="mb-7.5 text-center">
-              <p class="mb-2 text-4xl-semibold leading-6 text-ink-gray-9">Welcome to Drive</p>
+              <p class="mb-2 text-4xl-semibold leading-6 text-ink-gray-9">{{ __('Welcome to Drive') }}</p>
               <p class="break-words text-base leading-[21px] text-ink-gray-7">
-                We're glad you're here.
+                {{ __('We\'re glad you\'re here.') }}
               </p>
             </div>
 
             <div class="flex flex-col py-5 gap-3">
               <LoadingIndicator class="size-5 self-center" />
-              <div class="text-sm text-center">Just a minute...</div>
+              <div class="text-sm text-center">{{ __('Just a minute...') }}</div>
             </div>
           </div>
         </div>

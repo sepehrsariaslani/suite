@@ -1,5 +1,5 @@
 <template>
-	<CollapsibleSection title="Border">
+	<CollapsibleSection :title="__('Border')">
 		<template #default>
 			<div
 				class="flex h-8 w-full items-center justify-between rounded-[10px] border bg-gray-50 p-0.5"
@@ -21,7 +21,7 @@
 
 			<div v-if="activeElement.borderStyle != 'none'" class="flex flex-col gap-3">
 				<div class="flex items-center justify-between">
-					<div :class="fieldLabelClasses">Width</div>
+					<div :class="fieldLabelClasses">{{ __('Width') }}</div>
 					<div class="w-28">
 						<NumberInput
 							v-model="activeElement.borderWidth"
@@ -34,7 +34,7 @@
 				</div>
 
 				<div class="flex items-center justify-between">
-					<div :class="fieldLabelClasses">Radius</div>
+					<div :class="fieldLabelClasses">{{ __('Radius') }}</div>
 					<div class="w-28">
 						<NumberInput
 							v-model="activeElement.borderRadius"
@@ -46,7 +46,7 @@
 				</div>
 
 				<div class="flex items-center justify-between">
-					<div :class="fieldLabelClasses">Color</div>
+					<div :class="fieldLabelClasses">{{ __('Color') }}</div>
 					<ColorPicker
 						v-model="activeElement.borderColor"
 						@colordown="onBorderColorUpdateStart"

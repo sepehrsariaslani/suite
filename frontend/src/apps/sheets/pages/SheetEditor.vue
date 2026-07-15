@@ -10,7 +10,7 @@
         <path d="M53.8678 59.6958H43.3672V70.0914H53.8678V59.6958Z" fill="white" />
         <path d="M73.6617 50.6653H63.1611V70.1439H73.6617V50.6653Z" fill="white" />
       </svg>
-      <h2>Open on desktop</h2>
+      <h2>{{ __('Open on desktop') }}</h2>
       <p>
         Frappe Sheets is built for desktop browsers — mobile and tablet support
         is on the roadmap. Please come back from a laptop or PC.

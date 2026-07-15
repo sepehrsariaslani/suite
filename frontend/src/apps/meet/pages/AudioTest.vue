@@ -5,8 +5,8 @@
 		<div class="max-w-2xl mx-auto">
 			<div class="bg-white rounded-lg shadow-lg p-8">
 				<div class="text-center mb-8">
-					<h1 class="text-5xl-bold text-gray-900 mb-2">Audio Notification Test</h1>
-					<p class="text-gray-600">Test and tune the meeting notification sounds</p>
+					<h1 class="text-5xl-bold text-gray-900 mb-2">{{ __('Audio Notification Test') }}</h1>
+					<p class="text-gray-600">{{ __('Test and tune the meeting notification sounds') }}</p>
 				</div>
 
 				<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -17,8 +17,8 @@
 								<lucide-user-plus class="w-5 h-5 text-green-600" />
 							</div>
 							<div>
-								<h3 class="font-semibold text-green-900">User Joined</h3>
-								<p class="text-sm text-green-700">Someone joins the meeting</p>
+								<h3 class="font-semibold text-green-900">{{ __('User Joined') }}</h3>
+								<p class="text-sm text-green-700">{{ __('Someone joins the meeting') }}</p>
 							</div>
 						</div>
 						<Button

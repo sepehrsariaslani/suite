@@ -38,7 +38,7 @@
 				<!-- Settings -->
 				<ToolbarButton
 					v-if="cameraPermissionGranted || microphonePermissionGranted"
-					title="Settings"
+					:title="__('Settings')"
 					test-id="preview-toolbar-settings"
 					@click="showSettingsDialog = true"
 				>

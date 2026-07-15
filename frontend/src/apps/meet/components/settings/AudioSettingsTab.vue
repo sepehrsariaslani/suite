@@ -1,19 +1,19 @@
 <template>
 	<AppSettingsHeader
-		title="Audio"
+		:title="__('Audio')"
 		description="Configure your audio and microphone settings"
 	/>
 	<AppSettingsBody>
 		<div class="space-y-6">
 			<Switch
 				class="w-full !px-0"
-				label="Noise Cancellation"
+				:label="__('Noise Cancellation')"
 				description="Reduce background noise from your microphone"
 				v-model="noiseCancellationEnabledLocal"
 			/>
 			<Switch
 				class="w-full !px-0"
-				label="Push to Talk"
+				:label="__('Push to Talk')"
 				description="Hold spacebar to unmute your microphone"
 				v-model="pushToTalkEnabledLocal"
 			/>

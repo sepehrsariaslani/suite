@@ -2,7 +2,7 @@
   <div>
     <div class="w-60 rounded-lg bg-surface-base p-1 text-base shadow-lg max-h-64 overflow-y-auto">
       <div v-if="!items.length && !loading" class="text-center text-ink-gray-6 text-sm py-2">
-        No documents found
+        {{ __('No documents found') }}
       </div>
       <button
         v-for="(item, index) in items"
@@ -20,7 +20,7 @@
         </div>
         <div class="text-xs text-ink-gray-6">Edited {{ item.relativeModified }}</div>
       </button>
-      <span v-if="loading" class="text-xs text-ink-gray-5 p-1">Loading...</span>
+      <span v-if="loading" class="text-xs text-ink-gray-5 p-1">{{ __('Loading...') }}</span>
     </div>
   </div>
 </template>

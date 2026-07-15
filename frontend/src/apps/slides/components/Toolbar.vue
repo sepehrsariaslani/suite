@@ -65,21 +65,21 @@ const emit = defineEmits(['openLayoutDialog', 'delete', 'duplicate', 'setHighlig
 
 const slideActions = [
 	{
-		label: 'Insert Slide',
+		label: __('Insert Slide'),
 		icon: Square,
 		onClick: () => {
 			emit('openLayoutDialog')
 		},
 	},
 	{
-		label: 'Duplicate Slide',
+		label: __('Duplicate Slide'),
 		icon: Copy,
 		onClick: (e) => {
 			emit('duplicate', e)
 		},
 	},
 	{
-		label: 'Delete Slide',
+		label: __('Delete Slide'),
 		icon: Trash,
 		onClick: () => {
 			emit('delete')

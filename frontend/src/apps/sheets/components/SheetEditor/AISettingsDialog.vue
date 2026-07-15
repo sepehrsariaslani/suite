@@ -1,5 +1,5 @@
 <template>
-  <Dialog v-model="show" :options="{ title: 'AI Assist', size: 'md' }">
+  <Dialog v-model="show" :options="{ title: __('AI Assist'), size: 'md' }">
     <template #body-content>
 
       <!-- Inline error banner (permission / network failures). Auto-clears. -->
@@ -23,8 +23,8 @@
         <!-- Enable toggle -->
         <div class="ai-row">
           <div class="ai-row-text">
-            <span class="ai-row-title">Enable AI Assist</span>
-            <span class="ai-row-sub">Show the “Ask” entry point for everyone on this site.</span>
+            <span class="ai-row-title">{{ __('Enable AI Assist') }}</span>
+            <span class="ai-row-sub">{{ __('Show the “Ask” entry point for everyone on this site.') }}</span>
           </div>
           <Switch v-model="enabled" />
         </div>
@@ -32,7 +32,7 @@
         <div class="ai-divider" />
 
         <!-- API key -->
-        <p class="ai-label">Anthropic API key</p>
+        <p class="ai-label">{{ __('Anthropic API key') }}</p>
         <FormControl
           type="password"
           :modelValue="apiKey"
@@ -40,18 +40,18 @@
           autocomplete="off"
           @update:modelValue="apiKey = $event"
         />
-        <p v-if="keyIsSet" class="ai-key-state">A key is currently configured.</p>
+        <p v-if="keyIsSet" class="ai-key-state">{{ __('A key is currently configured.') }}</p>
 
         <!-- Model -->
-        <p class="ai-label ai-label--gap">Model</p>
+        <p class="ai-label ai-label--gap">{{ __('Model') }}</p>
         <FormControl
           type="text"
           :modelValue="model"
-          placeholder="claude-opus-4-8"
+          :placeholder="__('claude-opus-4-8')"
           @update:modelValue="model = $event"
         />
         <p class="ai-key-state">
-          Tip: set this to <code>mock</code> for a keyless local demo — sums, averages,
+          Tip: set this to <code>{{ __('mock') }}</code> for a keyless local demo — sums, averages,
           counts, min/max/median, running totals, % of total, and text transforms
           (uppercase, trim, first/last name, email domain) over a selection. No API key, no spend.
         </p>

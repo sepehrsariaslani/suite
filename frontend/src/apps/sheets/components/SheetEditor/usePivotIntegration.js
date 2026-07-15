@@ -169,8 +169,8 @@ export function usePivotIntegration({
   })
 
   const pivotBannerMenuOptions = [
-    { label: 'Edit pivot',   icon: 'edit-2',                    onClick: onPivotEdit   },
-    { label: 'Delete pivot', icon: 'trash-2', theme: 'red',     onClick: onPivotDelete },
+    { label: __('Edit pivot'),   icon: 'edit-2',                    onClick: onPivotEdit   },
+    { label: __('Delete pivot'), icon: 'trash-2', theme: 'red',     onClick: onPivotDelete },
   ]
 
   function openPivotDialog() {

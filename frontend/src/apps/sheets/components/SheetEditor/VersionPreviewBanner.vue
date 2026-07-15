@@ -36,7 +36,7 @@
 			        @click="$emit('name')">{{ version?.version_name ? 'Rename' : 'Name version' }}</Button>
 			<Button size="sm" variant="solid"
 			        :loading="restoring"
-			        @click="$emit('restore')">Restore this version</Button>
+			        @click="$emit('restore')">{{ __('Restore this version') }}</Button>
 		</div>
 	</div>
 </template>

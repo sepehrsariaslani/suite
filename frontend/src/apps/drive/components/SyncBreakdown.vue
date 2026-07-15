@@ -1,6 +1,6 @@
 <template>
   <TeamSelector v-model="chosenTeam" :disabled="Boolean(props.team)" none="home" class="mb-5" />
-  <div v-if="!preview.data" class="text-sm text-center py-5">Loading...</div>
+  <div v-if="!preview.data" class="text-sm text-center py-5">{{ __('Loading...') }}</div>
   <div v-else-if="chosenTeam" class="text-base text-ink-gray-8">
     <template v-if="preview.data.length">
       <div class="pb-2">

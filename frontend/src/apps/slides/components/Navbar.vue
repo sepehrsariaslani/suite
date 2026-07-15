@@ -10,14 +10,14 @@
 			:to="{ name: 'slides-home' }"
 		>
 			<img :src="slidesLogo" class="h-7" />
-			<div class="text-base-semibold">Slides</div>
+			<div class="text-base-semibold">{{ __('Slides') }}</div>
 		</router-link>
 
 		<Dropdown v-else :options="getContextMenuOptions()" :offset="16">
 			<template #default="{ open }">
 				<div class="flex cursor-pointer items-center gap-2">
 					<img :src="slidesLogo" class="h-7" />
-					<div class="text-base-semibold">Slides</div>
+					<div class="text-base-semibold">{{ __('Slides') }}</div>
 					<LucideChevronUp v-if="open" class="w-4 stroke-[1.5]" />
 					<LucideChevronDown v-else class="w-4 stroke-[1.5]" />
 				</div>
@@ -67,7 +67,7 @@ const getContextMenuOptions = () => {
 			group: '',
 			options: [
 				{
-					label: 'Back to Home',
+					label: __('Back to Home'),
 					icon: h(ArrowLeft, { class: 'stroke-[1.5] !size-3.5' }),
 					onClick: () => {
 						router.replace({
@@ -78,24 +78,24 @@ const getContextMenuOptions = () => {
 			],
 		},
 		{
-			group: 'Presentation',
+			group: __('Presentation'),
 			options: [
 				{
-					label: 'New',
+					label: __('New'),
 					icon: h(Plus, { class: 'stroke-[1.5] !size-3.5' }),
 					onClick: () => {
 						emit('performDropdownAction', 'create')
 					},
 				},
 				{
-					label: 'Duplicate',
+					label: __('Duplicate'),
 					icon: h(Copy, { class: 'stroke-[1.5] !size-3.5' }),
 					onClick: () => {
 						emit('performDropdownAction', 'duplicate')
 					},
 				},
 				{
-					label: 'Delete',
+					label: __('Delete'),
 					icon: h(Trash, { class: 'stroke-[1.5] !size-3.5' }),
 					onClick: () => {
 						emit('performDropdownAction', 'delete')
@@ -107,14 +107,14 @@ const getContextMenuOptions = () => {
 			group: '',
 			options: [
 				{
-					label: 'Export',
+					label: __('Export'),
 					icon: h(Download, { class: 'stroke-[1.5] !size-3.5' }),
 					onClick: () => {
 						emit('performDropdownAction', 'export')
 					},
 				},
 				{
-					label: 'Template Theme',
+					label: __('Template Theme'),
 					icon: h(Palette, { class: 'stroke-[1.5] !size-3.5' }),
 					onClick: () => {
 						emit('performDropdownAction', 'updateTheme')

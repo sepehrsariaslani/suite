@@ -20,7 +20,7 @@ const groupedDocuments = computed(() => getDocuments.data && groupByTime(getDocu
 getDocuments.fetch()
 
 usePageMeta(() => ({
-  title: 'Writer',
+  title: __('Writer'),
 }))
 
 function groupByTime(entities) {

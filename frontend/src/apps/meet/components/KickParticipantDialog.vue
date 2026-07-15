@@ -1,7 +1,7 @@
 <template>
 	<Dialog
 		v-model="showDialog"
-		title="Remove Participant"
+		:title="__('Remove Participant')"
 		size="sm"
 	>
 		<template #default>
@@ -10,7 +10,7 @@
 					Are you sure you want to remove <strong>{{ participantName }}</strong> from the meeting?
 				</p>
 				<FormControl
-					label="Ban from this meeting?"
+					:label="__('Ban from this meeting?')"
 					type="checkbox"
 					v-model="banFromMeeting"
 				/>

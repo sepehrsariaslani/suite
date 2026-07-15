@@ -10,7 +10,7 @@
 			<div
 				class="col-start-2 flex items-center gap-1.5 pointer-events-auto transition-all duration-500 px-2 py-1"
 				role="toolbar"
-				aria-label="Meeting controls"
+				:aria-label="__('Meeting controls')"
 				@mouseenter="onMouseEnter"
 				@mouseleave="onMouseLeave"
 				data-testid="meeting-toolbar"
@@ -41,7 +41,7 @@
 				<ToolbarButton
 					v-if="canScreenShare()"
 					:variant="isScreenSharing ? 'muted' : 'default'"
-					title="Toggle Screen Share"
+					:title="__('Toggle Screen Share')"
 					test-id="toolbar-screen-share"
 					@click="$emit('toggle-screen-share')"
 				>
@@ -52,7 +52,7 @@
 				<!-- Raise Hand -->
 				<ToolbarButton
 					:variant="isHandRaised ? 'muted' : 'default'"
-					title="Raise Hand"
+					:title="__('Raise Hand')"
 					test-id="toolbar-raise-hand"
 					@click="$emit('toggle-raise-hand')"
 				>
@@ -67,7 +67,7 @@
 				>
 					<template #trigger>
 						<ToolbarButton
-							title="Reactions"
+							:title="__('Reactions')"
 							test-id="toolbar-reactions"
 							@click="() => {}"
 						>
@@ -244,7 +244,7 @@ const { isContextReady: isE2EEContextReady } = useE2EEState();
 const moreOptions = computed(() => [
 	{
 		icon: "lucide-settings",
-		label: "Settings",
+		label: __('Settings'),
 		onClick: () => {
 			showSettingsDialog.value = true;
 			resetHideTimer();
@@ -252,7 +252,7 @@ const moreOptions = computed(() => [
 	},
 	{
 		icon: "lucide-info",
-		label: "Meeting information",
+		label: __('Meeting information'),
 		onClick: () => {
 			showMeetingInfoDialog.value = true;
 			resetHideTimer();
@@ -268,7 +268,7 @@ const moreOptions = computed(() => [
 	},
 	{
 		icon: LucideBug,
-		label: "Report an issue",
+		label: __('Report an issue'),
 		onClick: () => {
 			emit("report-problem");
 			resetHideTimer(true);
@@ -278,14 +278,14 @@ const moreOptions = computed(() => [
 		? [
 				{
 					icon: "lucide-users",
-					label: "People",
+					label: __('People'),
 					onClick: () => {
 						emit("toggle-people");
 					},
 				},
 				{
 					icon: "lucide-message-square",
-					label: "Chat",
+					label: __('Chat'),
 					onClick: () => {
 						emit("toggle-chat");
 					},

@@ -39,34 +39,34 @@ const makeIcon = (children) => (_, { attrs }) =>
 
 const shapeOptions = [
 	{
-		label: 'Rectangle',
+		label: __('Rectangle'),
 		icon: makeIcon([h('rect', { x: '2', y: '5', width: '20', height: '14' })]),
 		onClick: () => addShape('rectangle'),
 	},
 	{
-		label: 'Oval',
+		label: __('Oval'),
 		icon: makeIcon([h('ellipse', { cx: '12', cy: '12', rx: '10', ry: '7' })]),
 		onClick: () => addShape('oval'),
 	},
 	{
-		label: 'Diamond',
+		label: __('Diamond'),
 		icon: makeIcon([h('polygon', { points: '12,2 22,12 12,22 2,12' })]),
 		onClick: () => addShape('diamond'),
 	},
 	{
-		label: 'Triangle',
+		label: __('Triangle'),
 		icon: makeIcon([h('polygon', { points: '12,2 22,21 2,21' })]),
 		onClick: () => addShape('triangle'),
 	},
 	{
-		label: 'Pentagon',
+		label: __('Pentagon'),
 		icon: makeIcon([
 			h('polygon', { points: '12,2 21.5,8.9 17.9,20.1 6.1,20.1 2.5,8.9' }),
 		]),
 		onClick: () => addShape('pentagon'),
 	},
 	{
-		label: 'Line',
+		label: __('Line'),
 		icon: makeIcon([h('line', { x1: '2', y1: '12', x2: '22', y2: '12' })]),
 		onClick: () => addShape('line'),
 	},

@@ -38,18 +38,17 @@ const dialogData = computed(() => {
       url: 'suite.drive.api.files.remove_or_restore',
       button: {
         variant: 'solid',
-        label: 'Restore',
+        label: __('Restore'),
         iconLeft: LucideRotateCcw,
       },
       toastMessage: `Restored ${itemString}.`,
     },
     remove: {
       title: `Move ${itemString} to Trash`,
-      message:
-        'will be moved to Trash.<br/><br/> Items in trash are deleted forever after 30 days.',
+      message: __('will be moved to Trash.<br/><br/> Items in trash are deleted forever after 30 days.'),
       url: 'suite.drive.api.files.remove_or_restore',
       button: {
-        label: 'Move to Trash',
+        label: __('Move to Trash'),
         theme: 'red',
         variant: 'subtle',
       },

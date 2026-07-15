@@ -1,5 +1,5 @@
 <template>
-	<CollapsibleSection title="Alignment">
+	<CollapsibleSection :title="__('Alignment')">
 		<template #default>
 			<div v-for="axis in axes" :key="axis" class="flex flex-col gap-1.5">
 				<div :class="fieldLabelClasses">{{ axis.label }}</div>
@@ -76,11 +76,11 @@ const verticalAlignmentOptions = [
 
 const axes = [
 	{
-		label: 'Horizontal',
+		label: __('Horizontal'),
 		options: horizontalAlignmentOptions,
 	},
 	{
-		label: 'Vertical',
+		label: __('Vertical'),
 		options: verticalAlignmentOptions,
 	},
 ]
