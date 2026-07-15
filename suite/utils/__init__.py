@@ -66,10 +66,10 @@ def execute_with_logging(
 	try:
 		return func(*args, **kwargs)
 	except Exception:
-		module = func.__module__ if hasattr(func, "__module__") else "unknown"
+		module = func.__module__.split(".")[0].title() if hasattr(func, "__module__") else "Unknown"
 
 		log_error(
-			module=module.title(),
+			module=module,
 			title=title,
 			message=frappe.get_traceback(with_context=with_context),
 		)
