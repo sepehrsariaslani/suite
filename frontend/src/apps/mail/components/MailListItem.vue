@@ -65,13 +65,14 @@
 					>
 						{{ header }}
 					</h3>
-					<Badge
+					<!-- All Inboxes: which account received this mail. -->
+					<div
 						v-if="accountLabel"
-						size="sm"
-						:label="accountLabel"
-						theme="gray"
-						class="shrink-0"
-					/>
+						class="text-ink-gray-4 flex shrink-0 items-center gap-1 text-xs"
+					>
+						<span aria-hidden="true">·</span>
+						<span>{{ __('in {0}', [accountLabel]) }}</span>
+					</div>
 					<Badge v-if="mail.draft" size="sm" :label="__('Draft')" theme="red" />
 				</div>
 				<MailDate v-if="!isFullWidth" :datetime="mail.received_at" :in-list="true" />
