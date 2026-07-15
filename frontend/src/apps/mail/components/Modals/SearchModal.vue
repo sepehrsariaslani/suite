@@ -8,7 +8,9 @@
 			<div class="bg-surface-base">
 				<div
 					class="flex items-center px-4 py-2"
-					:class="{ 'border-b': showAdvancedFilters || results?.data?.length }"
+					:class="{
+						'border-b': showAdvancedFilters || results?.data?.length || activeFilters.length,
+					}"
 				>
 					<Button v-if="isMobile" variant="ghost" @click="show = false">
 						<template #icon>
@@ -26,22 +28,30 @@
 						@click="showAdvancedFilters = false"
 						@keyup.enter="openSearchPage"
 					/>
-					<div class="group">
-						<span
-							v-if="advancedFiltersLength"
-							class="bg-surface-gray-10 text-ink-gray-1 border-outline-base absolute right-4 top-3 flex h-3 w-3 items-center justify-center rounded-full border text-[6px] font-bold group-hover:invisible"
+					<Button variant="ghost" @click="showAdvancedFilters = !showAdvancedFilters">
+						<template #icon>
+							<SlidersHorizontal class="text-ink-gray-5 h-4 w-4" />
+						</template>
+					</Button>
+				</div>
+				<div
+					v-if="!showAdvancedFilters && activeFilters.length"
+					class="flex flex-wrap gap-1.5 px-4 py-2"
+				>
+					<span
+						v-for="chip in activeFilters"
+						:key="chip.key"
+						class="bg-surface-gray-2 text-ink-gray-7 inline-flex items-center gap-1 rounded py-0.5 pl-2 pr-1 text-xs"
+					>
+						<span class="max-w-40 truncate">{{ chip.label }}</span>
+						<button
+							class="rounded p-0.5"
+							:aria-label="__('Remove filter')"
+							@click="removeFilter(chip.key)"
 						>
-							{{ advancedFiltersLength }}
-						</span>
-						<Button
-							variant="ghost"
-							@click="showAdvancedFilters = !showAdvancedFilters"
-						>
-							<template #icon>
-								<SlidersHorizontal class="text-ink-gray-5 h-4 w-4" />
-							</template>
-						</Button>
-					</div>
+							<X class="size-3" />
+						</button>
+					</span>
 				</div>
 				<template v-if="showAdvancedFilters">
 					<div class="space-y-4 p-4">
@@ -112,7 +122,11 @@
 						/>
 					</div>
 				</template>
-				<div v-else-if="results?.data?.[0]?.length" class="p-2">
+				<div
+					v-else-if="results?.data?.[0]?.length"
+					class="px-2 pb-2"
+					:class="{ 'pt-2': !activeFilters.length }"
+				>
 					<div
 						v-for="(result, idx) in results.data[0]"
 						:key="idx"
@@ -178,7 +192,7 @@
 import { computed, nextTick, reactive, ref, useTemplateRef, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { watchDebounced } from '@vueuse/core'
-import { ChevronLeft, Paperclip, Search, SlidersHorizontal } from 'lucide-vue-next'
+import { ChevronLeft, Paperclip, Search, SlidersHorizontal, X } from 'lucide-vue-next'
 import { Button, Dialog, FormControl, Switch, createResource } from 'frappe-ui'
 
 import { getAttachmentOptions, getReadStatusOptions } from '@/apps/mail/constants'
@@ -247,11 +261,6 @@ watch(allAccounts, (val) => {
 	if (filter.text) results.reload()
 })
 
-const advancedFiltersLength = computed(
-	() =>
-		Object.keys(filteredFilter.value).filter((k) => k !== 'text').length +
-		(allAccounts.value ? 1 : 0),
-)
 const showAdvancedFilters = ref(false)
 
 const mailboxOptions = computed(() =>
@@ -262,6 +271,40 @@ const mailboxOptions = computed(() =>
 		})),
 	),
 )
+
+// Active advanced filters as removable chips, shown under the search box (collapsed view) so a single
+// filter can be cleared without opening the whole panel.
+const FILTER_LABELS: Record<string, string> = {
+	inMailbox: __('In'),
+	subject: __('Subject'),
+	from: __('From'),
+	to: __('To'),
+	cc: __('Cc'),
+	bcc: __('Bcc'),
+	after: __('After'),
+	before: __('Before'),
+}
+
+const optionLabel = (options: { label: string; value: string }[], value: string) =>
+	options.find((o) => o.value === value)?.label ?? value
+
+const activeFilters = computed(() =>
+	Object.entries(filteredFilter.value)
+		.filter(([key]) => key !== 'text')
+		.map(([key, value]) => {
+			// hasAttachment/isRead values ("Without Attachments", "Unread") are self-descriptive, so show
+			// them on their own — the rest get a "Field: value" label.
+			if (key === 'hasAttachment') return { key, label: optionLabel(getAttachmentOptions(), value) }
+			if (key === 'isRead') return { key, label: optionLabel(getReadStatusOptions(), value) }
+			const display = key === 'inMailbox' ? optionLabel(mailboxOptions.value, value) : value
+			return { key, label: `${FILTER_LABELS[key]}: ${display}` }
+		}),
+)
+
+const removeFilter = (key: string) => {
+	filter[key] = ''
+	if (filter.text) results.reload()
+}
 
 const results = createResource({
 	url: 'suite.mail.api.mail.search_mails',
