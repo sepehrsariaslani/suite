@@ -123,12 +123,14 @@
 							<p class="truncate text-base-semibold">
 								{{ result.subject || __('[No subject]') }}
 							</p>
-							<p class="truncate text-sm">{{ getInterlocutors(result) }}</p>
-							<div
-								v-if="allAccounts && result.account_name"
-								class="bg-surface-gray-3 group-hover:bg-surface-gray-4 mr-1.5 inline-flex rounded p-1 text-xs font-medium"
-							>
-								{{ result.account_name }}
+							<div class="flex items-center gap-1 truncate text-sm">
+								<span class="truncate">{{ getInterlocutors(result) }}</span>
+								<template v-if="allAccounts && result.account_name">
+									<span aria-hidden="true" class="text-ink-gray-4">•</span>
+									<span class="text-ink-gray-4 shrink-0 text-xs">
+										{{ __('in {0}', [result.account_name]) }}
+									</span>
+								</template>
 							</div>
 							<div
 								v-for="m in result.mailboxes"
