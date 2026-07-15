@@ -6,7 +6,7 @@ from frappe import _
 from redis.exceptions import WatchError
 
 DEFAULT_ACQUIRE_TIMEOUT = 0
-DEFAULT_LOCK_TIMEOUT = 300
+DEFAULT_LOCK_TIMEOUT = 120
 
 
 def acquire_lock(
@@ -18,7 +18,7 @@ def acquire_lock(
 
 	:param lockname: Unique lock name
 	:param acquire_timeout: How long to wait for lock (0 = no wait), default: 0
-	:param lock_timeout: TTL for lock in seconds, default: 300
+	:param lock_timeout: TTL for lock in seconds, default: 120
 	"""
 
 	if lock_timeout <= 0:

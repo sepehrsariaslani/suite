@@ -254,8 +254,8 @@ def sync_jmap_accounts(user: str, accounts: dict[str, dict]) -> None:
 	"""
 
 	lockname = f"sync_jmap_accounts:{user}"
-	lock_id = acquire_lock(lockname)
-	if not lock_id:
+	identifier = acquire_lock(lockname, acquire_timeout=0)
+	if not identifier:
 		return
 
 	try:
@@ -269,7 +269,7 @@ def sync_jmap_accounts(user: str, accounts: dict[str, dict]) -> None:
 			create_archive_mailbox(account)
 			build_automation_sieve(account, activate=True)
 	finally:
-		release_lock(lockname, lock_id)
+		release_lock(lockname, identifier)
 
 
 def _ensure_jmap_account_docs(user: str, accounts: dict[str, dict]) -> list[str]:
