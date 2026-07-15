@@ -596,6 +596,7 @@ const handleGMenuNavigation = (e: KeyboardEvent, key: string) => {
 		s: mailboxIds.sent,
 		d: mailboxIds.drafts,
 		j: mailboxIds.junk,
+		a: mailboxIds.archive,
 		t: mailboxIds.trash,
 	}
 
