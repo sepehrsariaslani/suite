@@ -357,7 +357,7 @@ watch(allAccounts, (val) => {
 	localStorage.setItem(ALL_ACCOUNTS_STORAGE_KEY, String(val))
 	// "Look In" targets a folder in the current account; it can't carry across accounts, so drop it.
 	if (val) filter.inMailbox = ''
-	if (filter.text) results.reload()
+	if (hasQuery.value) results.reload()
 })
 
 // Exposed as a model so the results page can open the modal straight to the filter form (clicking a
