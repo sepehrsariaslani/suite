@@ -90,9 +90,6 @@ CONFIG_KEYS = [
 	"stalwart_cli_command_timeout",
 	"exchange_export_timeout",
 	"exchange_import_timeout",
-	"fetch_lock_timeout",
-	"lock_acquire_timeout",
-	"lock_timeout",
 ]
 
 

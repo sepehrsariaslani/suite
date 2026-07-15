@@ -43,9 +43,9 @@ from suite.mail.utils import (
 )
 from suite.mail.utils.dt import convert_to_utc, parse_iso_datetime, to_iso8601_z
 from suite.mail.utils.email_parser import EmailParser
-from suite.mail.utils.lock import acquire_lock, release_lock
 from suite.mail.utils.logger import get_push_logger
 from suite.mail.utils.user import get_account_emails, get_sync_state, update_sync_state
+from suite.utils.lock import acquire_lock, release_lock
 
 PREVIEW_MAX_LENGTH = 256
 
@@ -1454,8 +1454,7 @@ def enqueue_fetch_changes(
 	logger.debug("enqueueing-fetch-changes")
 
 	lockname = f"fetch_changes:{user}:{account}"
-	fetch_lock_timeout = cint(get_config("fetch_lock_timeout"))
-	identifier = acquire_lock(lockname, acquire_timeout=0, lock_timeout=fetch_lock_timeout)
+	identifier = acquire_lock(lockname, acquire_timeout=0)
 
 	if not identifier:
 		logger.debug("fetch-changes-lock-not-acquired")

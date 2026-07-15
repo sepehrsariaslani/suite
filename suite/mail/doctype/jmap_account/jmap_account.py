@@ -23,8 +23,8 @@ if TYPE_CHECKING:
 from suite.mail.doctype.sieve_script.sieve_script import build_automation_sieve, maybe_build_automation_sieve
 from suite.mail.doctype.user_account.user_account import get_user_jmap_accounts
 from suite.mail.utils import execute_with_logging
-from suite.mail.utils.lock import acquire_lock, release_lock
 from suite.mail.utils.user import get_account_emails, is_system_manager
+from suite.utils.lock import acquire_lock, release_lock
 
 
 class JMAPAccount(Document):
