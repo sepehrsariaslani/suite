@@ -971,6 +971,11 @@ const searchResults = createResource({
 		onResetSuccess()
 		if (mailbox === 'search') isMailboxLoaded.value = true
 	},
+	// On failure the count never arrives, so clear the pending state instead of leaving the title stuck
+	// on "Searching…" — the empty result list then reads as "0 results".
+	onError: () => {
+		searchTotal.value = 0
+	},
 })
 
 watch(
