@@ -15,7 +15,7 @@
 	</div>
 
 	<SendMail v-model="showSendModal" @reload-mails="emit('reloadMails')" />
-	<SearchModal v-model="showSearchModal" />
+	<SearchModal v-model="showSearchModal" v-model:show-advanced="showSearchAdvanced" />
 </template>
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted, ref } from 'vue'
@@ -29,6 +29,7 @@ const emit = defineEmits(['reloadMails'])
 
 // Exposed as a model so other views (e.g. the search results header's query chip) can reopen the modal.
 const showSearchModal = defineModel<boolean>('showSearch', { default: false })
+const showSearchAdvanced = defineModel<boolean>('showAdvanced', { default: false })
 const showSendModal = ref(false)
 
 const modifier = computed(() => (isMac ? '⌘' : 'Ctrl'))

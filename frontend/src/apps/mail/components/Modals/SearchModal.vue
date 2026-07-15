@@ -41,7 +41,7 @@
 					<span
 						v-for="chip in activeFilters"
 						:key="chip.key"
-						class="bg-surface-gray-2 inline-flex items-center gap-1 rounded py-1 pl-2 pr-1 text-xs"
+						class="bg-surface-gray-2 inline-flex h-7 items-center gap-1 rounded pl-2 pr-1 text-xs"
 					>
 						<span class="max-w-40 truncate">{{ chip.label }}</span>
 						<button
@@ -265,7 +265,9 @@ watch(allAccounts, (val) => {
 	if (filter.text) results.reload()
 })
 
-const showAdvancedFilters = ref(false)
+// Exposed as a model so the results page can open the modal straight to the filter form (clicking a
+// filter pill or "Add filter").
+const showAdvancedFilters = defineModel<boolean>('showAdvanced', { default: false })
 
 const mailboxOptions = computed(() =>
 	[{ label: __('All folders'), value: '' }].concat(

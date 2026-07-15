@@ -14,6 +14,7 @@
 		</div>
 		<HeaderActions
 			v-model:show-search="showSearchModal"
+			v-model:show-advanced="showSearchAdvanced"
 			@reload-mails="resetThreads(true, ['drafts', 'sent'])"
 		/>
 	</header>
@@ -59,27 +60,43 @@
 					v-if="mailbox === 'search'"
 					class="flex flex-col gap-2.5 border-b border-l-transparent px-3.5 py-3 sm:border-l sm:px-5"
 				>
-					<button
-						class="text-ink-gray-8 hover:border-outline-gray-3 flex h-7 w-full items-center gap-2.5 rounded border pl-3 pr-2.5 text-left transition-colors"
+					<FormControl
+						type="text"
+						size="sm"
+						class="w-full cursor-pointer [&_input]:cursor-pointer"
 						:class="{ 'max-w-2xl': isMobile || !showReadingPane }"
+						:model-value="searchQuery"
+						:placeholder="__('Search')"
 						:aria-label="__('Edit search')"
-						@click="showSearchModal = true"
+						readonly
+						variant="outline"
+						@mousedown.prevent="openSearch()"
 					>
-						<Search class="text-ink-gray-5 size-4 shrink-0" />
-						<span class="min-w-0 flex-1 truncate text-sm">{{ searchQuery || __('Search') }}</span>
-						<SlidersHorizontal class="text-ink-gray-5 size-4 shrink-0" />
-					</button>
+						<template #prefix>
+							<Search class="text-ink-gray-5 size-4" />
+						</template>
+						<template #suffix>
+							<button
+								class="text-ink-gray-5 hover:text-ink-gray-8 flex"
+								:aria-label="__('Filters')"
+								@mousedown.stop.prevent="openSearch(true)"
+							>
+								<SlidersHorizontal class="size-4" />
+							</button>
+						</template>
+					</FormControl>
 					<div v-if="searchFilterChips.length" class="flex flex-wrap items-center gap-1.5">
 						<span
 							v-for="chip in searchFilterChips"
 							:key="chip.key"
-							class="bg-surface-gray-2 inline-flex items-center gap-1 rounded py-1 pl-2 pr-1 text-xs"
+							@click="openSearch(true)"
+							class="bg-surface-gray-2 inline-flex h-7 cursor-pointer items-center gap-1 rounded pl-2 pr-1 text-xs"
 						>
 							<span class="max-w-40 truncate">{{ chip.label }}</span>
 							<button
-								class="rounded p-0.5"
+								class="text-ink-gray-5 hover:text-ink-gray-8 rounded p-0.5"
 								:aria-label="__('Remove filter')"
-								@click="removeSearchFilter(chip.key)"
+								@click.stop="removeSearchFilter(chip.key)"
 							>
 								<X class="size-3" />
 							</button>
@@ -87,15 +104,15 @@
 
 						<Button
 							variant="outline"
-							class="text-xs !h-6"
-							@click="showSearchModal = true"
+							class="text-xs"
+							@click="openSearch(true)"
 						>
 							<span class="flex items-center gap-1">
 								<Plus class="size-3" />
 								{{ __('Add filter') }}
 							</span>
 						</Button>
-						<Button variant="ghost" class="text-xs !h-6" :label="__('Clear all')" @click="clearSearch" />
+						<Button variant="ghost" class="text-xs" :label="__('Clear all')" @click="clearSearch" />
 					</div>
 				</div>
 
@@ -414,6 +431,7 @@ import {
 	Checkbox,
 	Dialog,
 	Dropdown,
+	FormControl,
 	Tooltip,
 	call,
 	createResource,
@@ -1547,6 +1565,13 @@ const title = computed(() => {
 // (showSearchModal, bound to HeaderActions); the advanced filters show as removable pills below, and
 // searchTotal drives the result count. Labels mirror the search dialog.
 const showSearchModal = ref(false)
+const showSearchAdvanced = ref(false)
+// Open the search modal — to the filter form when `advanced` (clicking a pill / "Add filter"), or to the
+// plain search input otherwise (clicking the query).
+const openSearch = (advanced = false) => {
+	showSearchAdvanced.value = advanced
+	showSearchModal.value = true
+}
 const searchTotal = ref(0)
 
 const SEARCH_FILTER_LABELS: Record<string, string> = {
