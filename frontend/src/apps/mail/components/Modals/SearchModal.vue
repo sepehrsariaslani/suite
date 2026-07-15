@@ -9,7 +9,12 @@
 				<div
 					class="flex items-center px-4 py-2"
 					:class="{
-						'border-b': showAdvancedFilters || results?.data?.length || activeFilters.length,
+						'border-b':
+							showAdvancedFilters ||
+							results?.data?.length ||
+							activeFilters.length ||
+							folderMatches.length ||
+							contactMatches.length,
 					}"
 				>
 					<Button v-if="isMobile" variant="ghost" @click="show = false">
@@ -26,6 +31,7 @@
 						class="placeholder-ink-gray-4 w-full border-none bg-transparent text-base focus:ring-0"
 						placeholder="Search"
 						@click="showAdvancedFilters = false"
+						@input="showAdvancedFilters = false"
 						@keyup.enter="openSearchPage"
 					/>
 					<Button variant="ghost" @click="showAdvancedFilters = !showAdvancedFilters">
@@ -72,11 +78,25 @@
 							:options="mailboxOptions"
 						/>
 						<FormControl v-model="filter.subject" :label="__('Subject')" />
-						<FormControl v-model="filter.from" :label="__('From')" />
-						<FormControl v-model="filter.to" :label="__('To')" />
+						<ContactCombobox
+							v-model="filter.from"
+							:label="__('From')"
+						/>
+						<ContactCombobox
+							v-model="filter.to"
+							:label="__('To')"
+						/>
 						<div class="flex space-x-4">
-							<FormControl v-model="filter.cc" :label="__('Cc')" class="w-full" />
-							<FormControl v-model="filter.bcc" :label="__('Bcc')" class="w-full" />
+							<ContactCombobox
+								v-model="filter.cc"
+								:label="__('Cc')"
+								class="w-full"
+							/>
+							<ContactCombobox
+								v-model="filter.bcc"
+								:label="__('Bcc')"
+								class="w-full"
+							/>
 						</div>
 						<div class="flex space-x-4">
 							<FormControl
@@ -122,6 +142,42 @@
 						/>
 					</div>
 				</template>
+				<div
+					v-else-if="folderMatches.length || contactMatches.length"
+					class="px-2 pb-2"
+					:class="{ 'pt-2': !activeFilters.length }"
+				>
+					<button
+						v-for="mb in folderMatches"
+						:key="mb.id"
+						class="hover:bg-surface-gray-1 flex w-full items-center gap-2 rounded p-2 text-left"
+						@click="applyFolder(mb)"
+					>
+						<Icon
+							:name="getIcon(mb)"
+							class="size-4 shrink-0"
+							:class="FOLDER_ICON_COLOR_MAP[mb.color]"
+						/>
+						<span class="text-sm">{{ mb._name }}</span>
+					</button>
+					<button
+						v-for="c in contactMatches"
+						:key="c.email"
+						class="hover:bg-surface-gray-1 flex w-full items-center gap-2 rounded p-2 text-left"
+						@click="applyContact(c)"
+					>
+						<Avatar :image="c.image" :label="c.name || c.email" size="lg" />
+						<div class="min-w-0">
+							<div class="truncate text-sm">{{ c.name || c.email }}</div>
+							<div
+								v-if="c.name && c.name !== c.email"
+								class="text-ink-gray-5 truncate text-xs"
+							>
+								{{ c.email }}
+							</div>
+						</div>
+					</button>
+				</div>
 				<div
 					v-else-if="results?.data?.[0]?.length"
 					class="px-2 pb-2"
@@ -193,15 +249,17 @@ import { computed, nextTick, reactive, ref, useTemplateRef, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { watchDebounced } from '@vueuse/core'
 import { ChevronLeft, Paperclip, Search, SlidersHorizontal, X } from 'lucide-vue-next'
-import { Button, Dialog, FormControl, Switch, createResource } from 'frappe-ui'
+import { Avatar, Button, Dialog, FormControl, Switch, createResource } from 'frappe-ui'
+import { Icon } from 'frappe-ui/icons'
 
-import { getAttachmentOptions, getReadStatusOptions } from '@/apps/mail/constants'
-import { getFormattedDate } from '@/apps/mail/utils'
+import { FOLDER_ICON_COLOR_MAP, getAttachmentOptions, getReadStatusOptions } from '@/apps/mail/constants'
+import { getFormattedDate, getIcon } from '@/apps/mail/utils'
 import { useScreenSize } from '@/apps/mail/utils/composables'
 import { userStore } from '@/apps/mail/stores/user'
 import SearchMobileLayout from '@/apps/mail/components/SearchMobileLayout.vue'
+import ContactCombobox from '@/apps/mail/components/ContactCombobox.vue'
 
-import type { Recipient } from '@/apps/mail/types'
+import type { MailboxData, Recipient } from '@/apps/mail/types'
 
 const show = defineModel<boolean>()
 
@@ -277,6 +335,75 @@ const mailboxOptions = computed(() =>
 		})),
 	),
 )
+
+// Inline operator autocomplete: `in:` lists folders, `from:`/`to:`/`cc:`/`bcc:` list contacts. Picking
+// one applies the matching filter and drops the token from the query text.
+const CONTACT_OPS = ['from', 'to', 'cc', 'bcc']
+const OP_TOKEN = /(?:^|\s)(in|from|to|cc|bcc):(\S*)$/i
+const opTrigger = computed(() => {
+	const m = String(filter.text || '').match(OP_TOKEN)
+	return m ? { op: m[1].toLowerCase(), partial: m[2] } : null
+})
+const isContactOp = computed(() => !!opTrigger.value && CONTACT_OPS.includes(opTrigger.value.op))
+
+const folderMatches = computed<MailboxData[]>(() =>
+	opTrigger.value?.op === 'in'
+		? (mailboxes.data ?? []).filter((m: MailboxData) =>
+				m._name.toLowerCase().includes(opTrigger.value!.partial.toLowerCase()),
+			)
+		: [],
+)
+
+const contactSearch = createResource({
+	url: 'suite.mail.api.contacts.get_contacts',
+	auto: false,
+	makeParams: (text: string) => ({
+		account: store.accountId,
+		filter: { operator: 'OR', conditions: [{ text }, { email: text }] },
+	}),
+	transform: (data: { email: string; full_name?: string; user_image?: string }[]) =>
+		data.map((o) => {
+			const name = o.full_name || ''
+			// Shape serves both consumers: the inline operator dropdown (email/name/image) and the advanced
+			// comboboxes (value/label/display_name for frappe-ui's Combobox).
+			return { value: o.email, label: name || o.email, email: o.email, name, display_name: name, image: o.user_image }
+		}),
+})
+watchDebounced(
+	opTrigger,
+	(t) => {
+		if (t && CONTACT_OPS.includes(t.op)) contactSearch.fetch(t.partial)
+	},
+	{ debounce: 200 },
+)
+const contactMatches = computed(() => {
+	if (!isContactOp.value) return []
+	const partial = opTrigger.value!.partial
+	const matches = contactSearch.data ?? []
+	const hasExact = matches.some((c) => c.email.toLowerCase() === partial.toLowerCase())
+	// Offer the raw typed value as an option when it isn't already one of the matched contacts.
+	return partial && !hasExact
+		? [
+				...matches,
+				{ value: partial, label: partial, email: partial, name: '', display_name: '', image: undefined },
+			]
+		: matches
+})
+
+const applyFolder = (mailbox: MailboxData) => {
+	filter.inMailbox = mailbox.id
+	stripToken()
+}
+const applyContact = (contact: { email: string }) => {
+	if (opTrigger.value) (filter as Record<string, string>)[opTrigger.value.op] = contact.email
+	stripToken()
+}
+const stripToken = () => {
+	filter.text = String(filter.text || '')
+		.replace(OP_TOKEN, '')
+		.trim()
+	nextTick(() => searchInput.value?.focus())
+}
 
 // Active advanced filters as removable chips, shown under the search box (collapsed view) so a single
 // filter can be cleared without opening the whole panel.
