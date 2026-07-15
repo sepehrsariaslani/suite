@@ -459,8 +459,6 @@ const QUICK_FILTERS = computed<QuickFilter[]>(() =>
 		{ label: __('Folder'), key: 'inMailbox', op: 'in' },
 		{ label: __('From'), key: 'from', op: 'from' },
 		{ label: __('To'), key: 'to', op: 'to' },
-		{ label: __('Cc'), key: 'cc', op: 'cc' },
-		{ label: __('Bcc'), key: 'bcc', op: 'bcc' },
 		{ label: __('With attachments'), key: 'hasAttachment', apply: () => (filter.hasAttachment = 'true') },
 		{ label: __('Read'), key: 'isRead', apply: () => (filter.isRead = 'true') },
 		// `in:` (folder) is account-scoped, so it's dropped from a cross-account search.
