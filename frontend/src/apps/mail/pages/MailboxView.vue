@@ -947,6 +947,10 @@ const onResetSuccess = () => {
 // account, so each row opens in — and acts within — its own account (see the row-action wrappers).
 const isAllAccountsSearch = computed(() => mailbox === 'search' && route.query.all_accounts != null)
 
+// Null while a search is pending — the count is only known once the fetch resolves (set in the
+// searchResults transform below, reset in resetThreads). Guards the title against a stale or zero count.
+const searchTotal = ref<number | null>(null)
+
 // Reset resource for search: always the first window, over-fetching one row to drive `hasMore`.
 const searchResults = createResource({
 	url: 'suite.mail.api.mail.search_mails',
@@ -1118,6 +1122,8 @@ const resetThreads: (reloadMailboxes?: boolean, mailboxRoles?: MailboxRole[]) =>
 	refreshMode.value = false
 	epoch.value++
 	resetSelections()
+	// Clear the previous search's count so the header doesn't show a stale total while the new fetch runs.
+	if (mailbox === 'search') searchTotal.value = null
 	threadsResource.value.reload()
 	if (reloadMailboxes) mailboxes.reload()
 }
@@ -1535,10 +1541,13 @@ const title = computed(() => {
 			? __('1 item selected')
 			: __('{0} items selected', [String(selections.value.length)])
 
-	if (mailbox === 'search')
+	if (mailbox === 'search') {
+		// Null until the current search resolves — show a neutral label rather than a stale/zero count.
+		if (searchTotal.value === null) return __('Searching…')
 		return searchTotal.value === 1
 			? __('1 result')
 			: __('{0} results', [String(searchTotal.value)])
+	}
 
 	switch (filter.value) {
 		case 'unread':
@@ -1594,7 +1603,6 @@ const toggleSearchFilter = (key: string) => {
 	query[key] = query[key] === 'true' ? 'false' : 'true'
 	searchWith(query)
 }
-const searchTotal = ref(0)
 
 const SEARCH_FILTER_LABELS: Record<string, string> = {
 	inMailbox: __('In'),
