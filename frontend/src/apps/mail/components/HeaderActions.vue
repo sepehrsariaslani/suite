@@ -27,7 +27,8 @@ import SendMail from '@/apps/mail/components/SendMail.vue'
 
 const emit = defineEmits(['reloadMails'])
 
-const showSearchModal = ref(false)
+// Exposed as a model so other views (e.g. the search results header's query chip) can reopen the modal.
+const showSearchModal = defineModel<boolean>('showSearch', { default: false })
 const showSendModal = ref(false)
 
 const modifier = computed(() => (isMac ? '⌘' : 'Ctrl'))

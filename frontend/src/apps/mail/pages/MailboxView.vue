@@ -12,7 +12,10 @@
 				]"
 			/>
 		</div>
-		<HeaderActions @reload-mails="resetThreads(true, ['drafts', 'sent'])" />
+		<HeaderActions
+			v-model:show-search="showSearchModal"
+			@reload-mails="resetThreads(true, ['drafts', 'sent'])"
+		/>
 	</header>
 
 	<!-- Unscreened-thread nudge on the inbox, mirroring the trash/junk info bar: shown while Hey-style
@@ -51,6 +54,51 @@
 				class="sticky top-16 flex flex-col border-r"
 				:class="!isMobile && showReadingPane ? 'w-1/3' : 'w-full'"
 			>
+				<!-- Search header: the query (click to edit) + removable filter pills, above the results toolbar. -->
+				<div
+					v-if="mailbox === 'search'"
+					class="flex flex-col gap-2.5 border-b border-l-transparent px-3.5 py-3 sm:border-l sm:px-5"
+				>
+					<button
+						class="text-ink-gray-8 hover:border-outline-gray-3 flex h-7 w-full items-center gap-2.5 rounded border pl-3 pr-2.5 text-left transition-colors"
+						:class="{ 'max-w-2xl': isMobile || !showReadingPane }"
+						:aria-label="__('Edit search')"
+						@click="showSearchModal = true"
+					>
+						<Search class="text-ink-gray-5 size-4 shrink-0" />
+						<span class="min-w-0 flex-1 truncate text-sm">{{ searchQuery || __('Search') }}</span>
+						<SlidersHorizontal class="text-ink-gray-5 size-4 shrink-0" />
+					</button>
+					<div v-if="searchFilterChips.length" class="flex flex-wrap items-center gap-1.5">
+						<span
+							v-for="chip in searchFilterChips"
+							:key="chip.key"
+							class="bg-surface-gray-2 inline-flex items-center gap-1 rounded py-1 pl-2 pr-1 text-xs"
+						>
+							<span class="max-w-40 truncate">{{ chip.label }}</span>
+							<button
+								class="rounded p-0.5"
+								:aria-label="__('Remove filter')"
+								@click="removeSearchFilter(chip.key)"
+							>
+								<X class="size-3" />
+							</button>
+						</span>
+
+						<Button
+							variant="outline"
+							class="text-xs !h-6"
+							@click="showSearchModal = true"
+						>
+							<span class="flex items-center gap-1">
+								<Plus class="size-3" />
+								{{ __('Add filter') }}
+							</span>
+						</Button>
+						<Button variant="ghost" class="text-xs !h-6" :label="__('Clear all')" @click="clearSearch" />
+					</div>
+				</div>
+
 				<!-- Toolbar/Actions -->
 				<div
 					class="relative flex items-center border-b border-l-transparent px-3.5 py-2.5 sm:border-l sm:px-5"
@@ -351,10 +399,14 @@ import {
 	MailOpen,
 	Mails,
 	Paperclip,
+	Plus,
 	RefreshCw,
+	Search,
+	SlidersHorizontal,
 	Star,
 	StarOff,
 	Trash2,
+	X,
 } from 'lucide-vue-next'
 import {
 	Breadcrumbs,
@@ -368,6 +420,7 @@ import {
 	usePageMeta,
 } from 'frappe-ui'
 
+import { getAttachmentOptions, getReadStatusOptions } from '@/apps/mail/constants'
 import {
 	getFormattedDate,
 	isMac,
@@ -898,6 +951,7 @@ const searchResults = createResource({
 	transform: (data: [Thread[], number]) => {
 		if (refreshMode.value) refreshSnapshot = threadsResource.value.data ?? []
 		hasMore.value = data[0].length > PAGE_LENGTH
+		searchTotal.value = data[1] ?? 0
 		return data[0].slice(0, PAGE_LENGTH)
 	},
 	onSuccess: () => {
@@ -1472,6 +1526,11 @@ const title = computed(() => {
 			? __('1 item selected')
 			: __('{0} items selected', [String(selections.value.length)])
 
+	if (mailbox === 'search')
+		return searchTotal.value === 1
+			? __('1 result')
+			: __('{0} results', [String(searchTotal.value)])
+
 	switch (filter.value) {
 		case 'unread':
 			return __('Unread Mails')
@@ -1483,6 +1542,63 @@ const title = computed(() => {
 			return __('All Mails')
 	}
 })
+
+// Search-results header. The free-text term is shown as a chip you click to reopen the search modal
+// (showSearchModal, bound to HeaderActions); the advanced filters show as removable pills below, and
+// searchTotal drives the result count. Labels mirror the search dialog.
+const showSearchModal = ref(false)
+const searchTotal = ref(0)
+
+const SEARCH_FILTER_LABELS: Record<string, string> = {
+	inMailbox: __('In'),
+	subject: __('Subject'),
+	from: __('From'),
+	to: __('To'),
+	cc: __('Cc'),
+	bcc: __('Bcc'),
+	after: __('After'),
+	before: __('Before'),
+}
+const optionLabel = (options: { label: string; value: string }[], value: string) =>
+	options.find((o) => o.value === value)?.label ?? value
+
+const searchQuery = computed(() => (route.query.text as string) || '')
+
+const searchFilterChips = computed(() => {
+	const query = route.query
+	const chips: { key: string; label: string }[] = []
+	for (const key of Object.keys(SEARCH_FILTER_LABELS)) {
+		const value = query[key]
+		if (!value) continue
+		const display =
+			key === 'inMailbox'
+				? (mailboxes.data?.find((m: MailboxData) => m.id === value)?._name ?? String(value))
+				: String(value)
+		chips.push({ key, label: `${SEARCH_FILTER_LABELS[key]}: ${display}` })
+	}
+	// Attachment/read values ("Without Attachments", "Unread") are self-descriptive — show them on their own.
+	if (query.hasAttachment)
+		chips.push({ key: 'hasAttachment', label: optionLabel(getAttachmentOptions(), String(query.hasAttachment)) })
+	if (query.isRead)
+		chips.push({ key: 'isRead', label: optionLabel(getReadStatusOptions(), String(query.isRead)) })
+	return chips
+})
+
+// Re-run the search with one filter (or all filters) dropped. When nothing is left to search, leave the
+// search view for the Inbox.
+const searchWith = (query: Record<string, string>) => {
+	if (!Object.keys(query).length) return exitSearch()
+	router.push({ name: 'mail-mailbox', params: { accountId, mailbox: 'search' }, query })
+}
+const removeSearchFilter = (key: string) => {
+	const query = { ...route.query } as Record<string, string>
+	delete query[key]
+	searchWith(query)
+}
+const clearSearch = () => searchWith(searchQuery.value ? { text: searchQuery.value } : {})
+
+const exitSearch = () =>
+	router.push({ name: 'mail-mailbox', params: { accountId, mailbox: mailboxIds.inbox } })
 </script>
 
 <style scoped>

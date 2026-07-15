@@ -41,7 +41,7 @@
 					<span
 						v-for="chip in activeFilters"
 						:key="chip.key"
-						class="bg-surface-gray-2 text-ink-gray-7 inline-flex items-center gap-1 rounded py-0.5 pl-2 pr-1 text-xs"
+						class="bg-surface-gray-2 inline-flex items-center gap-1 rounded py-1 pl-2 pr-1 text-xs"
 					>
 						<span class="max-w-40 truncate">{{ chip.label }}</span>
 						<button
@@ -215,7 +215,11 @@ const { isMobile } = useScreenSize()
 
 const searchInput = useTemplateRef('searchInput')
 watch(show, (val) => {
-	if (val) nextTick(() => searchInput.value?.focus())
+	if (!val) return
+	// Re-sync from the URL each time the modal opens so it reflects changes made on the results page
+	// (Clear all, removing a filter pill) rather than showing stale state.
+	Object.assign(filter, getDefaultFilter())
+	nextTick(() => searchInput.value?.focus())
 })
 
 const getDefaultFilter = (reset = false) =>
