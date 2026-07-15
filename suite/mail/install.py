@@ -34,6 +34,12 @@ def after_migrate() -> None:
 def add_rate_limits() -> None:
 	"""Add rate limits."""
 
+	if not frappe.db.exists("DocType", "Rate Limit"):
+		frappe.logger("suite.mail.install").warning(
+			"Skipping mail rate limit bootstrap because the Rate Limit DocType is unavailable."
+		)
+		return
+
 	rate_limits = [
 		# suite.mail.api.account
 		{"method_path": "suite.mail.api.account.signup", "limit": 5, "seconds": 60 * 60},
