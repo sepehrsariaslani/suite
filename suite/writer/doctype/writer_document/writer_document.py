@@ -5,7 +5,6 @@ import base64
 from datetime import datetime, timedelta
 
 import frappe
-import pycrdt
 from frappe.model.document import Document
 
 from suite.drive.api.notifications import create_notification, get_link
@@ -98,6 +97,8 @@ class WriterDocument(Document):
 		doc.save(ignore_permissions=True)
 
 	def save_comments(self, data, file):
+		import pycrdt
+
 		try:
 			frappe.db.set_value("Writer Document", self.name, "ycomments", data)
 

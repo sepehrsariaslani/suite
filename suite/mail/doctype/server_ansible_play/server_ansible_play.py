@@ -10,7 +10,6 @@ from frappe.model.document import Document
 from frappe.query_builder import Order
 from frappe.utils import cint, now, time_diff_in_seconds
 
-from suite.mail.ansible import Ansible
 from suite.mail.utils import get_config
 
 
@@ -65,6 +64,8 @@ class ServerAnsiblePlay(Document):
 			frappe.throw(_("Ansible play is already running."))
 
 		try:
+			from suite.mail.ansible import Ansible
+
 			self.validate_server()
 			ansible = Ansible.from_play(self.name)
 			ansible._create_task_records()

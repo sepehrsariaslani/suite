@@ -4,7 +4,6 @@ import tempfile
 from collections.abc import Iterable
 from typing import TYPE_CHECKING, Any
 
-import ansible_runner
 import frappe
 import yaml
 from frappe import _
@@ -128,6 +127,8 @@ class Ansible:
 
 	def run(self, quiet: bool = True) -> "ServerAnsiblePlay":
 		"""Run the playbook using ansible-runner and track its progress."""
+
+		import ansible_runner
 
 		server = frappe.get_doc("Mail Server", self.server)
 		cluster = frappe.get_doc("Mail Cluster", server.cluster)
