@@ -1,0 +1,690 @@
+import type {
+	AppData,
+	AudioLevelObserver,
+	Consumer,
+	DtlsParameters,
+	IceCandidate,
+	IceParameters,
+	PlainTransport,
+	Producer,
+	Router,
+	RouterRtpCodecCapability,
+	RtpCapabilities,
+	RtpCodecCapability,
+	RtpParameters,
+	WebRtcServer,
+	WebRtcTransport,
+	WorkerLogLevel,
+	WorkerSettings,
+} from 'mediasoup/types';
+import type {
+	ActiveSpeakerEvent,
+	AuthExpiredEvent,
+	ChatMessage,
+	ChatSendRequest,
+	ConsumerClosedEvent,
+	ConsumerUpdatePreferencesRequest,
+	CreateWebRtcTransportRequest,
+	ExistingRaisedHandsEvent,
+	HandRaisedEvent,
+	HostControlRequest,
+	HostControlUpdateEvent,
+	JoinRoomRequest,
+	LeaveRoomRequest,
+	MediaControlAction,
+	MediaControlRequest,
+	MediaControlUpdateEvent,
+	NetworkQualityUpdateEvent,
+	ParticipantInfo,
+	ParticipantJoinedEvent,
+	ParticipantLeftEvent,
+	PinnedChatMessage,
+	PreviewParticipantInfo,
+	ProducerCloseDetails,
+	ProducerClosedEvent,
+	ProducerCloseReason,
+	ProducerCloseSource,
+	ProducerCloseTrackSettings,
+	ProducerCreatedEvent,
+	RaiseHandRequest,
+	ReactionMessage,
+	ReactionSendRequest,
+	RecordingJoinRequest,
+	RecordingProofRequest,
+	ScreenShareRequest,
+	ScreenShareStartedEvent,
+	ScreenShareStoppedEvent,
+	SFUErrorEvent,
+	SFUScope,
+	UpdateTokenRequest,
+	UserData,
+} from '../../../types';
+
+// Re-export mediasoup types
+export type {
+	ActiveSpeakerEvent,
+	AppData,
+	AudioLevelObserver,
+	AuthExpiredEvent,
+	ChatMessage,
+	ChatSendRequest,
+	Consumer,
+	ConsumerClosedEvent,
+	ConsumerUpdatePreferencesRequest,
+	CreateWebRtcTransportRequest,
+	DtlsParameters,
+	ExistingRaisedHandsEvent,
+	HandRaisedEvent,
+	HostControlRequest,
+	HostControlUpdateEvent,
+	IceCandidate,
+	IceParameters,
+	JoinRoomRequest,
+	LeaveRoomRequest,
+	MediaControlAction,
+	MediaControlRequest,
+	MediaControlUpdateEvent,
+	NetworkQualityUpdateEvent,
+	ParticipantInfo,
+	ParticipantJoinedEvent,
+	ParticipantLeftEvent,
+	PinnedChatMessage,
+	PlainTransport,
+	PreviewParticipantInfo,
+	Producer,
+	ProducerCloseDetails,
+	ProducerClosedEvent,
+	ProducerCloseReason,
+	ProducerCloseSource,
+	ProducerCloseTrackSettings,
+	ProducerCreatedEvent,
+	RaiseHandRequest,
+	ReactionMessage,
+	ReactionSendRequest,
+	RecordingJoinRequest,
+	RecordingProofRequest,
+	Router,
+	RouterRtpCodecCapability,
+	RtpCapabilities,
+	RtpCodecCapability,
+	RtpParameters,
+	ScreenShareRequest,
+	ScreenShareStartedEvent,
+	ScreenShareStoppedEvent,
+	SFUErrorEvent,
+	SFUScope,
+	UpdateTokenRequest,
+	UserData,
+	WebRtcServer,
+	WebRtcTransport,
+	WorkerLogLevel,
+	WorkerSettings,
+};
+
+// Socket.IO types
+export interface ServerToClientEvents {
+	'recording:challenge': (
+		data: import('../server/RecordingGrantManager').RecordingProofChallenge,
+	) => void;
+	participant_joined: (data: ParticipantJoinedEvent) => void;
+	participant_left: (data: ParticipantLeftEvent) => void;
+	producer_created: (data: ProducerCreatedEvent) => void;
+	producer_closed: (data: ProducerClosedEvent) => void;
+	consumer_closed: (data: ConsumerClosedEvent) => void;
+	media_control_update: (data: MediaControlUpdateEvent) => void;
+	host_control_update: (data: HostControlUpdateEvent) => void;
+	screen_share_started: (data: ScreenShareStartedEvent) => void;
+	screen_share_stopped: (data: ScreenShareStoppedEvent) => void;
+	'chat:message': (data: ChatMessage) => void;
+	'chat:restriction_updated': (data: { enabled: boolean }) => void;
+	'chat:pin_updated': (data: { pinned: PinnedChatMessage | null }) => void;
+	existing_pinned_message: (data: { pinned: PinnedChatMessage | null }) => void;
+	'reaction:message': (data: ReactionMessage) => void;
+	'poll:new': (data: PollPayloadFE) => void;
+	'poll:update': (data: PollPayloadFE) => void;
+	existing_polls: (data: { polls: PollPayloadFE[] }) => void;
+	active_speaker: (data: ActiveSpeakerEvent) => void;
+	sfu_error: (data: SFUErrorEvent) => void;
+	'auth:expired': (data: AuthExpiredEvent) => void;
+	hand_raised: (data: HandRaisedEvent) => void;
+	existing_raised_hands: (data: ExistingRaisedHandsEvent) => void;
+	network_quality_update: (data: NetworkQualityUpdateEvent) => void;
+	'e2ee:epoch': (data: E2eeEpochEnvelope) => void;
+}
+
+export interface ClientToServerEvents {
+	'recording:proof': (
+		data: RecordingProofRequest,
+		callback: (response: SFUResponse) => void,
+	) => void;
+	'recording:join': (
+		data: RecordingJoinRequest,
+		callback: (response: SFUResponse) => void,
+	) => void;
+	client_telemetry: (data: ClientTelemetryEvent) => void;
+	'auth:update_token': (
+		data: UpdateTokenRequest,
+		callback: (response: SFUResponse) => void,
+	) => void;
+	join_room: (
+		data: JoinRoomRequest,
+		callback: (response: SFUResponse) => void,
+	) => void;
+	get_router_rtp_capabilities: (
+		data: Record<string, never>,
+		callback: (response: RouterRtpCapabilitiesResponse) => void,
+	) => void;
+	create_webrtc_transport: (
+		data: CreateWebRtcTransportRequest,
+		callback: (response: WebRTCTransportResponse) => void,
+	) => void;
+	connect_webrtc_transport: (
+		data: { transportId: string; dtlsParameters: DtlsParameters },
+		callback: (response: SFUResponse) => void,
+	) => void;
+	restart_webrtc_transport_ice: (
+		data: { transportId: string },
+		callback: (response: TransportIceRestartResponse) => void,
+	) => void;
+	create_producer: (
+		data: {
+			transportId: string;
+			rtpParameters: RtpParameters;
+			kind: 'audio' | 'video';
+			appData?: AppData;
+		},
+		callback: (response: ProducerResponse) => void,
+	) => void;
+	create_consumer: (
+		data: {
+			transportId: string;
+			producerId: string;
+			rtpCapabilities: RtpCapabilities;
+		},
+		callback: (response: ConsumerResponse) => void,
+	) => void;
+	close_producer: (
+		data: {
+			producerId: string;
+			reason?: ProducerCloseReason;
+			source?: ProducerCloseSource;
+			details?: ProducerCloseDetails;
+		},
+		callback: (response: CloseProducerResponse) => void,
+	) => void;
+	pause_producer: (
+		data: { producerId: string },
+		callback: (response: SFUResponse & { paused?: boolean }) => void,
+	) => void;
+	resume_producer: (
+		data: { producerId: string },
+		callback: (response: SFUResponse & { resumed?: boolean }) => void,
+	) => void;
+	close_consumer: (
+		data: { consumerId: string },
+		callback: (response: SFUResponse) => void,
+	) => void;
+	get_existing_producers: (
+		data: Record<string, never>,
+		callback: (response: ExistingProducersResponse) => void,
+	) => void;
+	get_room_participants: (
+		data: Record<string, never>,
+		callback: (response: RoomParticipantsResponse) => void,
+	) => void;
+	media_control: (data: MediaControlRequest) => void;
+	host_control: (data: HostControlRequest) => void;
+	screen_share: (data: ScreenShareRequest) => void;
+	'chat:send': (
+		data: ChatSendRequest,
+		callback?: (
+			response: SFUResponse & { timestamp?: string; messageId?: string },
+		) => void,
+	) => void;
+	'chat:toggle_restriction': (data: { enabled: boolean }) => void;
+	'chat:pin': (
+		data: {
+			messageId: string;
+			action: 'pin' | 'unpin';
+			encryptedMessage?: string;
+		},
+		callback?: (response: SFUResponse) => void,
+	) => void;
+	'poll:create': (
+		data: {
+			question: string;
+			createdByName?: string;
+			options: { id?: string; text: string }[];
+		},
+		callback: (response: SFUResponse & { poll?: PollPayloadFE }) => void,
+	) => void;
+	'poll:vote': (
+		data: { pollId: string; optionId: string },
+		callback: (response: SFUResponse) => void,
+	) => void;
+	'poll:sync_encrypted': (
+		data: {
+			pollId: string;
+			question: string;
+			options: { id: string; text: string }[];
+		},
+		callback: (response: SFUResponse) => void,
+	) => void;
+	get_existing_polls: (
+		data: Record<string, never>,
+		callback: (response: SFUResponse & { polls?: PollPayloadFE[] }) => void,
+	) => void;
+	'reaction:send': (data: ReactionSendRequest) => void;
+	'consumer:update_preferences': (
+		data: ConsumerUpdatePreferencesRequest,
+		callback: (response: ConsumerPreferenceResponse) => void,
+	) => void;
+	raise_hand: (
+		data: RaiseHandRequest,
+		callback: (response: SFUResponse) => void,
+	) => void;
+	leave_room: (data?: LeaveRoomRequest) => void;
+	'e2ee:epoch': (data: E2eeEpochEnvelope) => void;
+}
+
+export type ClientTelemetryEvent =
+	| {
+			event: 'first_remote_media';
+			media: 'audio' | 'video';
+			durationMs: number;
+	  }
+	| { event: 'media_stall'; media: 'audio' | 'video' }
+	| {
+			event: 'recovery';
+			direction: 'send' | 'recv' | 'both';
+			trigger: 'signaling' | 'ice' | 'stall';
+			outcome: 'success' | 'failure';
+			durationMs: number;
+	  }
+	| {
+			event: 'recovery_exhausted';
+			subsystem: 'signaling' | 'transport' | 'consumer';
+			direction: 'send' | 'recv' | 'both';
+			reason: 'retry_limit' | 'restart_failed' | 'rebuild_failed';
+	  }
+	| {
+			event: 'network_quality';
+			rttMs: number;
+			packetLossPercent: number;
+			availableOutgoingBitrate: number;
+	  }
+	| {
+			event: 'media_repair';
+			media: 'audio' | 'video';
+			source: 'camera' | 'microphone' | 'screen' | 'remote';
+			stage: 'capture' | 'publication' | 'subscription' | 'rtp' | 'decode';
+			action:
+				| 'reacquire'
+				| 'recreate_producer'
+				| 'subscribe'
+				| 'recreate_consumer'
+				| 'request_keyframe';
+			attempt: number;
+			outcome: 'success' | 'failure' | 'exhausted' | 'cancelled';
+			durationMs: number;
+	  };
+
+export interface SocketData {
+	userId: string;
+	peerId?: string;
+	userName: string;
+	meetingId: string;
+	isHost: boolean;
+	isGuest?: boolean;
+	roomId?: string;
+	participantId?: string;
+	scope?: SFUScope;
+}
+
+export interface SFUResponse {
+	success: boolean;
+	error?: string;
+}
+
+export interface RouterRtpCapabilitiesResponse extends SFUResponse {
+	rtpCapabilities: RtpCapabilities;
+}
+
+export interface WebRTCTransportResponse extends SFUResponse {
+	id: string;
+	iceParameters: IceParameters;
+	iceCandidates: IceCandidate[];
+	dtlsParameters: DtlsParameters;
+}
+
+export interface TransportIceRestartResponse extends SFUResponse {
+	iceParameters: IceParameters;
+}
+
+export interface ProducerResponse extends SFUResponse, ProducerInfo {
+	isScreen: boolean;
+}
+
+export interface ConsumerResponse extends SFUResponse, ConsumerInfo {}
+
+export interface CloseProducerResponse
+	extends SFUResponse,
+		CloseProducerResult {}
+
+export interface ConsumerPreferenceResponse extends SFUResponse {
+	appliedLayers?: {
+		spatialLayer: number | null;
+		temporalLayer: number | null;
+	};
+	paused?: boolean;
+	visible?: boolean;
+}
+
+export interface ExistingProducersResponse extends SFUResponse {
+	producers: ExistingProducer[];
+}
+
+export interface RoomParticipantsResponse extends SFUResponse {
+	participants: ParticipantInfo[] | PreviewParticipantInfo[];
+}
+
+export interface ProducerInfo {
+	id: string;
+	kind: 'audio' | 'video';
+	appData: ProducerAppData;
+}
+
+export interface ProducerAppData extends AppData {
+	type?: 'screen';
+	e2eeStartPaused?: boolean;
+	senderId?: number;
+}
+
+export type JsonValue =
+	| string
+	| number
+	| boolean
+	| null
+	| JsonValue[]
+	| { [key: string]: JsonValue };
+
+export type JsonObject = { [key: string]: JsonValue };
+
+export interface ConsumerInfo {
+	id: string;
+	producerId: string;
+	kind: 'audio' | 'video';
+	rtpParameters: RtpParameters;
+	paused: boolean;
+}
+
+export interface CloseProducerResult {
+	isScreen: boolean;
+	removedConsumers: Array<{
+		consumerId: string;
+		peerId: string;
+		roomId: string;
+	}>;
+}
+
+export interface ExistingProducer {
+	id: string;
+	roomId: string;
+	user_id: string;
+	kind: 'audio' | 'video';
+	paused: boolean;
+	isScreen: boolean;
+}
+
+// Mediasoup Manager types
+export interface Room {
+	id: string;
+	router: Router;
+	webRtcServer: WebRtcServer;
+	audioLevelObserver: AudioLevelObserver;
+	peers: Map<string, Peer>;
+	created: Date;
+}
+
+export interface Peer {
+	id: string;
+	info: PeerInfo;
+	transports: Map<string, WebRtcTransport>;
+	producers: Map<string, Producer>;
+	consumers: Map<string, Consumer>;
+	joined: Date;
+}
+
+export interface PeerInfo extends UserData {
+	senderId?: number;
+	isHost?: boolean;
+}
+
+export interface WebRtcTransportData {
+	roomId: string;
+	peerId: string;
+	transport: WebRtcTransport;
+	direction: 'send' | 'recv';
+	type: 'webrtc';
+}
+
+export interface PlainTransportData {
+	roomId: string;
+	peerId: string;
+	transport: PlainTransport;
+	direction: 'send';
+	type: 'plain';
+}
+
+export type TransportData = WebRtcTransportData | PlainTransportData;
+
+export interface ProducerData {
+	roomId: string;
+	peerId: string;
+	producer: Producer;
+}
+
+export interface ConsumerData {
+	roomId: string;
+	peerId: string;
+	transportId: string;
+	consumer: Consumer;
+}
+
+export interface RoomStats {
+	id: string;
+	created: Date;
+	peerCount: number;
+	participantCount: number;
+	peers: string[];
+	producerCount?: number;
+	consumerCount?: number;
+}
+
+// Configuration types
+export interface MediasoupConfig {
+	numWorkers: number;
+	worker: WorkerSettings;
+	router: RouterConfig;
+	webRtcTransport: WebRTCTransportOptions;
+	webRtcServer: WebRTCServerOptions;
+}
+
+export interface RouterConfig {
+	mediaCodecs: RouterRtpCodecCapability[];
+}
+
+export interface WebRTCTransportOptions {
+	enableTcp: boolean;
+	initialAvailableOutgoingBitrate: number;
+}
+
+export interface WebRTCServerOptions {
+	listenIp: string;
+	announcedAddress: string;
+	basePort: number;
+}
+
+// JWT types
+export interface JWTPayload {
+	user_id: string;
+	user_name: string;
+	meeting_id: string;
+	site?: string;
+	user_avatar?: string;
+	is_host: boolean;
+	is_cohost?: boolean;
+	is_guest?: boolean;
+	scope?: SFUScope;
+	e2ee_required?: boolean;
+	session_id?: string;
+	exp?: number;
+	iat?: number;
+}
+
+export interface HealthStats {
+	status: 'healthy';
+	uptime: number;
+	rooms: number;
+	peers: number;
+}
+
+export interface PollOption {
+	id: string;
+	text: string;
+	votes: number;
+}
+
+export interface ActivePoll {
+	pollId: string;
+	createdBy: string;
+	createdByName?: string;
+	question: string;
+	options: PollOption[];
+	votedUsers: Set<string>;
+	isActive: boolean;
+	createdAt: string;
+}
+
+// for FE, sending the votedUser each payload not a good idea, if the votedUser are in huge qty
+export interface PollPayloadFE {
+	pollId: string;
+	createdBy: string;
+	createdByName?: string;
+	question: string;
+	options: PollOption[];
+	isActive: boolean;
+	hasVoted?: boolean;
+	createdAt: string;
+}
+export type E2eeEpochEnvelope =
+	| E2eeEpochKeyPackageRequest
+	| E2eeEpochGenesisRequest
+	| E2eeEpochKeyPackage
+	| E2eeEpochCommitRequest
+	| E2eeEpochCommit
+	| E2eeEpochWelcome
+	| E2eeEpochAck
+	| E2eeEpochResyncRequest
+	| E2eeEpochJoinStatus;
+
+export type E2eeEpochKeyPackageRequest = {
+	type: 'key-package-request';
+	epochNumber: number;
+	reason: 'enable' | 'join' | 'reconnect';
+};
+
+export type E2eeEpochGenesisRequest = {
+	type: 'genesis-request';
+	epochNumber: 1;
+	message: string;
+};
+
+export type E2eeEpochKeyPackage = {
+	type: 'key-package';
+	fromParticipantId: string;
+	fromSenderId: number;
+	epochNumber: number;
+	reason?: 'enable' | 'join' | 'reconnect';
+	keyPackage: string;
+};
+
+export type E2eeEpochCommitRequest = {
+	type: 'commit-request';
+	epochNumber: number;
+	nextEpochNumber: number;
+	membershipDeltaId: string;
+	membershipDeltaHash: string;
+	rosterHash: string;
+	committerSenderId: number;
+	joiningSenderIds: number[];
+	removedSenderIds?: number[];
+};
+
+export type E2eeEpochCommit = {
+	type: 'commit';
+	fromParticipantId: string;
+	fromSenderId: number;
+	previousEpochNumber: number;
+	epochNumber: number;
+	membershipDeltaId: string;
+	membershipDeltaHash: string;
+	rosterHash: string;
+	mlsCommit: string;
+};
+
+export type E2eeEpochWelcome = {
+	type: 'welcome';
+	fromParticipantId: string;
+	fromSenderId: number;
+	toParticipantId: string;
+	toSenderId: number;
+	epochNumber: number;
+	mlsWelcome: string;
+};
+
+export type E2eeEpochAck = {
+	type: 'ack';
+	fromParticipantId: string;
+	fromSenderId: number;
+	epochNumber: number;
+};
+
+export type E2eeEpochResyncRequest = {
+	type: 'resync-request';
+	fromParticipantId: string;
+	fromSenderId: number;
+	knownEpochNumber?: number;
+};
+
+export type E2eeEpochJoinStatus = {
+	type: 'join-status';
+	status: 'pending' | 'failed';
+	reason?: 'waiting-for-admitter' | 'waiting-for-host';
+	epochNumber: number;
+	message: string;
+};
+
+// Socket.IO module augmentation
+declare module 'socket.io' {
+	interface Socket {
+		userId: string;
+		peerId?: string;
+		userName: string;
+		meetingId: string;
+		site?: string;
+		isHost: boolean;
+		isCohost: boolean;
+		isGuest?: boolean;
+		roomId?: string;
+		participantId?: string;
+		senderId?: number;
+		currentToken?: string;
+		tokenExpiresAt?: number;
+		scope?: SFUScope;
+		e2eeRequired?: boolean;
+		e2eeReady?: boolean;
+		recordingProofComplete?: boolean;
+		recordingClaims?: import('../server/RecordingGrantManager').RecordingGrantClaims;
+	}
+}

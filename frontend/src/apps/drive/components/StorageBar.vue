@@ -1,0 +1,59 @@
+<template>
+  <div
+    v-if="!storageBar.loading"
+    class="flex flex-col hover:bg-surface-gray-2 rounded cursor-pointer mb-0.5"
+    @click="emitter.emit('showSettings', 'statistics')"
+  >
+    <SidebarItem :label="__('Storage')" :is-collapsed="!props.isExpanded">
+      <template #icon>
+        <LucideCloud class="w-4" />
+      </template>
+    </SidebarItem>
+    <div class="w-auto mx-2 bg-surface-gray-4 rounded-full h-1 my-2">
+      <div
+        class="h-1 rounded-full"
+        :class="
+          (100 * storageBar.data.total_size) / storageMax > 100
+            ? 'bg-surface-red-500'
+            : 'bg-surface-gray-10'
+        "
+        :style="{
+          width: calculatePercent,
+          maxWidth: '100%',
+        }"
+      />
+    </div>
+    <span v-if="isExpanded" class="text-xs text-ink-gray-5 line-clamp-1 ml-2">
+      {{ formattedString }}
+    </span>
+  </div>
+</template>
+
+<script setup>
+import { computed, inject, watch } from 'vue'
+import SidebarItem from './SidebarItem.vue'
+import { formatSize, base2BlockSize } from '@/apps/drive/utils/format'
+import { storageBar } from '@/apps/drive/resources/files'
+import LucideCloud from '~icons/lucide/cloud'
+
+const emitter = inject('emitter')
+
+const storageMax = computed(() => storageBar.data.limit || 5368709120)
+
+const props = defineProps(['isExpanded'])
+const formattedString = computed(() => {
+  return (
+    formatSize(storageBar.data.total_size || 0) + ' used out of ' + base2BlockSize(storageMax.value)
+  )
+})
+
+const calculatePercent = computed(() => {
+  const num = (100 * storageBar.data.total_size) / storageMax.value
+  return new Intl.NumberFormat('default', {
+    style: 'percent',
+    minimumFractionDigits: 1,
+    maximumFractionDigits: 1,
+  }).format(num / 100)
+})
+storageBar.fetch()
+</script>

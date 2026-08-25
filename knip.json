@@ -1,0 +1,42 @@
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "ignore": [
+    ".github/workflows/**/*.yml",
+    ".github/workflows/**/*.yaml",
+    "suite/**/doctype/**/*.js"
+  ],
+  "tags": [
+    "-lintignore"
+  ],
+  "workspaces": {
+    "frontend": {
+      "entry": ["src/main.ts", "vite.config.ts", "src/apps/slides/service-worker.js"],
+      "project": ["src/**/*.{ts,tsx,vue}", "!src/main.ts"],
+      "ignoreUnresolved": ["~icons/lucide/*", "unplugin-icons/types/vue"]
+    },
+    "e2e": {
+      "entry": [
+        "drive-backed-apps/global-setup.ts",
+        "drive-backed-apps/global-teardown.ts",
+        "meet/global-setup.ts"
+      ],
+      "project": [
+        "shared/**/*.ts",
+        "drive-backed-apps/**/*.ts",
+        "meet/**/*.ts"
+      ]
+    },
+    "suite/meet/sfu-server": {
+      "entry": ["src/server.ts", "src/**/*.test.ts"],
+      "project": ["src/**/*.ts", "!src/server.ts", "!src/**/*.test.ts"],
+      "vitest": false,
+      "ignoreBinaries": ["vitest"],
+      "ignoreIssues": {
+        "src/types/index.ts": ["types"]
+      }
+    },
+    "suite/sheets/collab-server": {
+      "project": ["test/**/*.js", "!index.js"]
+    }
+  }
+}
