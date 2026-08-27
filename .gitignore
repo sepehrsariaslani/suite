@@ -38,3 +38,4 @@ stalwart-cli
 *.swo
 .claude/
 .vscode
+.worktrees/
