@@ -43,4 +43,8 @@ describe('mail route matching', () => {
 	it('account-scoped routes still resolve', () => {
 		expect(makeRouter().resolve('/mail/account/ih/mailbox/a').name).toBe('mail-mailbox')
 	})
+
+	it('members dashboard resolves to the members view', () => {
+		expect(makeRouter().resolve('/mail/dashboard/members').name).toBe('mail-members')
+	})
 })

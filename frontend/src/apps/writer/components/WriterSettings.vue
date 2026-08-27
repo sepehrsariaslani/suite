@@ -164,6 +164,7 @@ import { computed, ref, reactive, watchEffect } from 'vue'
 import { Button, FormControl, Dialog, Tabs, FormLabel } from 'frappe-ui'
 import { FONT_FAMILIES, dynamicList } from '@/apps/writer/utils/'
 import { toCssLineHeight, toLineSpacing } from '@/apps/writer/utils/typography'
+import { indexedTabs } from '@/utils/tabDefinitions'
 import Form from '@/apps/writer/components/Form.vue'
 import FontSelect from './FontSelect.vue'
 import LucideFileText from '~icons/lucide/file-text'
@@ -177,10 +178,12 @@ const props = defineProps({
   globalSettings: { required: true, type: Object },
   editable: Boolean,
 })
-const tabs = dynamicList([
-  { label: __('Everywhere'), icon: LucideGlobe2 },
-  { label: __('This document'), icon: LucideFileText },
-])
+const tabs = indexedTabs(
+  dynamicList([
+    { label: __('Everywhere'), icon: LucideGlobe2 },
+    { label: __('This document'), icon: LucideFileText },
+  ]),
+)
 const tabIndex = ref(props.editable ? 1 : 0)
 
 const fontOptions = computed(() =>

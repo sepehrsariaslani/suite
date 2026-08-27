@@ -7,10 +7,7 @@
 	>
 		<Tabs
 			v-model="tabIndex"
-			:tabs="[
-				{ label: __('Users'), icon: Users },
-				{ label: __('Invites'), icon: Mails },
-			]"
+			:tabs="MEMBER_TABS"
 		>
 			<template #tab-panel>
 				<!-- Match DashboardLayout's body spacing so the tabbed page doesn't sit
@@ -34,11 +31,17 @@ import InvitesView from '@/apps/mail/pages/dashboard/InvitesView.vue'
 import UsersView from '@/apps/mail/pages/dashboard/UsersView.vue'
 import DashboardLayout from '@/apps/mail/components/DashboardLayout.vue'
 import AddMemberModal from '@/apps/mail/components/Modals/AddMemberModal.vue'
+import { indexedTabs } from '@/utils/tabDefinitions'
 
 usePageMeta(() => ({ title: __('Members') }))
 
 const route = useRoute()
 const router = useRouter()
+
+const MEMBER_TABS = indexedTabs([
+	{ label: __('Users'), icon: Users },
+	{ label: __('Invites'), icon: Mails },
+])
 
 // Derive the active tab from the route (correct from the first render, so frappe-ui's Tabs has a
 // valid model immediately and its reka-ui indicator doesn't observe an undefined element). The

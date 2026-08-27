@@ -158,6 +158,7 @@
 <script setup lang="ts">
 import { computed, reactive, ref, watch } from 'vue'
 import { IconPicker } from 'frappe-ui/experimental'
+import { indexedTabs } from '@/utils/tabDefinitions'
 import { Settings, Zap } from 'lucide-vue-next'
 import { Alert, Button, Dialog, FormControl, Switch, Tabs, createResource } from 'frappe-ui'
 
@@ -187,10 +188,10 @@ const automationScript = computed(() =>
 
 const tab = ref(0)
 
-const TABS = [
+const TABS = indexedTabs([
 	{ label: __('General'), icon: Settings },
 	{ label: __('Automation'), icon: Zap },
-]
+])
 
 const DEFAULT_FOLDER = {
 	id: '',

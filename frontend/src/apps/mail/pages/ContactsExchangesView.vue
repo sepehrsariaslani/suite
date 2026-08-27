@@ -70,6 +70,7 @@ import { ListEmptyState, ListHeader, ListRow, ListRowItem, ListRows, ListView } 
 
 import { getTheme } from '@/apps/mail/utils'
 import { formatSystemDateTime } from '@/apps/mail/utils/datetime'
+import { indexedTabs } from '@/utils/tabDefinitions'
 
 const user = inject('$user')
 const route = useRoute()
@@ -132,8 +133,8 @@ const LIST_OPTIONS = {
 	emptyState: { description: __('No contacts exchanges found.') },
 }
 
-const TABS = [
+const TABS = indexedTabs([
 	{ label: __('Import'), icon: UserPlus },
 	{ label: __('Export'), icon: Users },
-]
+])
 </script>

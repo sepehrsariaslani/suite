@@ -38,7 +38,7 @@
           v-model="tab"
           class="w-full"
           as="div"
-          :tabs="[{ label: __('Automatic') }, { label: __('Manual') }]"
+          :tabs="VERSION_TABS"
         />
         <Button
           :icon="LucideX"
@@ -130,11 +130,13 @@
   </div>
 </template>
 <script setup>
+import { indexedTabs } from '@/utils/tabDefinitions'
 import { COMMON_EXTENSIONS } from '@/apps/writer/utils'
 import { cssLineHeight } from '@/apps/writer/utils/typography'
 import { diff_match_patch } from 'diff-match-patch'
 import DiffTag from '@/apps/writer/extensions/diff-tag'
 const dmp = new diff_match_patch()
+const VERSION_TABS = indexedTabs([{ label: __('Automatic') }, { label: __('Manual') }])
 
 function generateHTMLDiff(newHTML, oldHTML = '') {
   const parser = new DOMParser()

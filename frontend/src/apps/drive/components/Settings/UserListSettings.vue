@@ -38,7 +38,7 @@
     </Alert>
     <Tabs v-model="tabIndex" :tabs>
       <template #tab-panel="{ tab }">
-        <template v-if="tab.label === 'Members'">
+        <template v-if="tab.value === 0">
           <div class="flex flex-col overflow-y-auto divide-y divide-outline-elevation-2">
             <div
               v-for="user in siteUsers?.data"
@@ -182,6 +182,7 @@ import LucideTrash from '~icons/lucide/trash'
 import LucideX from '~icons/lucide/x'
 import Alert from '@/apps/drive/components/Alert.vue'
 import UserTooltip from '@/apps/drive/components/UserTooltip.vue'
+import { indexedTabs } from '@/utils/tabDefinitions'
 
 const currentUserId = computed(() => useSessionStore().user)
 const tabIndex = ref(0)
@@ -201,21 +202,23 @@ const invited = ref([])
 const emailInput = ref('')
 const showInvite = ref(false)
 
-const tabs = computed(() => [
-  {
-    label: __('Members'),
-    icon: h(LucideUsers, { class: 'size-4' }),
-  },
-  // Invite management is admin-only.
-  ...(isAdmin.data?.is_admin
-    ? [
-        {
-          label: __('Invites'),
-          icon: h(LucideMail, { class: 'size-4' }),
-        },
-      ]
-    : []),
-])
+const tabs = computed(() =>
+  indexedTabs([
+    {
+      label: __('Members'),
+      icon: h(LucideUsers, { class: 'size-4' }),
+    },
+    // Invite management is admin-only.
+    ...(isAdmin.data?.is_admin
+      ? [
+          {
+            label: __('Invites'),
+            icon: h(LucideMail, { class: 'size-4' }),
+          },
+        ]
+      : []),
+  ]),
+)
 
 function emailTest() {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
