@@ -1,3 +1,4 @@
+import { translate as __ } from '@/boot/translation'
 import { toast } from "frappe-ui";
 import { E2EEMeeting } from "../utils/media/E2EEMeeting";
 import type { SFUClient } from "../utils/SFUClient";
@@ -322,7 +323,7 @@ export function usePoll(deps: {
 
 	const createPoll = async (question: string, options: { text: string }[]) => {
 		if (!sfuClient.isConnected()) {
-			toast.error("Not connected to meeting server");
+			toast.error(__("Not connected to meeting server"));
 			return;
 		}
 
@@ -346,7 +347,7 @@ export function usePoll(deps: {
 					if (!decrypted) return;
 					pollStore.addPoll(decrypted);
 				}
-				toast.success("Poll created!");
+				toast.success(__("Poll created!"));
 			} else {
 				toast.error(response?.error || "Failed to create poll");
 			}
@@ -358,7 +359,7 @@ export function usePoll(deps: {
 
 	const submitVote = async (pollId: string, optionId: string) => {
 		if (!sfuClient.isConnected()) {
-			toast.error("Not connected to meeting server");
+			toast.error(__("Not connected to meeting server"));
 			return;
 		}
 

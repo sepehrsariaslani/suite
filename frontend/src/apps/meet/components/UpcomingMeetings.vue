@@ -186,7 +186,7 @@ defineExpose({ reload })
 
 <template>
 	<div v-if="meetings.length" class="mt-10">
-		<h2 class="mb-3 text-base-medium text-ink-gray-8">Upcoming meetings</h2>
+		<h2 class="mb-3 text-base-medium text-ink-gray-8">{{ __('Upcoming meetings') }}</h2>
 		<div class="overflow-hidden rounded-7 border border-outline-gray-1 bg-surface-gray-1">
 			<button
 				v-for="(event, index) in meetings"

@@ -36,7 +36,7 @@
 				<!-- Settings -->
 				<ToolbarButton
 					v-if="cameraPermissionGranted || microphonePermissionGranted"
-					title="Settings"
+					:title="__('Settings')"
 					@click="showSettingsDialog = true"
 				>
 					<MeetSettingsIcon />

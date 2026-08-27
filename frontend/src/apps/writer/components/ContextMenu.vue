@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { translate as __ } from '@/boot/translation'
 import { Icon } from '@iconify/vue'
 import {
   ContextMenuCheckboxItem,
@@ -23,7 +24,7 @@ const checkboxTwo = ref(false)
 const person = ref('pedro')
 
 function handleClick() {
-  alert('hello!')
+  alert(__('hello!'))
 }
 </script>
 
@@ -33,7 +34,7 @@ function handleClick() {
       as-child
       class="block border-2 border-dashed border-outline-gray-2 rounded-6 text-ink-gray-7 text-sm select-none py-[45px] w-[300px] text-center"
     >
-      <span>Right click here.</span>
+      <span>{{ __('Right click here.') }}</span>
     </ContextMenuTrigger>
 
     <ContextMenuPortal>
@@ -46,7 +47,7 @@ function handleClick() {
           class="group text-base leading-none text-ink-gray-7 rounded-4 flex items-center h-7 px-2 relative pl-7 select-none outline-none cursor-pointer data-[disabled]:opacity-50 data-[disabled]:pointer-events-none data-[highlighted]:bg-surface-gray-3"
           @click="handleClick"
         >
-          New Tab
+          {{ __('New Tab') }}
           <div
             class="ml-auto pl-5 text-ink-gray-5 group-data-[highlighted]:text-ink-gray-7"
           >
@@ -58,7 +59,7 @@ function handleClick() {
         <ContextMenuItem
           class="group text-base leading-none text-ink-gray-7 rounded-4 flex items-center h-7 px-2 relative pl-7 select-none outline-none cursor-pointer data-[disabled]:opacity-50 data-[disabled]:pointer-events-none data-[highlighted]:bg-surface-gray-3"
         >
-          New Window
+          {{ __('New Window') }}
           <div
             class="ml-auto pl-5 text-ink-gray-5 group-data-[highlighted]:text-ink-gray-7"
           >
@@ -71,7 +72,7 @@ function handleClick() {
           class="group text-base leading-none text-ink-gray-7 rounded-4 flex items-center h-7 px-2 relative pl-7 select-none outline-none cursor-pointer data-[disabled]:opacity-50 data-[disabled]:pointer-events-none data-[highlighted]:bg-surface-gray-3"
           disabled
         >
-          New Private Window
+          {{ __('New Private Window') }}
           <div
             class="ml-auto pl-5 text-ink-gray-5 group-data-[highlighted]:text-ink-gray-7"
           >
@@ -84,7 +85,7 @@ function handleClick() {
           <ContextMenuSubTrigger
             class="group text-base leading-none text-ink-gray-7 rounded-4 flex items-center h-7 px-2 relative pl-7 select-none w-full outline-none cursor-pointer data-[state=open]:bg-surface-gray-2 data-[disabled]:opacity-50 data-[disabled]:pointer-events-none data-[highlighted]:bg-surface-gray-3 data-[highlighted]:data-[state=open]:bg-surface-gray-3"
           >
-            More Tools
+            {{ __('More Tools') }}
             <div
               class="ml-auto pl-5 text-ink-gray-5 group-data-[highlighted]:text-ink-gray-7"
             >
@@ -100,7 +101,7 @@ function handleClick() {
               <ContextMenuItem
                 class="group text-base leading-none text-ink-gray-7 rounded-4 flex items-center h-7 px-2 relative pl-7 select-none outline-none cursor-pointer data-[highlighted]:bg-surface-gray-3"
               >
-                Save Page As…
+                {{ __('Save Page As…') }}
                 <div
                   class="ml-auto pl-5 text-ink-gray-5 group-data-[highlighted]:text-ink-gray-7"
                 >
@@ -110,12 +111,12 @@ function handleClick() {
               <ContextMenuItem
                 class="text-base leading-none text-ink-gray-7 rounded-4 flex items-center h-7 px-2 relative pl-7 select-none outline-none cursor-pointer data-[highlighted]:bg-surface-gray-3"
               >
-                Create Shortcut…
+                {{ __('Create Shortcut…') }}
               </ContextMenuItem>
               <ContextMenuItem
                 class="text-base leading-none text-ink-gray-7 rounded-4 flex items-center h-7 px-2 relative pl-7 select-none outline-none cursor-pointer data-[highlighted]:bg-surface-gray-3"
               >
-                Name Window…
+                {{ __('Name Window…') }}
               </ContextMenuItem>
               <ContextMenuSeparator
                 class="h-[1px] bg-outline-gray-2 my-1.5 mx-1"
@@ -123,7 +124,7 @@ function handleClick() {
               <ContextMenuItem
                 class="text-base leading-none text-ink-gray-7 rounded-4 flex items-center h-7 px-2 relative pl-7 select-none outline-none cursor-pointer data-[highlighted]:bg-surface-gray-3"
               >
-                Developer Tools
+                {{ __('Developer Tools') }}
               </ContextMenuItem>
             </ContextMenuSubContent>
           </ContextMenuPortal>
@@ -141,7 +142,7 @@ function handleClick() {
           >
             <Icon icon="radix-icons:check" class="h-4 w-4" />
           </ContextMenuItemIndicator>
-          Show Bookmarks
+          {{ __('Show Bookmarks') }}
           <div
             class="ml-auto pl-5 text-ink-gray-5 group-data-[highlighted]:text-ink-gray-7"
           >
@@ -158,14 +159,14 @@ function handleClick() {
           >
             <Icon icon="radix-icons:check" class="h-4 w-4" />
           </ContextMenuItemIndicator>
-          Show Full URLs
+          {{ __('Show Full URLs') }}
         </ContextMenuCheckboxItem>
 
         <ContextMenuSeparator class="h-[1px] bg-outline-gray-2 my-1.5 mx-1" />
 
         <!-- Radio Group -->
         <ContextMenuLabel class="pl-7 text-xs leading-7 text-ink-gray-5">
-          People
+          {{ __('People') }}
         </ContextMenuLabel>
         <ContextMenuRadioGroup v-model="person">
           <ContextMenuRadioItem

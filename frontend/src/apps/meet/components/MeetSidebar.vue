@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { translate as __ } from '@/boot/translation'
 import {
 	Sidebar,
 	SidebarCollapseToggle,
@@ -79,33 +80,33 @@ const userName = computed(
 
 const settingsItems = computed(() => [
 	{
-		group: "Manage",
+		group: __('Manage'),
 		hideLabel: true,
 		options: [
 			appsMenuOption.value,
 			{
 				icon: LucideKeyboard,
-				label: "Shortcuts",
+				label: __('Shortcuts'),
 				onClick: () => {
 					showShortcutsDialog.value = true;
 				},
 			},
 			{
 				icon: LucideSunMoon,
-				label: "Theme",
+				label: __('Theme'),
 				submenu: [
 					{
-						label: "Light",
+						label: __('Light'),
 						icon: themeMode.value === "light" ? LucideCheck : LucideSun,
 						onClick: () => selectTheme("Light"),
 					},
 					{
-						label: "Dark",
+						label: __('Dark'),
 						icon: themeMode.value === "dark" ? LucideCheck : LucideMoon,
 						onClick: () => selectTheme("Dark"),
 					},
 					{
-						label: "Automatic",
+						label: __('Automatic'),
 						icon: themeMode.value === "automatic" ? LucideCheck : LucideMonitor,
 						onClick: () => selectTheme("Automatic"),
 					},
@@ -114,12 +115,12 @@ const settingsItems = computed(() => [
 		],
 	},
 	{
-		group: "Others",
+		group: __('Others'),
 		hideLabel: true,
 		options: [
 			{
 				icon: "lucide-log-out",
-				label: "Log out",
+				label: __('Log out'),
 				onClick: () => sessionStore.logout.submit(),
 			},
 		],
@@ -138,7 +139,7 @@ const showShortcutsDialog = inject(
 		class="hidden sm:flex"
 	>
 		<SidebarHeader
-			title="Meet"
+			:title="__('Meet')"
 			:subtitle="userName"
 			:menu-items="settingsItems"
 			:logo="FrappeMeetingLogo"
@@ -146,12 +147,12 @@ const showShortcutsDialog = inject(
 		<div class="flex-1 px-2">
 			<SidebarSection>
 				<SidebarItem
-					label="Home"
+					:label="__('Home')"
 					to="/meet"
 					:icon="LucideHome"
 					:active="route.name === 'meet-home'"
 				/>
-				<SidebarItem label="Calendar" to="/calendar" :icon="LucideCalendar" />
+				<SidebarItem :label="__('Calendar')" to="/calendar" :icon="LucideCalendar" />
 			</SidebarSection>
 		</div>
 		<div class="p-2">

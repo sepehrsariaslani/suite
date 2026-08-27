@@ -60,7 +60,7 @@
 				<span v-if="displayedParticipants.length > 0">
 					{{ displayedParticipants.length > 1 ? ' are' : ' is' }}
 				</span>
-				in the meeting
+				{{ __('in the meeting') }}
 			</div>
 		</div>
 		<div v-else-if="!loading && showText" class="flex h-10 items-center">
@@ -72,6 +72,7 @@
 </template>
 
 <script setup lang="ts">
+import { translate as __ } from '@/boot/translation'
 import { computed } from "vue";
 import MeetAvatar from "./MeetAvatar.vue";
 

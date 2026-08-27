@@ -21,8 +21,8 @@ provide("showShortcutsDialog", showShortcutsDialog);
 
 useKeyboardShortcut({
 	combo: "Shift+Slash",
-	description: "View shortcuts",
-	group: "General",
+	description: __('View shortcuts'),
+	group: __('General'),
 	allowInDialog: true,
 	handler: () => (showShortcutsDialog.value = true),
 });

@@ -5,8 +5,8 @@
     :show-sort="false"
     :empty="{
       icon: LucideClock,
-      title: 'No recent files',
-      description: 'Try opening something to see it here.',
+      title: __('No recent files'),
+      description: __('Try opening something to see it here.'),
     }"
   />
 </template>

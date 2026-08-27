@@ -10,7 +10,7 @@
 			<div
 				class="col-start-2 flex items-center gap-1.5 pointer-events-auto transition-all duration-500 px-2 py-1"
 				role="toolbar"
-				aria-label="Meeting controls"
+				:aria-label="__('Meeting controls')"
 				@mouseenter="onMouseEnter"
 				@mouseleave="onMouseLeave"
 			>
@@ -41,7 +41,7 @@
 					v-if="canScreenShare()"
 					:variant="isScreenSharing ? 'muted' : 'default'"
 					:show-tooltip="isVisible"
-					title="Toggle Screen Share"
+					:title="__('Toggle Screen Share')"
 					@click="$emit('toggle-screen-share')"
 				>
 					<MeetPresentPauseIcon v-if="isScreenSharing" />
@@ -52,7 +52,7 @@
 				<ToolbarButton
 					:variant="isHandRaised ? 'muted' : 'default'"
 					:show-tooltip="isVisible"
-					title="Raise Hand"
+					:title="__('Raise Hand')"
 					@click="$emit('toggle-raise-hand')"
 				>
 					<MeetHandIcon />
@@ -67,7 +67,7 @@
 					<template #trigger>
 						<ToolbarButton
 							:show-tooltip="isVisible"
-							title="Reactions"
+							:title="__('Reactions')"
 							@click="() => {}"
 						>
 							<MeetSmileIcon />
@@ -281,7 +281,7 @@ const moreOptions = computed(() => [
 	},
 	{
 		icon: LucideBug,
-		label: "Report an issue",
+		label: __('Report an issue'),
 		onClick: () => {
 			emit("report-problem");
 			resetHideTimer(true);
@@ -299,14 +299,14 @@ const moreOptions = computed(() => [
 		? [
 				{
 					icon: "lucide-users",
-					label: "People",
+					label: __('People'),
 					onClick: () => {
 						emit("toggle-people");
 					},
 				},
 				{
 					icon: "lucide-message-square",
-					label: "Chat",
+					label: __('Chat'),
 					onClick: () => {
 						emit("toggle-chat");
 					},
@@ -315,7 +315,7 @@ const moreOptions = computed(() => [
 		: []),
 	{
 		icon: "lucide-settings",
-		label: "Settings",
+		label: __('Settings'),
 		onClick: () => {
 			showSettingsDialog.value = true;
 			resetHideTimer();

@@ -1,7 +1,7 @@
 <template>
-  <Dialog v-model:open="open" title="New Link" size="xs" :actions="[
+  <Dialog v-model:open="open" :title="__('New Link')" size="xs" :actions="[
     {
-      label: 'Create',
+      label: __('Create'),
       variant: 'solid',
       disabled: !file_name.trim() || !link.trim() || createLink.loading,
       loading: createLink.loading,
@@ -9,8 +9,8 @@
     },
   ]" @close="dialogType = ''">
     <div class="flex flex-col gap-4">
-      <FormControl v-model="file_name" autofocus label="Link name" type="text" @keydown="createLink.error = null" />
-      <FormControl v-model="link" label="URL" type="url" @keydown.enter="createLink.submit"
+      <FormControl v-model="file_name" autofocus :label="__('Link name')" type="text" @keydown="createLink.error = null" />
+      <FormControl v-model="link" :label="__('URL')" type="url" @keydown.enter="createLink.submit"
         @keydown="createLink.error = null" />
     </div>
     <ErrorMessage v-if="createLink.error" class="pt-4" :message="createLink.error" />
@@ -18,6 +18,7 @@
 </template>
 
 <script setup>
+import { translate as __ } from '@/boot/translation'
 import { ref } from 'vue'
 import { Dialog, createResource, FormControl, ErrorMessage } from 'frappe-ui'
 

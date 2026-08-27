@@ -2,7 +2,7 @@
 	<div v-if="open" class="sn-vp-banner">
 		<div class="sn-vp-left">
 			<Button variant="ghost" size="sm" icon="lucide-arrow-left"
-			        :tooltip="'Exit version history'"
+			        :tooltip="__('Exit version history')"
 			        @click="$emit('exit')" />
 			<span class="sn-vp-text">
 				Previewing <b>{{ formatTimestamp(version?.timestamp) }}</b>
@@ -18,7 +18,7 @@
 		<div class="sn-vp-mid">
 			<Button v-if="diff && diff.total_changed_cells > 0"
 			        size="sm" variant="ghost" icon="lucide-chevron-up"
-			        :tooltip="'Previous change'"
+			        :tooltip="__('Previous change')"
 			        :disabled="!canStep"
 			        @click="$emit('step', -1)" />
 			<span v-if="diff && diff.total_changed_cells > 0 && stepIndex !== null"
@@ -27,21 +27,22 @@
 			</span>
 			<Button v-if="diff && diff.total_changed_cells > 0"
 			        size="sm" variant="ghost" icon="lucide-chevron-down"
-			        :tooltip="'Next change'"
+			        :tooltip="__('Next change')"
 			        :disabled="!canStep"
 			        @click="$emit('step', +1)" />
 		</div>
 		<div class="sn-vp-right">
 			<Button size="sm" variant="ghost" iconLeft="lucide-edit-2"
-			        @click="$emit('name')">{{ version?.version_name ? 'Rename' : 'Name version' }}</Button>
+				        @click="$emit('name')">{{ version?.version_name ? __('Rename') : __('Name version') }}</Button>
 			<Button size="sm" variant="solid"
 			        :loading="restoring"
-			        @click="$emit('restore')">Restore this version</Button>
+			        @click="$emit('restore')">{{ __('Restore this version') }}</Button>
 		</div>
 	</div>
 </template>
 
 <script setup>
+import { translate as __ } from '@/boot/translation'
 import { computed } from 'vue'
 import { Button } from 'frappe-ui'
 
@@ -59,7 +60,7 @@ const canStep = computed(() => !!(props.diff && props.diff.total_changed_cells >
 function formatTimestamp(ts) {
 	if (!ts) return ''
 	const d = new Date(String(ts).replace(' ', 'T'))
-	return d.toLocaleString(undefined, {
+	return d.toLocaleString(window.language || undefined, {
 		month: 'short', day: 'numeric',
 		hour: 'numeric', minute: '2-digit',
 	})

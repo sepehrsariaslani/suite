@@ -153,6 +153,7 @@
 </template>
 
 <script setup>
+import { translate as __ } from '@/boot/translation'
 import { h, computed, ref } from 'vue'
 import { useSessionStore } from '@/boot/session'
 import {
@@ -202,14 +203,14 @@ const showInvite = ref(false)
 
 const tabs = computed(() => [
   {
-    label: 'Members',
+    label: __('Members'),
     icon: h(LucideUsers, { class: 'size-4' }),
   },
   // Invite management is admin-only.
   ...(isAdmin.data?.is_admin
     ? [
         {
-          label: 'Invites',
+          label: __('Invites'),
           icon: h(LucideMail, { class: 'size-4' }),
         },
       ]

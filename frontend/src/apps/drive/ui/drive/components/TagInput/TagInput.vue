@@ -44,7 +44,7 @@ const filteredOptions = computed(() => {
     {
       type: 'custom',
       key: 'add-email',
-      label: 'Add email',
+      label: __('Add email'),
       // enabled once the typed text becomes a valid email
       disabled: !isEmail(query.value),
       condition: ({ query }: { query: string }) => {

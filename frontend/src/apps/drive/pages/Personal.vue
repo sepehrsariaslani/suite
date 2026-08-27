@@ -7,8 +7,8 @@
     }
     : {
       icon: LucideHome,
-      title: 'No files yet',
-      description: 'Upload to get started!',
+      title: __('No files yet'),
+      description: __('Upload to get started!'),
     }
     " :verify="!shareView && {
           data: {
@@ -20,6 +20,7 @@
 </template>
 
 <script setup>
+import { translate as __ } from '@/boot/translation'
 import GenericPage from '@/apps/drive/components/GenericPage.vue'
 import { getPersonal, getShared } from '@/apps/drive/resources/files'
 import { shareView } from '@/apps/drive/data/prefs'

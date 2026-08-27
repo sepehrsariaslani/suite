@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!preview.data" class="text-sm text-center py-5">Loading...</div>
+  <div v-if="!preview.data" class="text-sm text-center py-5">{{ __('Loading...') }}</div>
   <div v-else class="text-base text-ink-gray-8">
     <template v-if="preview.data.length">
       <div class="pb-2">
@@ -43,6 +43,7 @@
   </div>
 </template>
 <script setup>
+import { translate as __ } from '@/boot/translation'
 import { Button, Tree, createResource } from 'frappe-ui'
 import Alert from '@/apps/drive/components/Alert.vue'
 import { computed } from 'vue'
@@ -104,13 +105,13 @@ preview.submit()
 const syncFromDisk = createResource({
   url: 'suite.drive.api.scripts.sync_from_disk',
   beforeSubmit: () => {
-    toast('Starting syncing.', {
+    toast(__('Starting syncing.'), {
       icon: LucideFolderSync,
       description: "We'll give you an update when it's done.",
     })
   },
   onSuccess: (d) => {
-    toast.success('Successfully synced', {
+    toast.success(__('Successfully synced'), {
       icon: LucideCloudCheck,
       description: d.length
         ? `Added ${d.length} item${d.length > 1 ? 's' : ''}`
@@ -119,7 +120,7 @@ const syncFromDisk = createResource({
     emitter.emit('refresh')
   },
   onError: () => {
-    toast.error('There was an error.', {
+    toast.error(__('There was an error.'), {
       icon: LucideCloudAlert,
       description: 'Is there an issue with your configuration?',
     })

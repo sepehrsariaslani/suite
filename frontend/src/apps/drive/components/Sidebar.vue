@@ -1,6 +1,6 @@
 <template>
   <Sidebar id="sidebar" v-model:collapsed="sidebarCollapsed" class="hidden md:flex">
-    <SidebarHeader title="Drive" :subtitle="currentUserFullName" :menu-items="settingsItems" :logo="FrappeDriveLogo" />
+    <SidebarHeader :title="__('Drive')" :subtitle="currentUserFullName" :menu-items="settingsItems" :logo="FrappeDriveLogo" />
     <div class="flex-1 overflow-y-auto px-2">
       <SidebarSection v-for="(section, index) in sidebarItems" :key="section.label || index" :label="section.label" :collapsible="section.collapsible">
         <SidebarItem v-for="item in section.items" :key="item.label" :class="draggedSpace === item.label && 'ring-1 ring-outline-gray-3 !bg-surface-gray-3'" :label="item.label" :access-key="item.accessKey" :icon="item.icon" :suffix="item.suffix" :to="item.to" :active="item.isActive" :on-click="item.onClick" @dragover.prevent=";['Trash', 'Home'].includes(item.label) && (draggedSpace = item.label)" @dragleave="draggedSpace = null" @drop.prevent="handleDrop($event, item)" />
@@ -15,6 +15,7 @@
   <ShortcutsDialog v-if="showShortcuts" v-model="showShortcuts" />
 </template>
 <script setup>
+import { translate as __ } from '@/boot/translation'
 import FrappeDriveLogo from '@/apps/drive/components/FrappeDriveLogo.vue'
 
 import StorageBar from './StorageBar.vue'
@@ -165,21 +166,21 @@ const sidebarItems = computed(() => {
     {
       items: [
         {
-          label: 'Home',
+          label: __('Home'),
           to: { name: 'drive-Home' },
           icon: LucideHome,
           isActive: active('drive-Home'),
           accessKey: 'h',
         },
         {
-          label: 'Recents',
+          label: __('Recents'),
           to: { name: 'drive-Recents' },
           icon: LucideClock,
           isActive: active('drive-Recents'),
           accessKey: 'r',
         },
         {
-          label: 'Favourites',
+          label: __('Favourites'),
           to: { name: 'drive-Favourites' },
           icon: LucideStar,
           isActive: active('drive-Favourites'),
@@ -200,7 +201,7 @@ const sidebarItems = computed(() => {
           accessKey: 'e',
         },
         {
-          label: 'Trash',
+          label: __('Trash'),
           to: { name: 'drive-Trash' },
           icon: LucideTrash,
           isActive: active('drive-Trash'),
@@ -212,21 +213,21 @@ const sidebarItems = computed(() => {
       collapsible: true,
       items: dynamicList([
         {
-          label: 'Attachments',
+          label: __('Attachments'),
           to: { name: 'drive-Attachments' },
           icon: LucidePaperclip,
           isActive: active('drive-Attachments'),
           accessKey: 'a',
         },
         {
-          label: 'Documents',
+          label: __('Documents'),
           to: { name: 'drive-Documents' },
           icon: LucideFileText,
           isActive: active('drive-Documents'),
           accessKey: 'd',
         },
         {
-          label: 'Presentations',
+          label: __('Presentations'),
           to: { name: 'drive-Presentations' },
           icon: LucideGalleryVerticalEnd,
           isActive: active('drive-Presentations'),

@@ -44,7 +44,7 @@
         <ListHeaderCell />
       </ListHeader>
       <template v-if="folderContents">
-        <NoFilesSection v-if="!formattedRows.length" description="Nothing found - try something else?" />
+        <NoFilesSection v-if="!formattedRows.length" :description="__('Nothing found - try something else?')" />
         <template v-else-if="formattedRows[0]?.group">
           <ListGroup v-for="group in groupedItems" :key="group.group" :label="group.group" class="mt-3 first:mt-0">
             <DriveListRow

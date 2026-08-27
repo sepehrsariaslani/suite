@@ -9,7 +9,7 @@
 
       <!-- ── Source range ─────────────────────────────────────────────────── -->
       <div class="pv-section">
-        <p class="pv-label">Source</p>
+        <p class="pv-label">{{ __('Source') }}</p>
         <div class="pv-range-row">
           <!-- Source sheet picker. Auto-derived but explicit so the user
                can recover an existing pivot whose `sourceSheet` got
@@ -24,12 +24,12 @@
           <FormControl
             v-model="rangeInput"
             type="text"
-            placeholder="e.g. A1:F100"
+            :placeholder="__('e.g. A1:F100')"
             class="pv-range-input"
             @blur="detectFields"
             @keydown.enter.prevent="detectFields"
           />
-          <Button size="sm" variant="outline" label="Detect fields" @click="detectFields" />
+          <Button size="sm" variant="outline" :label="__('Detect fields')" @click="detectFields" />
         </div>
         <p v-if="rangeError" class="pv-error">{{ rangeError }}</p>
       </div>
@@ -40,7 +40,7 @@
         <!-- Rows -->
         <div class="pv-bucket">
           <p class="pv-bucket-label">
-            <FeatherIcon name="align-left" class="pv-bucket-icon" /> Rows
+            <FeatherIcon name="align-left" class="pv-bucket-icon" /> {{ __('Rows') }}
           </p>
           <div class="pv-bucket-body">
             <div v-for="f in rowFields" :key="f" class="pv-chip">
@@ -51,7 +51,7 @@
             </div>
             <PivotFieldPicker :fields="pickableFields('rows')" @select="f => addTo('rows', f)" @opened="pickerOpenCount++" @closed="pickerOpenCount--">
               <template #default="{ isOpen }">
-                <Button size="sm" :variant="isOpen ? 'subtle' : 'ghost'" icon="lucide-plus" label="Add field" class="pv-add-btn" />
+                <Button size="sm" :variant="isOpen ? 'subtle' : 'ghost'" icon="lucide-plus" :label="__('Add field')" class="pv-add-btn" />
               </template>
             </PivotFieldPicker>
           </div>
@@ -71,7 +71,7 @@
             </div>
             <PivotFieldPicker :fields="pickableFields('cols')" @select="f => addTo('cols', f)" @opened="pickerOpenCount++" @closed="pickerOpenCount--">
               <template #default="{ isOpen }">
-                <Button size="sm" :variant="isOpen ? 'subtle' : 'ghost'" icon="lucide-plus" label="Add field" class="pv-add-btn" />
+                <Button size="sm" :variant="isOpen ? 'subtle' : 'ghost'" icon="lucide-plus" :label="__('Add field')" class="pv-add-btn" />
               </template>
             </PivotFieldPicker>
           </div>
@@ -102,7 +102,7 @@
             </div>
             <PivotFieldPicker :fields="pickableFields('values')" @select="f => addTo('values', f)" @opened="pickerOpenCount++" @closed="pickerOpenCount--">
               <template #default="{ isOpen }">
-                <Button size="sm" :variant="isOpen ? 'subtle' : 'ghost'" icon="lucide-plus" label="Add field" class="pv-add-btn" />
+                <Button size="sm" :variant="isOpen ? 'subtle' : 'ghost'" icon="lucide-plus" :label="__('Add field')" class="pv-add-btn" />
               </template>
             </PivotFieldPicker>
           </div>
@@ -148,6 +148,7 @@
 </template>
 
 <script setup>
+import { translate as __ } from '@/boot/translation'
 import { ref, computed, watch } from 'vue'
 import { Button, Dialog, FormControl, Dropdown } from 'frappe-ui'
 import { Icon as FeatherIcon } from 'frappe-ui/experimental'

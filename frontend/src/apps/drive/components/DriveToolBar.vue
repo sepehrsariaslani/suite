@@ -52,7 +52,7 @@
         <div data-testid="drive-filter">
           <Dropdown :options="filterOptions" :disabled align="end">
             <template #trigger="{ open }">
-              <Button :active="open" :disabled icon="lucide-filter" tooltip="Filter" />
+              <Button :active="open" :disabled icon="lucide-filter" :tooltip="__('Filter')" />
             </template>
           </Dropdown>
         </div>
@@ -92,6 +92,7 @@
   </div>
 </template>
 <script setup>
+import { translate as __ } from '@/boot/translation'
 import { Button, Dropdown, TextInput, TabButtons } from 'frappe-ui'
 import {
   ref,

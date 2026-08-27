@@ -1,5 +1,5 @@
 <template>
-	<Button variant="ghost" tooltip="Share" @click="openShareDialog">
+	<Button variant="ghost" :tooltip="__('Share')" @click="openShareDialog">
 		<template #icon>
 			<LucideShare2 class="size-4 stroke-[1.5]" />
 		</template>
@@ -8,6 +8,7 @@
 </template>
 
 <script setup>
+import { translate as __ } from '@/boot/translation'
 import { ref } from 'vue'
 import { Button } from 'frappe-ui'
 import { ShareDialog, getFileForDoc } from '@/apps/drive/sdk'

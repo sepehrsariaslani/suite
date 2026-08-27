@@ -16,7 +16,7 @@
         </svg>
       </div>
       <h2 class="sn-load-error-title">
-        <template v-if="loadError.kind === 'denied'">You don't have access to this sheet</template>
+        <template v-if="loadError.kind === 'denied'">{{ __('You don\'t have access to this sheet') }}</template>
         <template v-else-if="loadError.kind === 'missing'">this sheet doesn't exist</template>
         <template v-else>Couldn't open this sheet</template>
       </h2>
@@ -123,9 +123,9 @@
              reads as toggled, matching Frappe UI's standard toggle pattern. -->
         <Button :variant="vhOpen ? 'subtle' : 'ghost'"
                 size="sm" icon="lucide-clock"
-                tooltip="Version history"
+                :tooltip="__('Version history')"
                 @click="vhOpen ? closeVersionHistory() : (notesPanel.open = false, openVersionHistory())" />
-        <Button variant="ghost" size="sm" icon="lucide-help-circle" tooltip="Keyboard shortcuts" @click="showShortcutsHelp = true" />
+        <Button variant="ghost" size="sm" icon="lucide-help-circle" :tooltip="__('Keyboard shortcuts')" @click="showShortcutsHelp = true" />
         <span class="sn-topbar-divider" aria-hidden="true" />
         <!-- Presence avatars — other users currently in the workbook.
              Outline = their cursor color; tooltip says which sub-sheet
@@ -184,7 +184,7 @@
       </Dropdown>
       <Dropdown :options="currencyDropdownOptions" class="sn-currency">
         <template #default="{ open }">
-          <Button :variant="activeNumberFormatType === 'currency' ? 'subtle' : (open ? 'subtle' : 'ghost')" size="sm" :label="activeCurrencySymbol" tooltip="Currency" />
+          <Button :variant="activeNumberFormatType === 'currency' ? 'subtle' : (open ? 'subtle' : 'ghost')" size="sm" :label="activeCurrencySymbol" :tooltip="__('Currency')" />
         </template>
       </Dropdown>
       <Button :variant="activeNumberFormatType === 'percentage' ? 'subtle' : 'ghost'" size="sm" label="%" tooltip="Percentage" @click="toggleNumberFmt('percentage')" />
@@ -268,7 +268,7 @@
           </template>
         </Dropdown>
         <div class="sn-vr" />
-        <Button variant="ghost" size="sm" icon="lucide-blend"    tooltip="Conditional formatting"      @click="openCfDialog(null)" />
+        <Button variant="ghost" size="sm" icon="lucide-blend"    :tooltip="__('Conditional formatting')"      @click="openCfDialog(null)" />
         <Button variant="ghost" size="sm" icon="lucide-link"     tooltip="Insert hyperlink (Ctrl+L)"   @click="openHyperlinkDialog" />
         <div class="sn-vr" />
         <Dropdown :options="borderDropdownOptions">
@@ -729,7 +729,7 @@
     </div>
 
     <!-- Rename sheet dialog -->
-    <Dialog v-model:open="showRenameDialog" title="Rename sheet" size="sm">
+    <Dialog v-model:open="showRenameDialog" :title="__('Rename sheet')" size="sm">
       <template #default>
         <FormControl ref="renameInputRef" v-model="renameValue" label="New name" placeholder="Sheet name" @keydown.enter="confirmRename" />
         <p v-if="renameError" class="sn-rename-err">{{ renameError }}</p>
@@ -897,7 +897,7 @@
     </CommandPalette>
 
     <!-- Hyperlink dialog (Ctrl+L) — stores fmt.hyperlink on the active cell -->
-    <Dialog v-model:open="showHyperlinkDialog" title="Insert hyperlink" size="sm">
+    <Dialog v-model:open="showHyperlinkDialog" :title="__('Insert hyperlink')" size="sm">
       <template #default>
         <div class="sn-form-stack">
           <FormControl v-model="hyperlinkText" label="Display text" placeholder="Click here" />
@@ -914,16 +914,16 @@
     </Dialog>
 
     <!-- Data validation dialog -->
-    <Dialog v-model:open="validationDialog.open" title="Data validation" size="sm">
+    <Dialog v-model:open="validationDialog.open" :title="__('Data validation')" size="sm">
       <template #default>
         <div class="sn-form-stack">
           <!-- Type -->
           <FormControl type="select" label="Type" v-model="validationDialog.type"
             :options="[
-              { label: 'Checkbox',       value: 'checkbox' },
-              { label: 'List of items',  value: 'list' },
-              { label: 'Number',         value: 'number' },
-              { label: 'Text length',    value: 'text_length' },
+              { label: __('Checkbox'),       value: 'checkbox' },
+              { label: __('List of items'),  value: 'list' },
+              { label: __('Number'),         value: 'number' },
+              { label: __('Text length'),    value: 'text_length' },
             ]"
           />
 
@@ -960,14 +960,14 @@
           <FormControl v-if="['number','text_length'].includes(validationDialog.type)"
             type="select" label="Condition" v-model="validationDialog.operator"
             :options="[
-              { label: 'Between',             value: 'between' },
-              { label: 'Not between',         value: 'not_between' },
-              { label: 'Greater than',        value: 'gt' },
-              { label: 'Greater than or equal', value: 'gte' },
-              { label: 'Less than',           value: 'lt' },
-              { label: 'Less than or equal',  value: 'lte' },
-              { label: 'Equal to',            value: 'eq' },
-              { label: 'Not equal to',        value: 'neq' },
+              { label: __('Between'),             value: 'between' },
+              { label: __('Not between'),         value: 'not_between' },
+              { label: __('Greater than'),        value: 'gt' },
+              { label: __('Greater than or equal'), value: 'gte' },
+              { label: __('Less than'),           value: 'lt' },
+              { label: __('Less than or equal'),  value: 'lte' },
+              { label: __('Equal to'),            value: 'eq' },
+              { label: __('Not equal to'),        value: 'neq' },
             ]"
           />
 
@@ -1063,7 +1063,7 @@
     <!-- Keyboard shortcut help — frappe-ui's KeyboardShortcutsModal, generated
          from the shortcut registry populated by useShortcuts.js (via useShortcut),
          so it can never drift from the handlers. -->
-    <KeyboardShortcutsDialog v-model:open="showShortcutsHelp" title="Keyboard shortcuts" />
+    <KeyboardShortcutsDialog v-model:open="showShortcutsHelp" :title="__('Keyboard shortcuts')" />
 
     <!-- Slicers — floating value-filter controls bound to a filter column -->
     <div v-for="sl in activeSlicers" :key="sl.id" class="sn-slicer"
@@ -1149,7 +1149,7 @@
     </div>
 
     <!-- Conditional formatting dialog -->
-    <Dialog v-model:open="cfDialog.open" title="Conditional formatting" size="sm">
+    <Dialog v-model:open="cfDialog.open" :title="__('Conditional formatting')" size="sm">
       <template #default>
         <div class="sn-form-stack">
           <!-- Existing rules — click to edit, ✕ to delete. Only shown when
@@ -1239,7 +1239,7 @@
 
           <!-- Icon sets: small icons at the start of each cell based on bucket. -->
           <template v-else-if="cfDialog.kind === 'icon-set'">
-            <FormControl type="select" label="Icon set" v-model="cfDialog.iconSet" :options="CF_ICON_SET_OPTIONS" />
+            <FormControl type="select" :label="__('Icon set')" v-model="cfDialog.iconSet" :options="CF_ICON_SET_OPTIONS" />
             <span class="sn-cf-fmt-label">Apply to range: {{ cfRangeLabel }}</span>
             <p class="sn-cf-hint">Values are split into three equal buckets across the range.</p>
           </template>
@@ -1259,6 +1259,7 @@
 </template>
 
 <script setup>
+import { translate as __ } from '@/boot/translation'
 import { h, ref, reactive, computed, watch, nextTick, onMounted, onBeforeUnmount } from 'vue'
 import { createGrid }          from '../../canvas/index.js'
 import { COL_HEADER_H, ROW_HEADER_W } from '../../canvas/constants.js'
@@ -1749,10 +1750,10 @@ const justSaved         = ref(false)
 // Short keys keep the select narrow; the full CSS stack lives in FONT_FAMILY_STACK
 // so the persisted format value is still a complete font-family string.
 const FONT_FAMILY_OPTIONS = [
-  { label: 'Inter',  value: 'inter' },
-  { label: 'Serif',  value: 'serif' },
-  { label: 'Mono',   value: 'mono' },
-  { label: 'System', value: 'system' },
+  { label: __('Inter'),  value: 'inter' },
+  { label: __('Serif'),  value: 'serif' },
+  { label: __('Mono'),   value: 'mono' },
+  { label: __('System'), value: 'system' },
 ]
 const FONT_FAMILY_STACK = {
   inter:  'InterVar, Inter, ui-sans-serif, system-ui, sans-serif',
@@ -1766,37 +1767,37 @@ const FONT_FAMILY_STACK = {
 // Flat list driving the dropdown — groups give the menu its sectioned layout.
 // Each entry is a stored format string; clicking applies it as-is.
 const NUMBER_FORMAT_GROUPS = [
-  { group: 'General', options: [
-    { label: 'General',         value: ''            },
-    { label: 'Plain text',      value: 'text'        },
+  { group: __('General'), options: [
+    { label: __('General'),         value: ''            },
+    { label: __('Plain text'),      value: 'text'        },
   ]},
-  { group: 'Number', options: [
-    { label: 'Decimal',         value: 'number'      },
-    { label: 'Decimal — Indian (1,23,456)', value: 'number:in' },
-    { label: 'Percent',         value: 'percentage'  },
+  { group: __('Number'), options: [
+    { label: __('Decimal'),         value: 'number'      },
+    { label: __('Decimal — Indian (1,23,456)'), value: 'number:in' },
+    { label: __('Percent'),         value: 'percentage'  },
   ]},
-  { group: 'Currency', options: [
-    { label: 'USD ($)',         value: 'currency:USD:2' },
-    { label: 'EUR (€)',         value: 'currency:EUR:2' },
-    { label: 'GBP (£)',         value: 'currency:GBP:2' },
-    { label: 'INR (₹)',         value: 'currency:INR:2' },
-    { label: 'JPY (¥)',         value: 'currency:JPY:0' },
+  { group: __('Currency'), options: [
+    { label: __('USD ($)'),         value: 'currency:USD:2' },
+    { label: __('EUR (€)'),         value: 'currency:EUR:2' },
+    { label: __('GBP (£)'),         value: 'currency:GBP:2' },
+    { label: __('INR (₹)'),         value: 'currency:INR:2' },
+    { label: __('JPY (¥)'),         value: 'currency:JPY:0' },
   ]},
-  { group: 'Date', options: [
-    { label: 'Auto (locale)',           value: 'date'         },
-    { label: 'DD/MM/YYYY',              value: 'date:dmy'     },
-    { label: 'MM/DD/YYYY',              value: 'date:mdy'     },
-    { label: 'YYYY-MM-DD',              value: 'date:ymd'     },
+  { group: __('Date'), options: [
+    { label: __('Auto (locale)'),           value: 'date'         },
+    { label: __('DD/MM/YYYY'),              value: 'date:dmy'     },
+    { label: __('MM/DD/YYYY'),              value: 'date:mdy'     },
+    { label: __('YYYY-MM-DD'),              value: 'date:ymd'     },
     { label: '15 Jan 2025',             value: 'date:long'    },
-    { label: 'Mon, 15 Jan 2025',        value: 'date:full'    },
+    { label: __('Mon, 15 Jan 2025'),        value: 'date:full'    },
   ]},
-  { group: 'Time', options: [
+  { group: __('Time'), options: [
     { label: '15:30',           value: 'time:hm'     },
     { label: '15:30:45',        value: 'time:hms'    },
     { label: '3:30 PM',         value: 'time:hm12'   },
     { label: '3:30:45 PM',      value: 'time:hms12'  },
   ]},
-  { group: 'Date + Time', options: [
+  { group: __('Date + Time'), options: [
     { label: '15/01/2025, 3:30 PM',     value: 'datetime:dmy_hm12'  },
     { label: '15 Jan 2025, 3:30 PM',    value: 'datetime:long_hm12' },
     { label: '2025-01-15, 15:30:00',    value: 'datetime:ymd_hms'   },
@@ -1806,17 +1807,17 @@ const NUMBER_FORMAT_GROUPS = [
 // Quick-pick currencies surfaced via the $ button. Click cycles to that
 // currency; clicking the active one toggles currency back off.
 const CURRENCY_QUICK_PICKS = [
-  { label: 'USD ($)', code: 'USD', symbol: '$' },
-  { label: 'EUR (€)', code: 'EUR', symbol: '€' },
-  { label: 'GBP (£)', code: 'GBP', symbol: '£' },
-  { label: 'INR (₹)', code: 'INR', symbol: '₹' },
-  { label: 'JPY (¥)', code: 'JPY', symbol: '¥' },
+  { label: __('USD ($)'), code: 'USD', symbol: '$' },
+  { label: __('EUR (€)'), code: 'EUR', symbol: '€' },
+  { label: __('GBP (£)'), code: 'GBP', symbol: '£' },
+  { label: __('INR (₹)'), code: 'INR', symbol: '₹' },
+  { label: __('JPY (¥)'), code: 'JPY', symbol: '¥' },
 ]
 
 const BORDER_STYLE_OPTIONS = [
-  { label: 'Thin',   value: 'thin' },
-  { label: 'Medium', value: 'medium' },
-  { label: 'Thick',  value: 'thick' },
+  { label: __('Thin'),   value: 'thin' },
+  { label: __('Medium'), value: 'medium' },
+  { label: __('Thick'),  value: 'thick' },
 ]
 
 // Custom decimals-with-arrow glyphs for the precision toolbar buttons. Not in
@@ -1853,30 +1854,30 @@ const IncreaseDecimalIcon = _decimalsIcon([
 ])
 
 const FILTER_OPERATOR_OPTIONS = [
-  { label: 'Contains',     value: 'contains' },
-  { label: 'Equals',       value: 'equals' },
-  { label: 'Greater than', value: 'gt' },
-  { label: 'Less than',    value: 'lt' },
-  { label: 'Is empty',     value: 'empty' },
-  { label: 'Is not empty', value: 'notempty' },
+  { label: __('Contains'),     value: 'contains' },
+  { label: __('Equals'),       value: 'equals' },
+  { label: __('Greater than'), value: 'gt' },
+  { label: __('Less than'),    value: 'lt' },
+  { label: __('Is empty'),     value: 'empty' },
+  { label: __('Is not empty'), value: 'notempty' },
 ]
 
 const fileDropdownOptions = computed(() => [
-  { group: 'Export', options: [
-    { label: 'Export as CSV',  icon: 'lucide-download', onClick: () => exportCSV() },
-    { label: 'Export as XLSX', icon: 'lucide-download', onClick: () => exportXLSX() },
-    { label: 'Export as PDF',  icon: 'lucide-printer',  onClick: () => exportPDF() },
+  { group: __('Export'), options: [
+    { label: __('Export as CSV'),  icon: 'lucide-download', onClick: () => exportCSV() },
+    { label: __('Export as XLSX'), icon: 'lucide-download', onClick: () => exportXLSX() },
+    { label: __('Export as PDF'),  icon: 'lucide-printer',  onClick: () => exportPDF() },
   ]},
   // Import writes cells — hide it for viewers (export/read stays available).
-  ...(readOnly.value ? [] : [{ group: 'Import', options: [
-    { label: 'Import CSV',  icon: 'lucide-upload', onClick: () => csvInputRef.value?.click() },
-    { label: 'Import XLSX', icon: 'lucide-upload', onClick: () => xlsxInputRef.value?.click() },
+  ...(readOnly.value ? [] : [{ group: __('Import'), options: [
+    { label: __('Import CSV'),  icon: 'lucide-upload', onClick: () => csvInputRef.value?.click() },
+    { label: __('Import XLSX'), icon: 'lucide-upload', onClick: () => xlsxInputRef.value?.click() },
   ]}]),
   // Only shown to admins — gated server-side via the boot flag so non-admins
   // never see a settings entry they can't use.
   ...(window.frappe?.boot?.ai_assist_can_configure
-    ? [{ group: 'AI', options: [
-        { label: 'AI settings', icon: 'lucide-cpu', onClick: () => { aiSettingsOpen.value = true } },
+    ? [{ group: __('AI'), options: [
+        { label: __('AI settings'), icon: 'lucide-cpu', onClick: () => { aiSettingsOpen.value = true } },
       ]}]
     : []),
 ])
@@ -2390,9 +2391,9 @@ const TEXT_WRAP_ICON = { overflow: 'lucide-corner-down-right', clip: 'lucide-min
 const textWrapIcon   = computed(() => TEXT_WRAP_ICON[activeTextWrap.value] || 'lucide-corner-down-left')
 
 const textWrapDropdownOptions = computed(() => [
-  { label: 'Overflow', icon: TEXT_WRAP_ICON.overflow, onClick: () => setTextWrap('overflow') },
-  { label: 'Clip',     icon: TEXT_WRAP_ICON.clip,     onClick: () => setTextWrap('clip')     },
-  { label: 'Wrap',     icon: TEXT_WRAP_ICON.wrap,     onClick: () => setTextWrap('wrap')     },
+  { label: __('Overflow'), icon: TEXT_WRAP_ICON.overflow, onClick: () => setTextWrap('overflow') },
+  { label: __('Clip'),     icon: TEXT_WRAP_ICON.clip,     onClick: () => setTextWrap('clip')     },
+  { label: __('Wrap'),     icon: TEXT_WRAP_ICON.wrap,     onClick: () => setTextWrap('wrap')     },
 ])
 
 // View state is now per-sheet (kept in useSheetTabs._viewBySheet) so freeze /
@@ -4625,24 +4626,24 @@ function toggleCheckbox(id) {
 // ── Conditional formatting ────────────────────────────────────────────────────
 
 const CF_COND_OPTIONS = [
-  { label: 'Greater than',     value: 'gt'          },
-  { label: 'Less than',        value: 'lt'          },
-  { label: 'Greater or equal', value: 'gte'         },
-  { label: 'Less or equal',    value: 'lte'         },
-  { label: 'Equal to',         value: 'eq'          },
-  { label: 'Not equal to',     value: 'neq'         },
-  { label: 'Between',          value: 'between'     },
-  { label: 'Contains',         value: 'contains'    },
-  { label: 'Does not contain', value: 'notcontains' },
-  { label: 'Is empty',         value: 'empty'       },
-  { label: 'Is not empty',     value: 'notempty'    },
+  { label: __('Greater than'),     value: 'gt'          },
+  { label: __('Less than'),        value: 'lt'          },
+  { label: __('Greater or equal'), value: 'gte'         },
+  { label: __('Less or equal'),    value: 'lte'         },
+  { label: __('Equal to'),         value: 'eq'          },
+  { label: __('Not equal to'),     value: 'neq'         },
+  { label: __('Between'),          value: 'between'     },
+  { label: __('Contains'),         value: 'contains'    },
+  { label: __('Does not contain'), value: 'notcontains' },
+  { label: __('Is empty'),         value: 'empty'       },
+  { label: __('Is not empty'),     value: 'notempty'    },
 ]
 
 const CF_KIND_OPTIONS = [
-  { label: 'Single colour rule', value: 'classic'     },
-  { label: 'Colour scale',       value: 'color-scale' },
-  { label: 'Data bars',          value: 'data-bar'    },
-  { label: 'Icon set',           value: 'icon-set'    },
+  { label: __('Single colour rule'), value: 'classic'     },
+  { label: __('Colour scale'),       value: 'color-scale' },
+  { label: __('Data bars'),          value: 'data-bar'    },
+  { label: __('Icon set'),           value: 'icon-set'    },
 ]
 
 const CF_SCALE_VARIANT_OPTIONS = [
@@ -4651,9 +4652,9 @@ const CF_SCALE_VARIANT_OPTIONS = [
 ]
 
 const CF_ICON_SET_OPTIONS = [
-  { label: 'Arrows (red/grey/green)',  value: 'arrows3'  },
-  { label: 'Traffic lights',           value: 'traffic3' },
-  { label: 'Circles (empty → full)',   value: 'circles3' },
+  { label: __('Arrows (red/grey/green)'),  value: 'arrows3'  },
+  { label: __('Traffic lights'),           value: 'traffic3' },
+  { label: __('Circles (empty → full)'),   value: 'circles3' },
 ]
 
 const cfRangeLabel = computed(() => {

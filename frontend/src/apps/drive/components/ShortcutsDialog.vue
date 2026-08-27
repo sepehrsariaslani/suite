@@ -1,5 +1,5 @@
 <template>
-  <Dialog v-model:open="open" title="Keyboard Shortcuts" size="4xl">
+  <Dialog v-model:open="open" :title="__('Keyboard Shortcuts')" size="4xl">
     <div class="w-full grid grid-cols-2 gap-10 py-1">
       <div v-for="group in shortcutGroups" :key="group.title" class="border-b pb-4">
         <h2 class="text-lg-semibold text-ink-gray-8 mb-4">
@@ -23,6 +23,7 @@
   </Dialog>
 </template>
 <script setup>
+import { translate as __ } from '@/boot/translation'
 import { Dialog } from 'frappe-ui'
 import { computed } from 'vue'
 import { isApple } from '@/apps/drive/utils/files'
@@ -48,14 +49,14 @@ const metaKey = computed(() => {
 const findFilesKey = computed(() => (isApple() ? '⌘' : 'Ctrl'))
 const shortcutGroups = [
   {
-    title: 'General',
+    title: __('General'),
     shortcuts: [
       [[findFilesKey.value, 'K'], 'Find Files'],
       [[metaKey.value, 'Shift', ','], 'Open Settings'],
     ],
   },
   {
-    title: 'Navigation',
+    title: __('Navigation'),
     shortcuts: [
       [getLabel('i'), 'Inbox'],
       [getLabel('h'), 'Home'],
@@ -65,7 +66,7 @@ const shortcutGroups = [
     ],
   },
   {
-    title: 'List',
+    title: __('List'),
     shortcuts: [
       [[metaKey.value, 'A'], 'Select all'],
       [['Esc'], 'Unselect all'],

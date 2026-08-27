@@ -4,10 +4,10 @@
       v-model="onlyUnread"
       :options="[
         {
-          label: 'Unread',
+          label: __('Unread'),
           value: true,
         },
-        { label: 'All', value: false },
+        { label: __('All'), value: false },
       ]"
     />
     <div class="flex items-center gap-2">
@@ -64,6 +64,7 @@
   />
 </template>
 <script setup>
+import { translate as __ } from '@/boot/translation'
 import { ref, watch } from 'vue'
 import { formatTimeAgo } from '@vueuse/core'
 import { createResource, Avatar, TabButtons, Button } from 'frappe-ui'

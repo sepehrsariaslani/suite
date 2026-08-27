@@ -1,6 +1,6 @@
 <template>
 	<AppSettingsHeader
-		title="Devices"
+		:title="__('Devices')"
 		description="Select your preferred camera, microphone, and speaker"
 	/>
 	<AppSettingsBody>
@@ -11,7 +11,7 @@
 		/>
 		<div v-else class="space-y-6">
 			<div class="space-y-1.5">
-				<label class="block text-base text-ink-gray-5">Camera</label>
+				<label class="block text-base text-ink-gray-5">{{ __('Camera') }}</label>
 				<div class="flex items-center gap-2">
 					<div class="relative w-full">
 						<FormControl class="device-select" type="combobox" trigger="button" v-model="selectedCameraIdLocal"
@@ -108,6 +108,7 @@
 </template>
 
 <script setup lang="ts">
+import { translate as __ } from '@/boot/translation'
 import AppSettingsHeader from '@/components/settings/AppSettingsHeader.vue'
 import AppSettingsBody from '@/components/settings/AppSettingsBody.vue'
 import {

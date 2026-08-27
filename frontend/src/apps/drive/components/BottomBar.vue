@@ -27,13 +27,13 @@ export default {
       const first = getRootSection()
       return [
         {
-          label: 'Home',
+          label: __('Home'),
           route: { name: 'drive-Home' },
           icon: LucideHome,
           highlight: () => first.name === 'drive-Home',
         },
         {
-          label: 'Recents',
+          label: __('Recents'),
           route: { name: 'drive-Recents' },
           icon: LucideClock,
           highlight: () => first.name === 'drive-Recents',
@@ -47,7 +47,7 @@ export default {
           highlight: () => first.name === rootInfo.data?.root,
         },
         {
-          label: 'Favourites',
+          label: __('Favourites'),
           route: { name: 'drive-Favourites' },
           icon: LucideStar,
           highlight: () => first.name === 'drive-Favourites',

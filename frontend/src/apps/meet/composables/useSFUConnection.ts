@@ -1,3 +1,4 @@
+import { translate as __ } from '@/boot/translation'
 import { createResource, dialog, frappeRequest, toast } from "frappe-ui";
 import {
 	defineAsyncComponent,
@@ -443,7 +444,7 @@ export function useSFUConnection(deps: {
 			},
 			onHostMutedYou: onHostMutedYou,
 			onHostKickedYou: (_data: unknown) => {
-				toast.error("You have been removed from the meeting by the host");
+				toast.error(__("You have been removed from the meeting by the host"));
 				onHostKickedYou();
 			},
 			onParticipantConnectionReplaced: async () => {
@@ -775,7 +776,7 @@ export function useSFUConnection(deps: {
 			lobbyStore.isJoinRequestRejected = true;
 			lobbyStore.isWaitingForApproval = false;
 
-			toast.error("Your join request was denied by the meeting host");
+			toast.error(__("Your join request was denied by the meeting host"));
 		}
 	};
 
@@ -837,12 +838,12 @@ export function useSFUConnection(deps: {
 				} else {
 					console.error("Failed to get SFU connection:", sfuResult);
 					lobbyStore.isJoinRequestRejected = true;
-					toast.error("Failed to join meeting after approval");
+					toast.error(__("Failed to join meeting after approval"));
 				}
 			} catch (error) {
 				console.error("Error after approval:", error);
 				connectionState.connectionError = getErrorMessage(error);
-				toast.error("Failed to join meeting after approval");
+				toast.error(__("Failed to join meeting after approval"));
 			}
 		}
 	};
@@ -855,7 +856,7 @@ export function useSFUConnection(deps: {
 			lobbyStore.isJoinRequestRejected = true;
 			lobbyStore.isWaitingForApproval = false;
 
-			toast.error("Your join request was denied by the meeting host");
+			toast.error(__("Your join request was denied by the meeting host"));
 		}
 	};
 

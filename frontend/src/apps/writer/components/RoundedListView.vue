@@ -21,12 +21,12 @@
           v-model="thumbnail"
           :options="[
             {
-              label: 'Grid',
+              label: __('Grid'),
               value: 'grid',
               icon: LucideGrid,
             },
             {
-              label: 'List',
+              label: __('List'),
               value: 'list',
               icon: LucideList,
             },
@@ -149,6 +149,7 @@
 </template>
 
 <script setup lang="ts">
+import { translate as __ } from '@/boot/translation'
 import { computed, ref, watch, useTemplateRef } from 'vue'
 
 import { Avatar, TabButtons } from 'frappe-ui'

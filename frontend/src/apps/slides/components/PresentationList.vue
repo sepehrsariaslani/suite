@@ -4,7 +4,7 @@
 			class="mx-auto flex w-full max-w-[1088px] flex-col gap-4 px-8 pb-8 sm:flex-row sm:items-center sm:justify-between"
 		>
 			<!-- Header -->
-			<div class="cursor-default text-xl-semibold text-ink-gray-9">Presentations</div>
+			<div class="cursor-default text-xl-semibold text-ink-gray-9">{{ __('Presentations') }}</div>
 
 			<div class="flex items-center gap-2">
 				<SearchInput
@@ -84,6 +84,7 @@
 </template>
 
 <script setup>
+import { translate as __ } from '@/boot/translation'
 import { computed, h, ref } from 'vue'
 
 import { Dropdown, LoadingIndicator, Button } from 'frappe-ui'
@@ -146,35 +147,35 @@ const contextMenuIconClasses = 'stroke-[1.5] !size-3.5'
 const getContextMenuOptions = (presentation) => {
 	return [
 		{
-			group: 'Actions',
+			group: __('Actions'),
 			options: [
 				{
-					label: 'Rename',
+					label: __('Rename'),
 					icon: h(PenLine, { class: contextMenuIconClasses }),
 					onClick: () => emit('openDialog', 'Rename', presentation),
 				},
 				{
-					label: 'Duplicate',
+					label: __('Duplicate'),
 					icon: h(Copy, { class: contextMenuIconClasses }),
 					onClick: () => emit('duplicatePresentation', presentation.name),
 				},
 				{
-					label: 'Delete',
+					label: __('Delete'),
 					icon: h(Trash, { class: contextMenuIconClasses }),
 					onClick: () => emit('openDialog', 'Delete', presentation),
 				},
 			],
 		},
 		{
-			group: 'Explore',
+			group: __('Explore'),
 			options: [
 				{
-					label: 'Preview',
+					label: __('Preview'),
 					icon: h(Eye, { class: contextMenuIconClasses }),
 					onClick: () => emit('setPreview', presentation),
 				},
 				{
-					label: 'Slideshow',
+					label: __('Slideshow'),
 					icon: h(TvMinimalPlay, { class: contextMenuIconClasses }),
 					onClick: () => emit('navigate', presentation.name, true),
 				},

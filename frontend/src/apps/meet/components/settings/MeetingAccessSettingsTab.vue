@@ -1,12 +1,12 @@
 <template>
 	<AppSettingsHeader
-		title="Controls"
+		:title="__('Controls')"
 		description="Manage join rules, chat, and security for this meeting."
 	/>
 	<AppSettingsBody>
 			<div>
 				<SettingsRow
-					title="Allow Guests"
+					:title="__('Allow Guests')"
 					description="Allow non-registered users to join this meeting"
 				>
 					<Switch
@@ -16,7 +16,7 @@
 				</SettingsRow>
 
 				<SettingsRow
-					title="Require host approval"
+					:title="__('Require host approval')"
 					description="People wait in the lobby until a host or co-host admits them"
 				>
 					<Switch
@@ -26,7 +26,7 @@
 				</SettingsRow>
 
 				<SettingsRow
-					title="Host Only Chat"
+					:title="__('Host Only Chat')"
 					description="Restrict chat so only hosts and co-hosts can send messages"
 				>
 					<Switch
@@ -45,6 +45,7 @@
 </template>
 
 <script setup lang="ts">
+import { translate as __ } from '@/boot/translation'
 import AppSettingsHeader from '@/components/settings/AppSettingsHeader.vue'
 import AppSettingsBody from '@/components/settings/AppSettingsBody.vue'
 import {
@@ -112,7 +113,7 @@ const saveSettings = debounce(async () => {
 		await meetingDoc.reload();
 	} catch (error) {
 		console.error("Failed to update meeting settings:", error);
-		toast.error("Failed to update meeting settings");
+		toast.error(__("Failed to update meeting settings"));
 
 		if (meetingDoc.doc?.host_only_chat !== undefined) {
 			hostOnlyChat.value = !!meetingDoc.doc.host_only_chat;

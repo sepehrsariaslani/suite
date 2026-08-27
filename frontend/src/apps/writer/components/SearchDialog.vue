@@ -8,7 +8,7 @@
               variant="ghost"
               v-model="searching"
               type="text"
-              placeholder="Search through documents..."
+              :placeholder="__('Search through documents...')"
               @keydown="
                 (e) => {
                   if (e.key === 'Enter') {

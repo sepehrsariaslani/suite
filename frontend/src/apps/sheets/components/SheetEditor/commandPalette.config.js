@@ -8,7 +8,7 @@ function item(name, title, description, fn) {
 
 function buildFormatGroup({ toggleFmt, setAlign, setValign, adjustDecimals, toggleWrap, clearFormatting }) {
   return {
-    title: 'Format',
+    title: __('Format'),
     items: [
       item('bold',          'Bold',                    'Ctrl+B',       () => toggleFmt('bold')),
       item('italic',        'Italic',                  'Ctrl+I',       () => toggleFmt('italic')),
@@ -30,7 +30,7 @@ function buildFormatGroup({ toggleFmt, setAlign, setValign, adjustDecimals, togg
 
 function buildEditGroup({ undo, redo, repeatLast, showFindReplace, openFindReplace, showFormulas, repopulateGrid, showShortcutsHelp }) {
   return {
-    title: 'Edit',
+    title: __('Edit'),
     items: [
       item('undo',      'Undo',               'Ctrl+Z', () => undo()),
       item('redo',      'Redo',               'Ctrl+Y', () => redo()),
@@ -53,7 +53,7 @@ function buildStructureGroup({
   toggleMerge, addRowsCount, doAddMoreRows,
 }) {
   return {
-    title: 'Structure',
+    title: __('Structure'),
     items: [
       item('row-above',  'Insert row above',      '', () => { contextMenu.targetRow = getGrid().getSelection().r0; doInsertRow(false) }),
       item('row-below',  'Insert row below',      '', () => { contextMenu.targetRow = getGrid().getSelection().r0; doInsertRow(true)  }),
@@ -77,7 +77,7 @@ function buildStructureGroup({
 
 function buildViewGroup({ contextMenu, getGrid, doFreezeRow, doFreezeCol, doUnfreezeRows, doUnfreezeCols, showSortFilter }) {
   return {
-    title: 'View',
+    title: __('View'),
     items: [
       item('freeze-row',   'Freeze rows up to selection', '', () => { contextMenu.targetRow = getGrid().getSelection().r0; doFreezeRow()  }),
       item('freeze-col',   'Freeze cols up to selection', '', () => { contextMenu.targetCol = getGrid().getSelection().c0; doFreezeCol()  }),
@@ -90,7 +90,7 @@ function buildViewGroup({ contextMenu, getGrid, doFreezeRow, doFreezeCol, doUnfr
 
 function buildInsertGroup({ openPivotDialog }) {
   return {
-    title: 'Insert',
+    title: __('Insert'),
     items: [
       item('pivot-insert', 'Insert pivot table', '', () => openPivotDialog()),
     ],
@@ -99,7 +99,7 @@ function buildInsertGroup({ openPivotDialog }) {
 
 function buildSheetGroup({ addSheet, currentSheet, openRenameDialog, doDuplicateSheet, doDeleteSheet }) {
   return {
-    title: 'Sheet',
+    title: __('Sheet'),
     items: [
       item('sheet-add',       'Add sheet',       '', () => addSheet()),
       item('sheet-rename',    'Rename sheet',    '', () => openRenameDialog(currentSheet.value)),
@@ -111,7 +111,7 @@ function buildSheetGroup({ addSheet, currentSheet, openRenameDialog, doDuplicate
 
 function buildFileGroup({ onSave, exportCSV, exportXLSX, exportPDF, csvInputRef, xlsxInputRef }) {
   return {
-    title: 'File',
+    title: __('File'),
     items: [
       item('save',        'Save',        'Ctrl+S', () => onSave()),
       item('csv-export',  'Export CSV',  '',       () => exportCSV()),

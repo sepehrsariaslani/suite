@@ -1,3 +1,4 @@
+import { translate as __ } from '@/boot/translation'
 import { toast } from 'frappe-ui'
 import slugify from 'slugify'
 import { useTimeAgo } from '@vueuse/core'
@@ -26,7 +27,7 @@ export function getFileLink(entity, copy = true) {
   }
   if (!copy) return link
   try {
-    copyToClipboard(link).then(() => toast.success('Copied to your clipboard.'))
+    copyToClipboard(link).then(() => toast.success(__('Copied to your clipboard.')))
   } catch (err) {
     console.error('Failed to copy link:', err)
   }

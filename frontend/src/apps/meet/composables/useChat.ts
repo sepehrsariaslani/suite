@@ -1,3 +1,4 @@
+import { translate as __ } from '@/boot/translation'
 import { toast } from "frappe-ui";
 import audioNotificationManager from "../utils/audioNotifications";
 import { E2EEMeeting } from "../utils/media/E2EEMeeting";
@@ -235,7 +236,7 @@ export function useChat(deps: {
 
 		sfuClient.on("sfu_error", (value: unknown) => {
 			if (isUnknownRecord(value) && value.code === "HOST_ONLY_CHAT") {
-				toast.error("The host has restricted chat to hosts and co-hosts only.");
+				toast.error(__('The host has restricted chat to hosts and co-hosts only.'));
 				chatStore.hostOnlyChat = true;
 			}
 		});
@@ -255,7 +256,7 @@ export function useChat(deps: {
 					const key = await getChatKey();
 					if (!key) {
 						toast.error(
-							"Encrypted chat is not ready yet. Wait for encryption to finish, then try again.",
+							__("Encrypted chat is not ready yet. Wait for encryption to finish, then try again."),
 						);
 						return;
 					}
@@ -287,7 +288,7 @@ export function useChat(deps: {
 			chatStore.addMessage(message);
 		} catch (error) {
 			console.error("Failed to send chat message:", error);
-			toast.error("Failed to send message");
+			toast.error(__('Failed to send message'));
 		}
 	};
 

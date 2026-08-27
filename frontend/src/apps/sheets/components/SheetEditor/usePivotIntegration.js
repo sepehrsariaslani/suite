@@ -1,3 +1,4 @@
+import { translate as __ } from '@/boot/translation'
 import { ref, computed, watch } from 'vue'
 import { computePivotModel, computePivotModelAsync, pivotDrillDown, writePivotToSheet } from '../../engine/pivot.js'
 import { colLabel, cellId, parseCellId } from '../../utils/cells.js'
@@ -167,8 +168,8 @@ export function usePivotIntegration({
   })
 
   const pivotBannerMenuOptions = [
-    { label: 'Edit pivot',   icon: 'lucide-edit-2',                onClick: onPivotEdit   },
-    { label: 'Delete pivot', icon: 'lucide-trash-2', theme: 'red', onClick: onPivotDelete },
+    { label: __('Edit pivot'),   icon: 'lucide-edit-2',                onClick: onPivotEdit   },
+    { label: __('Delete pivot'), icon: 'lucide-trash-2', theme: 'red', onClick: onPivotDelete },
   ]
 
   function openPivotDialog() {

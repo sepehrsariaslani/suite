@@ -1,5 +1,5 @@
 <template>
-  <FormControl v-model="versionName" autofocus label="Name:" autocomplete="off">
+  <FormControl v-model="versionName" autofocus :label="__('Name:')" autocomplete="off">
     <template #prefix>
       <LucideVersion class="size-4" />
     </template>

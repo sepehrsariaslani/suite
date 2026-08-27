@@ -121,22 +121,22 @@ const previewDetails = computed(() => {
 const presentationActions = [
 	{
 		icon: Presentation,
-		label: 'Present',
+		label: __('Present'),
 		onClick: (e) => emit('navigate', props.presentation.name, true),
 	},
 	{
 		icon: PenLine,
-		label: 'Rename',
+		label: __('Rename'),
 		onClick: (e) => emit('openDialog', 'Rename'),
 	},
 	{
 		icon: Copy,
-		label: 'Duplicate',
+		label: __('Duplicate'),
 		onClick: (e) => emit('duplicatePresentation', props.presentation.name),
 	},
 	{
 		icon: Trash,
-		label: 'Delete',
+		label: __('Delete'),
 		onClick: (e) => emit('openDialog', 'Delete'),
 	},
 ]

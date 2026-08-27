@@ -1,16 +1,16 @@
 <template>
 	<Dialog
 		v-model:open="showDialog"
-		title="Remove Participant"
+		:title="__('Remove Participant')"
 		size="sm"
 	>
 		<template #default>
 			<div class="space-y-4">
 				<p class="text-base text-ink-gray-7">
-					Are you sure you want to remove <strong>{{ participantName }}</strong> from the meeting?
+					{{ __('Remove {0} from the meeting?', [participantName]) }}
 				</p>
 				<FormControl
-					label="Ban from this meeting?"
+					:label="__('Ban from this meeting?')"
 					type="checkbox"
 					v-model="banFromMeeting"
 				/>
@@ -18,8 +18,8 @@
 		</template>
 		<template #actions>
 			<div class="flex justify-end gap-2 w-full">
-				<Button variant="subtle" @click="showDialog = false">Cancel</Button>
-				<Button variant="solid" theme="red" @click="handleKickConfirm">Remove</Button>
+				<Button variant="subtle" @click="showDialog = false">{{ __('Cancel') }}</Button>
+				<Button variant="solid" theme="red" @click="handleKickConfirm">{{ __('Remove') }}</Button>
 			</div>
 		</template>
 	</Dialog>

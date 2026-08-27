@@ -6,7 +6,7 @@
       <LucideFileUser v-if="error.type === 'PermissionError'" class="size-8 text-ink-gray-5" />
       <LucideFileQuestionMark v-else class="size-8 text-ink-gray-5" />
     </div>
-    <h1 class="text-4xl-bold text-ink-gray-8 mt-4">Uh oh!</h1>
+    <h1 class="text-4xl-bold text-ink-gray-8 mt-4">{{ __('Uh oh!') }}</h1>
     <p class="text-lg text-ink-gray-5 mt-4">
       <template v-if="typeof error === 'string'">{{ error }}</template>
       <template v-else>
@@ -46,6 +46,7 @@
 </template>
 
 <script setup>
+import { translate as __ } from '@/boot/translation'
 import { Button } from 'frappe-ui'
 
 import { useSessionStore } from '@/boot/session'

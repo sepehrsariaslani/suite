@@ -12,7 +12,7 @@
           <div class="hidden md:block" />
           <div class="flex flex-col grow min-w-0">
             <FTextEditor ref="textEditor" :upload-function="uploadFunction"
-              :autofocus="true" v-model="localContent" placeholder="Start thinking..." :extensions="editorExtensions"
+              :autofocus="true" v-model="localContent" :placeholder="__('Start thinking...')" :extensions="editorExtensions"
               :editable @change="(val) => emit('editor-change', val)">
               <template #default="{ editor }">
                 <EditorBubbleMenu :editor :items="bubbleMenuButtons" :options="bubbleMenuOpts" />
@@ -46,6 +46,7 @@
 </template>
 
 <script setup>
+import { translate as __ } from '@/boot/translation'
 import {
   computed,
   nextTick,
@@ -170,21 +171,21 @@ const commentFilterOptions = computed(() => {
   )
   return [
     {
-      label: 'Comments',
+      label: __('Comments'),
       switch: true,
       switchValue: showComments.value,
       onClick: () => (showComments.value = !showComments.value),
     },
     hasResolved &&
     showComments.value && {
-      label: 'Resolved',
+      label: __('Resolved'),
       switch: true,
       switchValue: showResolved.value,
       onClick: () => (showResolved.value = !showResolved.value),
     },
     showUnanchoredButton.value &&
     showComments.value && {
-      label: 'Outdated',
+      label: __('Outdated'),
       switch: true,
       switchValue: showUnanchored.value,
       onClick: () => (showUnanchored.value = !showUnanchored.value),
@@ -266,7 +267,7 @@ const menuButtons = computed(() =>
 
 const bubbleMenuButtons = [
   {
-    label: 'Comment',
+    label: __('Comment'),
     icon: 'lucide-message-square-plus',
     action: () => addComment(),
   },
@@ -320,7 +321,7 @@ const autoversion = async () => {
   await props.document.newVersion.submit({ data: html })
   const err = props.document.newVersion.error
   if (err && err !== 'Client is offline') {
-    toast.error('Something has gone wrong - please contact support.')
+    toast.error(__('Something has gone wrong - please contact support.'))
   }
 }
 const autoversionInterval = setInterval(autoversion, AUTOVERSION_INTERVAL_MS)
@@ -364,7 +365,7 @@ const autorename = () => {
 
 const addComment = () => {
   if (!props.yjsDoc) {
-    return toast.warning("New comments aren't supported on this doc.", {
+    return toast.warning(__("New comments aren't supported on this doc."), {
       duration: 1,
     })
   }
@@ -397,7 +398,7 @@ onKeyDown('p', (e) => {
 onKeyDown('s', (e) => {
   if (!props.editable || !isModKey(e) || e.shiftKey) return
   e.preventDefault()
-  manualSave(() => toast.success('Saved document'))
+  manualSave(() => toast.success(__('Saved document')))
 })
 
 onKeyDown('Enter', autorename)

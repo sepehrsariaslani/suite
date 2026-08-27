@@ -22,9 +22,9 @@
             <form class="flex flex-col gap-4">
               <FormControl
                 v-model="email"
-                label="Email"
+                :label="__('Email')"
                 type="email"
-                placeholder="johndoe@mail.com"
+                :placeholder="__('name@example.com')"
                 autocomplete="email"
                 :disabled="otpRequested"
                 required
@@ -34,30 +34,30 @@
                 <div class="flex gap-4">
                   <FormControl
                     v-model="first_name"
-                    label="First Name"
+                    :label="__('First Name')"
                     type="text"
-                    placeholder="Robin"
+                    :placeholder="__('First name example')"
                     autocomplete="off"
                     required
                   />
                   <FormControl
                     v-model="last_name"
-                    label="Last Name"
+                    :label="__('Last Name')"
                     type="text"
-                    placeholder="Hood"
+                    :placeholder="__('Last name example')"
                     autocomplete="off"
                   />
                 </div>
                 <FormControl
                   v-model="password"
-                  label="Password"
+                  :label="__('Password')"
                   type="password"
                   autocomplete="new-password"
                   required
                 />
                 <FormControl
                   v-model="confirm_password"
-                  label="Confirm Password"
+                  :label="__('Confirm Password')"
                   type="password"
                   autocomplete="new-password"
                   required
@@ -65,12 +65,12 @@
                 <label class="mt-2 flex items-center gap-2 text-sm text-ink-gray-7">
                   <FormControl v-model="terms_accepted" type="checkbox" />
                   <span>
-                    I accept the
+                    {{ __('I accept the') }}
                     <a
                       class="text-ink-gray-9 underline"
                       href="https://frappecloud.com/policies"
                       target="_blank"
-                    >Terms and Policies</a>
+                    >{{ __('Terms and Policies') }}</a>
                   </span>
                 </label>
                 <ErrorMessage
@@ -87,7 +87,7 @@
                   "
                   @click="signup.submit()"
                 >
-                  Sign up
+                  {{ __('Sign up') }}
                 </Button>
               </template>
 

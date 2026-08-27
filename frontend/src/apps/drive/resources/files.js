@@ -1,3 +1,4 @@
+import { translate as __ } from '@/boot/translation'
 import { createResource } from 'frappe-ui'
 import { toast } from '@/apps/drive/utils/toasts'
 import { openEntity, setTitle } from '@/apps/drive/utils/files'
@@ -241,7 +242,7 @@ export const clearRecent = createResource({
     }
   },
   onError: () => {
-    toast.error('There was an error while clearing recents.')
+    toast.error(__('There was an error while clearing recents.'))
   },
 })
 
@@ -304,9 +305,9 @@ export const createSheet = createResource({
 export const move = createResource({
   url: 'suite.drive.api.files.move',
   onSuccess(data) {
-    toast('Moved to ' + data.file_name, {
+    toast(__('Moved to ') + data.file_name, {
       action: {
-        label: 'Go',
+        label: __('Go'),
         onClick: () => openEntity({ name: data.name, is_folder: true }),
       },
     })

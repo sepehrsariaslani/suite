@@ -3,11 +3,11 @@
     class="gap-2 hidden md:block overflow-y-auto overflow-x-hidden flex-shrink-0 h-full transition-[width] duration-300 ease-in-out"
     :class="[show ? 'w-56 p-2' : 'w-12 p-2.5']">
     <div v-if="!show" class="flex justify-center">
-      <Button variant="ghost" :icon="LucideTableOfContents" tooltip="Table of Contents" @click="show = !show" />
+      <Button variant="ghost" :icon="LucideTableOfContents" :tooltip="__('Table of Contents')" @click="show = !show" />
     </div>
     <div v-if="show" class="grow flex flex-col gap-0.5 w-52">
       <div v-if="hasContent" class="flex justify-between items-center ps-2 pr-1 pb-1">
-        <span class="text-base-medium text-ink-gray-8 select-none whitespace-nowrap">Table of Contents</span>
+        <span class="text-base-medium text-ink-gray-8 select-none whitespace-nowrap">{{ __('Table of Contents') }}</span>
         <Button :icon="LucideLeftClose" variant="ghost" @click="show = !show" tooltip="Hide" />
       </div>
       <div v-if="tabs.length > 0" class="flex flex-col gap-0.5 mb-2" @drop.prevent="onDrop">
@@ -90,7 +90,7 @@
           :icon-left="h(LucidePlus, { class: 'size-4' })" :label="tabs.length ? 'Add tab' : 'Create tab'"
           variant="ghost" @click="
             tabs.length
-              ? editor.commands.createTab({ label: 'Untitled' })
+              ? editor.commands.createTab({ label: __('Untitled') })
               : editor.commands.wrapInTab()
             " />
         <Button v-if="!hasContent" :icon="LucideLeftClose" variant="ghost" @click="show = !show" tooltip="Hide" />
@@ -100,6 +100,7 @@
 </template>
 
 <script setup>
+import { translate as __ } from '@/boot/translation'
 import { nextTick } from 'vue'
 
 import { TextSelection } from '@tiptap/pm/state'
@@ -350,12 +351,12 @@ const activeAnchorId = computed(() => {
 
 const tabActions = [
   {
-    label: 'Rename',
+    label: __('Rename'),
     icon: LucidePencil,
     onClick: () => startRenaming(activeTabId.value),
   },
   {
-    label: 'Copy Link',
+    label: __('Copy Link'),
     icon: LucideLink,
     onClick: () =>
       copyToClipboard(
@@ -367,7 +368,7 @@ const tabActions = [
     hideLabel: true,
     options: [
       {
-        label: 'Delete',
+        label: __('Delete'),
         icon: LucideTrash,
         theme: 'red',
         onClick: () => props.editor.commands.deleteTab(activeTabId.value),

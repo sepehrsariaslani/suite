@@ -9,6 +9,7 @@
 </template>
 
 <script setup>
+import { translate as __ } from '@/boot/translation'
 import { h, onMounted, onUnmounted, provide, ref, watch } from 'vue'
 import { onBeforeRouteLeave } from 'vue-router'
 import { toast, FrappeUIProvider } from 'frappe-ui'
@@ -25,7 +26,7 @@ const isOnline = ref(navigator?.onLine ?? true)
 const handleOffline = () => {
   isOnline.value = false
   if (inSlideShowMode.value) return
-  toast('Lost internet connection.', {
+  toast(__('Lost internet connection.'), {
     icon: () => h(WifiOff, { class: 'size-4' }),
   })
 }
@@ -34,7 +35,7 @@ const handleOnline = () => {
   isOnline.value = true
   saveCurrentState()
   if (inSlideShowMode.value) return
-  toast('You are back online.', {
+  toast(__('You are back online.'), {
     icon: () => h(Wifi, { class: 'size-4' }),
   })
 }

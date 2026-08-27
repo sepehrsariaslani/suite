@@ -1,14 +1,14 @@
 <template>
 	<div v-if="lobbyUsers.length > 0" class="">
 		<div class="px-3 py-2 text-xs-medium text-ink-gray-5 tracking-wide bg-surface-gray-1 flex items-center justify-between">
-			<span>Waiting to join</span>
+			<span>{{ __('Waiting to join') }}</span>
 			<Button
 				variant="ghost"
 				size="sm"
 				@click="$emit('approve-all')"
 				class="text-xs-medium "
 			>
-				Admit all
+				{{ __('Admit all') }}
 			</Button>
 		</div>
 		<div
@@ -28,7 +28,7 @@
 						{{ lobbyUser.name || lobbyUser.userId || 'Guest' }}
 					</div>
 					<Badge v-if="lobbyUser.isGuest" size="sm">
-						Guest
+						{{ __('Guest') }}
 					</Badge>
 				</div>
 			</div>

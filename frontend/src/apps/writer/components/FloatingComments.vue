@@ -50,7 +50,7 @@
             <template #prefix>
               <LucideX class="size-3.5" />
             </template>
-            Delete
+            {{ __('Delete') }}
           </Button>
         </div>
         <div class="p-3 max-md:px-4" :class="activeComment !== comment.id &&
@@ -94,13 +94,13 @@
                     'opacity-100'
                     " :options="dynamicList([
                       {
-                        label: 'Edit',
+                        label: __('Edit'),
                         icon: 'lucide-pencil',
                         onClick: () => (reply.edit = true),
                         cond: comment.owner == currentUserId && !reply.new,
                       },
                       {
-                        label: 'Delete',
+                        label: __('Delete'),
                         onClick: () => removeReply(comment.id, reply.id),
                         cond:
                           comment.owner == currentUserId &&
@@ -122,7 +122,7 @@
                   <LucideBadgeCheck v-if="comment.resolved" class="text-ink-gray-6 size-4" />
                 </div>
                 <div class="comment-content text-sm">
-                  <CommentEditor v-model="commentContents[reply.id]" placeholder="Edit" :disabled="isEmpty(commentContents[reply.id]) ||
+                  <CommentEditor v-model="commentContents[reply.id]" :placeholder="__('Edit')" :disabled="isEmpty(commentContents[reply.id]) ||
                     commentContents[reply.id] == reply.text
                     " :editable="!!(reply.edit || reply.new) &&
                       reply.owner === currentUserId
@@ -186,6 +186,7 @@
   </div>
 </template>
 <script setup>
+import { translate as __ } from '@/boot/translation'
 import {
   computed,
   reactive,
@@ -326,9 +327,9 @@ const updateComment = (comment, thread, editor) => {
   // const usersMentioned = comment.mentions.filter((k) => k.id)
 
   // if (usersMentioned.length)
-  //   toast.info('Share with the tagged people?', {
+  //   toast.info(__('Share with the tagged people?'), {
   //     action: {
-  //       label: 'Go',
+  //       label: __('Go'),
   //       onClick: () => emitter.emit('share', usersMentioned),
   //     },
   //   })

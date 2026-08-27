@@ -37,11 +37,11 @@
       " :button="{
           variant: 'solid',
           id: 'create-button',
-          label: 'Create',
+          label: __('Create'),
           iconLeft: h(LucidePlus, { class: 'size-4' }),
         }" :options="newEntityOptions" align="end" />
       <Button v-else-if="$route.name === 'drive-Documents' || $route.name === 'drive-Presentations'" id="create-button"
-        label="Create" variant="solid" :icon-left="h(LucidePlus, { class: 'size-4' })"
+        :label="__('Create')" variant="solid" :icon-left="h(LucidePlus, { class: 'size-4' })"
         @click="newExternal($route.name === 'drive-Documents' ? 'Document' : 'Presentation')" />
       <Button v-if="button" :disabled="!button.entities.data?.length" :theme="button.theme || 'gray'"
         @click="button.onClick">
@@ -55,6 +55,7 @@
   </nav>
 </template>
 <script setup>
+import { translate as __ } from '@/boot/translation'
 import EntityDialogs from '@/apps/drive/components/EntityDialogs.vue'
 import { Button, Dropdown } from 'frappe-ui'
 import EditableBreadcrumbs from '@/apps/drive/components/EditableBreadcrumbs.vue'
@@ -339,15 +340,15 @@ const button = computed(() => possibleButtons.find((k) => k.route == route.name)
 
 const newEntityOptions = computed(() => [
   {
-    group: 'Create',
+    group: __('Create'),
     options: dynamicList([
       {
-        label: 'Document',
+        label: __('Document'),
         icon: LucideFilePlus2,
         onClick: () => newExternal('Document'),
       },
       {
-        label: 'Presentation',
+        label: __('Presentation'),
         icon: LucideGalleryVerticalEnd,
         onClick: () => newExternal('Presentation'),
         cond: isPrivate.value && apps.data?.find?.((k) => k.name === 'slides'),
@@ -359,27 +360,27 @@ const newEntityOptions = computed(() => [
         cond: isPrivate.value && apps.data?.find?.((k) => k.name === 'sheets'),
       },
       {
-        label: 'Folder',
+        label: __('Folder'),
         icon: LucideFolderPlus,
         onClick: () => openListDialog('f'),
       },
       {
-        label: 'Link',
+        label: __('Link'),
         icon: LucideLink,
         onClick: () => openListDialog('l'),
       },
     ]),
   },
   {
-    group: 'Upload',
+    group: __('Upload'),
     options: [
       {
-        label: 'Upload File',
+        label: __('Upload File'),
         icon: LucideFileUp,
         onClick: () => emitter.emit('uploadFile'),
       },
       {
-        label: 'Upload Folder',
+        label: __('Upload Folder'),
         icon: LucideFolderUp,
         onClick: () => emitter.emit('uploadFolder'),
       },

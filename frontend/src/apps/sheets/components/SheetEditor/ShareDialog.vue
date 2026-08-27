@@ -16,7 +16,7 @@
       <!-- Mirrors Frappe Writer / Drive: two frappe-ui Selects side by side
            (access level + role) so the whole dialog speaks one consistent
            control + typography language instead of a mix of pills and badges. -->
-      <p class="sd-section-label">General Access</p>
+      <p class="sd-section-label">{{ __('General Access') }}</p>
       <div class="flex items-center justify-between gap-2">
         <Select
           :model-value="generalAccess"
@@ -139,6 +139,7 @@
 </template>
 
 <script setup>
+import { translate as __ } from '@/boot/translation'
 import { ref, computed, watch } from 'vue'
 import { Badge, Button, Dialog, Spinner, Avatar, Select } from 'frappe-ui'
 import { call } from '../../utils/api.js'
@@ -242,12 +243,12 @@ const generalAccess = ref('restricted')   // 'restricted' | 'all'
 const generalRole   = ref('0')            // '0' = Can view, '1' = Can edit
 
 const generalAccessOptions = [
-  { label: 'Restricted',        value: 'restricted', icon: 'lucide-lock' },
-  { label: 'Accessible to all', value: 'all',        icon: 'lucide-globe' },
+  { label: __('Restricted'),        value: 'restricted', icon: 'lucide-lock' },
+  { label: __('Accessible to all'), value: 'all',        icon: 'lucide-globe' },
 ]
 const generalRoleOptions = [
-  { label: 'Can view', value: '0', icon: 'lucide-eye' },
-  { label: 'Can edit', value: '1', icon: 'lucide-pencil' },
+  { label: __('Can view'), value: '0', icon: 'lucide-eye' },
+  { label: __('Can edit'), value: '1', icon: 'lucide-pencil' },
 ]
 
 // Serializes the two general-access handlers so a rapid restricted→all toggle
@@ -306,9 +307,9 @@ const loading = ref(false)
 const shares  = ref([])
 
 const memberRoleOptions = [
-  { label: 'Can view',      value: '0',      icon: 'lucide-eye' },
-  { label: 'Can edit',      value: '1',      icon: 'lucide-pencil' },
-  { label: 'Remove access', value: 'remove', icon: 'lucide-trash-2' },
+  { label: __('Can view'),      value: '0',      icon: 'lucide-eye' },
+  { label: __('Can edit'),      value: '1',      icon: 'lucide-pencil' },
+  { label: __('Remove access'), value: 'remove', icon: 'lucide-trash-2' },
 ]
 
 async function fetchShares() {
@@ -422,8 +423,8 @@ const pendingRole = ref('0')        // '0' = Can view, '1' = Can edit
 const inviting    = ref(false)
 
 const pendingRoleOptions = [
-  { label: 'Can view', value: '0', icon: 'lucide-eye' },
-  { label: 'Can edit', value: '1', icon: 'lucide-pencil' },
+  { label: __('Can view'), value: '0', icon: 'lucide-eye' },
+  { label: __('Can edit'), value: '1', icon: 'lucide-pencil' },
 ]
 
 function addChip(u) {

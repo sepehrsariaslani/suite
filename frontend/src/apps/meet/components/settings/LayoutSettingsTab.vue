@@ -1,12 +1,12 @@
 <template>
 	<AppSettingsHeader
-		title="Layout"
+		:title="__('Layout')"
 		description="Customize the meeting interface layout"
 	/>
 	<AppSettingsBody>
 		<div class="space-y-6">
 			<SettingsRow
-				title="Auto-hide header and controls"
+				:title="__('Auto-hide header and controls')"
 				description="Automatically hide the header and toolbar after 10 seconds of inactivity"
 			>
 				<Switch v-model="autoHideToolbarLocal" />
@@ -16,6 +16,7 @@
 </template>
 
 <script setup lang="ts">
+import { translate as __ } from '@/boot/translation'
 import AppSettingsHeader from '@/components/settings/AppSettingsHeader.vue'
 import AppSettingsBody from '@/components/settings/AppSettingsBody.vue'
 import { SettingsRow, Switch } from "frappe-ui";

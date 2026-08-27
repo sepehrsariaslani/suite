@@ -3,7 +3,7 @@
 		<Navbar
 			dropdown="home"
 			:primaryButton="{
-				label: 'New',
+				label: __('New'),
 				icon: Plus,
 				onClick: () => navigateToEditor(),
 			}"

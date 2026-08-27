@@ -66,7 +66,7 @@ const canPin = computed(() => {
 })
 
 const primaryButtonProps = computed(() => ({
-	label: 'Present',
+	label: __('Present'),
 	icon: Play,
 	onClick: () => emit('startSlideShow'),
 	hide: route.name === 'slides-editor-new',

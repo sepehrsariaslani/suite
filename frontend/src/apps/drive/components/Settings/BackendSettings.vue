@@ -23,8 +23,8 @@
         type="select"
         label="Backend Type"
         :options="[
-          { label: 'Disk', value: 'disk' },
-          { label: 'S3', value: 's3' },
+          { label: __('Disk'), value: 'disk' },
+          { label: __('S3'), value: 's3' },
         ]"
         description="Whether to store on disk or on an S3 bucket."
       />
@@ -76,6 +76,7 @@
 </template>
 
 <script setup>
+import { translate as __ } from '@/boot/translation'
 import { ref, reactive, watch, markRaw } from 'vue'
 import {
   FormControl,
@@ -118,7 +119,7 @@ watch(
 
 function confirmSync() {
   createDialog({
-    title: 'Sync files from S3',
+    title: __('Sync files from S3'),
     component: markRaw(SyncBreakdown),
   })
 }
@@ -140,7 +141,7 @@ const updateSettings = createResource({
   makeParams: () => ({ ...generalSettings, ...s3Settings }),
   onSuccess() {
     edited.value = false
-    toast.success('S3 settings updated successfully')
+    toast.success(__('S3 settings updated successfully'))
   },
 })
 </script>

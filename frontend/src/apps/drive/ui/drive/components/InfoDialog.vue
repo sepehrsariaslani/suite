@@ -116,6 +116,7 @@
 </template>
 
 <script setup>
+import { translate as __ } from '@/boot/translation'
 import {
   Dialog,
   Button,
@@ -167,12 +168,12 @@ const accessConfig = {
   public: {
     icon: LucideGlobe2,
     color: 'bg-surface-red-2 text-ink-red-6',
-    label: 'Public',
+    label: __('Public'),
   },
   restricted: {
     icon: LucideLock,
     color: 'text-ink-gray-7 bg-surface-gray-4',
-    label: 'Restricted',
+    label: __('Restricted'),
   },
 }
 </script>

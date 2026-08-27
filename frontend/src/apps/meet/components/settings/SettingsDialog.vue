@@ -4,7 +4,7 @@
 		v-model:tab="activeTabValue"
 		size="5xl"
 	>
-		<template #title>Settings</template>
+		<template #title>{{ __('Settings') }}</template>
 		<SettingsSidebar>
 			<SettingsNavGroup
 				v-for="group in tabs"
@@ -44,6 +44,7 @@
 </template>
 
 <script setup lang="ts">
+import { translate as __ } from '@/boot/translation'
 import {
 	SettingsContent,
 	SettingsDialog as UiSettingsDialog,
@@ -117,10 +118,10 @@ const tabs = computed((): TabGroup[] => {
 		!props.isPreview
 	) {
 		allTabs.push({
-			label: "Meeting",
+			label: __('Meeting'),
 			items: [
 				{
-					label: "Controls",
+					label: __('Controls'),
 					value: "meeting-access",
 					icon: h(LucideUser),
 					component: markRaw(MeetingAccessSettingsTab),
@@ -131,16 +132,16 @@ const tabs = computed((): TabGroup[] => {
 
 	allTabs.push(
 		{
-			label: "Media",
+			label: __('Media'),
 			items: [
 				{
-					label: "Devices",
+					label: __('Devices'),
 					value: "devices",
 					icon: h(LucideMonitorSmartphone),
 					component: markRaw(DeviceSettingsTab),
 				},
 				{
-					label: "Audio",
+					label: __('Audio'),
 					value: "audio",
 					icon: h(LucideAudioLines),
 					component: markRaw(AudioSettingsTab),
@@ -154,16 +155,16 @@ const tabs = computed((): TabGroup[] => {
 			],
 		},
 		{
-			label: "Interface",
+			label: __('Interface'),
 			items: [
 				{
-					label: "Notifications",
+					label: __('Notifications'),
 					value: "notifications",
 					icon: h(LucideBell),
 					component: markRaw(NotificationSettingsTab),
 				},
 				{
-					label: "Layout",
+					label: __('Layout'),
 					value: "layout",
 					icon: h(LucideLayoutDashboard),
 					condition: () => !props.isPreview,

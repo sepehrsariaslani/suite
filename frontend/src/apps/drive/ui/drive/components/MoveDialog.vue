@@ -53,7 +53,7 @@
                           node.children.push({
                             parent: node.value,
                             value: null,
-                            label: 'New folder',
+                            label: __('New folder'),
                           })
                           if (!expanded) toggle()
                         }
@@ -124,6 +124,7 @@
   </Dialog>
 </template>
 <script setup>
+import { translate as __ } from '@/boot/translation'
 import { watch, computed, h, ref, reactive } from 'vue'
 
 import {
@@ -181,7 +182,7 @@ function lastMoveParent() {
 }
 const tree = reactive({
   name: '',
-  label: 'Home',
+  label: __('Home'),
   children: [],
   options: {
     isCollapsed: true,
@@ -193,7 +194,7 @@ const selected = ref('')
 const breadcrumbs = ref([{ name: '', file_name: 'Home' }])
 
 const tabs = computed(() => [
-  { label: 'Home', value: 'home', icon: h(LucideHome, { class: 'size-4' }) },
+  { label: __('Home'), value: 'home', icon: h(LucideHome, { class: 'size-4' }) },
   { label: 'Site', value: 'site', icon: h(LucideBuilding2, { class: 'size-4' }) },
 ])
 
@@ -309,7 +310,7 @@ const createFolder = createResource({
     createdNode.value = null
   },
   onError() {
-    toast.error('There is already a folder with this name here.')
+    toast.error(__('There is already a folder with this name here.'))
   },
 })
 

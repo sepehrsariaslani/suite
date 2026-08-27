@@ -1,14 +1,14 @@
 <template>
   <div class="fr-panel" ref="panelRef">
     <div class="fr-header">
-      <span class="fr-title">Find &amp; Replace</span>
+      <span class="fr-title">{{ __('Find & Replace') }}</span>
       <Button variant="ghost" size="sm" icon="lucide-x" @click="emit('close')" />
     </div>
     <FormControl
       type="text"
       size="sm"
       v-model="findQuery"
-      placeholder="Find"
+      :placeholder="__('Find')"
       autocomplete="off"
       @keydown.enter="findNext"
       @keydown.escape="emit('close')"
@@ -17,13 +17,13 @@
       type="text"
       size="sm"
       v-model="replaceQuery"
-      placeholder="Replace with"
+      :placeholder="__('Replace with')"
       autocomplete="off"
     />
     <div class="fr-actions">
-      <Button class="fr-grow" variant="solid"   size="sm" label="Find next" @click="findNext" />
-      <Button class="fr-grow" variant="outline" size="sm" label="Replace"   @click="replaceCurrent" />
-      <Button class="fr-grow" variant="outline" size="sm" label="All"       @click="replaceAll" />
+      <Button class="fr-grow" variant="solid"   size="sm" :label="__('Find next')" @click="findNext" />
+      <Button class="fr-grow" variant="outline" size="sm" :label="__('Replace')"   @click="replaceCurrent" />
+      <Button class="fr-grow" variant="outline" size="sm" :label="__('All')"       @click="replaceAll" />
     </div>
     <div v-if="status" class="fr-status">{{ status }}</div>
   </div>
@@ -81,7 +81,7 @@ function _buildMatches() {
   }
   matches.value  = found
   matchIndex.value = found.length ? 0 : -1
-  status.value = found.length ? `1 of ${found.length}` : 'No matches'
+  status.value = found.length ? __('{0} of {1}', [1, found.length]) : __('No matches')
 }
 
 watch(findQuery, () => {
@@ -92,7 +92,7 @@ watch(findQuery, () => {
 function findNext() {
   if (!matches.value.length) { _buildMatches(); if (!matches.value.length) return }
   matchIndex.value = (matchIndex.value + 1) % matches.value.length
-  status.value = `${matchIndex.value + 1} of ${matches.value.length}`
+  status.value = __('{0} of {1}', [matchIndex.value + 1, matches.value.length])
   emit('navigateTo', matches.value[matchIndex.value])
 }
 

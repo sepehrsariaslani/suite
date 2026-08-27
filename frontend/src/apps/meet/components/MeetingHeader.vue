@@ -11,7 +11,7 @@ const props = defineProps<{
 
 const crumbs = computed(() => [
 	{
-		label: "Meet",
+		label: __('Meet'),
 		route: "/meet",
 	},
 	{

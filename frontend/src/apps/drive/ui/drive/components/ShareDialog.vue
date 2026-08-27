@@ -29,7 +29,7 @@
           </div>
         </div>
         <!-- Members section -->
-        <div class="text-ink-gray-5 text-sm mb-2">Members</div>
+        <div class="text-ink-gray-5 text-sm mb-2">{{ __('Members') }}</div>
         <div class="flex items-start gap-2 rounded-4 bg-surface-base p-1.5 ring-1 ring-outline-gray-2 mb-4">
           <TagInput autofocus v-model="usersToAdd" v-model:options="filteredUsers" class="flex-1 min-w-0" :render-icon="(k) =>
             k.is_group
@@ -63,15 +63,15 @@
             </div>
             <div class="ml-auto flex w-28 shrink-0 items-center justify-end">
               <span v-if="user.user == currentUserId" class="mr-1 text-ink-gray-7">
-                <template v-if="user.user === file.owner">Owner (you)</template>
-                <template v-else>You</template>
+                <template v-if="user.user === file.owner">{{ __('Owner (you)') }}</template>
+                <template v-else>{{ __('You') }}</template>
               </span>
               <AccessSelect v-else-if="user.user !== file.owner" variant="ghost" :modelValue="user.write ? 'editor' : user.upload ? 'upload' : 'reader'
                 " :options="[...accessOptions, REMOVE_OPTION]" @update:model-value="
                   (val) => updatePermissions(user, val, file.name, idx)
                 " />
               <span v-else class="flex items-center gap-1 text-ink-gray-5">
-                Owner
+                {{ __('Owner') }}
                 <span class="lucide-diamond size-3" aria-hidden="true" />
               </span>
             </div>
@@ -91,7 +91,7 @@
         <div class="w-full flex items-center justify-end mt-8">
           <div class="flex gap-2">
             <Button variant="outline" icon-left="lucide-link-2" label="Copy link" @click="getFileLink(file)" />
-            <Button v-if="usersToAdd.length" label="Invite" variant="solid" @click="inviteUsers" />
+            <Button v-if="usersToAdd.length" :label="__('Invite')" variant="solid" @click="inviteUsers" />
           </div>
         </div>
       </div>
@@ -99,6 +99,7 @@
   </Dialog>
 </template>
 <script setup>
+import { translate as __ } from '@/boot/translation'
 import { ref, computed, watch, h } from 'vue'
 import { useSessionStore } from '@/boot/session'
 import {
@@ -140,7 +141,7 @@ getUserGroups.fetch()
 
 const levelOptions = [
   {
-    label: 'Accessible to invited members',
+    label: __('Accessible to invited members'),
     value: 'restricted',
     icon: 'lucide-lock',
   },
@@ -149,28 +150,28 @@ const levelOptions = [
     value: 'site',
     icon: 'lucide-building-2',
   },
-  { label: 'Accessible to all', value: 'public', icon: 'lucide-globe-2' },
+  { label: __('Accessible to all'), value: 'public', icon: 'lucide-globe-2' },
 ]
 
 const ACCESS_RANK = { reader: 0, upload: 1, editor: 2 }
 const REMOVE_OPTION = {
   value: 'remove',
-  label: 'Remove',
+  label: __('Remove'),
   icon: 'lucide-trash-2',
 }
 
 const accessOptions = computed(() =>
   dynamicList([
-    { value: 'reader', label: 'Can view', icon: 'lucide-eye' },
+    { value: 'reader', label: __('Can view'), icon: 'lucide-eye' },
     {
       value: 'upload',
-      label: 'Can upload',
+      label: __('Can upload'),
       cond: props.file.is_folder && props.file.upload,
       icon: 'lucide-upload',
     },
     {
       value: 'editor',
-      label: 'Can edit',
+      label: __('Can edit'),
       cond: props.file.write,
       icon: 'lucide-pencil',
     },

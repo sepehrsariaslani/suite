@@ -46,6 +46,7 @@
 </template>
 
 <script setup>
+import { translate as __ } from '@/boot/translation'
 import { ref, inject } from 'vue'
 import { useRouter } from 'vue-router'
 import { Dropdown, Button } from 'frappe-ui'
@@ -87,9 +88,9 @@ const getHomeMenuOptions = () => [
 ]
 
 const presentationActions = [
-	{ label: 'New', icon: 'lucide-plus', action: 'create' },
-	{ label: 'Duplicate', icon: 'lucide-copy', action: 'duplicate' },
-	{ label: 'Delete', icon: 'lucide-trash', action: 'delete' },
+	{ label: __('New'), icon: 'lucide-plus', action: 'create' },
+	{ label: __('Duplicate'), icon: 'lucide-copy', action: 'duplicate' },
+	{ label: __('Delete'), icon: 'lucide-trash', action: 'delete' },
 	{ label: 'Change Theme', icon: 'lucide-swatch-book', action: 'updateTheme' },
 ]
 
@@ -101,7 +102,7 @@ const getContextMenuOptions = () => {
 			group: '',
 			options: [
 				{
-					label: 'Back to Home',
+					label: __('Back to Home'),
 					icon: 'lucide-arrow-left',
 					onClick: () => router.replace({ name: 'slides-home' }),
 				},
@@ -112,7 +113,7 @@ const getContextMenuOptions = () => {
 
 	if (!inReadonlyMode.value) {
 		groups.push({
-			group: 'Presentation',
+			group: __('Presentation'),
 			options: presentationActions.map(({ label, icon, action }) => ({
 				label,
 				icon,

@@ -21,7 +21,7 @@
       :loading-more="loadingMore" @dropped="onDrop" />
   </div>
   <p class="hidden absolute text-center top-1/2 left-[calc(50%-4rem)] w-32 z-10 font-bold">
-    Drop to upload
+    {{ __('Drop to upload') }}
   </p>
   <Transition v-if="uploads.length > 0"
     enter-active-class="transition duration-[150ms] ease-[cubic-bezier(.21,1.02,.73,1)]"
@@ -34,6 +34,7 @@
     :entities="activeEntity ? [activeEntity] : selectedEntitities" />
 </template>
 <script setup>
+import { translate as __ } from '@/boot/translation'
 import ListView from '@/apps/drive/components/ListView.vue'
 import GridView from '@/apps/drive/components/GridView.vue'
 import DriveToolBar from '@/apps/drive/components/DriveToolBar.vue'
@@ -118,12 +119,12 @@ const sortId = computed(() => route.params.entityName || route.name)
 const inIframe = inject('inIframe', false)
 const DEFAULT_SORT = inIframe
   ? {
-    label: 'Name',
+    label: __('Name'),
     field: 'name',
     ascending: true,
   }
   : {
-    label: 'Modified',
+    label: __('Modified'),
     field: 'modified',
     ascending: false,
   }
@@ -501,14 +502,14 @@ const actionItems = computed(() => {
   if (route.name === 'drive-Trash') {
     return [
       {
-        label: 'Restore',
+        label: __('Restore'),
         icon: LucideRotateCcw,
         action: (entities) => confirmRestore(entities, { onSuccess: () => removeFromList(entities) }),
         multi: true,
         important: true,
       },
       {
-        label: 'Delete forever',
+        label: __('Delete forever'),
         icon: LucideTrash,
         action: (entities) => confirmDeleteForever(entities, { onSuccess: () => removeFromList(entities) }),
         isEnabled: () => route.name === 'drive-Trash',
@@ -660,10 +661,10 @@ async function newLink() {
     localStorage.setItem('prevClip', text)
     const url = new URL(text)
     if (url.host)
-      toast('Link detected', {
+      toast(__('Link detected'), {
         description: text,
         action: {
-          label: 'Add',
+          label: __('Add'),
           onClick: () => {
             listDialog.value = 'l'
           },

@@ -1,7 +1,7 @@
 <template>
   <Dialog
     v-model:open="open"
-    title="Settings"
+    :title="__('Settings')"
     @close="model = false"
   >
     <Tabs v-model="tabIndex" :tabs>
@@ -24,7 +24,7 @@
                     type="number"
                     label="Font size"
                     autocomplete="off"
-                    placeholder="Automatic"
+                    :placeholder="__('Automatic')"
                     description="Set the font size of the editor (px)."
                   />
                   <FormControl
@@ -34,7 +34,7 @@
                     autocomplete="off"
                     :min="0.5"
                     :step="0.05"
-                    placeholder="Automatic"
+                    :placeholder="__('Automatic')"
                     description="A multiple of single spacing, like 1.15 or 1.5."
                   />
                   <div class="space-y-1.5">
@@ -60,14 +60,14 @@
                       />
                     </div>
                     <div class="text-p-sm text-ink-gray-5">
-                      Set the default spacing around paragraphs.
+                      {{ __('Set the default spacing around paragraphs.') }}
                     </div>
                   </div>
                 </div>
 
                 <!-- Print Settings Section -->
                 <div v-if="tabIndex === 1" class="flex flex-col gap-3 pb-5 pr-5">
-                    <h3 class="text-base font-medium text-ink-gray-7">Print settings</h3>
+                    <h3 class="text-base font-medium text-ink-gray-7">{{ __('Print Settings') }}</h3>
                     <div class="space-y-2">
                       <FormLabel label="Header & footer" size="md" />
                       <div class="grid grid-cols-2 gap-2">
@@ -102,26 +102,26 @@
                         />
                       </div>
                       <div class="text-p-sm text-ink-gray-5 mt-2">
-                        Set the text to appear in headers and footers when printing.
+                        {{ __('Set the text to appear in headers and footers when printing.') }}
                       </div>
                     </div>
                     <div class="flex flex-col gap-3">
                       <FormControl
                         v-model="settings.print_show_pages"
                         type="checkbox"
-                        label="Show page numbers"
+                        :label="__('Show page numbers')"
                         description="Add a line below the header when printing."
                       />
                       <FormControl
                         v-model="settings.print_header_separator"
                         type="checkbox"
-                        label="Header separator line"
+                        :label="__('Header separator line')"
                         description="Add a line below the header when printing."
                       />
                       <FormControl
                         v-model="settings.print_footer_separator"
                         type="checkbox"
-                        label="Footer separator line"
+                        :label="__('Footer separator line')"
                         description="Add a line above the footer when printing."
                       />
                     </div>
@@ -159,6 +159,7 @@
 </template>
 
 <script setup>
+import { translate as __ } from '@/boot/translation'
 import { computed, ref, reactive, watchEffect } from 'vue'
 import { Button, FormControl, Dialog, Tabs, FormLabel } from 'frappe-ui'
 import { FONT_FAMILIES, dynamicList } from '@/apps/writer/utils/'
@@ -177,15 +178,15 @@ const props = defineProps({
   editable: Boolean,
 })
 const tabs = dynamicList([
-  { label: 'Everywhere', icon: LucideGlobe2 },
-  { label: 'This document', icon: LucideFileText },
+  { label: __('Everywhere'), icon: LucideGlobe2 },
+  { label: __('This document'), icon: LucideFileText },
 ])
 const tabIndex = ref(props.editable ? 1 : 0)
 
 const fontOptions = computed(() =>
   dynamicList([
     {
-      label: 'Automatic',
+      label: __('Automatic'),
       value: 'global',
       key: 'global',
       cond: tabIndex.value === 1,

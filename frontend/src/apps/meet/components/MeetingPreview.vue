@@ -50,7 +50,7 @@
 					</p>
 
 					<h2 class="mb-7 text-3xl-semibold text-ink-gray-9">
-						Ready to join?
+						{{ __('Ready to join?') }}
 					</h2>
 
 					<AvatarGroup
@@ -69,8 +69,8 @@
 							ref="guestNameInputRef"
 							v-model="guestName"
 							type="text"
-							label="Your name"
-							placeholder="John Doe"
+							:label="__('Your name')"
+							:placeholder="__('John Doe')"
 							:maxlength="50"
 							autocomplete="off"
 						/>
@@ -97,6 +97,7 @@
 </template>
 
 <script setup lang="ts">
+import { translate as __ } from '@/boot/translation'
 import { Button, createResource, FormControl, toast } from "frappe-ui";
 import { computed, nextTick, onMounted, ref, watch } from "vue";
 import AvatarGroup from "../components/AvatarGroup.vue";

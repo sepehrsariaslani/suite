@@ -1,3 +1,4 @@
+import { translate as __ } from '@/boot/translation'
 import { dialog, toast } from "frappe-ui";
 import { onUnmounted, type Ref, ref, watch } from "vue";
 import { autoFramingPaused } from "../data/backgroundEffects";
@@ -420,9 +421,8 @@ export function useMediaControls(deps: MediaControlsDeps): MediaControlsAPI {
 	const confirmScreenShareOverride = () =>
 		new Promise<boolean>((resolve) => {
 			dialog.confirm({
-				title: "Start Screen Share Anyway?",
-				message:
-					"Someone is already sharing their screen. Starting yours may result in multiple active screen shares.",
+				title: __('Start Screen Share Anyway?'),
+				message: __('Someone is already sharing their screen. Starting yours may result in multiple active screen shares.'),
 				onConfirm: () => resolve(true),
 				onCancel: () => resolve(false),
 			});
@@ -587,7 +587,7 @@ export function useMediaControls(deps: MediaControlsDeps): MediaControlsAPI {
 		}
 		mediaState.isCameraOn = false;
 		setCameraEnabled(false);
-		toast.error("Failed to toggle camera");
+		toast.error(__('Failed to toggle camera'));
 		throw error;
 	};
 
@@ -1085,7 +1085,7 @@ export function useMediaControls(deps: MediaControlsDeps): MediaControlsAPI {
 				assertCurrentCameraOperation(operation);
 				setCameraEnabled(false);
 				assertCurrentCameraOperation(operation);
-				toast.error("Failed to toggle camera");
+				toast.error(__('Failed to toggle camera'));
 				throw fallbackError;
 			}
 			console.warn("Failed to switch camera, restored raw video:", error);
@@ -1969,7 +1969,7 @@ export function useMediaControls(deps: MediaControlsDeps): MediaControlsAPI {
 		} catch (error) {
 			if (isCameraLifecycleAbort(error)) return;
 			console.error("Failed to toggle microphone:", error);
-			toast.error("Failed to toggle microphone");
+			toast.error(__("Failed to toggle microphone"));
 		}
 	};
 	const toggleMicrophone = () =>
@@ -2147,7 +2147,7 @@ export function useMediaControls(deps: MediaControlsDeps): MediaControlsAPI {
 				cleanupBackgroundSession();
 			}
 			console.error("Failed to toggle camera:", error);
-			toast.error("Failed to toggle camera");
+			toast.error(__("Failed to toggle camera"));
 			throw error;
 		}
 	};
@@ -2311,7 +2311,7 @@ export function useMediaControls(deps: MediaControlsDeps): MediaControlsAPI {
 				console.log("User cancelled screen share");
 			} else {
 				console.error("Screen share failed:", error);
-				toast.error("Failed to start screen sharing");
+				toast.error(__("Failed to start screen sharing"));
 			}
 		}
 	};

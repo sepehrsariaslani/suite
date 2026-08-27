@@ -43,7 +43,7 @@ function copyTextContentToClipboard() {
 		setTimeout(() => {
 			copied.value = false;
 		}, 4000);
-		toast.success("Copied to clipboard!");
+		toast.success(__("Copied to clipboard!"));
 	});
 }
 </script>

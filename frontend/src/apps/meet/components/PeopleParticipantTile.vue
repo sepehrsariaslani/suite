@@ -24,13 +24,13 @@
 				v-if="isHost"
 				class="rounded-full bg-surface-gray-4 px-1.5 py-px text-xs text-ink-gray-6 tracking-[0.24px]"
 			>
-				Host
+				{{ __('Host') }}
 			</span>
 			<span
 				v-if="participant.is_guest"
 				class="rounded-full bg-surface-gray-4 px-1.5 py-px text-xs text-ink-gray-6 tracking-[0.24px]"
 			>
-				Guest
+				{{ __('Guest') }}
 			</span>
 		</div>
 
@@ -87,6 +87,7 @@
 </template>
 
 <script setup lang="ts">
+import { translate as __ } from '@/boot/translation'
 import { Dropdown } from "frappe-ui";
 import { computed, ref } from "vue";
 import { useMeetingContext } from "../composables/useMeetingContext";
@@ -139,25 +140,25 @@ const hostOptions = computed(() => {
 	return [
         {
             icon: "lucide-mic-off",
-            label: "Mute",
+            label: __('Mute'),
 			condition: () => !!props.participant.audio_enabled,
 			onClick: () => emit("muteParticipant", props.participant.user_id),
 		},
 		{
             icon: "lucide-hand",
-			label: "Lower Hand",
+			label: __('Lower Hand'),
 			condition: () => isHandRaised.value,
 			onClick: () => emit("lowerHand", props.participant.user_id),
 		},
 		{
 			icon: "lucide-user-shield",
-			label: "Promote to Co-host",
+			label: __('Promote to Co-host'),
 			condition: () => props.canPromoteToCohost,
 			onClick: () => emit("promoteToCohost", props.participant.user_id),
 		},
 		{
             icon: "lucide-user-x",
-            label: "Remove",
+            label: __('Remove'),
 			onClick: () => {
 				showKickDialog.value = true;
 			},

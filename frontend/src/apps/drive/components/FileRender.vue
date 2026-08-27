@@ -4,11 +4,11 @@
     class="max-w-[450px] h-fit self-center p-10 border border-outline-gray-2 bg-surface-base rounded-4 text-2xl-medium text-center shadow-xl flex flex-col justify-center items-center gap-4"
   >
     <LucideAlertCircle class="size-8 text-ink-gray-8" />
-    <span class="text-ink-gray-9">Cannot open file</span>
+    <span class="text-ink-gray-9">{{ __('Cannot open file') }}</span>
     <span class="text-base text-center text-ink-gray-7">
       {{ error }}
     </span>
-    <Button class="w-full" variant="solid" @click="download"> Download </Button>
+    <Button class="w-full" variant="solid" @click="download">{{ __('Download') }}</Button>
   </div>
   <component :is="previewComponent" v-else :preview-entity="previewEntity" />
 </template>

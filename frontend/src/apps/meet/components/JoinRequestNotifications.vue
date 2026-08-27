@@ -21,7 +21,7 @@
 									<span class="font-semibold text-ink-gray-9">
 										{{ request.user_name || request.user_id }}
 									</span>
-									wants to join the meeting
+									{{ __('wants to join the meeting') }}
 								</p>
 							</div>
 						</div>
@@ -30,7 +30,7 @@
 							variant="ghost"
 							theme="gray"
 							size="sm"
-							tooltip="Dismiss request"
+							:tooltip="__('Dismiss request')"
 							@click="forceHide(request.user_id)"
 							class="-mr-1 -mt-1 ml-4"
 						>
