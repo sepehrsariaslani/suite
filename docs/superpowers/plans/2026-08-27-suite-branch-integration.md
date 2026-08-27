@@ -118,6 +118,6 @@ Expected: Vite and service-worker builds exit successfully.
 
 Review changes against `upstream/develop`; reject stale files, unresolved English core strings, leaked secrets, generated build output, and unrelated refactors.
 
-- [ ] **Step 5: Publish and deploy**
+- [x] **Step 5: Publish and deploy**
 
 Push the verified integration commit to `origin/develop`, update the server checkout to `develop`, rebuild assets, clear cache, restart only Suite/Frappe web services, and smoke-test `/suite`, `/drive`, `/meet`, `/writer`, `/slides`, `/sheets`, `/mail`, and `/calendar` for HTTP 200.
