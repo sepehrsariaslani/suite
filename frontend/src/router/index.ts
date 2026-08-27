@@ -8,6 +8,7 @@ import { createResource } from 'frappe-ui'
 
 import { SUITE_APPS, SUITE_LOGO } from '@/apps/registry'
 import { hasServerBoot, useSessionStore } from '@/boot/session'
+import { translate } from '@/boot/translation'
 import APPLE_SPLASH_DEVICES from './pwa-splash-devices.json'
 
 declare module 'vue-router' {
@@ -201,7 +202,7 @@ export function setDocumentTitle(
   if (view && view === from.matched.at(-1)) return
 
   if (to.meta.title) {
-    document.title = to.meta.title
+    document.title = translate(to.meta.title)
   }
 }
 

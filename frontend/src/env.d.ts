@@ -26,6 +26,9 @@ declare global {
     sfu_enabled?: boolean
     /** Frappe translation map (message -> translated); populated per-app. */
     translatedMessages?: Record<string, string>
+    /** Active Frappe language and writing direction. */
+    language?: string
+    textDirection?: 'ltr' | 'rtl'
     /** Global translate helper installed by the suite translation plugin. */
     __?: (message: string, replace?: Array<string | number>) => string
   }

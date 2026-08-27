@@ -26,7 +26,7 @@
             :key="app.id"
             :to="app.prefix"
             :logo="app.logo"
-            :label="app.name"
+            :label="__(app.name)"
           />
 
           <LauncherTile :logo="settingsLogo" :label="__('Settings')" @click="openSettings()" />
