@@ -399,6 +399,7 @@ def get_members(
             is_admin_expr.as_("is_admin"),
         )
         .where(USER_SETTINGS.username.isnotnull())
+        .where(USER.name == USER_SETTINGS.username)
         .groupby(USER.name)
     )
 

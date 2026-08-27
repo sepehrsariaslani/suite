@@ -27,6 +27,28 @@ from suite.mail.tests.base import StalwartIntegrationTestCase, _delete_stalwart_
 
 
 class TestAdminMembers(StalwartIntegrationTestCase):
+    def test_shared_viewer_is_not_listed_as_a_second_member(self):
+        member = self.create_member()
+        viewer_email = f"{unique_name('viewer')}@example.test"
+        frappe.get_doc(
+            {
+                "doctype": "User",
+                "email": viewer_email,
+                "first_name": "Shared",
+                "last_name": "Viewer",
+                "send_welcome_email": 0,
+            }
+        ).insert(ignore_permissions=True)
+        settings = frappe.get_doc("User Settings", {"user": viewer_email})
+        frappe.db.set_value("User Settings", settings.name, "username", member.email)
+
+        with self.set_user("Administrator"):
+            rows = get_members()
+
+        names = [row["name"] for row in rows]
+        self.assertIn(member.email, names)
+        self.assertNotIn(viewer_email, names)
+
     def test_force_create_admin_member(self):
         admin = self.create_member(is_admin=True)
 
