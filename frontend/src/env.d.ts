@@ -22,6 +22,8 @@ declare global {
     suite_workspace_logo?: string
     /** Kill switch for the slides service worker (site config, served by www/suite.py). */
     disable_slides_service_worker?: boolean
+    /** Whether the site has a usable SFU URL and secret. */
+    sfu_enabled?: boolean
     /** Frappe translation map (message -> translated); populated per-app. */
     translatedMessages?: Record<string, string>
     /** Global translate helper installed by the suite translation plugin. */

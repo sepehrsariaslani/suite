@@ -4,6 +4,7 @@ import frappe
 
 from suite import __version__
 from suite.api.account import get_onboarding_state, get_workspace
+from suite.meet.utils.sfu_config import get_sfu_config
 
 no_cache = 1
 
@@ -51,6 +52,8 @@ def get_boot():
         onboarding_state = get_onboarding_state()
         workspace = get_workspace()
 
+    sfu_config = get_sfu_config()
+
     return frappe._dict(
         {
             "site_name": frappe.local.site,
@@ -62,6 +65,7 @@ def get_boot():
             # (frappe-push-notification.ts / PWASettings.vue). Mirrors the old
             # standalone www/mail.py boot, which the suite shell replaced.
             "push_relay_server_url": frappe.conf.get("push_relay_server_url") or "",
+            "sfu_enabled": bool(sfu_config.get("sfu_server_url") and sfu_config.get("sfu_secret")),
             # Onboarding gate, read synchronously by the router (extend_bootinfo
             # does not reach this shell, so the flags live in its own boot).
             "suite_is_onboarded": onboarding_state["is_onboarded"],

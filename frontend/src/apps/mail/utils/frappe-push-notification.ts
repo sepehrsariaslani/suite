@@ -8,14 +8,11 @@ import {
 	onMessage as onFCMMessage,
 } from 'firebase/messaging'
 
-// FCM web config to initialize firebase app
-type WebConfigType = {
-	projectId: string
-	appId: string
-	apiKey: string
-	authDomain: string
-	messagingSenderId: string
-}
+import {
+	hasPushRelayServerURL,
+	isValidWebConfig,
+	type WebConfigType,
+} from '@/apps/mail/utils/pushNotificationConfig'
 
 type MessagePayload = {
 	data: {
@@ -30,7 +27,9 @@ type OnMessageCallback = (payload: MessagePayload) => void
 
 class FrappePushNotification {
 	static get relayServerBaseURL(): string {
-		return window.push_relay_server_url
+		return hasPushRelayServerURL(window.push_relay_server_url)
+			? window.push_relay_server_url
+			: ''
 	}
 
 	// client info
@@ -84,10 +83,14 @@ class FrappePushNotification {
 	// Fetch web config of the project
 	async fetchWebConfig(): Promise<WebConfigType> {
 		if (this.webConfig !== null && this.webConfig !== undefined) return this.webConfig
+		if (!hasPushRelayServerURL(FrappePushNotification.relayServerBaseURL))
+			throw new Error('Push notification relay server URL is not configured')
 
 		const url = `${FrappePushNotification.relayServerBaseURL}/api/method/notification_relay.api.get_config?project_name=${this.projectName}`
 		const response = await fetch(url)
 		const response_json = await response.json()
+		if (!response.ok || !isValidWebConfig(response_json?.config))
+			throw new Error(`Push notification relay config is unavailable for ${this.projectName}`)
 		this.webConfig = response_json.config
 		return this.webConfig!
 	}
@@ -95,10 +98,18 @@ class FrappePushNotification {
 	// Fetch VAPID public key
 	async fetchVapidPublicKey(): Promise<string> {
 		if (this.vapidPublicKey !== '') return this.vapidPublicKey
+		if (!hasPushRelayServerURL(FrappePushNotification.relayServerBaseURL))
+			throw new Error('Push notification relay server URL is not configured')
 
 		const url = `${FrappePushNotification.relayServerBaseURL}/api/method/notification_relay.api.get_config?project_name=${this.projectName}`
 		const response = await fetch(url)
 		const response_json = await response.json()
+		if (
+			!response.ok ||
+			typeof response_json?.vapid_public_key !== 'string' ||
+			!response_json.vapid_public_key.trim()
+		)
+			throw new Error(`Push notification VAPID key is unavailable for ${this.projectName}`)
 		this.vapidPublicKey = response_json.vapid_public_key
 		return this.vapidPublicKey
 	}

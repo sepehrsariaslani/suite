@@ -26,6 +26,12 @@ class SuiteBoot(unittest.TestCase):
                 return_value={"workspace_name": "Acme", "workspace_logo": "/files/logo.png"},
             )
         )
+        self.get_sfu_config = self.enterContext(
+            mock.patch(
+                "suite.www.suite.get_sfu_config",
+                return_value={"sfu_server_url": "http://localhost", "sfu_secret": ""},
+            )
+        )
 
     def test_logged_in_boot_shape(self):
         boot = www.get_boot()
@@ -41,6 +47,14 @@ class SuiteBoot(unittest.TestCase):
             1 if key == "disable_slides_service_worker" else default
         )
         self.assertIs(www.get_boot()["disable_slides_service_worker"], True)
+
+    def test_sfu_availability_reaches_the_boot(self):
+        self.get_sfu_config.return_value = {
+            "sfu_server_url": "https://sfu.example.com",
+            "sfu_secret": "secret",
+        }
+
+        self.assertIs(www.get_boot()["sfu_enabled"], True)
 
     def test_guest_boot_is_redacted(self):
         self.frappe.session.user = "Guest"

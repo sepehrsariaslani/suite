@@ -12,6 +12,10 @@ import type {
 	PresenceTokenResponse,
 } from "../types";
 
+export function shouldFetchMeetingPreviewPresence(isLoggedIn: boolean, sfuEnabled: boolean) {
+	return isLoggedIn && sfuEnabled;
+}
+
 export function useMeetingPreviewPresence(meetingId: string) {
 	const participants = ref<ParticipantPreview[]>([]);
 	const isCurrentUserPresent = ref(false);
@@ -56,13 +60,18 @@ export function useMeetingPreviewPresence(meetingId: string) {
 			}
 		},
 		onError(err: FrappeRequestError) {
-			error.value = err.messages?.length
+			const message = err.messages?.length
 				? err.messages[err.messages.length - 1]
 				: "Failed to fetch presence token";
+			if (message === "SFU secret not configured") {
+				error.value = null;
+				return;
+			}
+			error.value = message;
 		},
 	});
 
-	if (session.isLoggedIn) {
+	if (shouldFetchMeetingPreviewPresence(session.isLoggedIn, window.sfu_enabled === true)) {
 		fetchPresenceToken.fetch();
 	}
 

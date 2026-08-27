@@ -24,6 +24,12 @@ def add_rate_limits() -> None:
     machine-facing APIs (inbound/outbound/spamd) are limited per minute.
     """
 
+    if not frappe.db.exists("DocType", "Rate Limit"):
+        frappe.logger("suite.mail.install").warning(
+            "Skipping mail rate limit bootstrap because the Rate Limit DocType is unavailable."
+        )
+        return
+
     rate_limits = [
         # suite.mail.api.account — public signup / password reset
         # Availability check runs while the user types, so it needs a burst window; the hourly

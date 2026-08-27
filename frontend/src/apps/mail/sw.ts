@@ -1,5 +1,6 @@
 import { initializeApp } from 'firebase/app'
 import { getMessaging, onBackgroundMessage } from 'firebase/messaging/sw'
+import { parseWebConfigParam } from '@/apps/mail/utils/pushNotificationConfig'
 
 // Firebase Cloud Messaging service worker. Bundled to `sw.js` by vite-plugin-pwa
 // (injectManifest) and emitted at /assets/suite/frontend/sw.js, where
@@ -10,11 +11,17 @@ import { getMessaging, onBackgroundMessage } from 'firebase/messaging/sw'
 
 declare const self: ServiceWorkerGlobalScope
 
-const jsonConfig = new URL(location.href).searchParams.get('config')
+export function getFirebaseWebConfigFromLocation(href: string) {
+	return parseWebConfigParam(new URL(href).searchParams.get('config'))
+}
+
+const firebaseConfig = getFirebaseWebConfigFromLocation(location.href)
 
 // Firebase config initialization
 try {
-	const firebaseApp = initializeApp(JSON.parse(jsonConfig as string))
+	if (!firebaseConfig) throw new Error('Push notification config is missing')
+
+	const firebaseApp = initializeApp(firebaseConfig)
 	const messaging = getMessaging(firebaseApp)
 
 	const isChrome = () => navigator.userAgent.toLowerCase().includes('chrome')
@@ -46,6 +53,11 @@ try {
 	console.log('Failed to initialize Firebase:', error)
 }
 
-self.skipWaiting()
-self.clients.claim()
+self.addEventListener('install', (event: ExtendableEvent) => {
+	event.waitUntil(self.skipWaiting())
+})
+
+self.addEventListener('activate', (event: ExtendableEvent) => {
+	event.waitUntil(self.clients.claim())
+})
 console.log('Service Worker Initialized')
