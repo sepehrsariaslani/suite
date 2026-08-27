@@ -30,7 +30,14 @@ export function isValidWebConfig(value: unknown): value is WebConfigType {
 export function parseWebConfigParam(raw: string | null): WebConfigType | null {
 	if (!raw || raw === 'undefined' || raw === 'null') return null
 
-	const candidates = raw.includes('%') ? [decodeURIComponent(raw), raw] : [raw]
+	const candidates = [raw]
+	if (raw.includes('%')) {
+		try {
+			candidates.unshift(decodeURIComponent(raw))
+		} catch {
+			return null
+		}
+	}
 	for (const candidate of candidates) {
 		try {
 			const parsed = JSON.parse(candidate)

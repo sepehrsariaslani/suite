@@ -34,6 +34,10 @@ describe('pushNotificationConfig', () => {
 		expect(parseWebConfigParam('null')).toBeNull()
 	})
 
+	it('treats malformed percent encoding as invalid config', () => {
+		expect(parseWebConfigParam('%ZZ')).toBeNull()
+	})
+
 	it('parses a valid encoded config payload', () => {
 		const encoded = encodeURIComponent(JSON.stringify(validConfig))
 		expect(parseWebConfigParam(encoded)).toEqual(validConfig)
