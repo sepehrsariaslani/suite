@@ -35,7 +35,7 @@ try {
 		if (isChrome()) notificationOptions.data = { url: payload.data?.click_action }
 		else if (payload.data?.click_action)
 			notificationOptions.actions = [
-				{ action: payload.data.click_action, title: 'View Details' },
+				{ action: payload.data.click_action, title: 'مشاهده جزئیات' },
 			]
 
 		self.registration.showNotification(notificationTitle, notificationOptions)

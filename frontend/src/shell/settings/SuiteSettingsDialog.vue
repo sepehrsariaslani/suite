@@ -49,11 +49,11 @@ const { fullName, imageURL, systemUser } = useCurrentUser()
 
 const allGroups = [
   {
-    label: 'Account',
+    label: __('Account'),
     items: [
-      { label: 'Profile', value: 'profile', component: markRaw(UserProfileSettings) },
+      { label: __('Profile'), value: 'profile', component: markRaw(UserProfileSettings) },
       {
-        label: 'Preferences',
+        label: __('Preferences'),
         value: 'preferences',
         icon: SlidersHorizontal,
         component: markRaw(PreferencesSettings),
@@ -61,10 +61,10 @@ const allGroups = [
     ],
   },
   {
-    label: 'Workspace',
+    label: __('Workspace'),
     condition: () => systemUser.value,
     items: [
-      { label: 'General', value: 'workspace', icon: Settings, component: markRaw(WorkspaceSettings) },
+      { label: __('General'), value: 'workspace', icon: Settings, component: markRaw(WorkspaceSettings) },
     ],
   },
 ]

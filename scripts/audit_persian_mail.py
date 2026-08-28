@@ -202,9 +202,8 @@ def literal_runtime_keys(source: str) -> list[str]:
 
 def mail_runtime_keys() -> set[str]:
     keys: set[str] = set()
-    for path in MAIL_ROOT.rglob("*"):
-        if path.is_file() and path.suffix in SOURCE_SUFFIXES and not path.name.endswith(".test.ts"):
-            keys.update(literal_runtime_keys(path.read_text(encoding="utf-8")))
+    for path in audited_source_paths():
+        keys.update(literal_runtime_keys(path.read_text(encoding="utf-8")))
     return keys
 
 

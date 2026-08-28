@@ -1,4 +1,5 @@
 import type { NotificationPayload } from '@/apps/mail/types'
+import { translate as __ } from '@/boot/translation'
 
 export const isChrome = (): boolean => navigator.userAgent.toLowerCase().includes('chrome')
 
@@ -18,7 +19,7 @@ export const showNotification = (payload: NotificationPayload): void => {
 	if (isChrome()) notificationOptions['data'] = { url: payload?.data?.click_action }
 	else if (payload?.data?.click_action)
 		notificationOptions['actions'] = [
-			{ action: payload.data.click_action, title: 'View Details' },
+			{ action: payload.data.click_action, title: __('View Details') },
 		]
 
 	registration.showNotification(notificationTitle || '', notificationOptions)

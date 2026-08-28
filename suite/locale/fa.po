@@ -11123,7 +11123,7 @@ msgstr "در حال بارگذاری ({0}٪)"
 
 #: frontend/src/components/settings/UserProfileSettings.vue
 msgid "Uploading…"
-msgstr ""
+msgstr "در حال بارگذاری…"
 
 #: frontend/src/apps/mail/components/Modals/AddPushSubscriptionModal.vue suite/mail/doctype/mail_cluster_store/mail_cluster_store.json suite/mail/doctype/mail_message_part/mail_message_part.json suite/mail/doctype/push_subscription/push_subscription.json
 msgid "URL"
@@ -14155,3 +14155,156 @@ msgstr "ایمیل فراپه"
 
 msgid "Unhandled Email"
 msgstr "ایمیل‌های پردازش‌نشده"
+
+msgid "\"{0}\" doesn't look like a valid email address."
+msgstr "«{0}» نشانی ایمیل معتبری نیست."
+
+msgid "Acme Inc."
+msgstr "نام مجموعه"
+
+msgid "Add teammates and explore Suite together."
+msgstr "همکارانتان را اضافه کنید و با هم از مجموعه نرم‌افزاری استفاده کنید."
+
+msgid "Change logo"
+msgstr "تغییر نشان"
+
+msgid "Choose a light, dark, or system-matched interface"
+msgstr "نمای روشن، تیره یا هماهنگ با تنظیمات دستگاه را انتخاب کنید"
+
+msgid "Could not save preferences"
+msgstr "ترجیحات ذخیره نشد"
+
+msgid "Could not save workspace"
+msgstr "فضای کاری ذخیره نشد"
+
+msgid "Everything your team needs, all in one place."
+msgstr "هرآنچه تیم شما نیاز دارد، یکجا در دسترس است."
+
+msgid "Failed to send invites."
+msgstr "دعوت‌نامه‌ها ارسال نشدند."
+
+msgid "Frappe Suite logo"
+msgstr "نشان مجموعه نرم‌افزاری"
+
+msgid "Get started"
+msgstr "شروع"
+
+msgid "Invite anyone later from Settings."
+msgstr "بعداً نیز می‌توانید از بخش تنظیمات افراد را دعوت کنید."
+
+msgid "Invite users"
+msgstr "دعوت کاربران"
+
+msgid "Invited"
+msgstr "دعوت‌شده"
+
+msgid "Invited by {0}"
+msgstr "دعوت‌شده توسط {0}"
+
+msgid "Let's invite your team"
+msgstr "همکارانتان را دعوت کنید"
+
+msgid "Logo removed"
+msgstr "نشان حذف شد"
+
+msgid "Logo updated"
+msgstr "نشان به‌روزرسانی شد"
+
+msgid "Make it yours with a name and logo."
+msgstr "با انتخاب نام و نشان، فضای کاری را شخصی‌سازی کنید."
+
+msgid "My Profile"
+msgstr "نمایه من"
+
+msgid "name@company.com, another@company.com"
+msgstr "name@company.com, another@company.com"
+
+msgid "Open Suite"
+msgstr "ورود به مجموعه"
+
+msgid "Outgoing email account not set up."
+msgstr "حساب ایمیل خروجی تنظیم نشده است."
+
+msgid "Remove logo"
+msgstr "حذف نشان"
+
+msgid "Replace logo"
+msgstr "جایگزینی نشان"
+
+msgid "Search by name or email"
+msgstr "جستجو با نام یا ایمیل"
+
+msgid "Select language"
+msgstr "انتخاب زبان"
+
+msgid "Select time zone"
+msgstr "انتخاب منطقه زمانی"
+
+msgid "Send invites"
+msgstr "ارسال دعوت‌نامه‌ها"
+
+msgid "Separate multiple email addresses with commas or new lines"
+msgstr "نشانی‌های ایمیل را با ویرگول یا خط جدید جدا کنید"
+
+msgid "Set up your workspace"
+msgstr "فضای کاری خود را تنظیم کنید"
+
+msgid "The language that the interface is shown in"
+msgstr "زبانی که رابط کاربری با آن نمایش داده می‌شود"
+
+msgid "These don't look like valid email addresses: {0}"
+msgstr "این نشانی‌های ایمیل معتبر نیستند: {0}"
+
+msgid "Time zone"
+msgstr "منطقه زمانی"
+
+msgid "Toggle theme"
+msgstr "تغییر پوسته"
+
+msgid "Upload logo"
+msgstr "بارگذاری نشان"
+
+msgid "Upload workspace logo"
+msgstr "بارگذاری نشان فضای کاری"
+
+msgid "User menu"
+msgstr "منوی کاربر"
+
+msgid "View Details"
+msgstr "مشاهده جزئیات"
+
+msgid "We'll send 1 invite"
+msgstr "۱ دعوت‌نامه ارسال می‌شود"
+
+msgid "We'll send {0} invites"
+msgstr "{0} دعوت‌نامه ارسال می‌شود"
+
+msgid "Welcome to Frappe Suite"
+msgstr "به مجموعه نرم‌افزاری خوش آمدید"
+
+msgid "Working solo for now"
+msgstr "فعلاً به‌تنهایی ادامه می‌دهید"
+
+msgid "Workspace logo"
+msgstr "نشان فضای کاری"
+
+msgid "Workspace logo options"
+msgstr "گزینه‌های نشان فضای کاری"
+
+msgid "Workspace name"
+msgstr "نام فضای کاری"
+
+msgid "Workspace name is required"
+msgstr "نام فضای کاری الزامی است"
+
+msgid "Workspace name saved"
+msgstr "نام فضای کاری ذخیره شد"
+
+msgid "You're all set!"
+msgstr "همه‌چیز آماده است!"
+
+msgid "Your local time zone for dates and times"
+msgstr "منطقه زمانی شما برای نمایش تاریخ و ساعت"
+
+msgid "Your workspace is ready. Time to dive in."
+msgstr "فضای کاری شما آماده است؛ می‌توانید شروع کنید."
