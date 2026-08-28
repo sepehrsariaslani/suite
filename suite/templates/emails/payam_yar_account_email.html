@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="{{ language or 'fa' }}" dir="{{ direction or 'rtl' }}">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>{{ title }}</title>
+</head>
+<body style="margin: 0; padding: 0; background: #f3f5f7; color: #1f2937; direction: rtl; text-align: right; font-family: Tahoma, Arial, sans-serif;">
+	<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="width: 100%; border-collapse: collapse; background: #f3f5f7;">
+		<tr>
+			<td align="center" style="padding: 32px 12px;">
+				<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="width: 100%; max-width: 600px; border-collapse: separate; background: #ffffff; border: 1px solid #e5e7eb; border-radius: 16px; overflow: hidden;">
+					<tr>
+						<td style="padding: 24px 28px; background: #172554; color: #ffffff; font-size: 22px; font-weight: 700;">{{ product_name }}</td>
+					</tr>
+					<tr>
+						<td style="padding: 32px 28px 28px; font-size: 15px; line-height: 2;">
+							<h1 style="margin: 0 0 14px; color: #111827; font-size: 23px; line-height: 1.6;">{{ title }}</h1>
+							<p style="margin: 0 0 20px;">{{ description }}</p>
+							{% if verification_code %}
+							<div dir="ltr" style="margin: 22px 0; padding: 15px 18px; border-radius: 12px; background: #f8fafc; border: 1px solid #dbe3ec; color: #172554; text-align: center; font-family: monospace; font-size: 30px; font-weight: 700; letter-spacing: 6px;">{{ verification_code }}</div>
+							<p style="margin: 0 0 20px; color: #4b5563;">این کد تا {{ expiry_minutes }} دقیقه معتبر است.</p>
+							{% endif %}
+							{% if action_url and button_label %}
+							<table role="presentation" cellpadding="0" cellspacing="0" style="border-collapse: collapse; margin: 24px 0;">
+								<tr><td style="border-radius: 10px; background: #172554;"><a href="{{ action_url }}" style="display: inline-block; padding: 12px 22px; color: #ffffff; font-size: 15px; font-weight: 700; text-decoration: none;">{{ button_label }}</a></td></tr>
+							</table>
+							<p style="margin: 0 0 20px; color: #6b7280; font-size: 12px; line-height: 1.8;">اگر دکمه باز نشد، این نشانی را در مرورگر وارد کنید:<br /><span dir="ltr" style="display: inline-block; direction: ltr; word-break: break-all;">{{ action_url }}</span></p>
+							{% endif %}
+							<p style="margin: 22px 0 0; color: #6b7280; font-size: 13px;">{{ ignore_message }}</p>
+						</td>
+					</tr>
+					<tr>
+						<td style="padding: 18px 28px; background: #f8fafc; border-top: 1px solid #e5e7eb; color: #6b7280; font-size: 12px; line-height: 1.8;">این پیام از طرف {{ sender_name }} و توسط {{ product_name }} ارسال شده است.</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</table>
+</body>
+</html>

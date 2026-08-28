@@ -20,6 +20,7 @@ from frappe.utils import (
     validate_email_address,
 )
 
+from suite.mail.branding import get_mail_branding, get_transactional_sender
 from suite.mail.stalwart import create_account, create_app_password, get_roles
 from suite.mail.utils import get_config, is_stalwart_configured
 from suite.mail.utils.logger import log_admin_action
@@ -310,34 +311,53 @@ class MailAccountRequest(Document):
     def _send_otp_email(self) -> None:
         """Emails the pending signup OTP to the backup email, consuming it."""
 
+        branding = get_mail_branding()
         frappe.sendmail(
             recipients=self.backup_email,
-            subject=_("Frappe Mail - Verification Code"),
-            template="generic",
+            sender=get_transactional_sender(),
+            subject=f"کد تأیید {branding.product_name_fa}",
+            template="payam_yar_account_email",
             args={
-                "title": _("Your verification code is {0}.").format(self._signup_otp),
-                "description": _(
-                    "Enter this code to verify your email address. It expires in {0} minutes."
-                ).format(OTP_TTL_SECONDS // 60),
+                "direction": "rtl",
+                "language": "fa",
+                "product_name": branding.product_name_fa,
+                "sender_name": branding.sender_name,
+                "title": "کد تأیید ایمیل",
+                "description": "برای تأیید نشانی ایمیل، کد زیر را در پیام‌یار وارد کنید.",
+                "verification_code": self._signup_otp,
+                "expiry_minutes": OTP_TTL_SECONDS // 60,
+                "ignore_message": "اگر شما این درخواست را ثبت نکرده‌اید، این پیام را نادیده بگیرید.",
             },
             now=True,
+            raw_html=True,
         )
         self._signup_otp = None
 
     def _send_invite_email(self) -> None:
         """Emails the invite link to the backup email."""
 
+        branding = get_mail_branding()
         frappe.sendmail(
             recipients=self.backup_email,
-            subject=_("You have been invited by {0} to join Frappe Mail").format(self.invited_by),
-            template="generic",
+            sender=get_transactional_sender(),
+            subject=f"دعوت‌نامه عضویت در {branding.product_name_fa}",
+            template="payam_yar_account_email",
             args={
-                "title": _("You have been invited by {0} to join Frappe Mail.").format(self.invited_by),
-                "description": _("Please confirm your email address by clicking the button below."),
-                "button": _("Verify Account"),
-                "link": get_url("/mail/signup/" + self.request_key),
+                "direction": "rtl",
+                "language": "fa",
+                "product_name": branding.product_name_fa,
+                "sender_name": branding.sender_name,
+                "title": f"دعوت‌نامه عضویت در {branding.product_name_fa}",
+                "description": (
+                    f"مجموعه دهاتی از شما دعوت کرده است تا حساب خود را در "
+                    f"{branding.product_name_fa} فعال کنید."
+                ),
+                "button_label": "تأیید و ساخت حساب",
+                "action_url": get_url("/mail/signup/" + self.request_key),
+                "ignore_message": "اگر منتظر این دعوت‌نامه نبوده‌اید، نیازی به انجام کاری نیست.",
             },
             now=True,
+            raw_html=True,
         )
         frappe.msgprint(_("Verification email sent successfully."), indicator="green", alert=True)
 

@@ -9,6 +9,7 @@ import frappe
 from frappe.tests import IntegrationTestCase
 
 from suite.mail.branding import MailBranding, get_mail_branding, get_transactional_sender
+from suite.mail.doctype.mail_account_request.mail_account_request import MailAccountRequest
 
 
 class TestMailBranding(IntegrationTestCase):
@@ -59,3 +60,54 @@ class TestMailBranding(IntegrationTestCase):
     @patch("suite.mail.branding.EmailAccount.find_default_outgoing", return_value=None)
     def test_sender_is_empty_without_outgoing_account(self, _find_default):
         self.assertEqual(get_transactional_sender(), "")
+
+
+class TestPayamYarAccountEmail(IntegrationTestCase):
+    def setUp(self) -> None:
+        super().setUp()
+        self.request = frappe.new_doc("Mail Account Request")
+        self.request.account = "new-member@dehati.ir"
+        self.request.backup_email = "recipient@example.test"
+        self.request.invited_by = "Administrator"
+        self.request.request_key = "test-request-key"
+
+    @patch(
+        "suite.mail.doctype.mail_account_request.mail_account_request.get_transactional_sender",
+        return_value="encoded-sender <info@dehati.ir>",
+    )
+    @patch("suite.mail.doctype.mail_account_request.mail_account_request.is_system_manager", return_value=False)
+    @patch("suite.mail.doctype.mail_account_request.mail_account_request.is_suite_admin", return_value=False)
+    @patch("frappe.sendmail")
+    def test_invitation_email_uses_payam_yar_branding(
+        self, sendmail, _is_suite_admin, _is_system_manager, _get_sender
+    ):
+        self.request._send_invite_email()
+
+        kwargs = sendmail.call_args.kwargs
+        self.assertEqual(kwargs["recipients"], "recipient@example.test")
+        self.assertEqual(kwargs["sender"], "encoded-sender <info@dehati.ir>")
+        self.assertEqual(kwargs["subject"], "دعوت‌نامه عضویت در پیام‌یار")
+        self.assertEqual(kwargs["template"], "payam_yar_account_email")
+        self.assertTrue(kwargs["now"])
+        self.assertEqual(kwargs["args"]["direction"], "rtl")
+        self.assertEqual(kwargs["args"]["button_label"], "تأیید و ساخت حساب")
+        self.assertTrue(kwargs["args"]["action_url"].endswith("/mail/signup/test-request-key"))
+
+    @patch(
+        "suite.mail.doctype.mail_account_request.mail_account_request.get_transactional_sender",
+        return_value="encoded-sender <info@dehati.ir>",
+    )
+    @patch("frappe.sendmail")
+    def test_otp_email_uses_payam_yar_branding(self, sendmail, _get_sender):
+        self.request._signup_otp = "123456"
+
+        self.request._send_otp_email()
+
+        kwargs = sendmail.call_args.kwargs
+        self.assertEqual(kwargs["recipients"], "recipient@example.test")
+        self.assertEqual(kwargs["sender"], "encoded-sender <info@dehati.ir>")
+        self.assertEqual(kwargs["subject"], "کد تأیید پیام‌یار")
+        self.assertEqual(kwargs["template"], "payam_yar_account_email")
+        self.assertEqual(kwargs["args"]["verification_code"], "123456")
+        self.assertEqual(kwargs["args"]["expiry_minutes"], 10)
+        self.assertIsNone(self.request._signup_otp)
