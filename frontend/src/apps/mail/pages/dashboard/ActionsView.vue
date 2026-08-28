@@ -74,24 +74,24 @@ usePageMeta(() => ({ title: __('Actions') }))
 const ACTION_FIELDS: Record<string, ActionField[]> = {
 	// Mirrors the "Input" section of the server's x:DmarcTroubleshoot form; only the body is optional.
 	'x:DmarcTroubleshoot': [
-		{ name: 'remoteIp', label: 'Remote IP', placeholder: '192.168.1.1', required: true },
-		{ name: 'ehloDomain', label: 'EHLO Domain', placeholder: 'mail.example.com', required: true },
-		{ name: 'mailFrom', label: 'MAIL FROM', placeholder: 'sender@example.com', required: true },
-		{ name: 'spfEhloDomain', label: 'SPF EHLO Domain', placeholder: 'mail.example.com', required: true },
-		{ name: 'spfMailFromDomain', label: 'SPF MAIL FROM Domain', placeholder: 'example.com', required: true },
-		{ name: 'message', label: 'Message Body', type: 'textarea' },
+		{ name: 'remoteIp', label: __('Remote IP'), placeholder: '192.168.1.1', required: true },
+		{ name: 'ehloDomain', label: __('EHLO Domain'), placeholder: 'mail.example.com', required: true },
+		{ name: 'mailFrom', label: __('MAIL FROM'), placeholder: 'sender@example.com', required: true },
+		{ name: 'spfEhloDomain', label: __('SPF EHLO Domain'), placeholder: 'mail.example.com', required: true },
+		{ name: 'spfMailFromDomain', label: __('SPF MAIL FROM Domain'), placeholder: 'example.com', required: true },
+		{ name: 'message', label: __('Message Body'), type: 'textarea' },
 	],
 	// Mirrors the "Input" section of the server's x:SpamClassify form; the choices for
 	// `envFromParameters` come from the action itself, as only the server knows its exact values.
 	'x:SpamClassify': [
-		{ name: 'message', label: 'Message', type: 'textarea', required: true },
-		{ name: 'remoteIp', label: 'Remote IP', placeholder: '192.168.1.1', required: true },
-		{ name: 'ehloDomain', label: 'EHLO Domain', placeholder: 'mail.example.com', required: true },
-		{ name: 'authenticatedAs', label: 'Authenticated As', placeholder: 'user@example.com' },
-		{ name: 'isTls', label: 'TLS Enabled', type: 'checkbox' },
-		{ name: 'envFrom', label: 'MAIL FROM', placeholder: 'sender@example.com', required: true },
-		{ name: 'envFromParameters', label: 'MAIL FROM Parameters', type: 'select' },
-		{ name: 'envRcptTo', label: 'RCPT TO', type: 'list', placeholder: 'recipient@example.org' },
+		{ name: 'message', label: __('Message'), type: 'textarea', required: true },
+		{ name: 'remoteIp', label: __('Remote IP'), placeholder: '192.168.1.1', required: true },
+		{ name: 'ehloDomain', label: __('EHLO Domain'), placeholder: 'mail.example.com', required: true },
+		{ name: 'authenticatedAs', label: __('Authenticated As'), placeholder: 'user@example.com' },
+		{ name: 'isTls', label: __('TLS Enabled'), type: 'checkbox' },
+		{ name: 'envFrom', label: __('MAIL FROM'), placeholder: 'sender@example.com', required: true },
+		{ name: 'envFromParameters', label: __('MAIL FROM Parameters'), type: 'select' },
+		{ name: 'envRcptTo', label: __('RCPT TO'), type: 'list', placeholder: 'recipient@example.org' },
 	],
 }
 

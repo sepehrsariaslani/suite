@@ -177,12 +177,12 @@
 									<!-- Weights follow the mail rows: medium once read, semibold while unread,
 									     so a screened sender reads the same as anything else in a list. -->
 									<span
-										class="text-ink-gray-8 truncate text-[15px] !font-medium sm:text-base"
+										class="dir-auto text-ink-gray-8 truncate text-[15px] !font-medium sm:text-base"
 										:class="{ '!font-semibold': sender.unread }"
 									>
 										{{ sender.from_name || sender.from_email }}
 									</span>
-									<span class="text-ink-gray-5 flex-1 truncate text-[13px]">{{ sender.from_email }}</span>
+									<span class="dir-ltr text-ink-gray-5 flex-1 truncate text-[13px]">{{ sender.from_email }}</span>
 									<MailDate
 										v-if="isMobile"
 										:datetime="sender.received_at"

@@ -201,7 +201,7 @@
 										>
 											<div class="flex items-center space-x-1.5">
 												<span
-													class="truncate text-[15px] !font-semibold sm:text-base"
+											class="dir-auto truncate text-[15px] !font-semibold sm:text-base"
 												>
 													{{ mail.from_name || mail.from_email }}
 												</span>
@@ -211,7 +211,7 @@
 												     sender name beside it, so the row does not grow. -->
 												<span
 													v-if="!isMobile && !isCollapsed(mail)"
-													class="text-ink-gray-5 truncate leading-4"
+											class="dir-auto text-ink-gray-5 truncate leading-4"
 												>
 													<span>&lt;</span>
 													<Tooltip :text="__('Filter messages from this sender')">
@@ -1481,8 +1481,8 @@ const getBodyContent = (mail: Mail) => {
 const getQuotedContent = (mail: Mail) =>
 	`
 		<div class="frappe_mail_quote">
-			On ${dayjs(mail.received_at).format('DD MMM YYYY [at] h:mm A')}, ${mail.from_email} wrote:
-			<blockquote style="margin-left: 8px">
+			${__("On {0}, {1} wrote:", [dayjs(mail.received_at).format('DD MMM YYYY [at] h:mm A'), mail.from_email])}
+			<blockquote style="margin-inline-start: 8px">
 				${getBodyContent(mail)}
 			</blockquote>
 		</div>
@@ -1497,12 +1497,12 @@ const getForwardHeader = (mail: Mail) => {
 	return `
 		<div>
 			<br><br>
-			---------- Forwarded message ---------<br>
-			From: ${mail.from_name} &lt;${mail.from_email}&gt;<br>
-			Date: ${dayjs(mail.received_at).format('ddd, MMM D, YYYY [at] h:mm A')}<br>
-			Subject: ${mail.subject || ''}<br>
-			To: ${recipients.to}<br>
-			${recipients.cc ? `Cc: ${recipients.cc}<br>` : ''}
+			${__('---------- Forwarded message ---------')}<br>
+			${__('From')}: ${mail.from_name} &lt;${mail.from_email}&gt;<br>
+			${__('Date')}: ${dayjs(mail.received_at).format('ddd, MMM D, YYYY [at] h:mm A')}<br>
+			${__('Subject')}: ${mail.subject || ''}<br>
+			${__('To')}: ${recipients.to}<br>
+			${recipients.cc ? `${__('Cc')}: ${recipients.cc}<br>` : ''}
 		</div>
 	`
 }

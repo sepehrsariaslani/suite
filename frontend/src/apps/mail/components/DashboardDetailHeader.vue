@@ -9,7 +9,7 @@
 		</div>
 		<div class="min-w-0 flex-1">
 			<div class="flex min-w-0 items-center gap-2">
-				<h1 class="text-ink-gray-9 truncate text-lg font-semibold leading-6">{{ title }}</h1>
+				<h1 class="dir-auto text-ink-gray-9 truncate text-lg font-semibold leading-6">{{ title }}</h1>
 				<Badge v-if="badgeLabel" :label="badgeLabel" :theme="badgeTheme" />
 			</div>
 			<div
@@ -18,7 +18,7 @@
 			>
 				<template v-for="(item, index) in metaItems" :key="index">
 					<span v-if="index" class="text-ink-gray-4">·</span>
-					<span class="truncate">{{ item }}</span>
+					<span class="dir-auto truncate">{{ item }}</span>
 				</template>
 			</div>
 		</div>

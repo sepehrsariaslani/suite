@@ -93,7 +93,7 @@
 							<FormControl
 								v-model="automationRules.subject_contains"
 								:label="__('Subject Contains')"
-								placeholder="Important, Urgent, Follow Up"
+								:placeholder="__('Important, Urgent, Follow Up')"
 								:description="
 									__(
 										'Emails with these keywords in the subject will be automatically moved to this folder.',

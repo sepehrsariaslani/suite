@@ -4,7 +4,7 @@
 			<Button v-if="isMobile" icon="lucide-menu" variant="ghost" @click="openSidebar" />
 			<Breadcrumbs :items="breadcrumbs" class="mx-2" />
 			<Badge v-if="badgeLabel && !loading" :label="badgeLabel" :theme="badgeTheme" />
-			<div class="ml-auto flex space-x-2">
+			<div class="ms-auto flex gap-2">
 				<slot v-if="!loading" name="actions">
 					<Button
 						v-if="buttonLabel"

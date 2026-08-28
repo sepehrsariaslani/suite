@@ -69,11 +69,11 @@
 								class="flex items-start gap-3 border-b px-5 py-3 last:border-b-0"
 							>
 								<div class="min-w-0 flex-1">
-									<p class="truncate text-base">{{ r.email }}</p>
+									<p class="dir-ltr truncate text-base">{{ r.email }}</p>
 									<!-- The server's raw SMTP reply, whatever the outcome. -->
 									<p
 										v-if="r.smtp_reply || r.reason"
-										class="text-ink-gray-6 mt-0.5 text-xs break-words"
+										class="dir-ltr text-ink-gray-6 mt-0.5 text-xs break-words"
 									>
 										{{ r.smtp_reply || r.reason }}
 									</p>

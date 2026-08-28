@@ -8,7 +8,7 @@
 		<slot name="leading">
 			<component :is="icon" v-if="icon" class="size-4 shrink-0" :class="iconTint" />
 		</slot>
-		<span class="min-w-0 flex-1 truncate text-left" :class="labelTint">{{ label }}</span>
+		<span class="min-w-0 flex-1 truncate text-start" :class="labelTint">{{ label }}</span>
 		<slot name="trailing" />
 		<!-- A prop rather than the trailing slot's fallback: rows that put something else
 		     there (a checkmark, nothing at all) would otherwise have to fight the default. -->

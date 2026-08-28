@@ -43,7 +43,7 @@ msgstr ""
 
 #: frontend/src/apps/mail/components/MailThread.vue
 msgid ". You won't receive new messages from this source until you unblock them."
-msgstr ""
+msgstr ". تا زمانی که این منبع را از مسدودی خارج نکنید، پیام جدیدی از آن دریافت نخواهید کرد."
 
 #: suite/drive/doctype/drive_team_member/drive_team_member.json
 msgid "0 for Guest, 1 for User, 2 for Manager"
@@ -51,11 +51,11 @@ msgstr "۰ برای مهمان، ۱ برای کاربر، ۲ برای مدیر"
 
 #: frontend/src/apps/mail/pages/MailboxView.vue
 msgid "1 item selected"
-msgstr ""
+msgstr "۱ مورد انتخاب شد"
 
 #: frontend/src/apps/mail/components/MailThread.vue
 msgid "1 new message"
-msgstr ""
+msgstr "۱ پیام جدید"
 
 #: frontend/src/apps/mail/pages/ScreenerView.vue
 msgid "1 new sender."
@@ -67,11 +67,11 @@ msgstr ""
 
 #: frontend/src/apps/mail/components/EmailContent.vue
 msgid "1 remote image hidden to protect your privacy."
-msgstr ""
+msgstr "برای حفظ حریم خصوصی شما، ۱ تصویر خارجی پنهان شد."
 
 #: frontend/src/apps/mail/pages/MailboxView.vue
 msgid "1 result"
-msgstr ""
+msgstr "۱ نتیجه"
 
 #: suite/mail/doctype/spam_check_log/spam_check_log.py
 msgid "1. Ensure the correct IP address is allowed to connect to SpamAssassin."
@@ -99,11 +99,11 @@ msgstr ""
 
 #: frontend/src/apps/mail/pages/MailboxView.vue
 msgid "[No Subject]"
-msgstr ""
+msgstr "[بدون موضوع]"
 
 #: frontend/src/apps/mail/components/MailListItem.vue frontend/src/apps/mail/components/MailThread.vue frontend/src/apps/mail/components/Modals/SearchModal.vue frontend/src/apps/mail/components/ThreadHeader.vue frontend/src/apps/mail/pages/ScreenerView.vue suite/mail/doctype/mail_message/mail_message.py
 msgid "[No subject]"
-msgstr ""
+msgstr "[بدون موضوع]"
 
 #: frontend/src/apps/calendar/components/EventPopoverContent.vue
 msgid "[No title]"
@@ -287,7 +287,7 @@ msgstr ""
 
 #: frontend/src/apps/mail/components/Settings/Account.vue
 msgid "Account updated."
-msgstr ""
+msgstr "حساب به‌روزرسانی شد."
 
 #: suite/mail/doctype/mail_settings/mail_settings.json
 msgid "Account username for the DNS provider."
@@ -315,7 +315,7 @@ msgstr "اقدام"
 
 #: frontend/src/apps/mail/pages/ScreenerView.vue
 msgid "Action failed."
-msgstr ""
+msgstr "عملیات ناموفق بود."
 
 #: frontend/src/apps/calendar/components/EventPopoverContent.vue frontend/src/apps/calendar/components/Modals/EventModal.vue
 msgid "Action failed. Please try again in some time."
@@ -323,7 +323,7 @@ msgstr ""
 
 #: frontend/src/apps/calendar/utils/index.ts frontend/src/apps/mail/utils/index.ts
 msgid "Action failed. Please try again later."
-msgstr ""
+msgstr "عملیات ناموفق بود. لطفاً بعداً دوباره تلاش کنید."
 
 #: suite/drive/doctype/drive_entity_activity_log/drive_entity_activity_log.json
 msgid "Action Type"
@@ -331,7 +331,7 @@ msgstr "نوع اقدام"
 
 #: frontend/src/apps/mail/components/Settings/ScreenedEmailAddressSettings.vue
 msgid "Action updated."
-msgstr ""
+msgstr "عملیات به‌روزرسانی شد."
 
 #: frontend/src/apps/mail/components/Modals/ShortcutsModal.vue frontend/src/apps/mail/components/ThreadHeader.vue frontend/src/apps/mail/pages/MailboxView.vue frontend/src/apps/sheets/pages/Home.vue frontend/src/apps/slides/components/PresentationList.vue suite/mail/doctype/calendar_exchange/calendar_exchange.js suite/mail/doctype/contacts_exchange/contacts_exchange.js suite/mail/doctype/dns_record/dns_record.js
 msgid "Actions"
@@ -343,31 +343,31 @@ msgstr "فعال کردن"
 
 #: frontend/src/apps/mail/components/Modals/SetSieveScriptStateModal.vue
 msgid "activate"
-msgstr ""
+msgstr "فعال کردن"
 
 #: frontend/src/apps/mail/components/Modals/SieveScriptModal.vue
 msgid "Activate Script"
-msgstr ""
+msgstr "فعال‌سازی اسکریپت"
 
 #: frontend/src/apps/mail/components/Modals/SieveScriptModal.vue
 msgid "Activate this script to apply your rules and filters."
-msgstr ""
+msgstr "برای اعمال قوانین و فیلترهایتان، این اسکریپت را فعال کنید."
 
 #: frontend/src/apps/mail/components/Modals/SetSieveScriptStateModal.vue
 msgid "activated"
-msgstr ""
+msgstr "فعال شد"
 
 #: frontend/src/apps/mail/components/Modals/SetSieveScriptStateModal.vue
 msgid "Activating"
-msgstr ""
+msgstr "در حال فعال‌سازی"
 
 #: frontend/src/apps/mail/components/Modals/SieveScriptModal.vue
 msgid "Activating this script will deactivate the currently active script."
-msgstr ""
+msgstr "با فعال‌سازی این اسکریپت، اسکریپت فعال فعلی غیرفعال می‌شود."
 
 #: frontend/src/apps/mail/components/Modals/SieveScriptModal.vue
 msgid "Activating this script will disable {0}."
-msgstr ""
+msgstr "با فعال‌سازی این اسکریپت، {0} غیرفعال می‌شود."
 
 #: frontend/src/apps/mail/components/Settings/AutomationSettings.vue suite/mail/doctype/sieve_script/sieve_script.json
 msgid "Active"
@@ -375,7 +375,7 @@ msgstr "فعال"
 
 #: frontend/src/apps/mail/components/Modals/SieveScriptModal.vue
 msgid "Active Script {0} Detected"
-msgstr ""
+msgstr "اسکریپت فعال {0} شناسایی شد"
 
 #: suite/sheets/doctype/sheet_op_log/sheet_op_log.json suite/sheets/doctype/sheet_snapshot/sheet_snapshot.json
 msgid "Actor"
@@ -391,11 +391,11 @@ msgstr "افزودن یا ویرایش دیدگاه"
 
 #: frontend/src/apps/mail/components/Modals/AddContactAddressModal.vue
 msgid "Add Address"
-msgstr ""
+msgstr "افزودن نشانی"
 
 #: frontend/src/apps/mail/pages/AddressBooksView.vue
 msgid "Add Address Book"
-msgstr ""
+msgstr "افزودن دفترچه نشانی"
 
 #: frontend/src/apps/calendar/components/Modals/EventModal.vue
 msgid "Add Alert"
@@ -403,7 +403,7 @@ msgstr ""
 
 #: frontend/src/apps/mail/components/Settings/IdentitySettings.vue
 msgid "Add Bcc"
-msgstr ""
+msgstr "افزودن Bcc"
 
 #: frontend/src/apps/mail/pages/ContactsView.vue
 msgid "Add Contact"
@@ -415,11 +415,11 @@ msgstr "افزودن پس‌زمینه دلخواه"
 
 #: frontend/src/apps/mail/components/Modals/AddDomainModal.vue frontend/src/apps/mail/pages/dashboard/DomainsView.vue
 msgid "Add Domain"
-msgstr ""
+msgstr "افزودن دامنه"
 
 #: frontend/src/apps/mail/components/Modals/AddContactEmailModal.vue
 msgid "Add Email"
-msgstr ""
+msgstr "افزودن ایمیل"
 
 #: frontend/src/apps/calendar/components/Modals/EventModal.vue
 msgid "Add Event"
@@ -435,7 +435,7 @@ msgstr ""
 
 #: frontend/src/apps/mail/components/Modals/AddMemberModal.vue frontend/src/apps/mail/pages/dashboard/MembersView.vue
 msgid "Add Member"
-msgstr ""
+msgstr "افزودن عضو"
 
 #: frontend/src/apps/meet/components/CreatePollModal.vue
 msgid "Add Option"
@@ -443,23 +443,23 @@ msgstr "افزودن گزینه"
 
 #: frontend/src/apps/mail/components/Modals/AddContactPhoneModal.vue
 msgid "Add Phone"
-msgstr ""
+msgstr "افزودن تلفن"
 
 #: frontend/src/apps/mail/components/Settings/IdentitySettings.vue
 msgid "Add Reply To"
-msgstr ""
+msgstr "افزودن نشانی پاسخ"
 
 #: frontend/src/apps/mail/components/Modals/FolderModal.vue suite/mail/doctype/mailbox_settings/mailbox_settings.json
 msgid "Add Star"
-msgstr ""
+msgstr "ستاره‌دار کردن"
 
 #: frontend/src/apps/mail/pages/dashboard/DomainView.vue
 msgid "Add the following records to your domain's DNS settings."
-msgstr ""
+msgstr "رکوردهای زیر را به تنظیمات DNS دامنه خود اضافه کنید."
 
 #: frontend/src/apps/mail/components/ThreadHeader.vue frontend/src/apps/mail/pages/MailboxView.vue
 msgid "Add To"
-msgstr ""
+msgstr "افزودن به"
 
 #: suite/mail/doctype/mail_message/mail_message.js
 msgid "Add to "
@@ -467,7 +467,7 @@ msgstr ""
 
 #: frontend/src/apps/mail/components/Modals/AddContactAddressBookModal.vue
 msgid "Add to Address Book"
-msgstr ""
+msgstr "افزودن به دفترچه نشانی"
 
 #: frontend/src/apps/drive/ui/drive/components/InfoDialog.vue
 msgid "Added"
@@ -491,11 +491,11 @@ msgstr "آدرس"
 
 #: frontend/src/apps/mail/components/Modals/AddContactAddressBookModal.vue frontend/src/apps/mail/components/Settings/ContactsExportSettings.vue frontend/src/apps/mail/components/Settings/ContactsImportSettings.vue suite/mail/doctype/contact_card_address_book/contact_card_address_book.json suite/mail/workspace_sidebar/client.json
 msgid "Address Book"
-msgstr ""
+msgstr "دفترچه نشانی"
 
 #: frontend/src/apps/mail/components/Modals/AddAddressBookModal.vue
 msgid "Address book created."
-msgstr ""
+msgstr "دفترچه نشانی ایجاد شد."
 
 #: suite/mail/doctype/address_book/address_book.py
 msgid "Address Book Creation Error"
@@ -503,7 +503,7 @@ msgstr ""
 
 #: frontend/src/apps/mail/pages/AddressBookView.vue
 msgid "Address book deleted."
-msgstr ""
+msgstr "دفترچه نشانی حذف شد."
 
 #: suite/mail/doctype/address_book/address_book.py
 msgid "Address Book Deletion Error"
@@ -535,7 +535,7 @@ msgstr ""
 
 #: frontend/src/apps/mail/pages/AddressBookView.vue
 msgid "Address book updated."
-msgstr ""
+msgstr "دفترچه نشانی به‌روزرسانی شد."
 
 #: suite/mail/doctype/address_book/address_book.py
 msgid "Address Book with ID {0} not found in account {1}."
@@ -555,11 +555,11 @@ msgstr "آدرس ها"
 
 #: frontend/src/apps/mail/components/Modals/AddMemberModal.vue frontend/src/apps/mail/components/Modals/EditInviteModal.vue frontend/src/apps/mail/pages/dashboard/InvitesView.vue frontend/src/apps/mail/pages/dashboard/UsersView.vue
 msgid "Admin"
-msgstr ""
+msgstr "مدیر"
 
 #: frontend/src/apps/mail/components/AppSidebar.vue
 msgid "Admin Dashboard"
-msgstr ""
+msgstr "پیشخوان مدیریت"
 
 #: frontend/src/apps/meet/components/PeopleWaitingSection.vue
 msgid "Admit all"
@@ -627,7 +627,7 @@ msgstr "همه کادرها"
 
 #: frontend/src/apps/mail/components/Modals/ContactsModal.vue
 msgid "All Contacts"
-msgstr ""
+msgstr "همه مخاطبان"
 
 #: frontend/src/apps/calendar/components/Modals/EventModal.vue
 msgid "All Day"
@@ -635,7 +635,7 @@ msgstr "تمام روز"
 
 #: frontend/src/apps/mail/components/Modals/SearchModal.vue
 msgid "All folders"
-msgstr ""
+msgstr "همه پوشه‌ها"
 
 #: frontend/src/apps/mail/components/AppSidebar.vue frontend/src/apps/mail/pages/AllInboxesView.vue
 msgid "All Inboxes"
@@ -643,19 +643,19 @@ msgstr "همه صندوق‌های ورودی"
 
 #: frontend/src/apps/mail/pages/AllInboxesView.vue frontend/src/apps/mail/pages/MailboxView.vue
 msgid "All Mails"
-msgstr ""
+msgstr "همه ایمیل‌ها"
 
 #: frontend/src/apps/mail/components/Modals/AddAddressBookModal.vue frontend/src/apps/mail/components/Modals/EditAddressBookModal.vue
 msgid "All my work-related contacts"
-msgstr ""
+msgstr "همه مخاطبان کاری من"
 
 #: frontend/src/apps/mail/components/Modals/SetSieveScriptStateModal.vue
 msgid "All rules and filters associated with this script will stop functioning immediately."
-msgstr ""
+msgstr "همه قوانین و فیلترهای مرتبط با این اسکریپت فوراً از کار می‌افتند."
 
 #: frontend/src/apps/mail/components/Modals/SetSieveScriptStateModal.vue
 msgid "All rules and filters associated with this script will take effect immediately."
-msgstr ""
+msgstr "همه قوانین و فیلترهای مرتبط با این اسکریپت فوراً اعمال می‌شوند."
 
 #: frontend/src/apps/sheets/components/SheetEditor/VersionHistory.vue
 msgid "All versions"
@@ -711,11 +711,11 @@ msgstr "آلفا (α)"
 
 #: frontend/src/apps/mail/pages/InviteSetupView.vue frontend/src/apps/mail/pages/SignupView.vue
 msgid "Already have an account? Log in."
-msgstr ""
+msgstr "از قبل حساب دارید؟ وارد شوید."
 
 #: frontend/src/apps/mail/components/Modals/FolderModal.vue
 msgid "Amber"
-msgstr ""
+msgstr "کهربایی"
 
 #: suite/mail/doctype/calendar_exchange/calendar_exchange.json suite/mail/doctype/contacts_exchange/contacts_exchange.json suite/mail/doctype/mail_exchange/mail_exchange.json
 msgid "Amended From"
@@ -799,7 +799,7 @@ msgstr "API Secret"
 
 #: suite/mail/doctype/user_settings/user_settings.json
 msgid "App Password"
-msgstr ""
+msgstr "گذرواژه برنامه"
 
 #: suite/mail/doctype/user_settings/user_settings.py
 msgid "App Password is required to validate JMAP settings."
@@ -815,7 +815,7 @@ msgstr "ظاهر"
 
 #: frontend/src/apps/calendar/components/Settings/AppearanceSettings.vue frontend/src/apps/mail/components/Settings/AppearanceSettings.vue
 msgid "Appearance updated."
-msgstr ""
+msgstr "ظاهر به‌روزرسانی شد."
 
 #: frontend/src/apps/calendar/components/Modals/EventRepeatSettingsModal.vue frontend/src/apps/sheets/components/SheetEditor/SplitTextPopover.vue frontend/src/apps/writer/extensions/components/MathPopup.vue
 msgid "Apply"
@@ -823,11 +823,11 @@ msgstr "اعمال"
 
 #: frontend/src/apps/mail/components/Settings/ContactsExportSettings.vue
 msgid "Apply filters to select specific contacts for export."
-msgstr ""
+msgstr "برای انتخاب مخاطبان خاص جهت برون‌بری، فیلترها را اعمال کنید."
 
 #: frontend/src/apps/mail/components/Settings/MailExportSettings.vue
 msgid "Apply filters to select specific emails for export."
-msgstr ""
+msgstr "برای انتخاب ایمیل‌های خاص جهت برون‌بری، فیلترها را اعمال کنید."
 
 #: frontend/src/apps/mail/components/Settings/CalendarExportSettings.vue
 msgid "Apply filters to select specific events for export."
@@ -979,7 +979,7 @@ msgstr "به عنوان مهمان"
 
 #: frontend/src/apps/mail/components/Settings/ScreenedEmailAddressSettings.vue
 msgid "Ascending"
-msgstr ""
+msgstr "صعودی"
 
 #: frontend/src/apps/sheets/components/SheetEditor/AskBar.vue
 msgid "Ask"
@@ -987,7 +987,7 @@ msgstr "بپرس"
 
 #: frontend/src/apps/mail/components/Settings/Account.vue
 msgid "Ask whether to block the sender"
-msgstr ""
+msgstr "پیش از مسدود کردن فرستنده سؤال شود"
 
 #: frontend/src/apps/meet/components/CreatePollModal.vue
 msgid "Ask your audience something..."
@@ -995,7 +995,7 @@ msgstr "پرسش خود را از شرکت‌کنندگان بنویسید…"
 
 #: frontend/src/apps/mail/components/Modals/EditInviteModal.vue frontend/src/apps/mail/pages/dashboard/InvitesView.vue
 msgid "Assigned Email"
-msgstr ""
+msgstr "ایمیل اختصاص‌داده‌شده"
 
 #: frontend/src/apps/calendar/components/EventAlertList.vue
 msgid "at"
@@ -1023,7 +1023,7 @@ msgstr "آزمایش صدای اعلان‌ها"
 
 #: frontend/src/apps/mail/components/AttachmentViewer.vue
 msgid "Audio Preview"
-msgstr ""
+msgstr "پیش‌نمایش صوتی"
 
 #: suite/mail/doctype/mail_settings/mail_settings.py
 msgid "Auth"
@@ -1059,7 +1059,7 @@ msgstr "تشخیص خودکار لینک‌ها"
 
 #: frontend/src/apps/mail/components/Modals/AddPushSubscriptionModal.vue
 msgid "Auto-generated if left blank"
-msgstr ""
+msgstr "اگر خالی بماند، خودکار ایجاد می‌شود"
 
 #: frontend/src/apps/meet/components/settings/LayoutSettingsTab.vue
 msgid "Auto-hide header and controls"
@@ -1067,7 +1067,7 @@ msgstr "پنهان‌کردن خودکار سربرگ و کنترل‌ها"
 
 #: frontend/src/apps/mail/components/Settings/VacationResponseSettings.vue
 msgid "Auto-reply to incoming mails while you’re away."
-msgstr ""
+msgstr "هنگام نبودنتان، به ایمیل‌های دریافتی به‌طور خودکار پاسخ داده شود."
 
 #: frontend/src/apps/drive/components/Sidebar.vue frontend/src/apps/meet/components/MeetSidebar.vue frontend/src/apps/writer/components/VersionsSidebar.vue frontend/src/apps/writer/components/WriterSettings.vue
 msgid "Automatic"
@@ -1079,7 +1079,7 @@ msgstr ""
 
 #: frontend/src/apps/mail/components/Settings/Account.vue
 msgid "Automatically creates contacts for new recipients after an email is sent."
-msgstr ""
+msgstr "پس از ارسال ایمیل، برای گیرندگان جدید به‌طور خودکار مخاطب ایجاد می‌کند."
 
 #: suite/mail/doctype/jmap_account/jmap_account.json
 msgid "Automatically delete newsletters after they are sent."
@@ -1087,11 +1087,11 @@ msgstr ""
 
 #: frontend/src/apps/mail/components/Settings/Account.vue suite/mail/doctype/jmap_account/jmap_account.json
 msgid "Automatically deletes the email from your mailbox after it is sent."
-msgstr ""
+msgstr "پس از ارسال، ایمیل را به‌طور خودکار از صندوق پستی شما حذف می‌کند."
 
 #: frontend/src/apps/mail/components/Settings/Account.vue
 msgid "Automatically deletes the newsletter after it is sent."
-msgstr ""
+msgstr "پس از ارسال، خبرنامه را به‌طور خودکار حذف می‌کند."
 
 #: frontend/src/apps/drive/components/Settings/PreferencesSettings.vue
 msgid "Automatically detect links"
@@ -1099,7 +1099,7 @@ msgstr "تشخیص خودکار پیوندها"
 
 #: frontend/src/apps/mail/components/Modals/FolderModal.vue
 msgid "Automatically mark emails as read when they are moved to this folder."
-msgstr ""
+msgstr "ایمیل‌ها پس از انتقال به این پوشه، به‌طور خودکار خوانده‌شده علامت‌گذاری شوند."
 
 #: suite/mail/doctype/mailbox_settings/mailbox_settings.json
 msgid "Automatically mark emails as read when they are moved to this mailbox."
@@ -1107,7 +1107,7 @@ msgstr ""
 
 #: frontend/src/apps/mail/components/Modals/FolderModal.vue
 msgid "Automatically star emails when they are moved to this folder."
-msgstr ""
+msgstr "ایمیل‌ها پس از انتقال به این پوشه، به‌طور خودکار ستاره‌دار شوند."
 
 #: suite/mail/doctype/mailbox_settings/mailbox_settings.json
 msgid "Automatically star emails when they are moved to this mailbox."
@@ -1171,7 +1171,7 @@ msgstr "رنگ پس‌زمینه"
 
 #: frontend/src/apps/mail/components/Modals/AddMemberModal.vue frontend/src/apps/mail/components/Modals/EditInviteModal.vue frontend/src/apps/mail/components/Settings/Account.vue frontend/src/apps/mail/pages/SignupView.vue frontend/src/apps/mail/pages/dashboard/InvitesView.vue suite/mail/doctype/mail_account_request/mail_account_request.json suite/mail/doctype/user_settings/user_settings.json
 msgid "Backup Email"
-msgstr ""
+msgstr "ایمیل پشتیبان"
 
 #: suite/mail/doctype/mail_account_request/mail_account_request.py
 msgid "Backup Email is required."
@@ -1203,7 +1203,7 @@ msgstr "BCC"
 
 #: frontend/src/apps/mail/utils/index.ts
 msgid "Bcc:"
-msgstr ""
+msgstr "Bcc:"
 
 #: frontend/src/apps/mail/components/MailDetails.vue
 msgid "Bcc: "
@@ -1627,7 +1627,7 @@ msgstr "گفتگو"
 
 #: frontend/src/apps/mail/components/Modals/FolderModal.vue
 msgid "Check to disable push notifications for this folder."
-msgstr ""
+msgstr "برای غیرفعال کردن اعلان‌های فوری این پوشه، علامت بزنید."
 
 #: suite/mail/doctype/mailbox_settings/mailbox_settings.json
 msgid "Check to disable push notifications for this mailbox."
@@ -1675,15 +1675,15 @@ msgstr "همه را پاک کن"
 
 #: frontend/src/apps/mail/components/Modals/SearchModal.vue frontend/src/apps/mail/pages/MailboxView.vue
 msgid "Clear all"
-msgstr ""
+msgstr "پاک کردن همه"
 
 #: frontend/src/apps/mail/pages/MailboxView.vue
 msgid "Clear All (Esc)"
-msgstr ""
+msgstr "پاک کردن همه (Esc)"
 
 #: frontend/src/apps/mail/components/Modals/ShortcutsModal.vue
 msgid "Clear All Mails"
-msgstr ""
+msgstr "پاک کردن همه ایمیل‌ها"
 
 #: frontend/src/apps/writer/components/Navbar.vue suite/mail/doctype/jmap_account/jmap_account.js
 msgid "Clear Cache"
@@ -2411,7 +2411,7 @@ msgstr ""
 
 #: frontend/src/apps/mail/components/Settings/Account.vue
 msgid "Default Outgoing Email"
-msgstr ""
+msgstr "ایمیل خروجی پیش‌فرض"
 
 #: suite/mail/doctype/jmap_account/jmap_account.py
 msgid "Default Outgoing Email {0} is not one of the account's identities."
@@ -2419,7 +2419,7 @@ msgstr ""
 
 #: frontend/src/apps/mail/components/Settings/IdentitySettings.vue
 msgid "Default Signature"
-msgstr ""
+msgstr "امضای پیش‌فرض"
 
 #: suite/mail/doctype/mail_settings/mail_settings.json
 msgid "Defaults"
@@ -2463,7 +2463,7 @@ msgstr "حذف"
 
 #: frontend/src/apps/mail/pages/AddressBookView.vue
 msgid "Delete Address Book"
-msgstr ""
+msgstr "حذف دفترچه نشانی"
 
 #: frontend/src/apps/sheets/components/SheetEditor/ChartOverlay.vue
 msgid "Delete chart"
@@ -2471,11 +2471,11 @@ msgstr "حذف نمودار"
 
 #: frontend/src/apps/mail/pages/ContactView.vue
 msgid "Delete Contact"
-msgstr ""
+msgstr "حذف مخاطب"
 
 #: frontend/src/apps/mail/pages/ContactsView.vue
 msgid "Delete Contacts"
-msgstr ""
+msgstr "حذف مخاطبان"
 
 #: frontend/src/apps/mail/pages/dashboard/DomainView.vue
 msgid "Delete Domain"
@@ -2711,7 +2711,7 @@ msgstr "اعلان فشاری را غیرفعال کنید"
 
 #: frontend/src/apps/mail/components/Modals/FolderModal.vue
 msgid "Disable Push Notifications"
-msgstr ""
+msgstr "غیرفعال کردن اعلان‌های فوری"
 
 #: suite/mail/doctype/mail_cluster/mail_cluster.json
 msgid "Disable to stop sending and receiving emails form this cluster."
@@ -2731,7 +2731,7 @@ msgstr ""
 
 #: frontend/src/apps/mail/components/PWASettings.vue
 msgid "Disabling Push Notifications..."
-msgstr ""
+msgstr "در حال غیرفعال کردن اعلان‌های فوری..."
 
 #: frontend/src/apps/mail/components/ComposeMailToolbar.vue frontend/src/apps/mail/components/SendMailMobileLayout.vue
 msgid "Discard"
@@ -2739,11 +2739,11 @@ msgstr "کنار گذاشتن"
 
 #: frontend/src/apps/mail/components/ComposeMailToolbar.vue
 msgid "Discard ({0}+D)"
-msgstr ""
+msgstr "دور انداختن ({0}+D)"
 
 #: frontend/src/apps/mail/components/Modals/ShortcutsModal.vue
 msgid "Discard Draft"
-msgstr ""
+msgstr "دور انداختن پیش‌نویس"
 
 #: suite/drive/doctype/drive_disk_settings/drive_disk_settings.json
 msgid "Disk"
@@ -2775,7 +2775,7 @@ msgstr ""
 
 #: suite/mail/api/mail.py suite/mail/doctype/mail_message/mail_message.json
 msgid "DMARC"
-msgstr ""
+msgstr "DMARC"
 
 #: suite/mail/doctype/mail_message/mail_message.json
 msgid "DMARC Description"
@@ -2791,7 +2791,7 @@ msgstr ""
 
 #: frontend/src/apps/mail/pages/dashboard/DomainView.vue
 msgid "DNS changes may take up to 48 hours to propagate globally."
-msgstr ""
+msgstr "انتشار جهانی تغییرات DNS ممکن است تا ۴۸ ساعت طول بکشد."
 
 #: suite/mail/doctype/mail_settings/mail_settings.json
 msgid "DNS Provider"
@@ -2807,7 +2807,7 @@ msgstr ""
 
 #: frontend/src/apps/mail/pages/dashboard/DomainView.vue suite/mail/doctype/mail_settings/mail_settings.py
 msgid "DNS Records"
-msgstr ""
+msgstr "رکوردهای DNS"
 
 #: suite/drive/doctype/drive_disk_settings/drive_disk_settings.json
 msgid "Do not mimic folder/file structure"
@@ -3059,7 +3059,7 @@ msgstr "ویرایش نمودار"
 
 #: frontend/src/apps/mail/components/MailActions.vue
 msgid "Edit Draft"
-msgstr ""
+msgstr "ویرایش پیش‌نویس"
 
 #: frontend/src/apps/calendar/components/Modals/EventModal.vue
 msgid "Edit Event"
@@ -3067,15 +3067,15 @@ msgstr ""
 
 #: frontend/src/apps/mail/components/Modals/EditAddressBookModal.vue frontend/src/apps/mail/components/Modals/EditContactModal.vue
 msgid "Edit General Information"
-msgstr ""
+msgstr "ویرایش اطلاعات عمومی"
 
 #: frontend/src/apps/mail/components/Modals/EditInviteModal.vue
 msgid "Edit Invite"
-msgstr ""
+msgstr "ویرایش دعوت‌نامه"
 
 #: frontend/src/apps/calendar/components/Modals/EditPhotoModal.vue frontend/src/apps/mail/components/Modals/EditPhotoModal.vue
 msgid "Edit Photo"
-msgstr ""
+msgstr "ویرایش عکس"
 
 #: frontend/src/apps/sheets/components/SheetEditor/usePivotIntegration.js
 msgid "Edit pivot"
@@ -3083,7 +3083,7 @@ msgstr "ویرایش جدول محوری"
 
 #: frontend/src/apps/mail/pages/MailboxView.vue
 msgid "Edit search"
-msgstr ""
+msgstr "ویرایش جست‌وجو"
 
 #: frontend/src/apps/mail/components/Modals/SieveScriptModal.vue
 msgid "Edit Sieve Script"
@@ -3211,11 +3211,11 @@ msgstr ""
 
 #: frontend/src/apps/mail/pages/MailboxView.vue
 msgid "Empty {0}"
-msgstr ""
+msgstr "خالی کردن {0}"
 
 #: frontend/src/apps/mail/components/Modals/SetSieveScriptStateModal.vue
 msgid "enable"
-msgstr ""
+msgstr "فعال کردن"
 
 #: frontend/src/apps/mail/components/Modals/FolderModal.vue frontend/src/apps/mail/components/Modals/SetSieveScriptStateModal.vue frontend/src/apps/mail/pages/dashboard/UsersView.vue
 msgid "Enable"
@@ -3231,7 +3231,7 @@ msgstr ""
 
 #: frontend/src/apps/mail/pages/dashboard/UsersView.vue
 msgid "Enable Members"
-msgstr ""
+msgstr "فعال کردن اعضا"
 
 #: frontend/src/apps/meet/components/settings/NotificationSettingsTab.vue
 msgid "Enable notification sounds"
@@ -3243,7 +3243,7 @@ msgstr ""
 
 #: frontend/src/apps/mail/components/PWASettings.vue
 msgid "Enable Push Notifications"
-msgstr ""
+msgstr "فعال کردن اعلان‌های فوری"
 
 #: suite/mail/doctype/jmap_account/jmap_account.json
 msgid "Enable Screening"
@@ -3251,7 +3251,7 @@ msgstr ""
 
 #: frontend/src/apps/mail/components/Modals/SetSieveScriptStateModal.vue
 msgid "enabled"
-msgstr ""
+msgstr "فعال"
 
 #: frontend/src/apps/mail/components/Settings/VacationResponseSettings.vue frontend/src/apps/mail/pages/dashboard/DomainView.vue frontend/src/apps/mail/pages/dashboard/DomainsView.vue frontend/src/apps/mail/pages/dashboard/UsersView.vue suite/drive/doctype/drive_disk_settings/drive_disk_settings.json suite/mail/doctype/mail_cluster/mail_cluster.json suite/mail/doctype/mail_server/mail_server.json suite/mail/doctype/rate_limit/rate_limit.json
 msgid "Enabled"
@@ -3259,11 +3259,11 @@ msgstr "فعال"
 
 #: frontend/src/apps/mail/components/Modals/SetSieveScriptStateModal.vue
 msgid "Enabling"
-msgstr ""
+msgstr "در حال فعال‌سازی"
 
 #: frontend/src/apps/mail/components/PWASettings.vue
 msgid "Enabling Push Notifications..."
-msgstr ""
+msgstr "در حال فعال‌سازی اعلان‌های فوری..."
 
 #: suite/mail/doctype/push_subscription/push_subscription.py
 msgid "Encrypted payload missing ciphertext data."
@@ -3907,7 +3907,7 @@ msgstr "وضعیت هرزنامه برای نامه (ها) تنظیم نشد."
 
 #: frontend/src/apps/mail/components/Settings/ScreenedEmailAddressSettings.vue
 msgid "Failed to update action."
-msgstr ""
+msgstr "به‌روزرسانی اقدام ناموفق بود."
 
 #: frontend/src/apps/calendar/pages/CalendarLayout.vue frontend/src/apps/mail/utils/composables.ts
 msgid "Failed to update color scheme. Please try again later."
@@ -3935,7 +3935,7 @@ msgstr ""
 
 #: frontend/src/apps/mail/components/ComposeMailEditor.vue
 msgid "Failed to upload {0}"
-msgstr ""
+msgstr "بارگذاری {0} ناموفق بود"
 
 #: suite/mail/doctype/server_ansible_play/server_ansible_play.json
 msgid "Failures"
@@ -3979,7 +3979,7 @@ msgstr ""
 
 #: frontend/src/apps/mail/components/Settings/CalendarImportSettings.vue frontend/src/apps/mail/components/Settings/ContactsImportSettings.vue frontend/src/apps/mail/components/Settings/MailImportSettings.vue
 msgid "File uploaded: {0}"
-msgstr ""
+msgstr "فایل بارگذاری شد: {0}"
 
 #: suite/mail/doctype/mail_message_part/mail_message_part.json
 msgid "File URL"
@@ -4067,43 +4067,43 @@ msgstr "پوشه"
 
 #: frontend/src/apps/mail/utils/index.ts
 msgid "Folder Automation"
-msgstr ""
+msgstr "خودکارسازی پوشه"
 
 #: frontend/src/apps/mail/components/Modals/FolderModal.vue
 msgid "Folder Automation Disabled"
-msgstr ""
+msgstr "خودکارسازی پوشه غیرفعال است"
 
 #: frontend/src/apps/mail/components/Modals/FolderModal.vue
 msgid "Folder Automation enabled."
-msgstr ""
+msgstr "خودکارسازی پوشه فعال شد."
 
 #: frontend/src/apps/mail/components/Settings/AutomationSettings.vue
 msgid "Folder automation rebuilt from your saved rules."
-msgstr ""
+msgstr "خودکارسازی پوشه بر اساس قوانین ذخیره‌شده شما بازسازی شد."
 
 #: frontend/src/apps/mail/components/Modals/FolderModal.vue
 msgid "Folder created."
-msgstr ""
+msgstr "پوشه ایجاد شد."
 
 #: frontend/src/apps/mail/components/Modals/DeleteFolderModal.vue
 msgid "Folder deleted."
-msgstr ""
+msgstr "پوشه حذف شد."
 
 #: frontend/src/apps/mail/components/Modals/FolderModal.vue
 msgid "Folder Settings"
-msgstr ""
+msgstr "تنظیمات پوشه"
 
 #: frontend/src/apps/mail/components/Modals/FolderModal.vue frontend/src/apps/mail/components/Settings/FolderSettings.vue
 msgid "Folder updated."
-msgstr ""
+msgstr "پوشه به‌روزرسانی شد."
 
 #: frontend/src/apps/mail/components/Modals/SettingsModal.vue frontend/src/apps/mail/components/Settings/FolderSettings.vue
 msgid "Folders"
-msgstr ""
+msgstr "پوشه‌ها"
 
 #: frontend/src/apps/mail/components/Settings/FolderSettings.vue
 msgid "Folders let you organize your emails into different categories."
-msgstr ""
+msgstr "پوشه‌ها به شما امکان می‌دهند ایمیل‌هایتان را در دسته‌های مختلف سازمان‌دهی کنید."
 
 #: frontend/src/apps/writer/components/WriterSettings.vue
 msgid "Font Family"
@@ -4135,7 +4135,7 @@ msgstr ""
 
 #: frontend/src/apps/mail/pages/LoginView.vue
 msgid "Forgot password?"
-msgstr ""
+msgstr "گذرواژه را فراموش کرده‌اید؟"
 
 #: frontend/src/apps/mail/components/Settings/CalendarExportSettings.vue frontend/src/apps/mail/components/Settings/CalendarImportSettings.vue frontend/src/apps/mail/components/Settings/ContactsExportSettings.vue frontend/src/apps/mail/components/Settings/ContactsImportSettings.vue frontend/src/apps/mail/components/Settings/MailExportSettings.vue frontend/src/apps/mail/components/Settings/MailImportSettings.vue frontend/src/apps/mail/pages/CalendarExchangesView.vue frontend/src/apps/mail/pages/ContactsExchangesView.vue
 msgid "Format"
@@ -4159,11 +4159,11 @@ msgstr "ارسال مجدد"
 
 #: frontend/src/apps/mail/components/MailThread.vue
 msgid "Forward (F)"
-msgstr ""
+msgstr "بازارسال (F)"
 
 #: frontend/src/apps/mail/components/Modals/ShortcutsModal.vue
 msgid "Forward Mail"
-msgstr ""
+msgstr "بازارسال ایمیل"
 
 #: suite/mail/doctype/mail_message/mail_message.json
 msgid "Forwarded"
@@ -4291,7 +4291,7 @@ msgstr "دسترسی عمومی"
 
 #: frontend/src/apps/mail/pages/AddressBookView.vue frontend/src/apps/mail/pages/ContactView.vue
 msgid "General Information"
-msgstr ""
+msgstr "اطلاعات عمومی"
 
 #: suite/mail/doctype/mail_settings/mail_settings.js
 msgid "Generate JMAP Push Keys"
@@ -4311,11 +4311,11 @@ msgstr "موقعیت جغرافیایی"
 
 #: frontend/src/apps/mail/components/InstallPrompt.vue
 msgid "Get the app on your device for easy access & a better experience!"
-msgstr ""
+msgstr "برای دسترسی آسان و تجربه‌ای بهتر، برنامه را روی دستگاه خود نصب کنید!"
 
 #: frontend/src/apps/mail/components/InstallPrompt.vue
 msgid "Get the app on your iPhone for easy access & a better experience"
-msgstr ""
+msgstr "برای دسترسی آسان و تجربه‌ای بهتر، برنامه را روی iPhone خود نصب کنید"
 
 #: suite/mail/doctype/mail_cluster/mail_cluster.js suite/mail/doctype/user_settings/user_settings.js
 msgid "Getting Password..."
@@ -4363,7 +4363,7 @@ msgstr ""
 
 #: frontend/src/apps/mail/components/Modals/ShortcutsModal.vue
 msgid "Go to Starred"
-msgstr ""
+msgstr "رفتن به ستاره‌دارها"
 
 #: frontend/src/apps/mail/components/Modals/ShortcutsModal.vue
 msgid "Go to {0}"
@@ -4411,7 +4411,7 @@ msgstr ""
 
 #: frontend/src/apps/mail/components/Settings/AppearanceSettings.vue suite/mail/doctype/user_settings/user_settings.json
 msgid "Group Messages By"
-msgstr ""
+msgstr "گروه‌بندی پیام‌ها بر اساس"
 
 #: frontend/src/apps/meet/components/PeopleParticipantTile.vue frontend/src/apps/meet/components/PeopleWaitingSection.vue
 msgid "Guest"
@@ -4719,7 +4719,7 @@ msgstr ""
 
 #: frontend/src/apps/mail/components/Settings/CalendarImportSettings.vue frontend/src/apps/mail/components/Settings/ContactsImportSettings.vue frontend/src/apps/mail/components/Settings/MailImportSettings.vue
 msgid "Import in progress. We'll email you when it's ready."
-msgstr ""
+msgstr "درون‌ریزی در حال انجام است. پس از آماده‌شدن، به شما ایمیل می‌زنیم."
 
 #: suite/mail/doctype/calendar_exchange/calendar_exchange.py suite/mail/doctype/contacts_exchange/contacts_exchange.py suite/mail/doctype/mail_exchange/mail_exchange.py
 msgid "Import limit exceeded."
@@ -4771,7 +4771,7 @@ msgstr "در جلسه هستند"
 
 #: frontend/src/apps/mail/components/MailListItem.vue frontend/src/apps/mail/components/Modals/SearchModal.vue
 msgid "in {0}"
-msgstr ""
+msgstr "در {0}"
 
 #: suite/mail/doctype/mail_cluster/mail_cluster.json
 msgid "In-Memory Config"
@@ -4783,7 +4783,7 @@ msgstr ""
 
 #: suite/mail/doctype/user_settings/user_settings.json
 msgid "Inbound"
-msgstr ""
+msgstr "ورودی"
 
 #: suite/mail/doctype/mail_settings/mail_settings.json
 msgid "Inbound Log File Count"
@@ -4799,7 +4799,7 @@ msgstr ""
 
 #: frontend/src/apps/mail/pages/dashboard/DomainView.vue
 msgid "Inbound Mail Routing"
-msgstr ""
+msgstr "مسیریابی ایمیل ورودی"
 
 #: frontend/src/apps/drive/components/Sidebar.vue
 msgid "Inbox"
@@ -4903,7 +4903,7 @@ msgstr "افزودن اسلاید"
 
 #: frontend/src/apps/mail/components/InstallPrompt.vue
 msgid "Install"
-msgstr ""
+msgstr "نصب"
 
 #: suite/mail/doctype/mail_server/mail_server.js
 msgid "Install Ansible (Job)"
@@ -4915,7 +4915,7 @@ msgstr ""
 
 #: frontend/src/apps/mail/components/InstallPrompt.vue
 msgid "Install Frappe Mail"
-msgstr ""
+msgstr "نصب Frappe Mail"
 
 #: suite/mail/doctype/mail_server/mail_server.py
 msgid "Install of Ansible initiated."
@@ -5083,7 +5083,7 @@ msgstr ""
 
 #: frontend/src/apps/mail/pages/dashboard/InvitesView.vue
 msgid "Invitation Status"
-msgstr ""
+msgstr "وضعیت دعوت"
 
 #: frontend/src/apps/drive/components/Settings/UserListSettings.vue suite/drive/doctype/account_request/account_request.json
 msgid "Invite"
@@ -5091,7 +5091,7 @@ msgstr "دعوت"
 
 #: frontend/src/apps/mail/components/Modals/EditInviteModal.vue
 msgid "Invite updated."
-msgstr ""
+msgstr "دعوت به‌روزرسانی شد."
 
 #: frontend/src/apps/mail/components/Modals/EditInviteModal.vue frontend/src/apps/mail/pages/dashboard/InvitesView.vue suite/mail/doctype/mail_account_request/mail_account_request.json
 msgid "Invited By"
@@ -5103,7 +5103,7 @@ msgstr "دعوت‌ها"
 
 #: frontend/src/apps/mail/pages/dashboard/InvitesView.vue
 msgid "Invites deleted."
-msgstr ""
+msgstr "دعوت‌ها حذف شدند."
 
 #: suite/drive/doctype/account_request/account_request.json suite/mail/doctype/mail_account_request/mail_account_request.json
 msgid "IP Address"
@@ -5187,7 +5187,7 @@ msgstr "آیتم‌ها"
 
 #: frontend/src/apps/mail/pages/MailboxView.vue
 msgid "Items in this mailbox will be automatically deleted after 30 days."
-msgstr ""
+msgstr "موارد این صندوق پستی پس از ۳۰ روز به‌طور خودکار حذف می‌شوند."
 
 #: frontend/src/apps/writer/utils/index.js
 msgid "JetBrains Mono"
@@ -5263,7 +5263,7 @@ msgstr ""
 
 #: frontend/src/apps/mail/components/Modals/AddScreenedSenderModal.vue
 msgid "john@example.com or @example.com"
-msgstr ""
+msgstr "john@example.com یا @example.com"
 
 #: frontend/src/apps/meet/components/UpcomingMeetings.vue frontend/src/apps/meet/pages/Home.vue
 msgid "Join"
@@ -5343,7 +5343,7 @@ msgstr ""
 
 #: frontend/src/apps/mail/components/Modals/AddContactModal.vue frontend/src/apps/mail/components/Modals/EditContactModal.vue frontend/src/apps/mail/pages/AddressBookView.vue frontend/src/apps/mail/pages/ContactView.vue frontend/src/apps/mail/pages/ContactsView.vue suite/mail/doctype/contact_card/contact_card.json suite/mail/doctype/event_participant/event_participant.json suite/sheets/doctype/sheet_snapshot/sheet_snapshot.json
 msgid "Kind"
-msgstr ""
+msgstr "نوع"
 
 #: frontend/src/apps/mail/components/Modals/AddContactEmailModal.vue frontend/src/apps/mail/components/Modals/AddContactPhoneModal.vue frontend/src/apps/mail/pages/ContactView.vue suite/mail/doctype/contact_card_email/contact_card_email.json suite/mail/doctype/contact_card_phone/contact_card_phone.json suite/sheets/doctype/sheet_snapshot/sheet_snapshot.json
 msgid "Label"
@@ -5423,7 +5423,7 @@ msgstr "چیدمان"
 
 #: frontend/src/apps/mail/components/Settings/AutomationSettings.vue
 msgid "Learn more."
-msgstr ""
+msgstr "بیشتر بدانید."
 
 #: frontend/src/apps/sheets/components/SheetEditor/toolbar.config.js frontend/src/apps/slides/components/ShapeProperties.vue
 msgid "Left"
@@ -5459,7 +5459,7 @@ msgstr "روشن"
 
 #: frontend/src/apps/calendar/components/Settings/AppearanceSettings.vue frontend/src/apps/mail/components/Settings/AppearanceSettings.vue
 msgid "Light Mode"
-msgstr ""
+msgstr "حالت روشن"
 
 #: suite/mail/doctype/calendar_exchange/calendar_exchange.json suite/mail/doctype/contacts_exchange/contacts_exchange.json suite/mail/doctype/mail_exchange/mail_exchange.json suite/mail/doctype/rate_limit/rate_limit.json
 msgid "Limit"
@@ -5519,7 +5519,7 @@ msgstr ""
 
 #: frontend/src/apps/mail/components/EmailContent.vue
 msgid "Load Images"
-msgstr ""
+msgstr "بارگیری تصاویر"
 
 #: suite/mail/doctype/mail_message/mail_message.js suite/mail/doctype/mail_queue/mail_queue.js
 msgid "Load MIME Message"
@@ -5551,7 +5551,7 @@ msgstr "در حال بارگذاری…"
 
 #: frontend/src/apps/mail/components/Modals/AddContactAddressModal.vue frontend/src/apps/mail/pages/ContactView.vue suite/mail/doctype/contact_card_address/contact_card_address.json
 msgid "Locality"
-msgstr ""
+msgstr "محل"
 
 #: frontend/src/apps/calendar/components/Modals/EventModal.vue suite/mail/doctype/mail_message_part/mail_message_part.json
 msgid "Location"
@@ -5571,7 +5571,7 @@ msgstr ""
 
 #: frontend/src/apps/mail/pages/LoginView.vue
 msgid "Log In"
-msgstr ""
+msgstr "ورود"
 
 #: frontend/src/apps/calendar/components/AppSidebar.vue frontend/src/apps/mail/components/AppSidebar.vue
 msgid "Log Out"
@@ -5595,11 +5595,11 @@ msgstr "لاگ‌ها"
 
 #: frontend/src/apps/mail/components/Modals/SearchModal.vue
 msgid "Look In"
-msgstr ""
+msgstr "جست‌وجو در"
 
 #: frontend/src/apps/mail/components/Modals/SearchModal.vue
 msgid "Look through every account you own — slower, but finds a mail wherever it landed."
-msgstr ""
+msgstr "در همه حساب‌هایتان جست‌وجو کنید — کندتر است، اما ایمیل را هرجا باشد پیدا می‌کند."
 
 #: frontend/src/apps/slides/components/VideoProperties.vue
 msgid "Loop"
@@ -5631,7 +5631,7 @@ msgstr "ایمیل"
 
 #: frontend/src/apps/mail/components/Settings/AdvancedSettings.vue suite/mail/doctype/mail_settings/mail_settings.json
 msgid "Mail Client Configuration"
-msgstr ""
+msgstr "پیکربندی نرم‌افزار ایمیل"
 
 #: suite/mail/doctype/mail_cluster/mail_cluster.py
 msgid "Mail Cluster {0} already exists."
@@ -5651,7 +5651,7 @@ msgstr ""
 
 #: frontend/src/apps/mail/utils/useThreadActions.ts
 msgid "Mail deleted."
-msgstr ""
+msgstr "ایمیل حذف شد."
 
 #: suite/mail/doctype/mail_settings/mail_settings.json
 msgid "Mail Exchange Export Timeout"
@@ -5663,7 +5663,7 @@ msgstr ""
 
 #: frontend/src/apps/mail/pages/MailExchangeView.vue frontend/src/apps/mail/pages/MailExchangesView.vue
 msgid "Mail Exchanges"
-msgstr ""
+msgstr "سرورهای تبادل ایمیل"
 
 #: suite/mail/doctype/mail_message/mail_message.json suite/mail/doctype/mail_queue/mail_queue.json
 msgid "Mail ID"
@@ -5671,15 +5671,15 @@ msgstr ""
 
 #: frontend/src/apps/mail/utils/useThreadActions.ts
 msgid "Mail marked as Junk."
-msgstr ""
+msgstr "ایمیل به‌عنوان هرزنامه علامت‌گذاری شد."
 
 #: frontend/src/apps/mail/utils/useThreadActions.ts
 msgid "Mail marked as Not Junk."
-msgstr ""
+msgstr "ایمیل به‌عنوان غیرهرزنامه علامت‌گذاری شد."
 
 #: frontend/src/apps/mail/utils/useThreadActions.ts
 msgid "Mail marked as {0}."
-msgstr ""
+msgstr "ایمیل به‌عنوان {0} علامت‌گذاری شد."
 
 #: suite/mail/doctype/mail_message/mail_message.py
 msgid "Mail Message does not have a blob ID."
@@ -5703,11 +5703,11 @@ msgstr ""
 
 #: frontend/src/apps/mail/utils/useThreadActions.ts
 msgid "Mail moved back."
-msgstr ""
+msgstr "ایمیل به محل قبلی بازگردانده شد."
 
 #: frontend/src/apps/mail/utils/useThreadActions.ts
 msgid "Mail moved to {0}."
-msgstr ""
+msgstr "ایمیل به {0} منتقل شد."
 
 #: suite/mail/workspace_sidebar/client.json
 msgid "Mail Queue"
@@ -5715,7 +5715,7 @@ msgstr ""
 
 #: frontend/src/apps/mail/pages/dashboard/DomainView.vue
 msgid "Mail routing records that ensure messages sent to your domain are delivered to the correct mail server."
-msgstr ""
+msgstr "رکوردهای مسیریابی ایمیل که تضمین می‌کنند پیام‌های ارسالی به دامنه شما به سرور ایمیل درست تحویل داده شوند."
 
 #: suite/mail/doctype/mail_server/mail_server.py
 msgid "Mail Server {0} already exists."
@@ -5743,7 +5743,7 @@ msgstr ""
 
 #: frontend/src/apps/mail/pages/MailExchangeView.vue
 msgid "Mail {0}"
-msgstr ""
+msgstr "ایمیل {0}"
 
 #: suite/mail/doctype/rate_limit/rate_limit.json
 msgid "mail.api.outbound.send"
@@ -5759,7 +5759,7 @@ msgstr ""
 
 #: frontend/src/apps/mail/components/AppSidebar.vue suite/mail/doctype/mail_message_mailbox/mail_message_mailbox.json suite/mail/workspace_sidebar/client.json
 msgid "Mailbox"
-msgstr ""
+msgstr "صندوق پستی"
 
 #: suite/mail/doctype/sieve_script/sieve_script.py
 msgid "Mailbox '{0}' not found in account '{1}'."
@@ -5843,11 +5843,11 @@ msgstr ""
 
 #: frontend/src/apps/mail/components/MailActions.vue
 msgid "Mails"
-msgstr ""
+msgstr "ایمیل‌ها"
 
 #: frontend/src/apps/mail/utils/useThreadActions.ts
 msgid "Mails from sender will go to Junk."
-msgstr ""
+msgstr "ایمیل‌های این فرستنده به هرزنامه می‌روند."
 
 #: frontend/src/apps/sheets/components/SheetEditor/VersionHistory.vue
 msgid "Make a copy"
@@ -5879,15 +5879,15 @@ msgstr "دستی"
 
 #: frontend/src/apps/mail/components/MailActions.vue frontend/src/apps/mail/components/Modals/ShortcutsModal.vue
 msgid "Mark as Junk"
-msgstr ""
+msgstr "علامت‌گذاری به‌عنوان هرزنامه"
 
 #: frontend/src/apps/mail/components/ThreadHeader.vue frontend/src/apps/mail/pages/MailboxView.vue
 msgid "Mark as Junk (!)"
-msgstr ""
+msgstr "علامت‌گذاری به‌عنوان هرزنامه (!)"
 
 #: frontend/src/apps/mail/components/MailActions.vue frontend/src/apps/mail/components/ThreadHeader.vue frontend/src/apps/mail/pages/MailboxView.vue
 msgid "Mark as Not Junk"
-msgstr ""
+msgstr "علامت‌گذاری به‌عنوان غیرهرزنامه"
 
 #: frontend/src/apps/mail/components/MailListItemActions.vue frontend/src/apps/mail/components/Modals/FolderModal.vue frontend/src/apps/mail/components/Modals/ShortcutsModal.vue frontend/src/apps/mail/components/Settings/MailImportSettings.vue suite/mail/doctype/mailbox_settings/mailbox_settings.json
 msgid "Mark as Read"
@@ -5895,7 +5895,7 @@ msgstr "به عنوان خوانده شده علامت بزن"
 
 #: frontend/src/apps/mail/pages/MailboxView.vue
 msgid "Mark as Read (Shift+U)"
-msgstr ""
+msgstr "علامت‌گذاری به‌عنوان خوانده‌شده (Shift+U)"
 
 #: frontend/src/apps/mail/components/MailActions.vue frontend/src/apps/mail/components/MailListItemActions.vue frontend/src/apps/mail/components/Modals/ShortcutsModal.vue
 msgid "Mark as Unread"
@@ -5903,15 +5903,15 @@ msgstr "به عنوان \"خوانده نشده\" علامت گذاری کن"
 
 #: frontend/src/apps/mail/components/ThreadHeader.vue frontend/src/apps/mail/pages/MailboxView.vue
 msgid "Mark as Unread (U)"
-msgstr ""
+msgstr "علامت‌گذاری به‌عنوان خوانده‌نشده (U)"
 
 #: frontend/src/apps/mail/components/EmailContent.vue
 msgid "Mark Sender as Trusted"
-msgstr ""
+msgstr "علامت‌گذاری فرستنده به‌عنوان مورد اعتماد"
 
 #: frontend/src/apps/mail/components/MailActions.vue
 msgid "Mark Unread from Here"
-msgstr ""
+msgstr "علامت‌گذاری از اینجا به بعد به‌عنوان خوانده‌نشده"
 
 #: frontend/src/apps/writer/components/Navbar.vue
 msgid "Markdown"
@@ -5919,15 +5919,15 @@ msgstr "مارک‌داون"
 
 #: frontend/src/apps/mail/utils/useThreadActions.ts
 msgid "Marking as Junk..."
-msgstr ""
+msgstr "در حال علامت‌گذاری به‌عنوان هرزنامه..."
 
 #: frontend/src/apps/mail/utils/useThreadActions.ts
 msgid "Marking as Not Junk..."
-msgstr ""
+msgstr "در حال علامت‌گذاری به‌عنوان غیرهرزنامه..."
 
 #: frontend/src/apps/mail/components/Modals/FolderModal.vue suite/mail/doctype/mailbox_settings/mailbox_settings.json
 msgid "Match If"
-msgstr ""
+msgstr "تطبیق در صورت"
 
 #: frontend/src/apps/sheets/engine/pivot.js
 msgid "MAX"
@@ -5947,11 +5947,11 @@ msgstr ""
 
 #: frontend/src/apps/mail/components/Settings/ContactsExportSettings.vue
 msgid "Max Number of Contacts"
-msgstr ""
+msgstr "حداکثر تعداد مخاطبان"
 
 #: frontend/src/apps/mail/components/Settings/MailExportSettings.vue
 msgid "Max Number of Emails"
-msgstr ""
+msgstr "حداکثر تعداد ایمیل‌ها"
 
 #: frontend/src/apps/mail/components/Settings/CalendarExportSettings.vue
 msgid "Max Number of Events"
@@ -6135,11 +6135,11 @@ msgstr ""
 
 #: frontend/src/apps/mail/components/Modals/AddMemberModal.vue
 msgid "Member added."
-msgstr ""
+msgstr "عضو اضافه شد."
 
 #: frontend/src/apps/mail/components/Modals/AddMemberModal.vue
 msgid "Member invited."
-msgstr ""
+msgstr "عضو دعوت شد."
 
 #: frontend/src/apps/mail/components/AppSidebar.vue frontend/src/apps/mail/pages/dashboard/MembersView.vue suite/meet/doctype/sae_meeting/sae_meeting.json
 msgid "Members"
@@ -6147,15 +6147,15 @@ msgstr "اعضا"
 
 #: frontend/src/apps/mail/pages/dashboard/UsersView.vue
 msgid "Members deleted."
-msgstr ""
+msgstr "اعضا حذف شدند."
 
 #: frontend/src/apps/mail/pages/dashboard/UsersView.vue
 msgid "Members disabled."
-msgstr ""
+msgstr "اعضا غیرفعال شدند."
 
 #: frontend/src/apps/mail/pages/dashboard/UsersView.vue
 msgid "Members enabled."
-msgstr ""
+msgstr "اعضا فعال شدند."
 
 #: frontend/src/apps/sheets/components/SheetEditor/toolbar.config.js
 msgid "Merge / unmerge"
@@ -6175,7 +6175,7 @@ msgstr "شناسه پیام"
 
 #: frontend/src/apps/mail/pages/MimeMessageView.vue
 msgid "Message Information"
-msgstr ""
+msgstr "اطلاعات پیام"
 
 #: suite/mail/doctype/mail_message/mail_message.py
 msgid "Message not found or you do not have permission to view it."
@@ -6235,7 +6235,7 @@ msgstr "وسط"
 
 #: frontend/src/apps/mail/pages/MimeMessageView.vue
 msgid "MIME Message"
-msgstr ""
+msgstr "پیام MIME"
 
 #: suite/drive/fixtures/custom_field.json suite/fixtures/custom_field.json
 msgid "MIME Type"
@@ -6343,7 +6343,7 @@ msgstr "جابه‌جایی محدوده انتخاب‌شده"
 
 #: frontend/src/apps/mail/components/Settings/Account.vue
 msgid "Move the sender's future emails to Junk automatically"
-msgstr ""
+msgstr "انتقال خودکار ایمیل‌های بعدی فرستنده به هرزنامه"
 
 #: frontend/src/apps/mail/components/ThreadHeader.vue frontend/src/apps/mail/pages/MailboxView.vue
 msgid "Move To"
@@ -6355,11 +6355,11 @@ msgstr ""
 
 #: frontend/src/apps/mail/components/Settings/Account.vue frontend/src/apps/mail/pages/ScreenerView.vue
 msgid "Move to Inbox"
-msgstr ""
+msgstr "انتقال به صندوق ورودی"
 
 #: frontend/src/apps/mail/components/Modals/AddScreenedSenderModal.vue frontend/src/apps/mail/components/Settings/ScreenedEmailAddressSettings.vue
 msgid "Move to Junk"
-msgstr ""
+msgstr "انتقال به هرزنامه"
 
 #: frontend/src/apps/mail/components/MailActions.vue frontend/src/apps/mail/components/MailListItemActions.vue frontend/src/apps/mail/components/Modals/ShortcutsModal.vue frontend/src/apps/writer/components/RemoveDialog.vue
 msgid "Move to Trash"
@@ -6367,19 +6367,19 @@ msgstr "انتقال به زباله‌دان"
 
 #: frontend/src/apps/mail/components/ThreadHeader.vue frontend/src/apps/mail/pages/MailboxView.vue
 msgid "Move to Trash (Delete)"
-msgstr ""
+msgstr "انتقال به زباله‌دان (حذف)"
 
 #: frontend/src/apps/mail/components/Settings/Account.vue
 msgid "Move unscreened messages?"
-msgstr ""
+msgstr "پیام‌های غربال‌نشده منتقل شوند؟"
 
 #: frontend/src/apps/mail/pages/MailboxView.vue
 msgid "Moving to Trash..."
-msgstr ""
+msgstr "در حال انتقال به زباله‌دان…"
 
 #: frontend/src/apps/mail/utils/useThreadActions.ts
 msgid "Moving to {0}..."
-msgstr ""
+msgstr "در حال انتقال به {0}…"
 
 #: frontend/src/apps/meet/components/PeopleParticipantTile.vue
 msgid "Mute"
@@ -6455,11 +6455,11 @@ msgstr "جدید"
 
 #: frontend/src/apps/mail/components/Modals/AddAddressBookModal.vue
 msgid "New Address Book"
-msgstr ""
+msgstr "دفترچه نشانی جدید"
 
 #: frontend/src/apps/mail/components/Settings/IdentitySettings.vue
 msgid "New Bcc"
-msgstr ""
+msgstr "Bcc جدید"
 
 #: frontend/src/apps/mail/components/Modals/AddContactModal.vue
 msgid "New Contact"
@@ -6471,7 +6471,7 @@ msgstr "پوشه جدید"
 
 #: frontend/src/apps/mail/pages/LoginView.vue
 msgid "New member? Create an account."
-msgstr ""
+msgstr "عضو جدید هستید؟ حسابی بسازید."
 
 #: frontend/src/apps/calendar/components/Modals/ChangePasswordModal.vue frontend/src/apps/mail/components/Modals/ChangePasswordModal.vue frontend/src/apps/mail/pages/ResetPasswordView.vue frontend/src/components/settings/UserProfileSettings.vue
 msgid "New Password"
@@ -6491,11 +6491,11 @@ msgstr "پنجره خصوصی جدید"
 
 #: frontend/src/apps/mail/components/Modals/AddPushSubscriptionModal.vue
 msgid "New Push Subscription"
-msgstr ""
+msgstr "اشتراک جدید اعلان فوری"
 
 #: frontend/src/apps/mail/components/Settings/IdentitySettings.vue
 msgid "New Reply To"
-msgstr ""
+msgstr "Reply-To جدید"
 
 #: frontend/src/apps/sheets/pages/Home.vue
 msgid "New Sheet"
@@ -6503,11 +6503,11 @@ msgstr "صفحه‌گسترده جدید"
 
 #: frontend/src/apps/mail/components/Modals/SieveScriptModal.vue
 msgid "New Sieve Script"
-msgstr ""
+msgstr "اسکریپت Sieve جدید"
 
 #: frontend/src/apps/mail/components/Modals/AddSignatureModal.vue
 msgid "New Signature"
-msgstr ""
+msgstr "امضای جدید"
 
 #: frontend/src/apps/writer/components/ContextMenu.vue
 msgid "New Tab"
@@ -6531,7 +6531,7 @@ msgstr "پنجره جدید"
 
 #: frontend/src/apps/mail/components/Settings/MailExportSettings.vue
 msgid "Newest Emails"
-msgstr ""
+msgstr "جدیدترین ایمیل‌ها"
 
 #: frontend/src/apps/mail/components/Settings/CalendarExportSettings.vue
 msgid "Newest Events"
@@ -6555,7 +6555,7 @@ msgstr ""
 
 #: frontend/src/apps/mail/components/ThreadHeader.vue
 msgid "Next Thread (↓/J)"
-msgstr ""
+msgstr "گفت‌وگوی بعدی (↓/J)"
 
 #: frontend/src/apps/calendar/components/EventPopoverContent.vue frontend/src/apps/calendar/components/Modals/EventModal.vue frontend/src/apps/mail/components/Settings/MailImportSettings.vue
 msgid "No"
@@ -6591,15 +6591,15 @@ msgstr ""
 
 #: frontend/src/apps/mail/pages/AddressBooksView.vue
 msgid "No address books found."
-msgstr ""
+msgstr "هیچ دفترچه نشانی‌ای پیدا نشد."
 
 #: frontend/src/apps/mail/pages/ContactView.vue
 msgid "No address books."
-msgstr ""
+msgstr "هیچ دفترچه نشانی‌ای وجود ندارد."
 
 #: frontend/src/apps/mail/pages/ContactView.vue
 msgid "No addresses."
-msgstr ""
+msgstr "هیچ نشانی‌ای وجود ندارد."
 
 #: suite/mail/utils/dns.py
 msgid "No answer for {0}."
@@ -6607,7 +6607,7 @@ msgstr ""
 
 #: frontend/src/apps/mail/pages/AllInboxesView.vue frontend/src/apps/mail/pages/MailboxView.vue
 msgid "No Archive folder for this account."
-msgstr ""
+msgstr "این حساب پوشه بایگانی ندارد."
 
 #: suite/mail/api/mail.py
 msgid "No attachments to download."
@@ -6615,7 +6615,7 @@ msgstr ""
 
 #: frontend/src/apps/mail/components/Settings/IdentitySettings.vue
 msgid "No Bcc addresses added."
-msgstr ""
+msgstr "هیچ نشانی Bcc اضافه نشده است."
 
 #: frontend/src/apps/sheets/components/SheetEditor/toolbar.config.js
 msgid "No border"
@@ -6635,7 +6635,7 @@ msgstr ""
 
 #: frontend/src/apps/mail/pages/CalendarExchangesView.vue
 msgid "No calendar exchanges found."
-msgstr ""
+msgstr "هیچ تبادل تقویمی پیدا نشد."
 
 #: suite/mail/doctype/calendar/calendar.py
 msgid "No calendars found."
@@ -6647,7 +6647,7 @@ msgstr ""
 
 #: frontend/src/apps/mail/pages/ContactsExchangesView.vue
 msgid "No contacts exchanges found."
-msgstr ""
+msgstr "هیچ تبادل مخاطبی پیدا نشد."
 
 #: suite/mail/doctype/contacts_exchange/contacts_exchange.py
 msgid "No contacts found for export."
@@ -6659,15 +6659,15 @@ msgstr ""
 
 #: frontend/src/apps/mail/pages/AddressBookView.vue frontend/src/apps/mail/pages/ContactsView.vue
 msgid "No contacts found."
-msgstr ""
+msgstr "هیچ مخاطبی پیدا نشد."
 
 #: frontend/src/apps/mail/components/Modals/AddAddressBookContactsModal.vue
 msgid "No contacts to add."
-msgstr ""
+msgstr "مخاطبی برای افزودن وجود ندارد."
 
 #: frontend/src/apps/mail/components/Modals/ContactsModal.vue
 msgid "No contacts."
-msgstr ""
+msgstr "هیچ مخاطبی وجود ندارد."
 
 #: frontend/src/apps/sheets/components/SheetEditor/ChartView.vue
 msgid "No data"
@@ -6715,7 +6715,7 @@ msgstr ""
 
 #: frontend/src/apps/mail/pages/ContactView.vue
 msgid "No emails."
-msgstr ""
+msgstr "هیچ ایمیلی وجود ندارد."
 
 #: suite/mail/doctype/event_notification/event_notification.py
 msgid "No event notifications found."
@@ -6723,7 +6723,7 @@ msgstr ""
 
 #: frontend/src/apps/mail/components/Settings/CalendarExportSettings.vue frontend/src/apps/mail/components/Settings/ContactsExportSettings.vue frontend/src/apps/mail/components/Settings/MailExportSettings.vue
 msgid "No exports in progress."
-msgstr ""
+msgstr "هیچ خروجی‌گیری‌ای در حال انجام نیست."
 
 #: suite/mail/api/outbound.py
 msgid "No file found in the request."
@@ -6735,7 +6735,7 @@ msgstr ""
 
 #: frontend/src/apps/mail/components/Settings/FolderSettings.vue
 msgid "No folders found."
-msgstr ""
+msgstr "هیچ پوشه‌ای پیدا نشد."
 
 #: suite/mail/doctype/identity/identity.py
 msgid "No identities found."
@@ -6743,7 +6743,7 @@ msgstr ""
 
 #: frontend/src/apps/mail/components/Settings/CalendarImportSettings.vue frontend/src/apps/mail/components/Settings/ContactsImportSettings.vue frontend/src/apps/mail/components/Settings/MailImportSettings.vue
 msgid "No imports in progress."
-msgstr ""
+msgstr "هیچ درون‌ریزی‌ای در حال انجام نیست."
 
 #: frontend/src/apps/mail/pages/dashboard/InvitesView.vue
 msgid "No invites found."
@@ -6751,7 +6751,7 @@ msgstr ""
 
 #: frontend/src/apps/mail/pages/MailExchangesView.vue
 msgid "No mail exchanges found."
-msgstr ""
+msgstr "هیچ سرور تبادل ایمیلی پیدا نشد."
 
 #: suite/mail/doctype/mailbox/mailbox.py
 msgid "No mailboxes found."
@@ -6759,7 +6759,7 @@ msgstr ""
 
 #: frontend/src/apps/mail/pages/MailboxView.vue
 msgid "No mails found for the selected filter."
-msgstr ""
+msgstr "هیچ ایمیلی برای فیلتر انتخاب‌شده پیدا نشد."
 
 #: frontend/src/apps/mail/components/Modals/SearchModal.vue suite/drive/public/js/FileUploader.vue
 msgid "No matches"
@@ -6775,7 +6775,7 @@ msgstr "فیلد منطبقی پیدا نشد"
 
 #: frontend/src/apps/mail/pages/dashboard/UsersView.vue
 msgid "No members found."
-msgstr ""
+msgstr "هیچ عضوی یافت نشد."
 
 #: suite/mail/doctype/mail_message/mail_message.py
 msgid "No messages found."
@@ -6795,7 +6795,7 @@ msgstr ""
 
 #: frontend/src/apps/mail/pages/ContactView.vue
 msgid "No phones."
-msgstr ""
+msgstr "شماره تلفنی وجود ندارد."
 
 #: frontend/src/apps/slides/components/PresentationList.vue
 msgid "No presentations created yet."
@@ -6807,7 +6807,7 @@ msgstr ""
 
 #: frontend/src/apps/mail/components/Settings/PushSubscriptionSettings.vue
 msgid "No push subscriptions."
-msgstr ""
+msgstr "اشتراک اعلان فوری وجود ندارد."
 
 #: suite/mail/doctype/quota/quota.py
 msgid "No quotas found."
@@ -6815,11 +6815,11 @@ msgstr ""
 
 #: frontend/src/apps/mail/components/Settings/IdentitySettings.vue
 msgid "No Reply To addresses added."
-msgstr ""
+msgstr "هیچ نشانی «پاسخ به» افزوده نشده است."
 
 #: frontend/src/apps/mail/components/Modals/SearchModal.vue frontend/src/apps/mail/pages/MailboxView.vue
 msgid "No results found for the given query."
-msgstr ""
+msgstr "نتیجه‌ای برای جستار داده‌شده یافت نشد."
 
 #: frontend/src/apps/mail/components/ListCard.vue
 msgid "No rows."
@@ -6827,11 +6827,11 @@ msgstr "ردیفی وجود ندارد."
 
 #: frontend/src/apps/mail/components/Settings/ScreenedEmailAddressSettings.vue
 msgid "No screened senders match your search."
-msgstr ""
+msgstr "هیچ فرستنده غربال‌شده‌ای با جست‌وجوی شما مطابقت ندارد."
 
 #: frontend/src/apps/mail/components/Settings/ScreenedEmailAddressSettings.vue
 msgid "No screened senders."
-msgstr ""
+msgstr "فرستنده غربال‌شده‌ای وجود ندارد."
 
 #: frontend/src/apps/sheets/pages/Home.vue
 msgid "No sheets yet"
@@ -6839,15 +6839,15 @@ msgstr "هنوز صفحه‌گسترده‌ای ندارید"
 
 #: frontend/src/apps/mail/components/Settings/AutomationSettings.vue suite/mail/doctype/sieve_script/sieve_script.py
 msgid "No sieve scripts found."
-msgstr ""
+msgstr "هیچ اسکریپت Sieve یافت نشد."
 
 #: frontend/src/apps/mail/components/Settings/SignatureSettings.vue
 msgid "No signatures found."
-msgstr ""
+msgstr "هیچ امضایی یافت نشد."
 
 #: frontend/src/apps/mail/pages/AllInboxesView.vue frontend/src/apps/mail/pages/MailboxView.vue
 msgid "No Trash folder for this account."
-msgstr ""
+msgstr "پوشه زباله‌دان برای این حساب وجود ندارد."
 
 #: frontend/src/apps/meet/components/UpcomingMeetings.vue
 msgid "No upcoming Meet meetings"
@@ -6903,7 +6903,7 @@ msgstr "پیدا نشد"
 
 #: frontend/src/apps/mail/utils/useThreadActions.ts
 msgid "Not Junk"
-msgstr ""
+msgstr "هرزنامه نیست"
 
 #: suite/mail/doctype/mail_message/mail_message.json
 msgid "Not Keyword"
@@ -6995,7 +6995,7 @@ msgstr "مقدار قدیمی"
 
 #: frontend/src/apps/mail/components/Settings/MailExportSettings.vue
 msgid "Oldest Emails"
-msgstr ""
+msgstr "قدیمی‌ترین ایمیل‌ها"
 
 #: frontend/src/apps/mail/components/Settings/CalendarExportSettings.vue
 msgid "Oldest Events"
@@ -7143,7 +7143,7 @@ msgstr "باز کردن در دسکتاپ"
 
 #: frontend/src/apps/mail/components/Modals/ShortcutsModal.vue
 msgid "Open Settings"
-msgstr ""
+msgstr "باز کردن تنظیمات"
 
 #: suite/mail/doctype/calendar_exchange/calendar_exchange.json suite/mail/doctype/contacts_exchange/contacts_exchange.json suite/mail/doctype/mail_exchange/mail_exchange.json
 msgid "Operation"
@@ -7379,7 +7379,7 @@ msgstr ""
 
 #: frontend/src/apps/calendar/components/Modals/ChangePasswordModal.vue frontend/src/apps/mail/components/Modals/ChangePasswordModal.vue frontend/src/components/settings/UserProfileSettings.vue
 msgid "Password updated."
-msgstr ""
+msgstr "گذرواژه به‌روزرسانی شد."
 
 #: frontend/src/apps/calendar/components/Modals/ChangePasswordModal.vue frontend/src/apps/mail/components/Modals/ChangePasswordModal.vue frontend/src/components/settings/UserProfileSettings.vue
 msgid "Passwords do not match"
@@ -7431,7 +7431,7 @@ msgstr "دوره"
 
 #: frontend/src/apps/mail/components/Modals/ShortcutsModal.vue
 msgid "Permanently Delete"
-msgstr ""
+msgstr "حذف دائمی"
 
 #: suite/drive/public/js/file.js
 msgid "Permissions"
@@ -7451,7 +7451,7 @@ msgstr "تلفن"
 
 #: frontend/src/apps/mail/pages/ContactView.vue suite/mail/doctype/contact_card/contact_card.json
 msgid "Phones"
-msgstr ""
+msgstr "شماره‌های تلفن"
 
 #: frontend/src/apps/writer/extensions/components/MathPopup.vue
 msgid "Pi"
@@ -7511,7 +7511,7 @@ msgstr ""
 
 #: frontend/src/apps/mail/components/ComposeMailEditor.vue suite/mail/doctype/mail_queue/mail_queue.py
 msgid "Please add at least one recipient."
-msgstr ""
+msgstr "لطفاً حداقل یک گیرنده اضافه کنید."
 
 #: suite/mail/doctype/mail_settings/mail_settings.py
 msgid "Please add at least one Signup Domain."
@@ -7671,7 +7671,7 @@ msgstr ""
 
 #: frontend/src/apps/mail/components/ComposeMailEditor.vue
 msgid "Pop Out"
-msgstr ""
+msgstr "باز کردن در پنجره جداگانه"
 
 #: frontend/src/apps/mail/components/Settings/AdvancedSettings.vue suite/mail/doctype/mail_client_configuration/mail_client_configuration.json suite/mail/doctype/mail_cluster_store/mail_cluster_store.json suite/mail/doctype/mail_settings/mail_settings.json
 msgid "Port"
@@ -7699,7 +7699,7 @@ msgstr ""
 
 #: frontend/src/apps/mail/components/Modals/AddContactAddressModal.vue frontend/src/apps/mail/pages/ContactView.vue suite/mail/doctype/contact_card_address/contact_card_address.json
 msgid "Postcode"
-msgstr ""
+msgstr "کد پستی"
 
 #: frontend/src/apps/drive/components/Settings/PreferencesSettings.vue
 msgid "Preferences"
@@ -7735,11 +7735,11 @@ msgstr "پیش‌نمایش"
 
 #: frontend/src/apps/mail/components/Settings/AppearanceSettings.vue
 msgid "Preview emails alongside the message list."
-msgstr ""
+msgstr "پیش‌نمایش ایمیل‌ها را در کنار فهرست پیام‌ها نمایش دهید."
 
 #: frontend/src/apps/mail/components/AttachmentViewer.vue
 msgid "Preview not available for this file type"
-msgstr ""
+msgstr "پیش‌نمایش برای این نوع فایل در دسترس نیست"
 
 #: suite/drive/doctype/drive_disk_settings/drive_disk_settings.json
 msgid "Preview size"
@@ -7747,11 +7747,11 @@ msgstr "اندازه پیش‌نمایش"
 
 #: frontend/src/apps/mail/components/ThreadHeader.vue
 msgid "Previous Thread (↑/K)"
-msgstr ""
+msgstr "گفت‌وگوی قبلی (↑/K)"
 
 #: frontend/src/apps/mail/components/Modals/AddDomainModal.vue
 msgid "Primary domain for company email"
-msgstr ""
+msgstr "دامنه اصلی ایمیل شرکت"
 
 #: suite/mail/doctype/calendar_rights/calendar_rights.json suite/mail/doctype/event_notification/event_notification.json
 msgid "Principal ID"
@@ -7771,7 +7771,7 @@ msgstr "اولویت"
 
 #: frontend/src/apps/mail/components/Modals/SettingsModal.vue suite/mail/doctype/calendar_event/calendar_event.json
 msgid "Privacy"
-msgstr ""
+msgstr "حریم خصوصی"
 
 #: frontend/src/apps/calendar/components/Modals/EventModal.vue
 msgid "Private"
@@ -7807,7 +7807,7 @@ msgstr "نمایه"
 
 #: frontend/src/apps/calendar/components/Modals/EditPhotoModal.vue frontend/src/apps/mail/components/Modals/EditPhotoModal.vue
 msgid "Profile photo updated."
-msgstr ""
+msgstr "عکس نمایه به‌روزرسانی شد."
 
 #: frontend/src/components/settings/UserProfileSettings.vue
 msgid "Profile picture options"
@@ -7879,7 +7879,7 @@ msgstr ""
 
 #: suite/mail/doctype/mail_cluster/mail_cluster.json suite/mail/doctype/mail_server/mail_server.json
 msgid "Public Key"
-msgstr ""
+msgstr "کلید عمومی"
 
 #: suite/mail/doctype/mail_settings/mail_settings.json
 msgid "Public key used to authenticate API requests."
@@ -7907,7 +7907,7 @@ msgstr ""
 
 #: frontend/src/apps/mail/components/PWASettings.vue
 msgid "Push Notification permission denied"
-msgstr ""
+msgstr "مجوز اعلان فوری رد شد"
 
 #: suite/mail/api/jmap.py
 msgid "Push notifications are currently frozen for this user."
@@ -7915,11 +7915,11 @@ msgstr ""
 
 #: frontend/src/apps/mail/components/PWASettings.vue
 msgid "Push notifications disabled"
-msgstr ""
+msgstr "اعلان‌های فوری غیرفعال‌اند"
 
 #: frontend/src/apps/mail/components/PWASettings.vue
 msgid "Push notifications have been disabled on your site"
-msgstr ""
+msgstr "اعلان‌های فوری در سایت شما غیرفعال شده‌اند"
 
 #: suite/mail/workspace_sidebar/client.json
 msgid "Push Subscription"
@@ -7927,7 +7927,7 @@ msgstr ""
 
 #: frontend/src/apps/mail/components/Modals/AddPushSubscriptionModal.vue
 msgid "Push subscription created."
-msgstr ""
+msgstr "اشتراک اعلان فوری ایجاد شد."
 
 #: suite/mail/doctype/push_subscription/push_subscription.py
 msgid "Push Subscription Creation Error"
@@ -7967,7 +7967,7 @@ msgstr ""
 
 #: frontend/src/apps/mail/components/Modals/SettingsModal.vue frontend/src/apps/mail/components/Settings/PushSubscriptionSettings.vue
 msgid "Push Subscriptions"
-msgstr ""
+msgstr "اشتراک‌های اعلان فوری"
 
 #: suite/mail/doctype/push_subscription/push_subscription.py
 msgid "Push Subscriptions deleted successfully."
@@ -7975,7 +7975,7 @@ msgstr ""
 
 #: frontend/src/apps/mail/components/Settings/PushSubscriptionSettings.vue
 msgid "Push subscriptions let your devices receive real-time notifications when your mail changes. Create one to register this or another client."
-msgstr ""
+msgstr "اشتراک‌های اعلان فوری به دستگاه‌های شما امکان می‌دهند هنگام تغییر ایمیل‌ها، اعلان‌های لحظه‌ای دریافت کنند. برای ثبت این سرویس‌گیرنده یا سرویس‌گیرنده‌ای دیگر، یک اشتراک ایجاد کنید."
 
 #: frontend/src/apps/meet/components/settings/AudioSettingsTab.vue
 msgid "Push to Talk"
@@ -8067,7 +8067,7 @@ msgstr "فقط خواندنی"
 
 #: frontend/src/apps/mail/components/Modals/SearchModal.vue frontend/src/apps/mail/components/Settings/MailExportSettings.vue
 msgid "Read Status"
-msgstr ""
+msgstr "وضعیت خواندن"
 
 #: suite/mail/doctype/sieve_script/sieve_script.py
 msgid "Read-Only Sieve Script"
@@ -8083,7 +8083,7 @@ msgstr "آماده ورود هستید؟"
 
 #: frontend/src/apps/mail/components/Settings/AutomationSettings.vue
 msgid "Rebuild Automation"
-msgstr ""
+msgstr "بازسازی خودکارسازی"
 
 #: suite/mail/doctype/mail_message/mail_message.json suite/mail/doctype/mail_queue/mail_queue.json
 msgid "Received After (Seconds)"
@@ -8091,7 +8091,7 @@ msgstr ""
 
 #: suite/mail/doctype/mail_message/mail_message.json
 msgid "Received At"
-msgstr ""
+msgstr "زمان دریافت"
 
 #: suite/mail/doctype/mail_message/mail_message.json
 msgid "Received At - Sent At"
@@ -8103,15 +8103,15 @@ msgstr "گیرندگان"
 
 #: frontend/src/apps/mail/pages/dashboard/DomainView.vue
 msgid "Recommended"
-msgstr ""
+msgstr "توصیه‌شده"
 
 #: frontend/src/apps/mail/pages/dashboard/DomainView.vue
 msgid "Records that allow mail and sync apps to automatically locate and connect to your domain’s email, calendar, and contacts services."
-msgstr ""
+msgstr "رکوردهایی که به برنامه‌های ایمیل و همگام‌سازی امکان می‌دهند سرویس‌های ایمیل، تقویم و مخاطبان دامنه شما را به‌طور خودکار پیدا کنند و به آن‌ها متصل شوند."
 
 #: frontend/src/apps/mail/components/Settings/Account.vue suite/mail/doctype/user_settings/user_settings.json
 msgid "Recovery"
-msgstr ""
+msgstr "بازیابی"
 
 #: suite/mail/doctype/mail_server/mail_server.json
 msgid "Recovery HTTP Port"
@@ -8143,7 +8143,7 @@ msgstr "قرمز"
 
 #: frontend/src/apps/mail/pages/SetupView.vue
 msgid "Redirecting..."
-msgstr ""
+msgstr "در حال تغییر مسیر..."
 
 #: suite/mail/doctype/mail_cluster_store/mail_cluster_store.json
 msgid "Redis protocol version."
@@ -8183,11 +8183,11 @@ msgstr ""
 
 #: frontend/src/apps/mail/components/Settings/AdvancedSettings.vue
 msgid "Regenerate Secret"
-msgstr ""
+msgstr "تولید مجدد کلید محرمانه"
 
 #: frontend/src/apps/mail/components/Settings/AutomationSettings.vue
 msgid "Regenerate the folder automation script from your saved mailbox rules."
-msgstr ""
+msgstr "اسکریپت خودکارسازی پوشه را از روی قوانین ذخیره‌شده صندوق پستی دوباره تولید کنید."
 
 #: suite/mail/doctype/mail_server/mail_server.js
 msgid "Regenerating bootstrap.ndjson..."
@@ -8195,7 +8195,7 @@ msgstr ""
 
 #: frontend/src/apps/mail/components/Modals/AddContactAddressModal.vue frontend/src/apps/mail/pages/ContactView.vue suite/mail/doctype/contact_card_address/contact_card_address.json suite/mail/doctype/mail_cluster_store/mail_cluster_store.json
 msgid "Region"
-msgstr ""
+msgstr "منطقه"
 
 #: suite/mail/doctype/event_alert/event_alert.json
 msgid "Relative To"
@@ -8207,7 +8207,7 @@ msgstr ""
 
 #: frontend/src/apps/mail/pages/ForgotPasswordView.vue
 msgid "Remember your password? Log in."
-msgstr ""
+msgstr "گذرواژه‌تان را به خاطر دارید؟ وارد شوید."
 
 #: suite/mail/doctype/calendar_event/calendar_event.json
 msgid "Reminders or notifications associated with the event."
@@ -8215,7 +8215,7 @@ msgstr ""
 
 #: frontend/src/apps/mail/components/EmailContent.vue
 msgid "Remote content hidden to protect your privacy."
-msgstr ""
+msgstr "برای حفظ حریم خصوصی شما، محتوای خارجی پنهان شده است."
 
 #: frontend/src/apps/mail/components/ListCard.vue frontend/src/apps/mail/components/Settings/ScreenedEmailAddressSettings.vue frontend/src/apps/mail/pages/AddressBookView.vue frontend/src/apps/mail/pages/ContactView.vue frontend/src/apps/meet/components/PeopleParticipantTile.vue frontend/src/apps/sheets/components/SheetEditor/toolbar.config.js suite/mail/doctype/mail_message/mail_message.js
 msgid "Remove"
@@ -8227,27 +8227,27 @@ msgstr "حذف دسترسی"
 
 #: frontend/src/apps/mail/pages/ContactView.vue
 msgid "Remove Addresses"
-msgstr ""
+msgstr "حذف نشانی‌ها"
 
 #: frontend/src/apps/mail/pages/AddressBookView.vue
 msgid "Remove Contacts"
-msgstr ""
+msgstr "حذف مخاطبان"
 
 #: frontend/src/apps/calendar/components/Modals/EditPhotoModal.vue frontend/src/apps/mail/components/Modals/EditPhotoModal.vue
 msgid "Remove Current Photo"
-msgstr ""
+msgstr "حذف عکس فعلی"
 
 #: frontend/src/apps/mail/pages/ContactView.vue
 msgid "Remove Emails"
-msgstr ""
+msgstr "حذف ایمیل‌ها"
 
 #: frontend/src/apps/mail/components/Modals/SearchModal.vue frontend/src/apps/mail/pages/MailboxView.vue
 msgid "Remove filter"
-msgstr ""
+msgstr "حذف فیلتر"
 
 #: frontend/src/apps/mail/components/ThreadHeader.vue frontend/src/apps/mail/pages/MailboxView.vue
 msgid "Remove From"
-msgstr ""
+msgstr "حذف از"
 
 #: suite/mail/doctype/mail_message/mail_message.js
 msgid "Remove from "
@@ -8255,7 +8255,7 @@ msgstr ""
 
 #: frontend/src/apps/mail/pages/ContactView.vue
 msgid "Remove from Address Books"
-msgstr ""
+msgstr "حذف از دفترچه‌های نشانی"
 
 #: frontend/src/apps/drive/components/GenericPage.vue
 msgid "Remove from Recents"
@@ -8271,11 +8271,11 @@ msgstr "حذف شرکت‌کننده"
 
 #: frontend/src/apps/mail/pages/ContactView.vue
 msgid "Remove Phones"
-msgstr ""
+msgstr "حذف شماره‌های تلفن"
 
 #: frontend/src/apps/mail/components/Settings/ScreenedEmailAddressSettings.vue
 msgid "Remove Screened Senders"
-msgstr ""
+msgstr "حذف فرستندگان غربال‌شده"
 
 #: suite/mail/doctype/contacts_exchange/contacts_exchange.py
 msgid "Removed {0} duplicate(s); {1} unique contact(s) remain."
@@ -8299,7 +8299,7 @@ msgstr "تغییر نام صفحه‌گسترده"
 
 #: frontend/src/apps/mail/components/Settings/PushSubscriptionSettings.vue suite/mail/doctype/push_subscription/push_subscription.js
 msgid "Renew"
-msgstr ""
+msgstr "تمدید"
 
 #: suite/mail/doctype/push_subscription/push_subscription.js
 msgid "Renewing..."
@@ -8347,7 +8347,7 @@ msgstr "پاسخ"
 
 #: frontend/src/apps/mail/components/MailThread.vue
 msgid "Reply (R)"
-msgstr ""
+msgstr "پاسخ (R)"
 
 #: suite/mail/doctype/mail_message/mail_message.js
 msgid "Reply / Forward"
@@ -8359,19 +8359,19 @@ msgstr "پاسخ به همه"
 
 #: frontend/src/apps/mail/components/MailThread.vue
 msgid "Reply All (Shift+R)"
-msgstr ""
+msgstr "پاسخ به همه (Shift+R)"
 
 #: frontend/src/apps/mail/components/Modals/ShortcutsModal.vue
 msgid "Reply All to Mail"
-msgstr ""
+msgstr "پاسخ به همه در ایمیل"
 
 #: frontend/src/apps/mail/components/Settings/IdentitySettings.vue suite/mail/doctype/identity/identity.json suite/mail/doctype/mail_message/mail_message.json suite/mail/doctype/mail_queue/mail_queue.json
 msgid "Reply To"
-msgstr ""
+msgstr "پاسخ به"
 
 #: frontend/src/apps/mail/components/Modals/ShortcutsModal.vue
 msgid "Reply to Mail"
-msgstr ""
+msgstr "پاسخ به ایمیل"
 
 #: frontend/src/apps/mail/components/MailDetails.vue
 msgid "Reply To: "
@@ -8383,7 +8383,7 @@ msgstr "گزارش مشکل"
 
 #: frontend/src/apps/mail/pages/dashboard/DomainView.vue
 msgid "Request failed."
-msgstr ""
+msgstr "درخواست ناموفق بود."
 
 #: suite/drive/doctype/account_request/account_request.json suite/mail/doctype/mail_account_request/mail_account_request.json
 msgid "Request Key"
@@ -8395,7 +8395,7 @@ msgstr "نیاز به تأیید میزبان"
 
 #: frontend/src/apps/mail/pages/dashboard/DomainView.vue
 msgid "Required"
-msgstr ""
+msgstr "الزامی"
 
 #: suite/mail/doctype/server_ansible_play/server_ansible_play.json
 msgid "Rescued"
@@ -8423,7 +8423,7 @@ msgstr "پاسخ"
 
 #: frontend/src/apps/calendar/components/EventPopoverContent.vue
 msgid "Response sent."
-msgstr ""
+msgstr "پاسخ ارسال شد."
 
 #: suite/mail/doctype/server_deployment_service/server_deployment_service.json
 msgid "Restart"
@@ -8455,7 +8455,7 @@ msgstr "نتیجه"
 
 #: suite/mail/doctype/calendar_exchange/calendar_exchange.json suite/mail/doctype/contacts_exchange/contacts_exchange.json suite/mail/doctype/mail_exchange/mail_exchange.json suite/mail/doctype/mail_queue/mail_queue.json suite/mail/doctype/server_ansible_play/server_ansible_play.json suite/mail/doctype/server_deployment/server_deployment.json suite/mail/doctype/server_job/server_job.json
 msgid "Retries"
-msgstr ""
+msgstr "تلاش‌های مجدد"
 
 #: suite/mail/doctype/calendar_exchange/calendar_exchange.js suite/mail/doctype/contacts_exchange/contacts_exchange.js suite/mail/doctype/mail_exchange/mail_exchange.js suite/mail/doctype/mail_queue/mail_queue.js suite/mail/doctype/mail_queue/mail_queue_list.js suite/mail/doctype/server_ansible_play/server_ansible_play.js suite/mail/doctype/server_deployment/server_deployment.js suite/mail/doctype/server_job/server_job.js
 msgid "Retry"
@@ -8467,11 +8467,11 @@ msgstr ""
 
 #: frontend/src/apps/mail/pages/MimeMessageView.vue
 msgid "Return to Home"
-msgstr ""
+msgstr "بازگشت به صفحه اصلی"
 
 #: frontend/src/apps/mail/pages/MailboxView.vue
 msgid "Review Now"
-msgstr ""
+msgstr "اکنون بررسی کنید"
 
 #: frontend/src/apps/sheets/components/SheetEditor/toolbar.config.js frontend/src/apps/slides/components/ShapeProperties.vue
 msgid "Right"
@@ -8599,11 +8599,11 @@ msgstr "دامنه"
 
 #: frontend/src/apps/mail/components/Modals/AddScreenedSenderModal.vue
 msgid "Screen a Sender"
-msgstr ""
+msgstr "غربال فرستنده"
 
 #: frontend/src/apps/mail/components/Settings/Account.vue
 msgid "Screen New Senders"
-msgstr ""
+msgstr "غربال فرستندگان جدید"
 
 #: frontend/src/apps/calendar/components/EventAlertList.vue
 msgid "Screen Pop-up"
@@ -8611,15 +8611,15 @@ msgstr ""
 
 #: frontend/src/apps/mail/components/Settings/ScreenedEmailAddressSettings.vue
 msgid "Screen specific senders — or a whole domain (e.g. @example.com) — to either reject their messages or send them straight to Spam."
-msgstr ""
+msgstr "فرستندگان مشخص — یا یک دامنه کامل (مثلاً @example.com) — را غربال کنید تا پیام‌هایشان رد شوند یا مستقیماً به هرزنامه فرستاده شوند."
 
 #: frontend/src/apps/mail/components/Modals/SettingsModal.vue frontend/src/apps/mail/components/Settings/ScreenedEmailAddressSettings.vue
 msgid "Screened Senders"
-msgstr ""
+msgstr "فرستندگان غربال‌شده"
 
 #: frontend/src/apps/mail/pages/ScreenerView.vue frontend/src/apps/mail/utils/index.ts
 msgid "Screener"
-msgstr ""
+msgstr "غربال‌گر"
 
 #: suite/mail/api/mail.py
 msgid "Screening Auto-Accept Error"
@@ -8627,15 +8627,15 @@ msgstr ""
 
 #: frontend/src/apps/mail/components/Settings/Account.vue
 msgid "Screening is off. Move the messages currently in the Screener to your Inbox?"
-msgstr ""
+msgstr "غربالگری خاموش است. پیام‌های موجود در غربالگر به صندوق ورودی منتقل شوند؟"
 
 #: frontend/src/apps/mail/components/Modals/SieveScriptModal.vue
 msgid "Script Content"
-msgstr ""
+msgstr "محتوای اسکریپت"
 
 #: frontend/src/apps/mail/components/Modals/SieveScriptModal.vue
 msgid "Script Name"
-msgstr ""
+msgstr "نام اسکریپت"
 
 #: frontend/src/apps/drive/components/EmojiPicker.vue frontend/src/apps/drive/components/Sidebar.vue frontend/src/apps/mail/components/Modals/SearchModal.vue frontend/src/apps/mail/pages/AddressBookView.vue frontend/src/apps/mail/pages/AddressBooksView.vue frontend/src/apps/mail/pages/ContactsView.vue frontend/src/apps/mail/pages/MailboxView.vue frontend/src/apps/mail/pages/dashboard/DomainsView.vue
 msgid "Search"
@@ -8643,15 +8643,15 @@ msgstr "جستجو"
 
 #: frontend/src/apps/mail/components/HeaderActions.vue
 msgid "Search ({0}+K)"
-msgstr ""
+msgstr "جست‌وجو ({0}+K)"
 
 #: frontend/src/apps/mail/components/Modals/SearchModal.vue
 msgid "Search across all accounts"
-msgstr ""
+msgstr "جست‌وجو در همه حساب‌ها"
 
 #: frontend/src/apps/mail/components/EmojiPicker.vue
 msgid "Search by keyword"
-msgstr ""
+msgstr "جست‌وجو با کلیدواژه"
 
 #: suite/mail/doctype/mail_cluster/mail_cluster.json
 msgid "Search Config"
@@ -8663,7 +8663,7 @@ msgstr "جستجوی فیلدها…"
 
 #: frontend/src/apps/mail/components/Modals/ShortcutsModal.vue
 msgid "Search Mail"
-msgstr ""
+msgstr "جست‌وجو در ایمیل‌ها"
 
 #: frontend/src/apps/meet/components/PeoplePanel.vue
 msgid "Search people"
@@ -8675,7 +8675,7 @@ msgstr ""
 
 #: frontend/src/apps/mail/components/Settings/ScreenedEmailAddressSettings.vue
 msgid "Search screened senders"
-msgstr ""
+msgstr "جست‌وجوی فرستندگان غربال‌شده"
 
 #: frontend/src/apps/sheets/pages/Home.vue
 msgid "Search sheets…"
@@ -8699,7 +8699,7 @@ msgstr "جستجو..."
 
 #: frontend/src/apps/mail/components/Modals/SearchModal.vue frontend/src/apps/mail/pages/MailboxView.vue
 msgid "Searching…"
-msgstr ""
+msgstr "در حال جست‌وجو…"
 
 #: frontend/src/apps/calendar/components/Modals/EventRepeatSettingsModal.vue
 msgid "Second"
@@ -8739,7 +8739,7 @@ msgstr ""
 
 #: frontend/src/apps/mail/components/MailActions.vue
 msgid "See MIME Message"
-msgstr ""
+msgstr "مشاهده پیام MIME"
 
 #: suite/mail/doctype/mail_message/mail_message.json
 msgid "Seen"
@@ -8747,7 +8747,7 @@ msgstr "مشاهده گردید"
 
 #: frontend/src/apps/mail/pages/ScreenerView.vue
 msgid "Select a sender to view their emails."
-msgstr ""
+msgstr "برای مشاهده ایمیل‌های فرستنده، او را انتخاب کنید."
 
 #: suite/drive/public/js/FileUploader.vue
 msgid "Select a team"
@@ -8763,15 +8763,15 @@ msgstr "انتخاب همه"
 
 #: frontend/src/apps/mail/pages/MailboxView.vue
 msgid "Select All ({0}+A)"
-msgstr ""
+msgstr "انتخاب همه ({0}+A)"
 
 #: frontend/src/apps/mail/components/Modals/ShortcutsModal.vue
 msgid "Select All Mails"
-msgstr ""
+msgstr "انتخاب همه ایمیل‌ها"
 
 #: frontend/src/apps/mail/components/MailThread.vue
 msgid "Select an email to view the thread."
-msgstr ""
+msgstr "برای مشاهده گفت‌وگو، یک ایمیل را انتخاب کنید."
 
 #: frontend/src/apps/meet/components/settings/DeviceSettingsTab.vue
 msgid "Select camera"
@@ -8779,15 +8779,15 @@ msgstr "انتخاب دوربین"
 
 #: frontend/src/apps/mail/components/Modals/AddAddressBookContactsModal.vue frontend/src/apps/mail/components/Modals/ContactsModal.vue
 msgid "Select Contacts"
-msgstr ""
+msgstr "انتخاب مخاطبان"
 
 #: frontend/src/apps/mail/components/Modals/ContactsModal.vue
 msgid "Select From"
-msgstr ""
+msgstr "انتخاب فرستنده"
 
 #: frontend/src/apps/mail/components/ComposeMailEditor.vue
 msgid "Select from contacts"
-msgstr ""
+msgstr "انتخاب از مخاطبان"
 
 #: frontend/src/apps/drive/components/DriveToolBar.vue
 msgid "selected"
@@ -8795,11 +8795,11 @@ msgstr "انتخاب شده"
 
 #: frontend/src/apps/mail/components/Settings/PushSubscriptionSettings.vue
 msgid "Selected subscriptions deleted."
-msgstr ""
+msgstr "اشتراک‌های انتخاب‌شده حذف شدند."
 
 #: frontend/src/apps/mail/components/Settings/PushSubscriptionSettings.vue
 msgid "Selected subscriptions renewed."
-msgstr ""
+msgstr "اشتراک‌های انتخاب‌شده تمدید شدند."
 
 #: frontend/src/apps/sheets/components/SheetEditor/SplitTextPopover.vue
 msgid "Semicolon"
@@ -8811,7 +8811,7 @@ msgstr "ارسال"
 
 #: frontend/src/apps/mail/components/ComposeMailToolbar.vue
 msgid "Send ({0}+Enter)"
-msgstr ""
+msgstr "ارسال ({0}+Enter)"
 
 #: frontend/src/apps/calendar/components/Modals/EventModal.vue
 msgid "Send an email to let attendees know they've been invited?"
@@ -8827,15 +8827,15 @@ msgstr "ایمیل بفرست"
 
 #: frontend/src/apps/mail/components/Modals/AddMemberModal.vue suite/mail/doctype/mail_account_request/mail_account_request.json
 msgid "Send Invite"
-msgstr ""
+msgstr "ارسال دعوت‌نامه"
 
 #: frontend/src/apps/mail/components/Modals/ShortcutsModal.vue
 msgid "Send Mail"
-msgstr ""
+msgstr "ارسال ایمیل"
 
 #: frontend/src/apps/mail/pages/ForgotPasswordView.vue
 msgid "Send Reset Link"
-msgstr ""
+msgstr "ارسال پیوند بازنشانی"
 
 #: suite/mail/doctype/calendar_event/calendar_event.json
 msgid "Send Scheduling Messages"
@@ -8851,11 +8851,11 @@ msgstr ""
 
 #: frontend/src/apps/mail/components/Modals/ScreenedEmailAddressModal.vue
 msgid "sender"
-msgstr ""
+msgstr "فرستنده"
 
 #: frontend/src/apps/mail/components/MailActions.vue frontend/src/apps/mail/utils/composables.ts
 msgid "Sender blocked."
-msgstr ""
+msgstr "فرستنده مسدود شد."
 
 #: suite/mail/doctype/mail_message/mail_message.json
 msgid "Sender Email"
@@ -8863,7 +8863,7 @@ msgstr "ایمیل فرستنده"
 
 #: frontend/src/apps/mail/components/MailThread.vue
 msgid "Sender marked as trusted."
-msgstr ""
+msgstr "فرستنده به‌عنوان قابل اعتماد علامت‌گذاری شد."
 
 #: suite/mail/doctype/mail_message/mail_message.json
 msgid "Sender Name"
@@ -8871,27 +8871,27 @@ msgstr "نام فرستنده"
 
 #: frontend/src/apps/mail/components/Modals/AddScreenedSenderModal.vue
 msgid "Sender screened."
-msgstr ""
+msgstr "فرستنده غربال شد."
 
 #: frontend/src/apps/mail/components/MailActions.vue frontend/src/apps/mail/components/MailThread.vue frontend/src/apps/mail/utils/composables.ts
 msgid "Sender unblocked."
-msgstr ""
+msgstr "انسداد فرستنده رفع شد."
 
 #: frontend/src/apps/mail/components/Modals/ScreenedEmailAddressModal.vue
 msgid "senders"
-msgstr ""
+msgstr "فرستندگان"
 
 #: frontend/src/apps/mail/utils/composables.ts
 msgid "Senders blocked."
-msgstr ""
+msgstr "فرستندگان مسدود شدند."
 
 #: frontend/src/apps/mail/components/Settings/ScreenedEmailAddressSettings.vue
 msgid "Senders removed."
-msgstr ""
+msgstr "فرستندگان حذف شدند."
 
 #: frontend/src/apps/mail/utils/composables.ts
 msgid "Senders unblocked."
-msgstr ""
+msgstr "انسداد فرستندگان رفع شد."
 
 #: frontend/src/apps/calendar/components/EventPopoverContent.vue
 msgid "Sending response..."
@@ -8935,7 +8935,7 @@ msgstr ""
 
 #: suite/mail/doctype/mail_settings/mail_settings.json suite/mail/doctype/user_settings/user_settings.json
 msgid "Server URL"
-msgstr ""
+msgstr "URL سرور"
 
 #: suite/mail/stalwart/cli.py
 msgid "Server URL is required for Stalwart CLI operations."
@@ -8951,15 +8951,15 @@ msgstr "سرویس"
 
 #: frontend/src/apps/mail/pages/dashboard/DomainView.vue
 msgid "Service Configuration Records"
-msgstr ""
+msgstr "رکوردهای پیکربندی سرویس"
 
 #: frontend/src/apps/mail/pages/dashboard/DomainView.vue
 msgid "Service Discovery Records"
-msgstr ""
+msgstr "رکوردهای کشف سرویس"
 
 #: frontend/src/apps/mail/pages/dashboard/DomainView.vue
 msgid "Service records that enable automatic mail setup and enforce secure transport for your domain."
-msgstr ""
+msgstr "رکوردهای سرویسی که راه‌اندازی خودکار ایمیل را فعال و انتقال امن را برای دامنه شما الزامی می‌کنند."
 
 #: suite/mail/doctype/server_deployment/server_deployment.json
 msgid "Services"
@@ -8991,11 +8991,11 @@ msgstr ""
 
 #: frontend/src/apps/mail/components/Settings/SignatureSettings.vue
 msgid "Set Default"
-msgstr ""
+msgstr "تنظیم به‌عنوان پیش‌فرض"
 
 #: frontend/src/apps/mail/components/Modals/SetDefaultSignatureModal.vue
 msgid "Set Default Signature"
-msgstr ""
+msgstr "تنظیم امضای پیش‌فرض"
 
 #: frontend/src/apps/writer/components/WriterSettings.vue
 msgid "Set the default spacing around paragraphs."
@@ -9011,7 +9011,7 @@ msgstr "پیش از زمان‌بندی جلسه، تقویم را راه‌ان
 
 #: frontend/src/apps/mail/pages/dashboard/DomainView.vue
 msgid "Set Up Your Domain"
-msgstr ""
+msgstr "راه‌اندازی دامنه"
 
 #: suite/mail/doctype/server_deployment/server_deployment.js
 msgid "Setting up Filebeat Stream..."
@@ -9171,7 +9171,7 @@ msgstr ""
 
 #: frontend/src/apps/mail/components/Modals/SearchModal.vue
 msgid "Showing top 5 results. "
-msgstr ""
+msgstr "نمایش ۵ نتیجه نخست. "
 
 #: suite/mail/doctype/jmap_account/jmap_account.json
 msgid "Sieve"
@@ -9183,7 +9183,7 @@ msgstr ""
 
 #: frontend/src/apps/mail/components/Modals/SieveScriptModal.vue
 msgid "Sieve script created."
-msgstr ""
+msgstr "اسکریپت Sieve ایجاد شد."
 
 #: suite/mail/doctype/sieve_script/sieve_script.py
 msgid "Sieve Script Creation Error"
@@ -9191,7 +9191,7 @@ msgstr ""
 
 #: frontend/src/apps/mail/components/Modals/DeleteSieveScriptModal.vue
 msgid "Sieve script deleted."
-msgstr ""
+msgstr "اسکریپت Sieve حذف شد."
 
 #: suite/mail/doctype/sieve_script/sieve_script.py
 msgid "Sieve Script Deletion Error"
@@ -9219,7 +9219,7 @@ msgstr ""
 
 #: frontend/src/apps/mail/components/Modals/SieveScriptModal.vue
 msgid "Sieve script updated."
-msgstr ""
+msgstr "اسکریپت Sieve به‌روزرسانی شد."
 
 #: suite/mail/doctype/sieve_script/sieve_script.py
 msgid "Sieve Script Validation Error"
@@ -9239,7 +9239,7 @@ msgstr ""
 
 #: frontend/src/apps/mail/components/Settings/AutomationSettings.vue
 msgid "Sieve scripts let you automatically filter and organize incoming emails."
-msgstr ""
+msgstr "اسکریپت‌های Sieve به شما امکان می‌دهند ایمیل‌های ورودی را به‌طور خودکار فیلتر و مرتب کنید."
 
 #: frontend/src/apps/meet/pages/Meeting.vue frontend/src/apps/writer/components/Navbar.vue
 msgid "Sign In"
@@ -9247,7 +9247,7 @@ msgstr "ورود"
 
 #: frontend/src/apps/mail/components/Settings/AdvancedSettings.vue
 msgid "Sign in using your existing mail account password."
-msgstr ""
+msgstr "با گذرواژه فعلی حساب ایمیل خود وارد شوید."
 
 #: frontend/src/apps/mail/pages/SignupView.vue
 msgid "Sign Up"
@@ -9263,19 +9263,19 @@ msgstr "امضا"
 
 #: frontend/src/apps/mail/components/Modals/AddSignatureModal.vue frontend/src/apps/mail/components/Modals/EditSignatureModal.vue
 msgid "Signature Body"
-msgstr ""
+msgstr "متن امضا"
 
 #: frontend/src/apps/mail/components/Modals/AddSignatureModal.vue
 msgid "Signature created."
-msgstr ""
+msgstr "امضا ایجاد شد."
 
 #: frontend/src/apps/mail/components/Modals/AddSignatureModal.vue frontend/src/apps/mail/components/Modals/EditSignatureModal.vue suite/mail/doctype/mail_signature/mail_signature.json
 msgid "Signature Name"
-msgstr ""
+msgstr "نام امضا"
 
 #: frontend/src/apps/mail/components/Modals/EditSignatureModal.vue
 msgid "Signature updated."
-msgstr ""
+msgstr "امضا به‌روزرسانی شد."
 
 #: suite/drive/doctype/drive_disk_settings/drive_disk_settings.json
 msgid "Signature Version"
@@ -9283,11 +9283,11 @@ msgstr "نسخه امضا"
 
 #: frontend/src/apps/mail/components/Modals/SettingsModal.vue frontend/src/apps/mail/components/Settings/SignatureSettings.vue
 msgid "Signatures"
-msgstr ""
+msgstr "امضاها"
 
 #: frontend/src/apps/mail/components/Settings/SignatureSettings.vue
 msgid "Signatures let you automatically add personalized content to your emails."
-msgstr ""
+msgstr "امضاها به شما امکان می‌دهند محتوای شخصی‌سازی‌شده را به‌طور خودکار به ایمیل‌هایتان اضافه کنید."
 
 #: suite/drive/doctype/account_request/account_request.json
 msgid "Signed Up"
@@ -9555,11 +9555,11 @@ msgstr ""
 
 #: frontend/src/apps/mail/components/MailActions.vue
 msgid "Star"
-msgstr ""
+msgstr "ستاره"
 
 #: frontend/src/apps/mail/components/MailListItemActions.vue
 msgid "Star Mail"
-msgstr ""
+msgstr "ستاره‌دار کردن ایمیل"
 
 #: frontend/src/apps/mail/pages/MailboxView.vue
 msgid "Star Mails"
@@ -9575,7 +9575,7 @@ msgstr "ستاره‌دار"
 
 #: frontend/src/apps/mail/pages/AllInboxesView.vue frontend/src/apps/mail/pages/MailboxView.vue
 msgid "Starred Mails"
-msgstr ""
+msgstr "ایمیل‌های ستاره‌دار"
 
 #: frontend/src/apps/calendar/components/EventAlertList.vue frontend/src/apps/meet/pages/Home.vue suite/mail/doctype/calendar_event/calendar_event.json
 msgid "Start"
@@ -9591,7 +9591,7 @@ msgstr "تاریخ شروع"
 
 #: frontend/src/apps/mail/components/Settings/CalendarExportSettings.vue frontend/src/apps/mail/components/Settings/MailExportSettings.vue
 msgid "Start From"
-msgstr ""
+msgstr "شروع از"
 
 #: frontend/src/apps/meet/composables/useMediaControls.ts
 msgid "Start Screen Share Anyway?"
@@ -9679,7 +9679,7 @@ msgstr ""
 
 #: frontend/src/apps/mail/components/Modals/AddContactAddressModal.vue frontend/src/apps/mail/pages/ContactView.vue suite/mail/doctype/contact_card_address/contact_card_address.json
 msgid "Street"
-msgstr ""
+msgstr "خیابان"
 
 #: frontend/src/apps/sheets/components/SheetEditor/index.vue frontend/src/apps/sheets/components/SheetEditor/toolbar.config.js
 msgid "Strikethrough"
@@ -9715,7 +9715,7 @@ msgstr "موضوع"
 
 #: frontend/src/apps/mail/components/Modals/FolderModal.vue suite/mail/doctype/mailbox_settings/mailbox_settings.json
 msgid "Subject Contains"
-msgstr ""
+msgstr "موضوع شامل"
 
 #: frontend/src/apps/mail/components/MailDetails.vue
 msgid "Subject: "
@@ -9747,7 +9747,7 @@ msgstr "زیرنویس"
 
 #: frontend/src/apps/mail/components/Settings/PushSubscriptionSettings.vue
 msgid "Subscription ID"
-msgstr ""
+msgstr "شناسه اشتراک"
 
 #: frontend/src/apps/slides/components/TextProperties.vue
 msgid "Subtitle"
@@ -9791,7 +9791,7 @@ msgstr "پشتیبانی"
 
 #: frontend/src/apps/mail/components/Settings/MailImportSettings.vue
 msgid "Supported file format: .eml"
-msgstr ""
+msgstr "قالب فایل پشتیبانی‌شده: .eml"
 
 #: frontend/src/apps/mail/components/Settings/CalendarImportSettings.vue
 msgid "Supported file format: .ics"
@@ -9799,11 +9799,11 @@ msgstr ""
 
 #: frontend/src/apps/mail/components/Settings/ContactsImportSettings.vue
 msgid "Supported file format: .vcf"
-msgstr ""
+msgstr "قالب فایل پشتیبانی‌شده: .vcf"
 
 #: frontend/src/apps/mail/components/Settings/CalendarImportSettings.vue frontend/src/apps/mail/components/Settings/ContactsImportSettings.vue frontend/src/apps/mail/components/Settings/MailImportSettings.vue
 msgid "Supported file formats: .zip, .tar, .tgz"
-msgstr ""
+msgstr "قالب‌های فایل پشتیبانی‌شده: .zip، .tar، .tgz"
 
 #: suite/mail/doctype/mail_exchange/mail_exchange.json
 msgid "Supported: <code>.eml</code>, <code>.zip</code>, <code>.tgz</code>, <code>.tar.gz</code>"
@@ -9835,7 +9835,7 @@ msgstr "سیستم"
 
 #: frontend/src/apps/calendar/components/Settings/AppearanceSettings.vue frontend/src/apps/mail/components/Settings/AppearanceSettings.vue
 msgid "System Default"
-msgstr ""
+msgstr "پیش‌فرض سیستم"
 
 #: frontend/src/apps/sheets/components/SheetEditor/SplitTextPopover.vue
 msgid "Tab"
@@ -10471,7 +10471,7 @@ msgstr "پوسته"
 
 #: frontend/src/apps/mail/components/Modals/ShortcutsModal.vue
 msgid "then"
-msgstr ""
+msgstr "سپس"
 
 #: frontend/src/apps/meet/pages/Home.vue
 msgid "there"
@@ -10527,11 +10527,11 @@ msgstr ""
 
 #: frontend/src/apps/mail/components/Modals/AddScreenedSenderModal.vue
 msgid "This sender is already screened."
-msgstr ""
+msgstr "این فرستنده قبلاً غربال شده است."
 
 #: frontend/src/apps/mail/components/MailThread.vue
 msgid "This sender is blocked"
-msgstr ""
+msgstr "این فرستنده مسدود است"
 
 #: suite/mail/doctype/address_book/address_book.json
 msgid "This should be true for exactly one Address Book in any account, and must not be true for more than one Address Book within an account."
@@ -10559,87 +10559,87 @@ msgstr ""
 
 #: frontend/src/apps/mail/utils/useThreadActions.ts
 msgid "Thread"
-msgstr ""
+msgstr "گفت‌وگو"
 
 #: frontend/src/apps/mail/utils/useThreadActions.ts
 msgid "thread"
-msgstr ""
+msgstr "گفت‌وگو"
 
 #: frontend/src/apps/mail/utils/useThreadActions.ts
 msgid "Thread added back."
-msgstr ""
+msgstr "گفت‌وگو بازگردانده شد."
 
 #: frontend/src/apps/mail/utils/useThreadActions.ts
 msgid "Thread added to {0}."
-msgstr ""
+msgstr "گفت‌وگو به {0} اضافه شد."
 
 #: frontend/src/apps/mail/pages/AllInboxesView.vue frontend/src/apps/mail/pages/MailboxView.vue
 msgid "Thread archived."
-msgstr ""
+msgstr "گفت‌وگو بایگانی شد."
 
 #: frontend/src/apps/mail/utils/useThreadActions.ts
 msgid "Thread deleted."
-msgstr ""
+msgstr "گفت‌وگو حذف شد."
 
 #: suite/mail/doctype/mail_message/mail_message.json suite/mail/doctype/mail_queue/mail_queue.json
 msgid "Thread ID"
-msgstr ""
+msgstr "شناسه گفت‌وگو"
 
 #: frontend/src/apps/mail/utils/useThreadActions.ts
 msgid "Thread marked as {0}."
-msgstr ""
+msgstr "گفت‌وگو به‌عنوان {0} علامت‌گذاری شد."
 
 #: frontend/src/apps/mail/utils/useThreadActions.ts
 msgid "Thread moved back."
-msgstr ""
+msgstr "گفت‌وگو بازگردانده شد."
 
 #: frontend/src/apps/mail/pages/AllInboxesView.vue frontend/src/apps/mail/pages/MailboxView.vue
 msgid "Thread moved to Trash."
-msgstr ""
+msgstr "گفت‌وگو به زباله‌دان منتقل شد."
 
 #: frontend/src/apps/mail/utils/useThreadActions.ts
 msgid "Thread moved to {0}."
-msgstr ""
+msgstr "گفت‌وگو به {0} منتقل شد."
 
 #: frontend/src/apps/mail/utils/useThreadActions.ts
 msgid "Thread removed from {0}."
-msgstr ""
+msgstr "گفت‌وگو از {0} حذف شد."
 
 #: frontend/src/apps/mail/utils/useThreadActions.ts
 msgid "Threads"
-msgstr ""
+msgstr "گفت‌وگوها"
 
 #: frontend/src/apps/mail/utils/useThreadActions.ts
 msgid "threads"
-msgstr ""
+msgstr "گفت‌وگوها"
 
 #: frontend/src/apps/mail/utils/useThreadActions.ts
 msgid "Threads added back."
-msgstr ""
+msgstr "گفت‌وگوها بازگردانده شدند."
 
 #: frontend/src/apps/mail/utils/useThreadActions.ts
 msgid "Threads added to {0}."
-msgstr ""
+msgstr "گفت‌وگوها به {0} اضافه شدند."
 
 #: frontend/src/apps/mail/utils/useThreadActions.ts
 msgid "Threads deleted."
-msgstr ""
+msgstr "گفت‌وگوها حذف شدند."
 
 #: frontend/src/apps/mail/utils/useThreadActions.ts
 msgid "Threads marked as {0}."
-msgstr ""
+msgstr "گفت‌وگوها به‌عنوان {0} علامت‌گذاری شدند."
 
 #: frontend/src/apps/mail/utils/useThreadActions.ts
 msgid "Threads moved back."
-msgstr ""
+msgstr "گفت‌وگوها بازگردانده شدند."
 
 #: frontend/src/apps/mail/utils/useThreadActions.ts
 msgid "Threads moved to {0}."
-msgstr ""
+msgstr "گفت‌وگوها به {0} منتقل شدند."
 
 #: frontend/src/apps/mail/utils/useThreadActions.ts
 msgid "Threads removed from {0}."
-msgstr ""
+msgstr "گفت‌وگوها از {0} حذف شدند."
 
 #: frontend/src/apps/calendar/components/Modals/EventRepeatSettingsModal.vue
 msgid "Thu"
@@ -10719,7 +10719,7 @@ msgstr "به کاربر"
 
 #: frontend/src/apps/mail/components/MailListItem.vue frontend/src/apps/mail/utils/index.ts
 msgid "To:"
-msgstr ""
+msgstr "به:"
 
 #: frontend/src/apps/mail/components/MailDetails.vue
 msgid "To: "
@@ -10747,11 +10747,11 @@ msgstr "شروع یا توقف اشتراک صفحه"
 
 #: frontend/src/apps/mail/components/Modals/ShortcutsModal.vue
 msgid "Toggle Select Downwards"
-msgstr ""
+msgstr "تغییر وضعیت انتخاب به سمت پایین"
 
 #: frontend/src/apps/mail/components/Modals/ShortcutsModal.vue
 msgid "Toggle Select Upwards"
-msgstr ""
+msgstr "تغییر وضعیت انتخاب به سمت بالا"
 
 #: frontend/src/apps/mail/components/Modals/ShortcutsModal.vue
 msgid "Toggle Sidebar"
@@ -10787,7 +10787,7 @@ msgstr ""
 
 #: frontend/src/apps/mail/pages/AddressBookView.vue
 msgid "Total Contacts"
-msgstr ""
+msgstr "مجموع مخاطبان"
 
 #: suite/mail/doctype/mailbox/mailbox.json
 msgid "Total Emails"
@@ -10799,7 +10799,7 @@ msgstr ""
 
 #: frontend/src/apps/mail/components/QuotaProgressBar.vue
 msgid "Total Quota"
-msgstr ""
+msgstr "سهمیه کل"
 
 #: suite/mail/doctype/mailbox/mailbox.json
 msgid "Total Threads"
@@ -10807,7 +10807,7 @@ msgstr ""
 
 #: frontend/src/apps/mail/components/Settings/CalendarExportSettings.vue frontend/src/apps/mail/components/Settings/CalendarImportSettings.vue frontend/src/apps/mail/components/Settings/ContactsExportSettings.vue frontend/src/apps/mail/components/Settings/ContactsImportSettings.vue frontend/src/apps/mail/components/Settings/MailExportSettings.vue frontend/src/apps/mail/components/Settings/MailImportSettings.vue
 msgid "Track status"
-msgstr ""
+msgstr "پیگیری وضعیت"
 
 #: frontend/src/apps/sheets/components/SheetEditor/index.vue
 msgid "Traffic lights"
@@ -10863,7 +10863,7 @@ msgstr ""
 
 #: frontend/src/apps/mail/components/DNSRecords.vue
 msgid "TTL (Recommended)"
-msgstr ""
+msgstr "TTL (پیشنهادی)"
 
 #: frontend/src/apps/calendar/components/Modals/EventRepeatSettingsModal.vue
 msgid "Tue"
@@ -10871,7 +10871,7 @@ msgstr ""
 
 #: frontend/src/apps/mail/pages/dashboard/DomainView.vue
 msgid "TXT records that enforce encrypted mail delivery and provide reporting on failed or insecure SMTP connections."
-msgstr ""
+msgstr "رکوردهای TXT که تحویل رمزگذاری‌شده ایمیل را الزامی می‌کنند و درباره اتصال‌های ناموفق یا ناامن SMTP گزارش می‌دهند."
 
 #: frontend/src/apps/drive/components/DriveToolBar.vue frontend/src/apps/drive/ui/drive/components/InfoDialog.vue frontend/src/apps/mail/components/DNSRecords.vue frontend/src/apps/mail/components/Modals/AddContactAddressModal.vue frontend/src/apps/mail/components/Modals/AddContactEmailModal.vue frontend/src/apps/mail/components/Modals/AddContactPhoneModal.vue frontend/src/apps/mail/pages/ContactView.vue suite/drive/doctype/drive_notification/drive_notification.json
 msgid "Type"
@@ -10891,11 +10891,11 @@ msgstr ""
 
 #: frontend/src/apps/mail/components/Settings/VacationResponseSettings.vue
 msgid "Type something..."
-msgstr ""
+msgstr "چیزی بنویسید..."
 
 #: frontend/src/apps/mail/components/Modals/AddPushSubscriptionModal.vue frontend/src/apps/mail/components/Settings/PushSubscriptionSettings.vue suite/mail/doctype/push_subscription/push_subscription.json suite/mail/doctype/quota/quota.json
 msgid "Types"
-msgstr ""
+msgstr "انواع"
 
 #: frontend/src/apps/drive/components/ErrorPage.vue frontend/src/apps/writer/components/ErrorPage.vue
 msgid "Uh oh!"
@@ -10915,15 +10915,15 @@ msgstr ""
 
 #: frontend/src/apps/calendar/components/Settings/AppearanceSettings.vue frontend/src/apps/mail/components/Settings/AppearanceSettings.vue
 msgid "Unable to save appearance settings."
-msgstr ""
+msgstr "ذخیره تنظیمات ظاهر ممکن نیست."
 
 #: frontend/src/apps/mail/components/MailThread.vue
 msgid "Unblock"
-msgstr ""
+msgstr "رفع مسدودی"
 
 #: frontend/src/apps/mail/components/MailActions.vue
 msgid "Unblock Sender"
-msgstr ""
+msgstr "رفع مسدودی فرستنده"
 
 #: frontend/src/apps/sheets/components/SheetEditor/index.vue frontend/src/apps/writer/components/core-editor/menu-buttons.js
 msgid "Underline"
@@ -10939,11 +10939,11 @@ msgstr "واگردانی یا انجام دوباره"
 
 #: frontend/src/apps/mail/components/Modals/ShortcutsModal.vue
 msgid "Undo Last Action"
-msgstr ""
+msgstr "واگرد آخرین اقدام"
 
 #: frontend/src/apps/mail/utils/useThreadActions.ts
 msgid "Undoing..."
-msgstr ""
+msgstr "در حال واگرد..."
 
 #: frontend/src/apps/drive/components/GenericPage.vue frontend/src/apps/drive/components/Navbar.vue frontend/src/apps/writer/components/Navbar.vue
 msgid "Unfavourite"
@@ -10959,15 +10959,15 @@ msgstr ""
 
 #: frontend/src/apps/mail/components/Modals/AddPushSubscriptionModal.vue
 msgid "Uniquely identifies the client and device."
-msgstr ""
+msgstr "سرویس‌گیرنده و دستگاه را به‌طور یکتا شناسایی می‌کند."
 
 #: frontend/src/apps/mail/components/QuotaProgressBar.vue
 msgid "Unlimited"
-msgstr ""
+msgstr "نامحدود"
 
 #: frontend/src/apps/mail/components/QuotaBar.vue
 msgid "Unlimited ({0} used)"
-msgstr ""
+msgstr "نامحدود ({0} استفاده‌شده)"
 
 #: suite/mail/doctype/server_ansible_play/server_ansible_play.json
 msgid "Unreachable"
@@ -10979,7 +10979,7 @@ msgstr "خوانده نشده"
 
 #: frontend/src/apps/mail/utils/useThreadActions.ts
 msgid "unread"
-msgstr ""
+msgstr "خوانده‌نشده"
 
 #: suite/mail/doctype/mailbox/mailbox.json
 msgid "Unread Emails"
@@ -10987,7 +10987,7 @@ msgstr ""
 
 #: frontend/src/apps/mail/pages/AllInboxesView.vue frontend/src/apps/mail/pages/MailboxView.vue
 msgid "Unread Mails"
-msgstr ""
+msgstr "ایمیل‌های خوانده‌نشده"
 
 #: suite/mail/doctype/mailbox/mailbox.json
 msgid "Unread Threads"
@@ -10999,15 +10999,15 @@ msgstr ""
 
 #: frontend/src/apps/mail/components/Settings/Account.vue frontend/src/apps/mail/pages/ScreenerView.vue
 msgid "Unscreened messages moved to Inbox."
-msgstr ""
+msgstr "پیام‌های بررسی‌نشده به صندوق ورودی منتقل شدند."
 
 #: frontend/src/apps/mail/components/MailActions.vue
 msgid "Unstar"
-msgstr ""
+msgstr "برداشتن ستاره"
 
 #: frontend/src/apps/mail/components/MailListItemActions.vue
 msgid "Unstar Mail"
-msgstr ""
+msgstr "برداشتن ستاره ایمیل"
 
 #: frontend/src/apps/mail/pages/MailboxView.vue
 msgid "Unstar Mails"
@@ -11075,7 +11075,7 @@ msgstr ""
 
 #: frontend/src/apps/mail/pages/ContactView.vue
 msgid "Updated On"
-msgstr ""
+msgstr "تاریخ به‌روزرسانی"
 
 #: suite/writer/doctype/writer_document/writer_document.json
 msgid "Updates"
@@ -11111,7 +11111,7 @@ msgstr ""
 
 #: frontend/src/apps/calendar/components/Modals/EditPhotoModal.vue frontend/src/apps/mail/components/Modals/EditPhotoModal.vue
 msgid "Upload New Photo"
-msgstr ""
+msgstr "بارگذاری عکس جدید"
 
 #: frontend/src/components/settings/UserProfileSettings.vue
 msgid "Upload profile picture"
@@ -11119,7 +11119,7 @@ msgstr ""
 
 #: frontend/src/apps/mail/components/Settings/CalendarImportSettings.vue frontend/src/apps/mail/components/Settings/ContactsImportSettings.vue frontend/src/apps/mail/components/Settings/MailImportSettings.vue
 msgid "Uploading ({0}%)"
-msgstr ""
+msgstr "در حال بارگذاری ({0}٪)"
 
 #: frontend/src/components/settings/UserProfileSettings.vue
 msgid "Uploading…"
@@ -11171,11 +11171,11 @@ msgstr ""
 
 #: frontend/src/apps/mail/components/Settings/IdentitySettings.vue
 msgid "Use Saved Signature"
-msgstr ""
+msgstr "استفاده از امضای ذخیره‌شده"
 
 #: frontend/src/apps/mail/components/Settings/AdvancedSettings.vue
 msgid "Use these details to connect a third-party mail client such as Thunderbird or the Gmail app."
-msgstr ""
+msgstr "برای اتصال سرویس‌گیرنده ایمیل شخص ثالث مانند Thunderbird یا برنامه Gmail از این اطلاعات استفاده کنید."
 
 #: suite/mail/doctype/mail_cluster_store/mail_cluster_store.json
 msgid "Use TLS"
@@ -11315,11 +11315,11 @@ msgstr "کاربران"
 
 #: frontend/src/apps/mail/components/Modals/SettingsModal.vue frontend/src/apps/mail/components/Settings/VacationResponseSettings.vue frontend/src/apps/mail/utils/index.ts
 msgid "Vacation Response"
-msgstr ""
+msgstr "پاسخ خودکار در تعطیلات"
 
 #: frontend/src/apps/mail/components/Settings/VacationResponseSettings.vue
 msgid "Vacation response updated."
-msgstr ""
+msgstr "پاسخ خودکار در تعطیلات به‌روزرسانی شد."
 
 #: suite/mail/doctype/sieve_script/sieve_script.json
 msgid "Validate Script"
@@ -11411,7 +11411,7 @@ msgstr "عمودی"
 
 #: frontend/src/apps/mail/components/AttachmentViewer.vue
 msgid "Video Preview"
-msgstr ""
+msgstr "پیش‌نمایش ویدئو"
 
 #: frontend/src/apps/mail/components/ComposeMailEditor.vue frontend/src/apps/sheets/components/SheetEditor/commandPalette.config.js frontend/src/apps/sheets/components/SheetEditor/toolbar.config.js frontend/src/apps/writer/components/Navbar.vue
 msgid "View"
@@ -11431,11 +11431,11 @@ msgstr ""
 
 #: frontend/src/apps/mail/components/Settings/CalendarExportSettings.vue frontend/src/apps/mail/components/Settings/CalendarImportSettings.vue frontend/src/apps/mail/components/Settings/ContactsExportSettings.vue frontend/src/apps/mail/components/Settings/ContactsImportSettings.vue frontend/src/apps/mail/components/Settings/MailExportSettings.vue frontend/src/apps/mail/components/Settings/MailImportSettings.vue
 msgid "View history"
-msgstr ""
+msgstr "مشاهده تاریخچه"
 
 #: frontend/src/apps/mail/components/MailActions.vue frontend/src/apps/mail/pages/CalendarExchangeView.vue frontend/src/apps/mail/pages/ContactsExchangeView.vue frontend/src/apps/mail/pages/MailExchangeView.vue
 msgid "View in Desk"
-msgstr ""
+msgstr "مشاهده در میزکار"
 
 #: frontend/src/apps/sheets/pages/Home.vue
 msgid "View mode"
@@ -11443,11 +11443,11 @@ msgstr "نوع نمایش"
 
 #: frontend/src/apps/mail/components/Modals/SearchModal.vue
 msgid "View more."
-msgstr ""
+msgstr "مشاهده بیشتر"
 
 #: frontend/src/apps/mail/components/MailListItem.vue
 msgid "View remaining attachments"
-msgstr ""
+msgstr "مشاهده پیوست‌های باقی‌مانده"
 
 #: frontend/src/apps/meet/pages/MeetLayout.vue
 msgid "View shortcuts"
@@ -11455,7 +11455,7 @@ msgstr "نمایش میان‌برها"
 
 #: frontend/src/apps/mail/components/Modals/ShortcutsModal.vue
 msgid "View Shortcuts"
-msgstr ""
+msgstr "مشاهده میان‌برها"
 
 #: suite/mail/doctype/calendar_exchange/calendar_exchange.py suite/mail/doctype/contacts_exchange/contacts_exchange.py suite/mail/doctype/mail_exchange/mail_exchange.py
 msgid "View {0}"
@@ -11495,7 +11495,7 @@ msgstr ""
 
 #: frontend/src/apps/mail/pages/ForgotPasswordView.vue
 msgid "We have sent an email to {0}. Please click on the link received to reset your password."
-msgstr ""
+msgstr "ایمیلی به {0} ارسال کردیم. برای بازنشانی گذرواژه، روی پیوند دریافتی کلیک کنید."
 
 #: frontend/src/apps/drive/pages/Setup.vue
 msgid "We're glad you're here."
@@ -11547,11 +11547,11 @@ msgstr ""
 
 #: frontend/src/apps/mail/components/Settings/Account.vue
 msgid "When Marking as Junk"
-msgstr ""
+msgstr "هنگام علامت‌گذاری به‌عنوان هرزنامه"
 
 #: frontend/src/apps/mail/components/Modals/AddPushSubscriptionModal.vue
 msgid "Where the JMAP server sends push messages. Leave blank to use this app's default endpoint. Must start with https://."
-msgstr ""
+msgstr "نشانی‌ای که سرور JMAP پیام‌های push را به آن می‌فرستد. برای استفاده از نقطه پایانی پیش‌فرض این برنامه، خالی بگذارید. باید با https:// شروع شود."
 
 #: suite/mail/doctype/mailbox_settings/mailbox_settings.json
 msgid "Whether either (any) or both (all) of the conditions above must match. Only relevant when both conditions are set."
@@ -11599,11 +11599,11 @@ msgstr "به زباله‌دان منتقل می‌شود.<br/><br/> موارد 
 
 #: frontend/src/apps/mail/constants.ts frontend/src/apps/mail/pages/AllInboxesView.vue frontend/src/apps/mail/pages/MailboxView.vue
 msgid "With Attachments"
-msgstr ""
+msgstr "دارای پیوست"
 
 #: frontend/src/apps/mail/components/Modals/SearchModal.vue
 msgid "With attachments"
-msgstr ""
+msgstr "دارای پیوست"
 
 #: frontend/src/apps/drive/components/DriveToolBar.vue
 msgid "With you"
@@ -11611,7 +11611,7 @@ msgstr "با تو"
 
 #: frontend/src/apps/mail/constants.ts
 msgid "Without Attachments"
-msgstr ""
+msgstr "بدون پیوست"
 
 #: frontend/src/apps/drive/ui/drive/components/InfoDialog.vue
 msgid "Words"
@@ -11619,15 +11619,15 @@ msgstr "واژه‌ها"
 
 #: frontend/src/apps/mail/components/Modals/AddContactAddressModal.vue frontend/src/apps/mail/components/Modals/AddContactEmailModal.vue frontend/src/apps/mail/components/Modals/AddContactPhoneModal.vue
 msgid "Work"
-msgstr ""
+msgstr "کاری"
 
 #: frontend/src/apps/mail/components/Modals/AddAddressBookModal.vue frontend/src/apps/mail/components/Modals/EditAddressBookModal.vue
 msgid "Work Contacts"
-msgstr ""
+msgstr "مخاطبان کاری"
 
 #: frontend/src/apps/mail/components/Modals/AddSignatureModal.vue frontend/src/apps/mail/components/Modals/EditSignatureModal.vue
 msgid "Work signature"
-msgstr ""
+msgstr "امضای کاری"
 
 #: frontend/src/apps/sheets/components/SheetEditor/toolbar.config.js
 msgid "Workbook"
@@ -11647,7 +11647,7 @@ msgstr "نوشتن"
 
 #: frontend/src/apps/mail/components/Modals/AddSignatureModal.vue frontend/src/apps/mail/components/Modals/EditSignatureModal.vue frontend/src/apps/mail/components/Modals/SetDefaultSignatureModal.vue frontend/src/apps/mail/components/Settings/IdentitySettings.vue
 msgid "Write your signature here"
-msgstr ""
+msgstr "امضای خود را اینجا بنویسید"
 
 #: frontend/src/apps/writer/components/Navbar.vue frontend/src/apps/writer/pages/Documents.vue suite/drive/doctype/drive_settings/drive_settings.json
 msgid "Writer"
@@ -11683,7 +11683,7 @@ msgstr "بله"
 
 #: frontend/src/apps/mail/components/Modals/SetSieveScriptStateModal.vue
 msgid "Yes, {0} {1}"
-msgstr ""
+msgstr "بله، {0} {1}"
 
 #: frontend/src/apps/mail/components/MailDate.vue frontend/src/apps/mail/utils/index.ts frontend/src/apps/writer/components/WriterDocumentsSkeleton.vue
 msgid "Yesterday"
@@ -11771,27 +11771,27 @@ msgstr ""
 
 #: frontend/src/apps/mail/stores/session.ts
 msgid "You have been signed out. Please sign in again."
-msgstr ""
+msgstr "از حساب خارج شده‌اید. لطفاً دوباره وارد شوید."
 
 #: frontend/src/apps/mail/pages/AllInboxesView.vue
 msgid "You have no mails in any inbox."
-msgstr ""
+msgstr "در هیچ صندوق ورودی‌ای ایمیلی ندارید."
 
 #: frontend/src/apps/mail/pages/MailboxView.vue
 msgid "You have no mails in this folder."
-msgstr ""
+msgstr "در این پوشه ایمیلی ندارید."
 
 #: frontend/src/apps/mail/pages/ScreenerView.vue
 msgid "You have no new senders to screen."
-msgstr ""
+msgstr "فرستنده جدیدی برای بررسی ندارید."
 
 #: frontend/src/apps/mail/components/Modals/ScreenedEmailAddressModal.vue
 msgid "You won't receive future messages from the selected senders."
-msgstr ""
+msgstr "دیگر از فرستندگان انتخاب‌شده پیامی دریافت نخواهید کرد."
 
 #: frontend/src/apps/mail/components/Modals/ScreenedEmailAddressModal.vue
 msgid "You won't receive future messages from {0}."
-msgstr ""
+msgstr "دیگر از {0} پیامی دریافت نخواهید کرد."
 
 #: frontend/src/apps/meet/components/AvatarGroup.vue
 msgid "You'll be the first to join this meeting"
@@ -11835,11 +11835,11 @@ msgstr "{0} ({1})"
 
 #: frontend/src/apps/mail/components/Modals/AddAddressBookContactsModal.vue frontend/src/apps/mail/pages/AddressBookView.vue frontend/src/apps/mail/pages/ContactsView.vue
 msgid "{0} + {1} more"
-msgstr ""
+msgstr "{0} + {1} مورد دیگر"
 
 #: frontend/src/apps/mail/components/MailThread.vue
 msgid "{0} attachments"
-msgstr ""
+msgstr "{0} پیوست"
 
 #: suite/mail/doctype/rate_limit/rate_limit.py
 msgid "{0} cannot be both allowed and blocked."
@@ -11847,7 +11847,7 @@ msgstr ""
 
 #: frontend/src/apps/mail/components/Modals/SetSieveScriptStateModal.vue
 msgid "{0} deactivated."
-msgstr ""
+msgstr "{0} غیرفعال شد."
 
 #: suite/mail/utils/dns.py
 msgid "{0} does not exist."
@@ -11855,11 +11855,11 @@ msgstr ""
 
 #: frontend/src/apps/mail/pages/MailboxView.vue
 msgid "{0} emptied."
-msgstr ""
+msgstr "{0} خالی شد."
 
 #: frontend/src/apps/mail/components/Modals/SieveScriptModal.vue
 msgid "{0} Enabled"
-msgstr ""
+msgstr "{0} فعال"
 
 #: suite/mail/doctype/calendar_exchange/calendar_exchange.py
 msgid "{0} file(s) could not be parsed and were skipped."
@@ -11867,7 +11867,7 @@ msgstr ""
 
 #: frontend/src/apps/mail/components/MailThread.vue
 msgid "{0} is currently on your"
-msgstr ""
+msgstr "{0} اکنون در فهرست شماست:"
 
 #: suite/mail/utils/validation.py
 msgid "{0} is not a valid email address or domain. Enter an email address (e.g. john@example.com) "
@@ -11891,7 +11891,7 @@ msgstr "نشان {0}"
 
 #: frontend/src/apps/mail/components/MailActions.vue
 msgid "{0} marked as unread."
-msgstr ""
+msgstr "{0} به‌عنوان خوانده‌نشده علامت‌گذاری شد."
 
 #: frontend/src/apps/calendar/components/EventPopoverContent.vue
 msgid "{0} maybe"
@@ -11899,15 +11899,15 @@ msgstr ""
 
 #: frontend/src/apps/mail/pages/ScreenerView.vue
 msgid "{0} messages"
-msgstr ""
+msgstr "{0} پیام"
 
 #: frontend/src/apps/mail/components/MailThread.vue
 msgid "{0} more messages"
-msgstr ""
+msgstr "{0} پیام دیگر"
 
 #: frontend/src/apps/mail/components/MailThread.vue
 msgid "{0} new messages"
-msgstr ""
+msgstr "{0} پیام جدید"
 
 #: frontend/src/apps/mail/pages/ScreenerView.vue
 msgid "{0} new senders."
@@ -11931,7 +11931,7 @@ msgstr "{0} از {1}"
 
 #: frontend/src/apps/mail/components/Modals/ScreenedEmailAddressModal.vue
 msgid "{0} of {1} selected"
-msgstr ""
+msgstr "{0} از {1} انتخاب شده"
 
 #: frontend/src/apps/calendar/components/EventPopoverContent.vue
 msgid "{0} pending"
@@ -11939,11 +11939,11 @@ msgstr ""
 
 #: frontend/src/apps/mail/components/EmailContent.vue
 msgid "{0} remote images hidden to protect your privacy."
-msgstr ""
+msgstr "برای حفظ حریم خصوصی شما، {0} تصویر راه‌دور پنهان شد."
 
 #: frontend/src/apps/mail/pages/MailboxView.vue
 msgid "{0} results"
-msgstr ""
+msgstr "{0} نتیجه"
 
 #: suite/mail/doctype/mail_cluster/mail_cluster.py
 msgid "{0} type must be one of {1}."
@@ -11971,7 +11971,7 @@ msgstr ""
 
 #: frontend/src/apps/mail/components/Modals/SetSieveScriptStateModal.vue
 msgid "{0} {1} will {2} {3}. Do you want to proceed?"
-msgstr ""
+msgstr "{0} {1}، {2} {3} خواهد شد. می‌خواهید ادامه دهید؟"
 
 #: frontend/src/apps/calendar/components/EventPopoverContent.vue
 msgid "{0} {1} {2}"
@@ -11979,15 +11979,15 @@ msgstr ""
 
 #: frontend/src/apps/mail/components/Modals/SetSieveScriptStateModal.vue
 msgid "{0} {1}."
-msgstr ""
+msgstr "{0} {1}."
 
 #: frontend/src/apps/mail/components/Modals/SetSieveScriptStateModal.vue
 msgid "{0} {1}?"
-msgstr ""
+msgstr "{0} {1}؟"
 
 #: frontend/src/apps/mail/components/QuotaBar.vue
 msgid "{0}% of {1} used"
-msgstr ""
+msgstr "{0}٪ از {1} استفاده شده"
 
 #: frontend/src/apps/calendar/utils/format.ts
 msgid "{0}, {1} times"
@@ -12011,7 +12011,7 @@ msgstr "{0} دقیقه پیش"
 
 #: frontend/src/apps/mail/components/MailListItem.vue
 msgid "— No message body —"
-msgstr ""
+msgstr "— بدون متن پیام —"
 
 #: frontend/src/apps/sheets/pages/Home.vue
 msgid "“{0}” will be permanently deleted."
@@ -12493,3 +12493,1665 @@ msgstr "میزبان شما را از جلسه حذف کرد"
 
 msgid "Your join request was denied by the meeting host"
 msgstr "میزبان درخواست ورود شما را رد کرد"
+
+msgid "(Message deleted)"
+msgstr "(پیام حذف شد)"
+
+msgid "(No subject)"
+msgstr "(بدون موضوع)"
+
+msgid "1 member"
+msgstr "۱ عضو"
+
+msgid "1 new sender"
+msgstr "۱ فرستنده جدید"
+
+msgid "1 new thread"
+msgstr "۱ گفت‌وگوی جدید"
+
+msgid "1 recipient"
+msgstr "۱ گیرنده"
+
+msgid "1 redirect URI"
+msgstr "۱ URI تغییر مسیر"
+
+msgid "a sender and their emails go to your Inbox — now and in the future."
+msgstr "یک فرستنده را مجاز کنید تا ایمیل‌های فعلی و آینده‌اش به صندوق ورودی شما بروند."
+
+msgid "a sender once and their emails reach your Inbox from then on;"
+msgstr "یک فرستنده را یک‌بار مجاز کنید تا از آن پس ایمیل‌هایش به صندوق ورودی شما برسند؛"
+
+msgid "Action completed."
+msgstr "عملیات انجام شد."
+
+msgid "Add a domain"
+msgstr "افزودن دامنه"
+
+msgid "Add a domain to send and receive mail with your own addresses."
+msgstr "دامنه‌ای اضافه کنید تا با نشانی‌های خودتان ایمیل ارسال و دریافت کنید."
+
+msgid "Add another"
+msgstr "افزودن مورد دیگر"
+
+msgid "Add another email"
+msgstr "افزودن ایمیل دیگر"
+
+msgid "Add Contacts"
+msgstr "افزودن مخاطبان"
+
+msgid "Add Email Address"
+msgstr "افزودن نشانی ایمیل"
+
+msgid "Add Group"
+msgstr "افزودن گروه"
+
+msgid "Add Mailing List"
+msgstr "افزودن فهرست پستی"
+
+msgid "Add Members"
+msgstr "افزودن اعضا"
+
+msgid "Add OAuth Client"
+msgstr "افزودن سرویس‌گیرنده OAuth"
+
+msgid "Add Recipients"
+msgstr "افزودن گیرندگان"
+
+msgid "Add Redirect URIs"
+msgstr "افزودن URIهای تغییر مسیر"
+
+msgid "Add Role"
+msgstr "افزودن نقش"
+
+msgid "Add to Calendar"
+msgstr "افزودن به تقویم"
+
+msgid "Add to Groups"
+msgstr "افزودن به گروه‌ها"
+
+msgid "Add to Mailing Lists"
+msgstr "افزودن به فهرست‌های پستی"
+
+msgid "Added to groups."
+msgstr "به گروه‌ها افزوده شد."
+
+msgid "Added to mailing lists."
+msgstr "به فهرست‌های پستی افزوده شد."
+
+msgid "Added {0}"
+msgstr "{0} افزوده شد"
+
+msgid "After adding, copy the generated DNS records to your DNS provider."
+msgstr "پس از افزودن، رکوردهای DNS ایجادشده را در سرویس‌دهنده DNS خود کپی کنید."
+
+msgid "Agent User ID"
+msgstr "شناسه کاربری عامل"
+
+msgid "Algorithm"
+msgstr "الگوریتم"
+
+msgid "Alias"
+msgstr "نام مستعار"
+
+msgid "Aliases"
+msgstr "نام‌های مستعار"
+
+msgid "All identities"
+msgstr "همه هویت‌ها"
+
+msgid "All matching messages cancelled."
+msgstr "همه پیام‌های منطبق لغو شدند."
+
+msgid "All matching messages scheduled for retry."
+msgstr "تلاش مجدد برای همه پیام‌های منطبق زمان‌بندی شد."
+
+msgid "Allow ({0})"
+msgstr "مجاز کردن ({0})"
+
+msgid "Allow All"
+msgstr "مجاز کردن همه"
+
+msgid "Allow all emails from {0}"
+msgstr "مجاز کردن همه ایمیل‌های ارسالی از {0}"
+
+msgid "Allow All Senders"
+msgstr "مجاز کردن همه فرستندگان"
+
+msgid "Allow and Archive"
+msgstr "مجاز کردن و بایگانی"
+
+msgid "Allow and Archive ({0})"
+msgstr "مجاز کردن و بایگانی ({0})"
+
+msgid "Allow and Move to Trash"
+msgstr "مجاز کردن و انتقال به زباله‌دان"
+
+msgid "Allow and Move to Trash ({0})"
+msgstr "مجاز کردن و انتقال به زباله‌دان ({0})"
+
+msgid "Allow popups to open attachments."
+msgstr "برای باز کردن پیوست‌ها، پنجره‌های بازشو را مجاز کنید."
+
+msgid "Allow Sender"
+msgstr "مجاز کردن فرستنده"
+
+msgid "Allow Sender, Archive Their Mail"
+msgstr "مجاز کردن فرستنده و بایگانی ایمیل‌های او"
+
+msgid "Allow Sender, Trash Their Mail"
+msgstr "مجاز کردن فرستنده و انتقال ایمیل‌های او به زباله‌دان"
+
+msgid "and then \"Add to Home Screen\""
+msgstr "و سپس «Add to Home Screen»"
+
+msgid "Archive (E)"
+msgstr "بایگانی (E)"
+
+msgid "Archive {0} threads"
+msgstr "بایگانی {0} گفت‌وگو"
+
+msgid "Are you sure you want to delete '{0}'? "
+msgstr "مطمئنید می‌خواهید «{0}» را حذف کنید؟ "
+
+msgid "Are you sure you want to delete '{0}'? Mails in this folder will be permanently removed."
+msgstr "مطمئنید می‌خواهید «{0}» را حذف کنید؟ ایمیل‌های این پوشه برای همیشه حذف خواهند شد."
+
+msgid "Are you sure you want to delete this DKIM signature? This action cannot be undone."
+msgstr "مطمئنید می‌خواهید این امضای DKIM را حذف کنید؟ این کار قابل بازگشت نیست."
+
+msgid "Are you sure you want to delete this group? This action cannot be undone."
+msgstr "مطمئنید می‌خواهید این گروه را حذف کنید؟ این کار قابل بازگشت نیست."
+
+msgid "Are you sure you want to delete this mailing list? This action cannot be undone."
+msgstr "مطمئنید می‌خواهید این فهرست پستی را حذف کنید؟ این کار قابل بازگشت نیست."
+
+msgid "Are you sure you want to delete this member? This action cannot be undone."
+msgstr "مطمئنید می‌خواهید این عضو را حذف کنید؟ این کار قابل بازگشت نیست."
+
+msgid "Are you sure you want to delete this OAuth client? This action cannot be undone."
+msgstr "مطمئنید می‌خواهید این سرویس‌گیرنده OAuth را حذف کنید؟ این کار قابل بازگشت نیست."
+
+msgid "Are you sure you want to delete this role? This action cannot be undone."
+msgstr "مطمئنید می‌خواهید این نقش را حذف کنید؟ این کار قابل بازگشت نیست."
+
+msgid "Are you sure you want to disable this member? They will no longer be able to log in."
+msgstr "مطمئنید می‌خواهید این عضو را غیرفعال کنید؟ دیگر نمی‌تواند وارد شود."
+
+msgid "Are you sure you want to empty the contents of this mailbox?"
+msgstr "مطمئنید می‌خواهید محتوای این صندوق پستی را خالی کنید؟"
+
+msgid "Are you sure you want to enable this member? They will be able to log in again."
+msgstr "مطمئنید می‌خواهید این عضو را فعال کنید؟ دوباره می‌تواند وارد شود."
+
+msgid "Are you sure you want to log out?"
+msgstr "مطمئنید می‌خواهید خارج شوید؟"
+
+msgid "ARF"
+msgstr "ARF"
+
+msgid "Attach files"
+msgstr "پیوست کردن فایل‌ها"
+
+msgid "awaiting acceptance"
+msgstr "در انتظار پذیرش"
+
+msgid "awaiting delivery"
+msgstr "در انتظار تحویل"
+
+msgid "Back to Mail"
+msgstr "بازگشت به ایمیل‌ها"
+
+msgid "bcc"
+msgstr "bcc"
+
+msgid "Cancel (delete) every message matching the current filter? This cannot be undone."
+msgstr "همه پیام‌های مطابق با فیلتر فعلی لغو (حذف) شوند؟ این کار قابل بازگشت نیست."
+
+msgid "Cancel (delete) the selected messages? This cannot be undone."
+msgstr "پیام‌های انتخاب‌شده لغو (حذف) شوند؟ این کار قابل بازگشت نیست."
+
+msgid "Cancel (delete) this queued message? This cannot be undone."
+msgstr "این پیام در صف لغو (حذف) شود؟ این کار قابل بازگشت نیست."
+
+msgid "Cancel All"
+msgstr "لغو همه"
+
+msgid "Cancel All Messages"
+msgstr "لغو همه پیام‌ها"
+
+msgid "Cancel delivery"
+msgstr "لغو تحویل"
+
+msgid "Cancel Delivery"
+msgstr "لغو تحویل"
+
+msgid "Cancel Message"
+msgstr "لغو پیام"
+
+msgid "Cancel Messages"
+msgstr "لغو پیام‌ها"
+
+msgid "Cancel the scheduled delivery and move the message back to Drafts?"
+msgstr "تحویل زمان‌بندی‌شده لغو و پیام دوباره به پیش‌نویس‌ها منتقل شود؟"
+
+msgid "Cancel the scheduled delivery?"
+msgstr "تحویل زمان‌بندی‌شده لغو شود؟"
+
+msgid "Canonicalization"
+msgstr "متعارف‌سازی"
+
+msgid "cc"
+msgstr "cc"
+
+msgid "Cc and Bcc"
+msgstr "Cc و Bcc"
+
+msgid "Check server logs"
+msgstr "گزارش‌های سرور را بررسی کنید"
+
+msgid "Clear filters"
+msgstr "پاک کردن فیلترها"
+
+msgid "Client Secret"
+msgstr "راز سرویس‌گیرنده"
+
+msgid "Comma-separated list of types to be notified for. Leave blank to be notified for all supported types."
+msgstr "فهرست انواع اعلان‌ها با جداکننده ویرگول. برای دریافت اعلان همه انواع پشتیبانی‌شده، خالی بگذارید."
+
+msgid "Concluded deliveries — delivered, sent, or failed — will appear here."
+msgstr "تحویل‌های پایان‌یافته — تحویل‌شده، ارسال‌شده یا ناموفق — اینجا نمایش داده می‌شوند."
+
+msgid "Connect a domain and set up its DNS records."
+msgstr "دامنه‌ای را متصل و رکوردهای DNS آن را تنظیم کنید."
+
+msgid "Connection"
+msgstr "اتصال"
+
+msgid "Contact removed."
+msgstr "مخاطب حذف شد."
+
+msgid "Could not attach {0}."
+msgstr "پیوست کردن {0} ممکن نشد."
+
+msgid "Could not delete signature"
+msgstr "حذف امضا ممکن نشد"
+
+msgid "Could not start the delivery test."
+msgstr "آغاز آزمایش تحویل ممکن نشد."
+
+msgid "Could not undo that."
+msgstr "واگردانی انجام نشد."
+
+msgid "Could not update the Screener."
+msgstr "غربال‌گر به‌روزرسانی نشد."
+
+msgid "Create a group to give a team a shared address and mailbox."
+msgstr "گروهی بسازید تا یک نشانی و صندوق پستی مشترک به تیم اختصاص دهید."
+
+msgid "Create a mailing list to broadcast mail to many recipients at once."
+msgstr "یک فهرست پستی بسازید تا ایمیل را هم‌زمان برای گیرندگان زیادی ارسال کنید."
+
+msgid "Create a new account"
+msgstr "ایجاد حساب جدید"
+
+msgid "Credentials"
+msgstr "اطلاعات احراز هویت"
+
+msgid "Credentials updated."
+msgstr "اطلاعات احراز هویت به‌روزرسانی شد."
+
+msgid "CSV"
+msgstr "CSV"
+
+msgid "date"
+msgstr "تاریخ"
+
+msgid "Delete DKIM Signature"
+msgstr "حذف امضای DKIM"
+
+msgid "Delete Group"
+msgstr "حذف گروه"
+
+msgid "Delete Mailing List"
+msgstr "حذف فهرست پستی"
+
+msgid "Delete Member"
+msgstr "حذف عضو"
+
+msgid "Delete OAuth Client"
+msgstr "حذف سرویس‌گیرنده OAuth"
+
+msgid "Delete Report"
+msgstr "حذف گزارش"
+
+msgid "Delete Reports"
+msgstr "حذف گزارش‌ها"
+
+msgid "Delete Role"
+msgstr "حذف نقش"
+
+msgid "Delete the selected reports? This cannot be undone."
+msgstr "گزارش‌های انتخاب‌شده حذف شوند؟ این کار قابل بازگشت نیست."
+
+msgid "Delete this report? This cannot be undone."
+msgstr "این گزارش حذف شود؟ این کار قابل بازگشت نیست."
+
+msgid "Delete {0} threads"
+msgstr "حذف {0} گفت‌وگو"
+
+msgid "Deliver At"
+msgstr "زمان تحویل"
+
+msgid "Deliver this email immediately instead of at the scheduled time?"
+msgstr "این ایمیل به‌جای زمان برنامه‌ریزی‌شده، همین حالا تحویل داده شود؟"
+
+msgid "Delivered"
+msgstr "تحویل داده شد"
+
+msgid "Delivered: {0}"
+msgstr "تحویل داده‌شده: {0}"
+
+msgid "Deliveries you cancel will appear here."
+msgstr "تحویل‌هایی که لغو می‌کنید اینجا نمایش داده می‌شوند."
+
+msgid "Delivery"
+msgstr "تحویل"
+
+msgid "Delivery attempt scheduled."
+msgstr "تلاش برای تحویل برنامه‌ریزی شد."
+
+msgid "Delivery cancelled."
+msgstr "تحویل لغو شد."
+
+msgid "Delivery cancelled. The message is back in your drafts."
+msgstr "تحویل لغو شد. پیام به پیش‌نویس‌های شما بازگشت."
+
+msgid "Delivery reports"
+msgstr "گزارش‌های تحویل"
+
+msgid "Delivery rescheduled to {0}."
+msgstr "تحویل برای {0} دوباره برنامه‌ریزی شد."
+
+msgid "Delivery status"
+msgstr "وضعیت تحویل"
+
+msgid "Delivery status for {0}: {1}"
+msgstr "وضعیت تحویل برای {0}: {1}"
+
+msgid "Delivery Test"
+msgstr "آزمایش تحویل"
+
+msgid "Delivery to the recipient canceled."
+msgstr "تحویل به گیرنده لغو شد."
+
+msgid "Delivery to {0} has been delayed. The server will keep trying until {1}."
+msgstr "تحویل به {0} با تأخیر مواجه شده است. سرور تا {1} به تلاش ادامه می‌دهد."
+
+msgid "Delivery to {0} has been delayed. The server will keep trying."
+msgstr "تحویل به {0} با تأخیر مواجه شده است. سرور به تلاش ادامه می‌دهد."
+
+msgid "Delivery Trace"
+msgstr "ردیابی تحویل"
+
+msgid "Deny ({0})"
+msgstr "رد کردن ({0})"
+
+msgid "Deny All"
+msgstr "رد کردن همه"
+
+msgid "Deny all emails from {0}"
+msgstr "رد کردن همه ایمیل‌های ارسالی از {0}"
+
+msgid "Deny All Senders"
+msgstr "رد کردن همه فرستندگان"
+
+msgid "Deny Sender"
+msgstr "رد کردن فرستنده"
+
+msgid "Directory"
+msgstr "فهرست کاربران"
+
+msgid "Disable Member"
+msgstr "غیرفعال کردن عضو"
+
+msgid "Disable Split View"
+msgstr "غیرفعال کردن نمای دو‌بخشی"
+
+msgid "Disabled Permissions"
+msgstr "مجوزهای غیرفعال‌شده"
+
+msgid "Dismiss"
+msgstr "بستن"
+
+msgid "Displayed: {0}"
+msgstr "نمایش‌داده‌شده: {0}"
+
+msgid "DKIM signature deleted."
+msgstr "امضای DKIM حذف شد."
+
+msgid "DKIM signature not found."
+msgstr "امضای DKIM پیدا نشد."
+
+msgid "DKIM Signatures"
+msgstr "امضاهای DKIM"
+
+msgid "DKIM signatures are generated automatically when you add a domain."
+msgstr "هنگام افزودن دامنه، امضاهای DKIM به‌طور خودکار ایجاد می‌شوند."
+
+msgid "Dock to corner"
+msgstr "چسباندن به گوشه"
+
+msgid "Domain marked as trusted."
+msgstr "دامنه به‌عنوان مورد اعتماد علامت‌گذاری شد."
+
+msgid "Domain not found."
+msgstr "دامنه پیدا نشد."
+
+msgid "Don't load remote images from untrusted sources by default."
+msgstr "تصاویر خارجی از منابع نامعتبر به‌طور پیش‌فرض بارگیری نشوند."
+
+msgid "Edit Group"
+msgstr "ویرایش گروه"
+
+msgid "Edit here instead"
+msgstr "به‌جایش اینجا ویرایش کنید"
+
+msgid "Edit Mailing List"
+msgstr "ویرایش فهرست پستی"
+
+msgid "Edit Member"
+msgstr "ویرایش عضو"
+
+msgid "Edit OAuth Client"
+msgstr "ویرایش سرویس‌گیرنده OAuth"
+
+msgid "Edit Queued Message"
+msgstr "ویرایش پیام در صف"
+
+msgid "Edit Quota"
+msgstr "ویرایش سهمیه"
+
+msgid "Edit Recipient"
+msgstr "ویرایش گیرنده"
+
+msgid "Edit Role"
+msgstr "ویرایش نقش"
+
+msgid "Email Address"
+msgstr "نشانی ایمیل"
+
+msgid "Email address added."
+msgstr "نشانی ایمیل افزوده شد."
+
+msgid "Email address disabled."
+msgstr "نشانی ایمیل غیرفعال شد."
+
+msgid "Email address enabled."
+msgstr "نشانی ایمیل فعال شد."
+
+msgid "Email address removed."
+msgstr "نشانی ایمیل حذف شد."
+
+msgid "Email Addresses"
+msgstr "نشانی‌های ایمیل"
+
+msgid "Email addresses responsible for this application."
+msgstr "نشانی‌های ایمیل افراد مسئول این برنامه."
+
+msgid "Email ID"
+msgstr "شناسه ایمیل"
+
+msgid "Enable Member"
+msgstr "فعال کردن عضو"
+
+msgid "Enable Split View"
+msgstr "فعال کردن نمای دو‌بخشی"
+
+msgid "Enabled Permissions"
+msgstr "مجوزهای فعال"
+
+msgid "Enhanced Code"
+msgstr "کد وضعیت تکمیلی"
+
+msgid "Enter the code sent to {0}."
+msgstr "کد ارسال‌شده به {0} را وارد کنید."
+
+msgid "Envelope ID"
+msgstr "شناسه پاکت"
+
+msgid "Envelope recipients"
+msgstr "گیرندگان پاکت"
+
+msgid "Envelope sender"
+msgstr "فرستنده پاکت"
+
+msgid "Error Type"
+msgstr "نوع خطا"
+
+msgid "Event added to your calendar."
+msgstr "رویداد به تقویم شما افزوده شد."
+
+msgid "Expand"
+msgstr "گسترش"
+
+msgid "Expiration"
+msgstr "انقضا"
+
+msgid "Explicitly denied, even if an inherited role grants them."
+msgstr "صراحتاً رد شده‌اند، حتی اگر نقشی به‌ارث‌رسیده آن‌ها را اعطا کند."
+
+msgid "Export DNS"
+msgstr "خروجی گرفتن از DNS"
+
+msgid "Failed to delete DKIM signature."
+msgstr "حذف امضای DKIM ناموفق بود."
+
+msgid "Failed to delete member."
+msgstr "حذف عضو ناموفق بود."
+
+msgid "Failed to load message source."
+msgstr "بارگیری منبع پیام ناموفق بود."
+
+msgid "Failed to send reset password link."
+msgstr "ارسال پیوند بازنشانی گذرواژه ناموفق بود."
+
+msgid "Filter messages from this sender"
+msgstr "فیلتر کردن پیام‌های این فرستنده"
+
+msgid "Filter Sender's Messages"
+msgstr "فیلتر کردن پیام‌های فرستنده"
+
+msgid "Final"
+msgstr "نهایی"
+
+msgid "First-time senders wait here until you decide."
+msgstr "فرستندگان جدید تا زمانی که تصمیم بگیرید اینجا منتظر می‌مانند."
+
+msgid "Flags"
+msgstr "پرچم‌ها"
+
+msgid "Follow what the mail server is doing."
+msgstr "فعالیت سرور ایمیل را دنبال کنید."
+
+msgid "from"
+msgstr "از"
+
+msgid "Give someone a mailbox on your domains."
+msgstr "در دامنه‌های خود به فردی صندوق پستی اختصاص دهید."
+
+msgid "Go to All Inboxes"
+msgstr "رفتن به همه صندوق‌های ورودی"
+
+msgid "Go to Bottom of List"
+msgstr "رفتن به انتهای فهرست"
+
+msgid "Go to Next Item"
+msgstr "رفتن به مورد بعدی"
+
+msgid "Go to Previous Item"
+msgstr "رفتن به مورد قبلی"
+
+msgid "Go to Screener"
+msgstr "رفتن به غربالگر"
+
+msgid "Go to Top of List"
+msgstr "رفتن به ابتدای فهرست"
+
+msgid "Granted to every account that holds this role."
+msgstr "به همه حساب‌های دارای این نقش اعطا می‌شود."
+
+msgid "Group added."
+msgstr "گروه افزوده شد."
+
+msgid "Group deleted."
+msgstr "گروه حذف شد."
+
+msgid "Group not found."
+msgstr "گروه یافت نشد."
+
+msgid "Group updated."
+msgstr "گروه به‌روزرسانی شد."
+
+msgid "Groups"
+msgstr "گروه‌ها"
+
+msgid "Hide trimmed content"
+msgstr "پنهان کردن محتوای کوتاه‌شده"
+
+msgid "High"
+msgstr "بالا"
+
+msgid "How the Screener works"
+msgstr "غربالگر چگونه کار می‌کند"
+
+msgid "Identity created."
+msgstr "هویت ایجاد شد."
+
+msgid "Inbound Reports"
+msgstr "گزارش‌های ورودی"
+
+msgid "Inherited Roles"
+msgstr "نقش‌های به‌ارث‌رسیده"
+
+msgid "Inspect and retry messages pending delivery."
+msgstr "پیام‌های در انتظار تحویل را بررسی و دوباره ارسال کنید."
+
+msgid "Invitation email sent."
+msgstr "ایمیل دعوت ارسال شد."
+
+msgid "Invitations you send and self-signup requests will appear here until they are accepted."
+msgstr "دعوت‌های ارسالی و درخواست‌های ثبت‌نام مستقیم تا زمان پذیرش در اینجا نمایش داده می‌شوند."
+
+msgid "Invite a member"
+msgstr "دعوت از عضو"
+
+msgid "Invite people to give them a mailbox on your domains."
+msgstr "از افراد دعوت کنید تا در دامنه‌های شما صندوق پستی داشته باشند."
+
+msgid "Joined On"
+msgstr "تاریخ پیوستن"
+
+msgid "JSON"
+msgstr "JSON"
+
+msgid "Keep Forwarded Email In Thread"
+msgstr "نگه‌داشتن ایمیل بازارسال‌شده در گفت‌وگو"
+
+msgid "Keep forwarded emails in the same thread as the original by referencing it in the In-Reply-To header."
+msgstr "با ارجاع به ایمیل اصلی در سرآیند In-Reply-To، ایمیل‌های بازارسال‌شده را در همان گفت‌وگو نگه دارید."
+
+msgid "Leave blank to keep unchanged"
+msgstr "برای حفظ مقدار فعلی، خالی بگذارید"
+
+msgid "Leave blank to use the configured default disk quota."
+msgstr "برای استفاده از سهمیه پیش‌فرض پیکربندی‌شده دیسک، خالی بگذارید."
+
+msgid "Level"
+msgstr "سطح"
+
+msgid "Loading"
+msgstr "در حال بارگیری"
+
+msgid "Locale"
+msgstr "زبان و منطقه"
+
+msgid "Log Entry"
+msgstr "مدخل گزارش"
+
+msgid "Log entry not found."
+msgstr "مدخل گزارش یافت نشد."
+
+msgid "Logo (URL or base64 encoded)"
+msgstr "نشان‌واره (URL یا کدگذاری‌شده با base64)"
+
+msgid "Low"
+msgstr "کم"
+
+msgid "Mail moved."
+msgstr "ایمیل منتقل شد."
+
+msgid "Mail sent to this address is delivered to this group."
+msgstr "ایمیل ارسالی به این نشانی به این گروه تحویل داده می‌شود."
+
+msgid "Mail sent to this address is delivered to this member's mailbox."
+msgstr "ایمیل ارسالی به این نشانی به صندوق پستی این عضو تحویل داده می‌شود."
+
+msgid "Mail sent to this address is distributed to the list's recipients."
+msgstr "ایمیل ارسالی به این نشانی میان گیرندگان فهرست پستی توزیع می‌شود."
+
+msgid "Mail server unavailable"
+msgstr "سرور ایمیل در دسترس نیست"
+
+msgid "Mailing List"
+msgstr "فهرست پستی"
+
+msgid "Mailing list added."
+msgstr "فهرست پستی افزوده شد."
+
+msgid "Mailing list deleted."
+msgstr "فهرست پستی حذف شد."
+
+msgid "Mailing list not found."
+msgstr "فهرست پستی یافت نشد."
+
+msgid "Mailing list updated."
+msgstr "فهرست پستی به‌روزرسانی شد."
+
+msgid "Mailing Lists"
+msgstr "فهرست‌های پستی"
+
+msgid "Mark Domain as Trusted"
+msgstr "علامت‌گذاری دامنه به‌عنوان مورد اعتماد"
+
+msgid "Mark {0} threads as Read"
+msgstr "علامت‌گذاری {0} گفت‌وگو به‌عنوان خوانده‌شده"
+
+msgid "Mark {0} threads as Unread"
+msgstr "علامت‌گذاری {0} گفت‌وگو به‌عنوان خوانده‌نشده"
+
+msgid "Max Attempts"
+msgstr "حداکثر تعداد تلاش‌ها"
+
+msgid "Member deleted."
+msgstr "عضو حذف شد."
+
+msgid "Member disabled."
+msgstr "عضو غیرفعال شد."
+
+msgid "Member enabled."
+msgstr "عضو فعال شد."
+
+msgid "Member not found."
+msgstr "عضو پیدا نشد."
+
+msgid "Member removed."
+msgstr "عضو حذف شد."
+
+msgid "Member updated."
+msgstr "عضو به‌روزرسانی شد."
+
+msgid "Members added."
+msgstr "اعضا اضافه شدند."
+
+msgid "Membership Details"
+msgstr "جزئیات عضویت"
+
+msgid "Message cancelled."
+msgstr "پیام لغو شد."
+
+msgid "Message delivered"
+msgstr "پیام تحویل داده شد"
+
+msgid "Message delivery delayed"
+msgstr "تحویل پیام به تأخیر افتاد"
+
+msgid "Message not delivered"
+msgstr "پیام تحویل داده نشد"
+
+msgid "Message not found."
+msgstr "پیام پیدا نشد."
+
+msgid "Message scheduled for retry."
+msgstr "پیام برای تلاش مجدد زمان‌بندی شد."
+
+msgid "Message Source"
+msgstr "منبع پیام"
+
+msgid "Messages cancelled."
+msgstr "پیام‌ها لغو شدند."
+
+msgid "Messages from {0} senders will be moved to your Inbox. Future emails from them will still go to the Screener."
+msgstr "پیام‌های {0} فرستنده به صندوق ورودی شما منتقل می‌شوند. ایمیل‌های بعدی آن‌ها همچنان به بخش غربالگری می‌روند."
+
+msgid "Messages scheduled for retry."
+msgstr "پیام‌ها برای تلاش مجدد زمان‌بندی شدند."
+
+msgid "Messages waiting for delivery will appear here."
+msgstr "پیام‌های منتظر تحویل اینجا نمایش داده می‌شوند."
+
+msgid "Minimise"
+msgstr "کمینه کردن"
+
+msgid "Monday morning"
+msgstr "صبح دوشنبه"
+
+msgid "More actions"
+msgstr "اقدامات بیشتر"
+
+msgid "Move All to Inbox"
+msgstr "انتقال همه به صندوق ورودی"
+
+msgid "Move {0} threads to Trash"
+msgstr "انتقال {0} گفت‌وگو به زباله‌دان"
+
+msgid "New Identity"
+msgstr "هویت جدید"
+
+msgid "New senders wait here first"
+msgstr "فرستندگان جدید ابتدا اینجا منتظر می‌مانند"
+
+msgid "Next Notification"
+msgstr "اعلان بعدی"
+
+msgid "Next retry"
+msgstr "تلاش مجدد بعدی"
+
+msgid "Next Retry"
+msgstr "تلاش مجدد بعدی"
+
+msgid "Next retry {0}"
+msgstr "تلاش مجدد بعدی {0}"
+
+msgid "Next Transition"
+msgstr "انتقال بعدی"
+
+msgid "No cancelled submissions"
+msgstr "هیچ ارسال لغوشده‌ای وجود ندارد"
+
+msgid "No DKIM signatures yet"
+msgstr "هنوز هیچ امضای DKIM وجود ندارد"
+
+msgid "No domains yet"
+msgstr "هنوز هیچ دامنه‌ای وجود ندارد"
+
+msgid "No email addresses found."
+msgstr "هیچ نشانی ایمیلی پیدا نشد."
+
+msgid "No final submissions"
+msgstr "هیچ ارسال نهایی‌ای وجود ندارد"
+
+msgid "No groups yet"
+msgstr "هنوز هیچ گروهی وجود ندارد"
+
+msgid "No log entries"
+msgstr "هیچ ورودی‌ای در گزارش وجود ندارد"
+
+msgid "No mailing lists yet"
+msgstr "هنوز هیچ فهرست پستی‌ای وجود ندارد"
+
+msgid "No matching domains"
+msgstr "هیچ دامنه منطبقی وجود ندارد"
+
+msgid "No matching groups"
+msgstr "هیچ گروه مطابقی یافت نشد"
+
+msgid "No matching invites"
+msgstr "هیچ دعوت‌نامه مطابقی یافت نشد"
+
+msgid "No matching log entries"
+msgstr "هیچ ورودی گزارش مطابقی یافت نشد"
+
+msgid "No matching mailing lists"
+msgstr "هیچ فهرست پستی مطابقی یافت نشد"
+
+msgid "No matching members"
+msgstr "هیچ عضو مطابقی یافت نشد"
+
+msgid "No matching messages"
+msgstr "هیچ پیام مطابقی یافت نشد"
+
+msgid "No matching OAuth clients"
+msgstr "هیچ سرویس‌گیرنده OAuth مطابقی یافت نشد"
+
+msgid "No matching reports"
+msgstr "هیچ گزارش مطابقی یافت نشد"
+
+msgid "No matching roles"
+msgstr "هیچ نقش مطابقی یافت نشد"
+
+msgid "No matching submissions"
+msgstr "هیچ مورد ارسالی مطابقی یافت نشد"
+
+msgid "No members found"
+msgstr "هیچ عضوی یافت نشد"
+
+msgid "No OAuth clients yet"
+msgstr "هنوز سرویس‌گیرنده OAuth وجود ندارد"
+
+msgid "No pending invites"
+msgstr "هیچ دعوت‌نامه‌ای در انتظار نیست"
+
+msgid "No pending submissions"
+msgstr "هیچ مورد ارسالی در انتظار نیست"
+
+msgid "No recent log entries."
+msgstr "ورودی گزارش اخیری وجود ندارد."
+
+msgid "No recipients found."
+msgstr "هیچ گیرنده‌ای یافت نشد."
+
+msgid "No recipients."
+msgstr "گیرنده‌ای وجود ندارد."
+
+msgid "No redirect URIs."
+msgstr "هیچ URI تغییر مسیری وجود ندارد."
+
+msgid "No reports yet"
+msgstr "هنوز گزارشی وجود ندارد"
+
+msgid "No roles yet"
+msgstr "هنوز نقشی وجود ندارد"
+
+msgid "No such folder for this account."
+msgstr "چنین پوشه‌ای برای این حساب وجود ندارد."
+
+msgid "Normal"
+msgstr "عادی"
+
+msgid "Not a member of any group."
+msgstr "عضو هیچ گروهی نیست."
+
+msgid "Not a recipient of any mailing list."
+msgstr "گیرنده هیچ فهرست پستی‌ای نیست."
+
+msgid "Not configured"
+msgstr "پیکربندی نشده"
+
+msgid "Not set"
+msgstr "تنظیم نشده"
+
+msgid "Notify Count"
+msgstr "تعداد اعلان‌ها"
+
+msgid "OAuth client added."
+msgstr "سرویس‌گیرنده OAuth افزوده شد."
+
+msgid "OAuth client deleted."
+msgstr "سرویس‌گیرنده OAuth حذف شد."
+
+msgid "OAuth client not found."
+msgstr "سرویس‌گیرنده OAuth یافت نشد."
+
+msgid "OAuth client updated."
+msgstr "سرویس‌گیرنده OAuth به‌روزرسانی شد."
+
+msgid "OAuth Clients"
+msgstr "سرویس‌گیرنده‌های OAuth"
+
+msgid "OAuth clients let external apps authenticate with your mail server."
+msgstr "سرویس‌گیرنده‌های OAuth به برنامه‌های خارجی امکان می‌دهند از طریق سرور ایمیل شما احراز هویت کنند."
+
+msgid "One email address per line"
+msgstr "در هر خط یک نشانی ایمیل"
+
+msgid "Only the Administrator can run this action."
+msgstr "فقط مدیر می‌تواند این عملیات را اجرا کند."
+
+msgid "Open Drafts"
+msgstr "باز کردن پیش‌نویس‌ها"
+
+msgid "Open email"
+msgstr "باز کردن ایمیل"
+
+msgid "Open Mail, or Fold Stack"
+msgstr "باز کردن ایمیل یا جمع کردن پشته"
+
+msgid "Optional. Leave blank if the client authenticates without a secret."
+msgstr "اختیاری است. اگر سرویس‌گیرنده بدون کلید محرمانه احراز هویت می‌کند، خالی بگذارید."
+
+msgid "Original Recipient"
+msgstr "گیرنده اولیه"
+
+msgid "Outbound"
+msgstr "خروجی"
+
+msgid "Outbound Reports"
+msgstr "گزارش‌های خروجی"
+
+msgid "Outbox"
+msgstr "صندوق خروجی"
+
+msgid "Overview"
+msgstr "نمای کلی"
+
+msgid "Password resets and the invitation email are sent to this address."
+msgstr "ایمیل‌های بازنشانی گذرواژه و دعوت‌نامه به این نشانی ارسال می‌شوند."
+
+msgid "Permanent Failure"
+msgstr "شکست دائمی"
+
+msgid "Pick a date and time"
+msgstr "تاریخ و زمان را انتخاب کنید"
+
+msgid "Please copy the API secret now. You won’t be able to see it again!"
+msgstr "لطفاً کلید محرمانه API را همین حالا کپی کنید. دیگر نمی‌توانید آن را ببینید!"
+
+msgid "Please enable it to ensure that your rules function properly."
+msgstr "لطفاً آن را فعال کنید تا قوانین شما به‌درستی کار کنند."
+
+msgid "Please pick a date and time."
+msgstr "لطفاً تاریخ و زمان را انتخاب کنید."
+
+msgid "Please wait for attachments to finish uploading."
+msgstr "لطفاً تا پایان بارگذاری پیوست‌ها صبر کنید."
+
+msgid "Policy Identifier"
+msgstr "شناسه خط‌مشی"
+
+msgid "Primary Email"
+msgstr "ایمیل اصلی"
+
+msgid "Queue is empty"
+msgstr "صف خالی است"
+
+msgid "Queued Message"
+msgstr "پیام در صف"
+
+msgid "Queued message updated."
+msgstr "پیام در صف به‌روزرسانی شد."
+
+msgid "Queued {0}"
+msgstr "{0} در صف قرار گرفت"
+
+msgid "Quick Actions"
+msgstr "اقدام‌های سریع"
+
+msgid "Quota (GB, 0 = unlimited)"
+msgstr "سهمیه (GB، 0 = نامحدود)"
+
+msgid "Quota updated."
+msgstr "سهمیه به‌روزرسانی شد."
+
+msgid "Quota Usage"
+msgstr "میزان استفاده از سهمیه"
+
+msgid "Read receipts"
+msgstr "تأییدیه‌های خواندن"
+
+msgid "Received"
+msgstr "دریافت‌شده"
+
+msgid "Received From IP"
+msgstr "دریافت‌شده از IP"
+
+msgid "Received Via Port"
+msgstr "دریافت از طریق درگاه"
+
+msgid "Recent Activity"
+msgstr "فعالیت اخیر"
+
+msgid "Recipient"
+msgstr "گیرنده"
+
+msgid "Recipient or domain"
+msgstr "گیرنده یا دامنه"
+
+msgid "Recipient removed."
+msgstr "گیرنده حذف شد."
+
+msgid "Recipient updated."
+msgstr "گیرنده به‌روزرسانی شد."
+
+msgid "Recipients added."
+msgstr "گیرندگان افزوده شدند."
+
+msgid "Redirect URI removed."
+msgstr "URI تغییر مسیر حذف شد."
+
+msgid "Redirect URIs"
+msgstr "URIهای تغییر مسیر"
+
+msgid "Redirect URIs added."
+msgstr "URIهای تغییر مسیر افزوده شدند."
+
+msgid "References"
+msgstr "ارجاع‌ها"
+
+msgid "Released at"
+msgstr "زمان آزادسازی"
+
+msgid "Removed from group."
+msgstr "از گروه حذف شد."
+
+msgid "Removed from mailing list."
+msgstr "از فهرست پستی حذف شد."
+
+msgid "reply to"
+msgstr "پاسخ به"
+
+msgid "Report"
+msgstr "گزارش"
+
+msgid "Report deleted."
+msgstr "گزارش حذف شد."
+
+msgid "Report not found."
+msgstr "گزارش پیدا نشد."
+
+msgid "Report Recipients"
+msgstr "گیرندگان گزارش"
+
+msgid "Reports"
+msgstr "گزارش‌ها"
+
+msgid "Reports deleted."
+msgstr "گزارش‌ها حذف شدند."
+
+msgid "Reports received for your domains will appear here."
+msgstr "گزارش‌های دریافتی برای دامنه‌های شما اینجا نمایش داده می‌شوند."
+
+msgid "Request Reports"
+msgstr "درخواست گزارش‌ها"
+
+msgid "Reschedule"
+msgstr "زمان‌بندی مجدد"
+
+msgid "Reschedule delivery"
+msgstr "زمان‌بندی مجدد تحویل"
+
+msgid "Resend code"
+msgstr "ارسال دوباره کد"
+
+msgid "Reset password link sent to {0}."
+msgstr "پیوند بازنشانی رمز عبور به {0} ارسال شد."
+
+msgid "Response Code"
+msgstr "کد پاسخ"
+
+msgid "Retries: {0}"
+msgstr "تلاش‌های مجدد: {0}"
+
+msgid "Retry All"
+msgstr "تلاش مجدد برای همه"
+
+msgid "Retry All Messages"
+msgstr "تلاش مجدد برای همه پیام‌ها"
+
+msgid "Retry Count"
+msgstr "تعداد تلاش‌های مجدد"
+
+msgid "Retry Messages"
+msgstr "تلاش مجدد برای پیام‌ها"
+
+msgid "Retry Now"
+msgstr "اکنون دوباره تلاش کنید"
+
+msgid "Retrying"
+msgstr "در حال تلاش مجدد"
+
+msgid "Review the queue"
+msgstr "بررسی صف"
+
+msgid "Role added."
+msgstr "نقش افزوده شد."
+
+msgid "Role deleted."
+msgstr "نقش حذف شد."
+
+msgid "Role not found."
+msgstr "نقش یافت نشد."
+
+msgid "Role updated."
+msgstr "نقش به‌روزرسانی شد."
+
+msgid "Roles control which permissions members have."
+msgstr "نقش‌ها مجوزهای اعضا را تعیین می‌کنند."
+
+msgid "Rotation"
+msgstr "چرخش"
+
+msgid "Run"
+msgstr "اجرا"
+
+msgid "Run a delivery test"
+msgstr "اجرای آزمایش تحویل"
+
+msgid "Run Another"
+msgstr "اجرای آزمایشی دیگر"
+
+msgid "Run this action now?"
+msgstr "این عملیات اکنون اجرا شود؟"
+
+msgid "Schedule every message matching the current filter for immediate delivery?"
+msgstr "همه پیام‌های مطابق با فیلتر فعلی برای تحویل فوری زمان‌بندی شوند؟"
+
+msgid "Schedule send"
+msgstr "زمان‌بندی ارسال"
+
+msgid "Schedule the selected messages for immediate delivery?"
+msgstr "پیام‌های انتخاب‌شده برای تحویل فوری زمان‌بندی شوند؟"
+
+msgid "Scheduled"
+msgstr "زمان‌بندی‌شده"
+
+msgid "Scheduled emails and deliveries still in flight will wait here."
+msgstr "ایمیل‌های زمان‌بندی‌شده و موارد در حال تحویل، اینجا منتظر می‌مانند."
+
+msgid "Scheduled for"
+msgstr "زمان‌بندی‌شده برای"
+
+msgid "Screener turned off."
+msgstr "غربالگر خاموش شد."
+
+msgid "Screener turned on."
+msgstr "غربالگر روشن شد."
+
+msgid "Search by email"
+msgstr "جست‌وجو بر اساس ایمیل"
+
+msgid "Search your mail"
+msgstr "جست‌وجو در ایمیل‌ها"
+
+msgid "Select a locale"
+msgstr "انتخاب تنظیمات منطقه‌ای"
+
+msgid "Select a time zone"
+msgstr "انتخاب منطقه زمانی"
+
+msgid "Select All"
+msgstr "انتخاب همه"
+
+msgid "Selector"
+msgstr "انتخابگر"
+
+msgid "Send a password reset link to this member? The link will be emailed to their backup email address."
+msgstr "پیوند بازنشانی گذرواژه برای این عضو ارسال شود؟ پیوند به نشانی ایمیل پشتیبان او فرستاده خواهد شد."
+
+msgid "Send Again"
+msgstr "ارسال دوباره"
+
+msgid "Send again"
+msgstr "ارسال دوباره"
+
+msgid "Send at"
+msgstr "زمان ارسال"
+
+msgid "Send Invitation Email"
+msgstr "ارسال ایمیل دعوت"
+
+msgid "Send Now"
+msgstr "ارسال اکنون"
+
+msgid "Send now"
+msgstr "ارسال اکنون"
+
+msgid "Send scheduled."
+msgstr "ارسال زمان‌بندی شد."
+
+msgid "Send this email again now?"
+msgstr "این ایمیل اکنون دوباره ارسال شود؟"
+
+msgid "Sender"
+msgstr "فرستنده"
+
+msgid "Sending"
+msgstr "در حال ارسال"
+
+msgid "Sending undone. The message is back in your drafts."
+msgstr "ارسال لغو شد. پیام به پیش‌نویس‌ها بازگشت."
+
+msgid "sends them to Junk."
+msgstr "آن‌ها را به هرزنامه می‌فرستد."
+
+msgid "Server events will appear here as they happen."
+msgstr "رویدادهای سرور هم‌زمان با وقوع در اینجا نمایش داده می‌شوند."
+
+msgid "Server Response"
+msgstr "پاسخ سرور"
+
+msgid "Show quoted text"
+msgstr "نمایش متن نقل‌شده"
+
+msgid "Show trimmed content"
+msgstr "نمایش محتوای پنهان‌شده"
+
+msgid "Shown as the role's name across the dashboard."
+msgstr "در سراسر پیشخوان به‌عنوان نام نقش نمایش داده می‌شود."
+
+msgid "Sign in to your account"
+msgstr "وارد حساب خود شوید"
+
+msgid "Sign-ins are only redirected back to one of these URLs."
+msgstr "ورودها فقط به یکی از این URLها هدایت می‌شوند."
+
+msgid "Signature Type"
+msgstr "نوع امضا"
+
+msgid "Signed Headers"
+msgstr "سرآیندهای امضاشده"
+
+msgid "SMTP Command"
+msgstr "فرمان SMTP"
+
+msgid "Sort By"
+msgstr "مرتب‌سازی بر اساس"
+
+msgid "Split View"
+msgstr "نمای دو‌بخشی"
+
+msgid "Stage"
+msgstr "مرحله"
+
+msgid "Start Test"
+msgstr "شروع آزمایش"
+
+msgid "Stop"
+msgstr "توقف"
+
+msgid "subject"
+msgstr "موضوع"
+
+msgid "Submission ID"
+msgstr "شناسه ارسال"
+
+msgid "Submission not found."
+msgstr "ارسال یافت نشد."
+
+msgid "Takes input"
+msgstr "ورودی می‌پذیرد"
+
+msgid "Tap"
+msgstr "لمس کنید"
+
+msgid "Temporary Failure"
+msgstr "خطای موقت"
+
+msgid "Test SMTP Delivery"
+msgstr "آزمایش تحویل SMTP"
+
+msgid "Testing delivery…"
+msgstr "در حال آزمایش تحویل…"
+
+msgid "The client can no longer be used after this time."
+msgstr "پس از این زمان، دیگر نمی‌توان از سرویس‌گیرنده استفاده کرد."
+
+msgid "The delivery failed. Try to send this email again now?"
+msgstr "تحویل ناموفق بود. این ایمیل اکنون دوباره ارسال شود؟"
+
+msgid "The delivery time cannot be more than {0} days ahead."
+msgstr "زمان تحویل نمی‌تواند بیش از {0} روز بعد باشد."
+
+msgid "The delivery time must be in the future."
+msgstr "زمان تحویل باید در آینده باشد."
+
+msgid "The first time someone emails you, their message lands in the Screener instead of your Inbox."
+msgstr "وقتی کسی برای نخستین‌بار به شما ایمیل می‌زند، پیام او به‌جای صندوق ورودی وارد غربال‌گر می‌شود."
+
+msgid "The invitation link stops working after this time."
+msgstr "پیوند دعوت پس از این زمان دیگر کار نمی‌کند."
+
+msgid "The mail server is temporarily unavailable. Please try again in a few minutes."
+msgstr "سرور ایمیل موقتاً در دسترس نیست. لطفاً چند دقیقه دیگر دوباره تلاش کنید."
+
+msgid "The mail server this account connects to. Set by your administrator."
+msgstr "سرور ایمیلی که این حساب به آن متصل می‌شود. مدیر آن را تنظیم کرده است."
+
+msgid "The member can change this later in their account settings."
+msgstr "عضو می‌تواند بعداً این مورد را در تنظیمات حساب خود تغییر دهد."
+
+msgid "The next delivery attempt is scheduled for this time."
+msgstr "تلاش بعدی برای تحویل در این زمان برنامه‌ریزی شده است."
+
+msgid "The original message was deleted after scheduling, so only the envelope details remain."
+msgstr "پیام اصلی پس از زمان‌بندی حذف شد؛ بنابراین فقط جزئیات پاکت باقی مانده است."
+
+msgid "The request can no longer create an account after this time."
+msgstr "پس از این زمان، دیگر نمی‌توان با این درخواست حسابی ایجاد کرد."
+
+msgid "The response from the remote server was:"
+msgstr "پاسخ سرور راه‌دور:"
+
+msgid "The unique identifier the application uses to identify itself."
+msgstr "شناسه منحصربه‌فردی که برنامه برای شناسایی خود استفاده می‌کند."
+
+msgid "These fields are required: {0}"
+msgstr "این فیلدها الزامی‌اند: {0}"
+
+msgid "This draft is open in another window."
+msgstr "این پیش‌نویس در پنجره دیگری باز است."
+
+msgid "This is the primary address and cannot be removed."
+msgstr "این نشانی اصلی است و نمی‌توان آن را حذف کرد."
+
+msgid "This role also grants everything the selected roles allow."
+msgstr "این نقش تمام مجوزهای نقش‌های انتخاب‌شده را نیز اعطا می‌کند."
+
+msgid "Thread added to folder."
+msgstr "گفت‌وگو به پوشه اضافه شد."
+
+msgid "Thread is no longer in the list."
+msgstr "گفت‌وگو دیگر در فهرست نیست."
+
+msgid "Thread moved."
+msgstr "گفت‌وگو منتقل شد."
+
+msgid "Thread removed from folder."
+msgstr "گفت‌وگو از پوشه حذف شد."
+
+msgid "Threads archived."
+msgstr "گفت‌وگوها بایگانی شدند."
+
+msgid "Threads moved to Trash."
+msgstr "گفت‌وگوها به زباله‌دان منتقل شدند."
+
+msgid "Timestamp"
+msgstr "مُهر زمانی"
+
+msgid "TLS"
+msgstr "TLS"
+
+msgid "To add a domain, you must already own it. If you don't have one, purchase one and return here."
+msgstr "برای افزودن دامنه، باید مالک آن باشید. اگر دامنه‌ای ندارید، یکی بخرید و به اینجا بازگردید."
+
+msgid "to {0}"
+msgstr "به {0}"
+
+msgid "to {0} and {1}"
+msgstr "به {0} و {1}"
+
+msgid "to {0}, {1} and {2}"
+msgstr "به {0}، {1} و {2}"
+
+msgid "to {0}, {1} and {2} others"
+msgstr "به {0}، {1} و {2} نفر دیگر"
+
+msgid "Together with the domain, this forms the group's email address."
+msgstr "این عبارت همراه با دامنه، نشانی ایمیل گروه را تشکیل می‌دهد."
+
+msgid "Together with the domain, this forms the list's email address."
+msgstr "این عبارت همراه با دامنه، نشانی ایمیل فهرست را تشکیل می‌دهد."
+
+msgid "Tomorrow afternoon"
+msgstr "فردا بعدازظهر"
+
+msgid "Tomorrow morning"
+msgstr "فردا صبح"
+
+msgid "Trace a live SMTP delivery to any recipient or domain to diagnose DNS, connection and handshake issues."
+msgstr "تحویل زنده SMTP به هر گیرنده یا دامنه را برای عیب‌یابی مشکلات DNS، اتصال و دست‌دهی ردیابی کنید."
+
+msgid "Trace a live SMTP delivery to diagnose issues."
+msgstr "برای عیب‌یابی مشکلات، تحویل زنده SMTP را ردیابی کنید."
+
+msgid "Try adjusting the filters."
+msgstr "فیلترها را تنظیم کنید."
+
+msgid "Try adjusting your search or filters."
+msgstr "جستجو یا فیلترها را تنظیم کنید."
+
+msgid "Try again now"
+msgstr "اکنون دوباره امتحان کنید"
+
+msgid "Unable to save credentials."
+msgstr "ذخیره اطلاعات ورود ممکن نیست."
+
+msgid "Unable to update Split View."
+msgstr "به‌روزرسانی نمای دو‌بخشی ممکن نیست."
+
+msgid "Unknown"
+msgstr "ناشناخته"
+
+msgid "Unselect All"
+msgstr "لغو انتخاب همه"
+
+msgid "Untitled event"
+msgstr "رویداد بدون عنوان"
+
+msgid "Used as the display name for this address"
+msgstr "به‌عنوان نام نمایشی این نشانی استفاده می‌شود"
+
+msgid "Used to connect to your mailbox."
+msgstr "برای اتصال به صندوق پستی شما استفاده می‌شود."
+
+msgid "user@example.com"
+msgstr "user@example.com"
+
+msgid "Verification Code"
+msgstr "کد تأیید"
+
+msgid "Verify"
+msgstr "تأیید"
+
+msgid "View in Calendar"
+msgstr "مشاهده در تقویم"
+
+msgid "View Logs"
+msgstr "مشاهده گزارش‌ها"
+
+msgid "View Source"
+msgstr "مشاهده منبع"
+
+msgid "We'll contact you here if there's an issue with your main account."
+msgstr "اگر مشکلی برای حساب اصلی شما پیش بیاید، از این طریق با شما تماس می‌گیریم."
+
+msgid "You can undo decisions or turn the Screener off in"
+msgstr "می‌توانید تصمیم‌ها را واگرد کنید یا غربال‌گر را در این بخش خاموش کنید:"
+
+msgid "You don't have an API key yet. Generate one to access the API."
+msgstr "هنوز کلید API ندارید. برای دسترسی به API یک کلید ایجاد کنید."
+
+msgid "Your message couldn't be delivered to {0}."
+msgstr "پیام شما به {0} تحویل داده نشد."
+
+msgid "Your message was delivered to {0}."
+msgstr "پیام شما به {0} تحویل داده شد."
+
+msgid "Zone File"
+msgstr "فایل Zone"
+
+msgid "{0} allowed."
+msgstr "{0} مجاز شد."
+
+msgid "{0} are back in the Screener."
+msgstr "{0} دوباره به غربالگر برگشتند."
+
+msgid "{0} are waiting to be screened."
+msgstr "{0} در انتظار بررسی هستند."
+
+msgid "{0} conversations"
+msgstr "{0} گفت‌وگو"
+
+msgid "{0} denied."
+msgstr "{0} مسدود شد."
+
+msgid "{0} disabled"
+msgstr "{0} غیرفعال"
+
+msgid "{0} is back in the Screener."
+msgstr "{0} دوباره به غربالگر برگشت."
+
+msgid "{0} is required."
+msgstr "{0} الزامی است."
+
+msgid "{0} is waiting to be screened."
+msgstr "{0} در انتظار بررسی است."
+
+msgid "{0} Mail archived."
+msgstr "{0} ایمیل بایگانی شد."
+
+msgid "{0} Mail moved to Trash."
+msgstr "{0} ایمیل به زباله‌دان منتقل شد."
+
+msgid "{0} members"
+msgstr "{0} عضو"
+
+msgid "{0} new senders"
+msgstr "{0} فرستنده جدید"
+
+msgid "{0} new threads"
+msgstr "{0} گفت‌وگوی جدید"
+
+msgid "{0} of {1} used"
+msgstr "{0} از {1} استفاده شده"
+
+msgid "{0} recipients"
+msgstr "{0} گیرنده"
+
+msgid "{0} redirect URIs"
+msgstr "{0} URI تغییر مسیر"
+
+msgid "{0} selected"
+msgstr "{0} انتخاب شده"
+
+msgid "{0} senders"
+msgstr "{0} فرستنده"
+
+msgid "{0} senders will be allowed, and their messages moved to your Inbox."
+msgstr "{0} فرستنده مجاز خواهند شد و پیام‌هایشان به صندوق ورودی شما منتقل می‌شود."
+
+msgid "{0} senders will be denied, and their messages moved to Junk."
+msgstr "{0} فرستنده مسدود خواهند شد و پیام‌هایشان به هرزنامه منتقل می‌شود."
+
+msgid "{0} threads"
+msgstr "{0} گفت‌وگو"
+
+msgid "{0} used · Unlimited"
+msgstr "{0} استفاده شده · نامحدود"
+
+msgid "{0}–{1} of {2}"
+msgstr "{0}–{1} از {2}"
+
+msgid "---------- Forwarded message ---------"
+msgstr "---------- پیام بازارسال‌شده ---------"
+
+msgid "Authenticated As"
+msgstr "هویت احرازشده"
+
+msgid "Doe"
+msgstr "رضایی"
+
+msgid "EHLO Domain"
+msgstr "دامنه EHLO"
+
+msgid "Email, Mailbox"
+msgstr "ایمیل، صندوق پستی"
+
+msgid "Frappe Mail"
+msgstr "ایمیل فراپه"
+
+msgid "Important, Urgent, Follow Up"
+msgstr "مهم، فوری، پیگیری"
+
+msgid "John"
+msgstr "علی"
+
+msgid "MAIL FROM"
+msgstr "MAIL FROM"
+
+msgid "MAIL FROM Parameters"
+msgstr "پارامترهای MAIL FROM"
+
+msgid "Message Body"
+msgstr "متن پیام"
+
+msgid "On {0}, {1} wrote:"
+msgstr "در {0}، {1} نوشت:"
+
+msgid "Out of Office"
+msgstr "خارج از دفتر"
+
+msgid "Random"
+msgstr "تصادفی"
+
+msgid "RCPT TO"
+msgstr "RCPT TO"
+
+msgid "Remote IP"
+msgstr "IP راه دور"
+
+msgid "SPF EHLO Domain"
+msgstr "دامنه EHLO برای SPF"
+
+msgid "SPF MAIL FROM Domain"
+msgstr "دامنه MAIL FROM برای SPF"
+
+msgid "TLS Enabled"
+msgstr "TLS فعال"
+
+msgid "Communications"
+msgstr "ارتباطات"
+
+msgid "Email Accounts"
+msgstr "حساب‌های ایمیل"
+
+msgid "Email Queue"
+msgstr "صف ایمیل"
+
+msgid "Email Templates"
+msgstr "الگوهای ایمیل"
+
+msgid "Frappe Email"
+msgstr "ایمیل فراپه"
+
+msgid "Unhandled Email"
+msgstr "ایمیل‌های پردازش‌نشده"

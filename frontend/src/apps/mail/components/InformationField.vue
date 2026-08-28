@@ -3,7 +3,7 @@
 		<div class="text-ink-gray-5 w-1/3">{{ label }}</div>
 		<div class="flex w-2/3 items-center font-medium">
 			<slot>
-				<span class="truncate">{{ value || '—' }}</span>
+				<span class="dir-auto truncate">{{ value || '—' }}</span>
 			</slot>
 		</div>
 	</div>

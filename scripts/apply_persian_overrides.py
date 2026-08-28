@@ -10,6 +10,7 @@ import re
 from pathlib import Path
 
 from persian_core_ux_overrides import CORE_VISIBLE_UX_OVERRIDES
+from persian_mail_overrides import PERSIAN_MAIL_OVERRIDES
 from persian_overrides import PERSIAN_OVERRIDES
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -32,7 +33,7 @@ def message_id(block: str) -> str | None:
 
 
 def apply(catalogue: Path, *, check: bool = False) -> tuple[int, int]:
-    overrides = {**PERSIAN_OVERRIDES, **CORE_VISIBLE_UX_OVERRIDES}
+    overrides = {**PERSIAN_OVERRIDES, **CORE_VISIBLE_UX_OVERRIDES, **PERSIAN_MAIL_OVERRIDES}
     source = catalogue.read_text(encoding="utf-8")
     blocks = source.rstrip().split("\n\n")
     seen: set[str] = set()

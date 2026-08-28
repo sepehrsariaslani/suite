@@ -8,7 +8,7 @@
 				<span class="text-ink-gray-4 text-p-sm whitespace-nowrap">
 					{{ field.label }}
 				</span>
-				<span class="text-ink-gray-7 text-p-sm break-words">{{ field.value }}</span>
+				<span class="dir-auto text-ink-gray-7 text-p-sm break-words">{{ field.value }}</span>
 			</template>
 		</div>
 	</div>

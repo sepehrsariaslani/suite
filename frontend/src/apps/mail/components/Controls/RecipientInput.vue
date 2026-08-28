@@ -98,7 +98,7 @@
 					     so letting the input blur unmounts the row from under the finger and the click
 					     lands on nothing. Selection happens on the click that follows. -->
 					<button
-						class="hover:bg-surface-gray-2 flex w-full items-center gap-3 px-4 py-2.5 text-left text-sm"
+						class="hover:bg-surface-gray-2 flex w-full items-center gap-3 px-4 py-2.5 text-start text-sm"
 						@mousedown.prevent
 						@click="pickSuggestion(option)"
 					>

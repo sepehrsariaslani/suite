@@ -12,14 +12,14 @@
 		<FormControl
 			v-model="firstName"
 			:label="__('First Name')"
-			placeholder="John"
+		:placeholder="__('John')"
 			autocomplete="given-name"
 			required
 		/>
 		<FormControl
 			v-model="lastName"
 			:label="__('Last Name')"
-			placeholder="Doe"
+		:placeholder="__('Doe')"
 			autocomplete="family-name"
 		/>
 		<FormControl

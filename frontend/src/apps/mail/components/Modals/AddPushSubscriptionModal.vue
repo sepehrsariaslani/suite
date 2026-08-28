@@ -37,7 +37,7 @@
 					type="text"
 					variant="outline"
 					:label="__('Types')"
-					placeholder="Email, Mailbox"
+					:placeholder="__('Email, Mailbox')"
 					:description="__('Comma-separated list of types to be notified for. Leave blank to be notified for all supported types.')"
 				/>
 			</div>

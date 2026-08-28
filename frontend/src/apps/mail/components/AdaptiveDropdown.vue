@@ -29,7 +29,7 @@
 							class="h-4 w-4 shrink-0"
 							:class="item.theme === 'red' ? 'text-ink-red-6' : 'text-ink-gray-6'"
 						/>
-						<span class="flex-1 truncate text-left">{{ sheetLabel(item.label) }}</span>
+						<span class="flex-1 truncate text-start">{{ sheetLabel(item.label) }}</span>
 						<!-- Which one you're already on. Desktop takes this from the Menu's own
 						     selected styling; a sheet row has no such state, so it shows a tick. -->
 						<Check v-if="item.selected" class="text-ink-gray-6 h-4 w-4 shrink-0" />

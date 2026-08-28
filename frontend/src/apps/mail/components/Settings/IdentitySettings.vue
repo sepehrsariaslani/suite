@@ -135,7 +135,7 @@
 					<FormControl
 						v-model="displayName"
 						:label="__('Display Name')"
-						placeholder="John Doe"
+						:placeholder="__('John Doe')"
 						class="w-full"
 					/>
 				</template>
@@ -170,7 +170,7 @@
 			<FormControl
 				v-model="newDisplayName"
 				:label="__('Display Name')"
-				placeholder="John Doe"
+				:placeholder="__('John Doe')"
 				class="w-full"
 			/>
 		</template>

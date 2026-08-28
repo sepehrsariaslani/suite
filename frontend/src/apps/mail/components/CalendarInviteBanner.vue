@@ -15,7 +15,7 @@
 		<component
 			:is="canViewEvent ? 'button' : 'div'"
 			:type="canViewEvent ? 'button' : undefined"
-			class="flex min-w-0 max-w-full items-center gap-3.5 self-start text-left sm:self-center"
+			class="flex min-w-0 max-w-full items-center gap-3.5 self-start text-start sm:self-center"
 			@click="openEventDetail"
 		>
 			<!-- A span gets a chip per end: one chip can only ever claim one date. The arrow between
@@ -40,7 +40,7 @@
 				</span>
 			</div>
 		</component>
-		<div class="flex shrink-0 items-center justify-end sm:ml-auto">
+		<div class="flex shrink-0 items-center justify-end sm:ms-auto">
 			<!-- On mobile the answers get the width the row was already spending: full-bleed, and
 			     40px tall inside a 44px control, against the ~26px the intrinsic-width version gave
 			     them. Same overrides the calendar app's event detail sidebar uses, held to max-sm so

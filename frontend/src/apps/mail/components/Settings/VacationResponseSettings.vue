@@ -38,7 +38,7 @@
 			<FormControl
 				v-model="vacationResponse.data.subject"
 				:label="__('Subject')"
-				placeholder="Out of Office"
+				:placeholder="__('Out of Office')"
 				variant="outline"
 			/>
 			<div class="space-y-1.5">

@@ -32,7 +32,7 @@
 				@click="openTab(profileTab)"
 			>
 				<Avatar :label="fullName" :image="user.data?.user_image" size="2xl" class="size-14" />
-				<div class="min-w-0 flex-1 text-left">
+				<div class="min-w-0 flex-1 text-start">
 					<div class="text-ink-gray-9 truncate text-md !font-semibold">{{ fullName }}</div>
 					<div class="text-ink-gray-5 mt-0.5 truncate text-sm">{{ loginId }}</div>
 				</div>

@@ -35,7 +35,7 @@
 						icon-left="lucide-search"
 						type="search"
 						class="placeholder-ink-gray-4 w-full border-none bg-transparent text-base focus:ring-0"
-						placeholder="Search"
+						:placeholder="__('Search')"
 						@click="showAdvancedFilters = false"
 						@input="showAdvancedFilters = false"
 						@keyup.enter="openSearchPage"
@@ -180,7 +180,7 @@
 					<button
 						v-for="mb in folderMatches"
 						:key="mb.id"
-						class="hover:bg-surface-gray-1 flex w-full items-center gap-2 rounded-4 p-2 text-left"
+						class="hover:bg-surface-gray-1 flex w-full items-center gap-2 rounded-4 p-2 text-start"
 						@click="applyFolder(mb)"
 					>
 						<Icon
@@ -193,7 +193,7 @@
 					<button
 						v-for="c in contactMatches"
 						:key="c.email"
-						class="hover:bg-surface-gray-1 flex w-full items-center gap-2 rounded-4 p-2 text-left"
+						class="hover:bg-surface-gray-1 flex w-full items-center gap-2 rounded-4 p-2 text-start"
 						@click="applyContact(c)"
 					>
 						<Avatar :image="c.image" :label="c.name || c.email" size="lg" />

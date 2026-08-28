@@ -57,7 +57,7 @@
 				required
 			/>
 			<button
-				class="text-left text-base text-ink-gray-6 hover:underline"
+				class="text-start text-base text-ink-gray-6 hover:underline"
 				type="button"
 				:disabled="resendOtp.loading"
 				@click="resendOtp.submit()"
@@ -70,7 +70,7 @@
 			<FormControl
 				v-model="user.first_name"
 				:label="__('First Name')"
-				placeholder="John"
+			:placeholder="__('John')"
 				autocomplete="given-name"
 				class="w-full"
 				required
@@ -78,7 +78,7 @@
 			<FormControl
 				v-model="user.last_name"
 				:label="__('Last Name')"
-				placeholder="Doe"
+			:placeholder="__('Doe')"
 				autocomplete="family-name"
 				class="w-full"
 			/>

@@ -104,12 +104,12 @@
 					<FormControl
 						v-model="accountRequest.first_name"
 						:label="__('First Name')"
-						placeholder="John"
+					:placeholder="__('John')"
 					/>
 					<FormControl
 						v-model="accountRequest.last_name"
 						:label="__('Last Name')"
-						placeholder="Doe"
+					:placeholder="__('Doe')"
 					/>
 					<FormControl
 						v-model="accountRequest.password"

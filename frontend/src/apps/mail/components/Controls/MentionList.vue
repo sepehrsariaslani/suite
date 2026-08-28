@@ -16,7 +16,7 @@
 				:key="item.email"
 				:ref="(el) => setItemRef(el, index)"
 				as="button"
-				class="text-left"
+				class="text-start"
 				:selected="index === selectedIndex"
 				@mousedown.prevent="selectItem(index)"
 				@mouseover="selectedIndex = index"

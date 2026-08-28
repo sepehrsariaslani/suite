@@ -6,7 +6,7 @@
 					<div class="mx-auto flex items-center space-x-2">
 						<MailLogo class="inline-block h-7 w-7" />
 						<span class="select-none text-2xl-semibold tracking-tight">
-							Frappe Mail
+							{{ __('Frappe Mail') }}
 						</span>
 					</div>
 				</slot>
