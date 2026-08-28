@@ -2,9 +2,6 @@
 # For license information, please see license.txt
 
 from unittest.mock import patch
-from email.header import decode_header, make_header
-from email.utils import parseaddr
-
 import frappe
 from frappe.tests import IntegrationTestCase
 
@@ -53,9 +50,7 @@ class TestMailBranding(IntegrationTestCase):
 
         with self.change_settings("Mail Settings", mail_sender_name="مجموعه دهاتی"):
             frappe.clear_document_cache("Mail Settings")
-            sender_name, sender_email = parseaddr(get_transactional_sender())
-            self.assertEqual(str(make_header(decode_header(sender_name))), "مجموعه دهاتی")
-            self.assertEqual(sender_email, "info@dehati.ir")
+            self.assertEqual(get_transactional_sender(), "مجموعه دهاتی <info@dehati.ir>")
 
     @patch("suite.mail.branding.EmailAccount.find_default_outgoing", return_value=None)
     def test_sender_is_empty_without_outgoing_account(self, _find_default):

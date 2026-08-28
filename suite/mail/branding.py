@@ -2,7 +2,6 @@
 # For license information, please see license.txt
 
 from dataclasses import dataclass
-from email.utils import formataddr
 
 import frappe
 from frappe.email.doctype.email_account.email_account import EmailAccount
@@ -27,10 +26,10 @@ def get_mail_branding() -> MailBranding:
 
 
 def get_transactional_sender() -> str:
-    """Format the configured display name with Frappe's outgoing address."""
+    """Return the Unicode sender value that Frappe will encode into the MIME header."""
 
     account = EmailAccount.find_default_outgoing()
     if not account or not account.email_id:
         return ""
 
-    return formataddr((get_mail_branding().sender_name, account.email_id))
+    return f"{get_mail_branding().sender_name} <{account.email_id}>"
