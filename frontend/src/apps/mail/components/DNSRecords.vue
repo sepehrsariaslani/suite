@@ -5,7 +5,7 @@
 		<div class="space-y-2">
 			<h3 class="flex items-center font-medium">
 				{{ title }}
-				<Badge v-if="badgeLabel" :theme="badgeTheme" :label="badgeLabel" class="ml-2" />
+				<Badge v-if="badgeLabel" :theme="badgeTheme" :label="badgeLabel" class="ms-2" />
 			</h3>
 			<p class="text-ink-gray-5 text-sm">{{ description }}</p>
 		</div>
@@ -26,7 +26,7 @@
 									class="group/copy flex min-w-0 cursor-copy items-center gap-1.5"
 									@click="copyToClipBoard(item)"
 								>
-									<span class="truncate">{{ item }}</span>
+									<span class="dir-ltr truncate">{{ item }}</span>
 									<FeatherIcon
 										name="copy"
 										class="text-ink-gray-5 invisible h-3.5 w-3.5 shrink-0 group-hover/copy:visible"

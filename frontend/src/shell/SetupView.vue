@@ -1,7 +1,7 @@
 <template>
   <div class="relative flex h-full justify-center overflow-auto bg-surface-base pt-24 pb-14">
     <Button
-      class="absolute top-4 right-4"
+      class="absolute end-4 top-4"
       variant="ghost"
       :icon="isDark ? 'lucide-sun' : 'lucide-moon-star'"
       :aria-label="__('Toggle theme')"

@@ -146,6 +146,7 @@
 					<input
 						ref="subjectInput"
 						v-model="mail.subject"
+						dir="auto"
 						class="flex-1 cursor-text border-none bg-inherit text-base focus-visible:!ring-0"
 					/>
 				</label>
@@ -168,7 +169,13 @@
 					<p class="text-lg-semibold">{{ __('Drop files to upload') }}</p>
 				</div>
 
-				<EditorContent :editor :class="{ 'opacity-30': isDragging }" @click.stop />
+				<EditorContent
+					:editor
+					dir="auto"
+					class="mail-compose-content"
+					:class="{ 'opacity-30': isDragging }"
+					@click.stop
+				/>
 
 				<div
 					class="mt-auto cursor-default space-y-2.5 pt-2.5"
@@ -194,14 +201,14 @@
 						target="_blank"
 						@click="openAttachment(file.blob_id, file.type)"
 					>
-						<span class="mr-1 font-medium">
+						<span class="me-1 font-medium">
 							{{ file.file_name || file.filename || file.name }}
 						</span>
-						<span class="mr-1 font-extralight">
+						<span class="me-1 font-extralight">
 							({{ formatBytes(file.file_size || file.size) }})
 						</span>
 						<FeatherIcon
-							class="ml-auto h-3.5 w-3.5"
+							class="ms-auto h-3.5 w-3.5"
 							name="x"
 							@click.stop.prevent="mail.attachments.splice(index, 1)"
 						/>
@@ -213,7 +220,7 @@
 						class="bg-surface-gray-2 text-ink-gray-6 mb-2 rounded-4 p-2.5 text-sm"
 					>
 						<div class="mb-1.5 flex items-center">
-							<span class="mr-1 font-medium"> {{ fileUpload.name }} </span>
+							<span class="me-1 font-medium"> {{ fileUpload.name }} </span>
 							<span class="font-extralight">
 								({{ formatBytes(fileUpload.size) }})
 							</span>

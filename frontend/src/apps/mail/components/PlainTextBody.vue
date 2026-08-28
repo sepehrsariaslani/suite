@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div dir="auto" class="mail-message-content">
 		<template v-for="(segment, index) in segments" :key="index">
 			<template v-if="segment.kind === 'quote'">
 				<button

@@ -67,6 +67,7 @@ import { analyzeRemoteAssets, blockRemoteAssets } from '@/apps/mail/utils'
 import { escapeBracketedAddresses } from '@/apps/mail/utils/html'
 import { useComposeMail, useScreenSize, useTheme } from '@/apps/mail/utils/composables'
 import { parseMailto } from '@/apps/mail/utils/mailto'
+import { contentDirection } from '@/apps/mail/utils/direction'
 import {
 	declaresFixedPalette,
 	isArtDirected,
@@ -203,12 +204,13 @@ const srcdoc = computed(() => {
 	const remapped = dataTheme.value === 'dark' && !declaresFixedPalette(doc) && !isArtDirected(doc)
 	if (remapped) remapEmailForDarkMode(doc)
 	collapseQuotes(doc)
+	const messageDirection = contentDirection(doc.body.textContent || '')
 	const transformedContent = doc.documentElement.outerHTML
 
 	/* eslint-disable no-useless-escape */
 	return `
 		<!DOCTYPE html>
-		<html>
+		<html dir="${messageDirection}">
 		<head>
 			<meta name="viewport" content="width=device-width, initial-scale=1">
 			<meta name="color-scheme" content="${dataTheme.value}">

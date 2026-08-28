@@ -99,3 +99,10 @@ select {
   direction: auto;
   unicode-bidi: plaintext;
 }
+
+/* Message text decides its own direction; Payam Yar chrome still follows the locale. */
+.mail-message-content,
+.mail-compose-content {
+  text-align: start;
+  unicode-bidi: plaintext;
+}
