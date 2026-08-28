@@ -1,7 +1,7 @@
 {
   "id": "/mail",
-  "name": "Frappe Mail",
-  "short_name": "Frappe Mail",
+  "name": "Payam Yar",
+  "short_name": "Payam Yar",
   "description": "Modern email client powered by Frappe",
   "display": "standalone",
   "start_url": "/mail",

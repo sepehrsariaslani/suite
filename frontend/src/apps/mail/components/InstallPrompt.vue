@@ -1,7 +1,7 @@
 <template>
 	<Dialog v-model:open="showDialog">
 		<template #title>
-			<h2 class="text-lg-bold">{{ __('Install Frappe Mail') }}</h2>
+			<h2 class="text-lg-bold">{{ __('Install Payam Yar') }}</h2>
 		</template>
 		<template>
 			<p>{{ __('Get the app on your device for easy access & a better experience!') }}</p>
@@ -26,7 +26,7 @@
 		>
 			<div class="mb-1 flex flex-row items-center justify-between px-3 text-center">
 				<span class="text-base-bold">
-					{{ __('Install Frappe Mail') }}
+					{{ __('Install Payam Yar') }}
 				</span>
 				<span class="inline-flex items-baseline">
 					<FeatherIcon

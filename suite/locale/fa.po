@@ -4914,8 +4914,8 @@ msgid "Install Docker (Ansible Play)"
 msgstr ""
 
 #: frontend/src/apps/mail/components/InstallPrompt.vue
-msgid "Install Frappe Mail"
-msgstr "نصب Frappe Mail"
+msgid "Install Payam Yar"
+msgstr "نصب پیام‌یار"
 
 #: suite/mail/doctype/mail_server/mail_server.py
 msgid "Install of Ansible initiated."
@@ -14096,8 +14096,8 @@ msgstr "دامنه EHLO"
 msgid "Email, Mailbox"
 msgstr "ایمیل، صندوق پستی"
 
-msgid "Frappe Mail"
-msgstr "ایمیل فراپه"
+msgid "Payam Yar"
+msgstr "پیام‌یار"
 
 msgid "Important, Urgent, Follow Up"
 msgstr "مهم، فوری، پیگیری"

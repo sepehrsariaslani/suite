@@ -134,7 +134,7 @@
    "fieldtype": "Column Break"
   },
   {
-   "description": "<p>This is the SSH public key generated for the Mail Cluster.</p>\n<p>Copy and add it to the <code>~/.ssh/authorized_keys</code> file of this Mail Server to allow Frappe Mail to securely provision and manage this server.</p>",
+   "description": "<p>This is the SSH public key generated for the Mail Cluster.</p>\n<p>Copy and add it to the <code>~/.ssh/authorized_keys</code> file of this Mail Server to allow Payam Yar to securely provision and manage this server.</p>",
    "fieldname": "ssh_public_key",
    "fieldtype": "Code",
    "is_virtual": 1,

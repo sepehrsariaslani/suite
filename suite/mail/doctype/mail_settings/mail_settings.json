@@ -753,7 +753,7 @@
   },
   {
    "default": "1",
-   "description": "Send calendar invitation, update, and cancellation emails from Frappe Mail using the templates below, with .ics attachments and HTTP RSVP links. When disabled, the JMAP server handles scheduling messages instead.",
+   "description": "Send calendar invitation, update, and cancellation emails from Payam Yar using the templates below, with .ics attachments and HTTP RSVP links. When disabled, the JMAP server handles scheduling messages instead.",
    "fieldname": "custom_event_invites",
    "fieldtype": "Check",
    "label": "Send Custom Event Invitations"

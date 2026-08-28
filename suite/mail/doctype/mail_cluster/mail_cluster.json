@@ -123,7 +123,7 @@
    "label": "SSH"
   },
   {
-   "description": "<p>This is the SSH public key generated for this Mail Cluster.</p>\n<p>Copy and add it to the <code>~/.ssh/authorized_keys</code> file of the target server(s) to allow Frappe Mail to securely provision and manage this cluster.</p>",
+   "description": "<p>This is the SSH public key generated for this Mail Cluster.</p>\n<p>Copy and add it to the <code>~/.ssh/authorized_keys</code> file of the target server(s) to allow Payam Yar to securely provision and manage this cluster.</p>",
    "fieldname": "ssh_public_key",
    "fieldtype": "Code",
    "label": "Public Key",
