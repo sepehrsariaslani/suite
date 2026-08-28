@@ -130,6 +130,7 @@ import {
 } from 'frappe-ui'
 
 import { useAppSwitcher } from '@/composables/useAppSwitcher'
+import { FRAPPE_EMAIL_TOOLS } from '@/apps/mail/frappeEmailTools'
 import { FOLDER_ICON_COLOR_MAP } from '@/apps/mail/constants'
 import { getIcon, getMailboxName, toTitleCase } from '@/apps/mail/utils'
 import { useAccountSwitch, useScreenSize, useSettings, useSidebar } from '@/apps/mail/utils/composables'
@@ -207,6 +208,7 @@ const showFolderModal = ref(false)
 const selectedMailbox = ref()
 const showDeleteMailbox = ref(false)
 const showShortcuts = ref(false)
+const openFrappeEmailTool = (path: string) => window.location.assign(path)
 
 const title = computed(() =>
 	branding.data?.brand_name && branding.data?.brand_name != 'Frappe'
@@ -425,6 +427,36 @@ const dashboardItems = [
 				icon: Lock,
 				to: { name: 'mail-reports-tls-outbound' },
 				activeFor: ['mail-reports-tls-outbound'],
+			},
+		],
+	},
+	{
+		label: __('Frappe Email'),
+		items: [
+			{
+				label: __('Email Accounts'),
+				icon: User,
+				onClick: () => openFrappeEmailTool(FRAPPE_EMAIL_TOOLS.accounts),
+			},
+			{
+				label: __('Communications'),
+				icon: Mails,
+				onClick: () => openFrappeEmailTool(FRAPPE_EMAIL_TOOLS.communications),
+			},
+			{
+				label: __('Email Queue'),
+				icon: Clock,
+				onClick: () => openFrappeEmailTool(FRAPPE_EMAIL_TOOLS.queue),
+			},
+			{
+				label: __('Email Templates'),
+				icon: ScrollText,
+				onClick: () => openFrappeEmailTool(FRAPPE_EMAIL_TOOLS.templates),
+			},
+			{
+				label: __('Unhandled Email'),
+				icon: Mailbox,
+				onClick: () => openFrappeEmailTool(FRAPPE_EMAIL_TOOLS.unhandled),
 			},
 		],
 	},
