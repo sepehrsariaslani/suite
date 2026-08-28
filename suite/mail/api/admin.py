@@ -815,6 +815,44 @@ def _rebuild_aliases(account: dict, *, keep: callable) -> list[EmailAlias]:
     return aliases
 
 
+def _find_address_owner(email: str) -> dict | None:
+    """Return the Stalwart resource that already owns ``email``, if any."""
+
+    email = email.lower()
+    domain_names = {d["id"]: d["name"] for d in get_stalwart_domains()}
+
+    resources = (
+        (
+            "Account",
+            get_account_service().get_all(
+                properties=["id", "@type", "emailAddress", "aliases"]
+            ),
+        ),
+        (
+            "MailingList",
+            get_mailing_list_service().get_all(
+                properties=["id", "emailAddress", "aliases"]
+            ),
+        ),
+    )
+    for collection, objects in resources:
+        for obj in objects:
+            primary = (obj.get("emailAddress") or "").lower()
+            addresses = {primary, *[alias.lower() for alias in _alias_emails(obj, domain_names)]}
+            if email not in addresses:
+                continue
+
+            resource_type = obj.get("@type") or collection
+            return {
+                "collection": collection,
+                "id": obj["id"],
+                "resource_type": resource_type,
+                "primary_address": primary or email,
+            }
+
+    return None
+
+
 def _locale_patch(locale: str | None, time_zone: str | None) -> dict:
     """Builds the account patch for the locale and time zone, skipping whatever was not passed.
 
@@ -926,6 +964,16 @@ def _add_alias(service, resource_id: str, email: str, description: str | None = 
     domain_names = {d["id"]: d["name"] for d in get_stalwart_domains()}
     if email in {e.lower() for e in _alias_emails(obj, domain_names)}:
         return
+
+    owner = _find_address_owner(email)
+    if owner and not (owner["collection"] == service.type and owner["id"] == resource_id):
+        frappe.throw(
+            _("{0} already belongs to {1} {2}.").format(
+                frappe.bold(email),
+                _(owner["resource_type"]),
+                frappe.bold(owner["primary_address"]),
+            )
+        )
 
     aliases = _rebuild_aliases(obj, keep=lambda _e: True)
     aliases.append(

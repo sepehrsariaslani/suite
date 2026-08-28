@@ -17,6 +17,7 @@ from suite.mail.api.account import (
 )
 from suite.mail.api.admin import (
     add_member,
+    add_member_email,
     delete_account_requests,
     get_account_requests,
     get_member,
@@ -27,6 +28,16 @@ from suite.mail.tests.base import StalwartIntegrationTestCase, _delete_stalwart_
 
 
 class TestAdminMembers(StalwartIntegrationTestCase):
+    def test_add_alias_reports_existing_owner(self):
+        target = self.create_member()
+        owner = self.create_member()
+
+        with self.assertRaisesRegex(
+            frappe.ValidationError,
+            rf"{owner.email}.*{owner.email}",
+        ):
+            add_member_email(target.email, owner.email, "Conflicting address")
+
     def test_shared_viewer_is_not_listed_as_a_second_member(self):
         member = self.create_member()
         viewer_email = f"{unique_name('viewer')}@example.test"
