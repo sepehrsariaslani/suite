@@ -209,6 +209,13 @@ const selectedMailbox = ref()
 const showDeleteMailbox = ref(false)
 const showShortcuts = ref(false)
 const openFrappeEmailTool = (path: string) => window.location.assign(path)
+const FRAPPE_EMAIL_TOOL_ICONS = {
+	accounts: User,
+	communications: Mails,
+	queue: Clock,
+	templates: ScrollText,
+	unhandled: Mailbox,
+} as const
 
 const title = computed(() =>
 	branding.data?.brand_name && branding.data?.brand_name != 'Frappe'
@@ -432,33 +439,11 @@ const dashboardItems = [
 	},
 	{
 		label: __('Frappe Email'),
-		items: [
-			{
-				label: __('Email Accounts'),
-				icon: User,
-				onClick: () => openFrappeEmailTool(FRAPPE_EMAIL_TOOLS.accounts),
-			},
-			{
-				label: __('Communications'),
-				icon: Mails,
-				onClick: () => openFrappeEmailTool(FRAPPE_EMAIL_TOOLS.communications),
-			},
-			{
-				label: __('Email Queue'),
-				icon: Clock,
-				onClick: () => openFrappeEmailTool(FRAPPE_EMAIL_TOOLS.queue),
-			},
-			{
-				label: __('Email Templates'),
-				icon: ScrollText,
-				onClick: () => openFrappeEmailTool(FRAPPE_EMAIL_TOOLS.templates),
-			},
-			{
-				label: __('Unhandled Email'),
-				icon: Mailbox,
-				onClick: () => openFrappeEmailTool(FRAPPE_EMAIL_TOOLS.unhandled),
-			},
-		],
+		items: FRAPPE_EMAIL_TOOLS.map((tool) => ({
+			label: tool.label,
+			icon: FRAPPE_EMAIL_TOOL_ICONS[tool.key],
+			onClick: () => openFrappeEmailTool(tool.route),
+		})),
 	},
 	// Logs and Actions each held a group of one whose label repeated the item;
 	// a single System group keeps the nav shorter without losing meaning.

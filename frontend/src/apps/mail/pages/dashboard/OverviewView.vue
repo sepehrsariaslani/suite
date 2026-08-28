@@ -77,6 +77,8 @@
 				</div>
 			</DashboardCard>
 		</div>
+
+		<FrappeEmailToolsCard />
 	</DashboardLayout>
 </template>
 
@@ -89,6 +91,7 @@ import { Icon as FeatherIcon } from 'frappe-ui/experimental'
 import { fromNow } from '@/apps/mail/utils/datetime'
 import DashboardCard from '@/apps/mail/components/DashboardCard.vue'
 import DashboardLayout from '@/apps/mail/components/DashboardLayout.vue'
+import FrappeEmailToolsCard from '@/apps/mail/components/FrappeEmailToolsCard.vue'
 
 import Clock from '~icons/lucide/clock'
 import Globe from '~icons/lucide/globe'
