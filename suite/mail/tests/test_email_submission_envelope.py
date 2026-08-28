@@ -1,12 +1,9 @@
 # Copyright (c) 2026, Frappe Technologies Pvt. Ltd. and contributors
 # For license information, please see license.txt
-"""Wire format of the JMAP submission envelope.
-
-Stalwart >= 0.16.17 rejects epoch seconds for the RFC 4865 HOLDUNTIL parameter
-("Invalid parameter: HOLDUNTIL"); it must be an RFC 3339 UTC date-time.
-"""
+"""Wire format of the JMAP submission envelope."""
 
 import unittest
+from unittest import mock
 
 from suite.mail.jmap.services.mail.submission.email_submission import EmailSubmissionService
 
@@ -21,10 +18,14 @@ class TestBuildEnvelope(unittest.TestCase):
             hold_until=hold_until,
         )
 
-    def test_hold_until_is_rfc3339_utc(self):
-        # 1767270896 = 2026-01-01T12:34:56Z; epoch serialization ("1767270896") must not come back.
+    @mock.patch(
+        "suite.mail.jmap.services.mail.submission.email_submission.time",
+        return_value=1767270000,
+    )
+    def test_hold_until_uses_relative_hold_for(self, _time):
         parameters = self._envelope(hold_until=1767270896)["mailFrom"]["parameters"]
-        self.assertEqual(parameters["HOLDUNTIL"], "2026-01-01T12:34:56Z")
+        self.assertEqual(parameters.get("HOLDFOR"), "896")
+        self.assertNotIn("HOLDUNTIL", parameters)
 
     def test_no_hold_until_omits_parameter(self):
         parameters = self._envelope()["mailFrom"]["parameters"]

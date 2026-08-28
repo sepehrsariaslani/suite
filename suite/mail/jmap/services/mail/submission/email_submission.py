@@ -1,4 +1,4 @@
-from datetime import UTC, datetime
+from time import time
 from typing import ClassVar
 
 from suite import __version__
@@ -64,10 +64,8 @@ class EmailSubmissionService(CoreService):
         }
 
         if hold_until:
-            # RFC 4865 requires an RFC 3339 date-time; Stalwart >= 0.16.17 rejects epoch seconds.
-            parameters["HOLDUNTIL"] = datetime.fromtimestamp(hold_until, tz=UTC).strftime(
-                "%Y-%m-%dT%H:%M:%SZ"
-            )
+            # HOLDFOR avoids Stalwart's version-dependent HOLDUNTIL parsing.
+            parameters["HOLDFOR"] = str(max(1, hold_until - int(time())))
 
         return {
             "mailFrom": {
