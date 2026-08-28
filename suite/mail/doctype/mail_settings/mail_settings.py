@@ -70,6 +70,9 @@ class MailSettings(Document):
         max_mailing_list_participants: DF.Int
         max_message_payload_size_mb: DF.Int
         max_push_notifications: DF.Int
+        mail_product_name_en: DF.Data | None
+        mail_product_name_fa: DF.Data | None
+        mail_sender_name: DF.Data | None
         outbound_log_file_count: DF.Int
         outbound_log_level: DF.Literal["ERROR", "WARNING", "INFO", "DEBUG"]
         outbound_log_max_file_size: DF.Int

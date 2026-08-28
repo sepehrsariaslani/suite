@@ -30,6 +30,11 @@
   "column_break_cuxv",
   "stalwart_version",
   "stalwart_cli_version",
+  "branding_section",
+  "mail_product_name_fa",
+  "column_break_branding",
+  "mail_product_name_en",
+  "mail_sender_name",
   "limits_section",
   "exchange_max_export",
   "exchange_max_import",
@@ -113,6 +118,36 @@
    "label": "Root Domain Name",
    "mandatory_depends_on": "eval: doc.dns_provider",
    "placeholder": "frappemail.com"
+  },
+  {
+   "fieldname": "branding_section",
+   "fieldtype": "Section Break",
+   "label": "Mail Branding"
+  },
+  {
+   "default": "پیام‌یار",
+   "description": "Product name shown in Persian Mail interfaces and transactional emails.",
+   "fieldname": "mail_product_name_fa",
+   "fieldtype": "Data",
+   "label": "Persian Product Name"
+  },
+  {
+   "fieldname": "column_break_branding",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "Payam Yar",
+   "description": "Product name shown when the active language is not Persian.",
+   "fieldname": "mail_product_name_en",
+   "fieldtype": "Data",
+   "label": "English Product Name"
+  },
+  {
+   "default": "مجموعه دهاتی",
+   "description": "Display name used for Mail account invitations and verification messages.",
+   "fieldname": "mail_sender_name",
+   "fieldtype": "Data",
+   "label": "Transactional Sender Name"
   },
   {
    "description": "The service provider managing your root domain's DNS records.",
