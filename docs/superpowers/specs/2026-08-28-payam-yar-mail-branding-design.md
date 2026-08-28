@@ -47,7 +47,7 @@ Verification content:
 - Show the one-time code and its expiry in minutes.
 - State that an unexpected request can be ignored.
 
-Both send paths explicitly pass `sender_full_name` using the configured Mail sender name. Existing recipient addresses, request keys, expiry behavior, audit logging, and synchronous delivery behavior remain unchanged.
+Both send paths explicitly pass a standards-compliant formatted sender such as `مجموعه دهاتی <info@dehati.ir>`. The address comes from Frappe's active outgoing Email Account and the display name comes from Mail Settings. Existing recipient addresses, request keys, expiry behavior, audit logging, and synchronous delivery behavior remain unchanged.
 
 ## Visible Mail UI
 
