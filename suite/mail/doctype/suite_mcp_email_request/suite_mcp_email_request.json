@@ -1,0 +1,24 @@
+{
+ "actions": [],
+ "autoname": "hash",
+ "creation": "2026-09-04 00:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": ["idempotency_key", "request_hash", "preview_fingerprint", "status", "queue_name"],
+ "fields": [
+  {"fieldname": "idempotency_key", "fieldtype": "Data", "label": "Idempotency Key", "reqd": 1, "read_only": 1},
+  {"fieldname": "request_hash", "fieldtype": "Data", "label": "Request Hash", "reqd": 1, "read_only": 1},
+  {"fieldname": "preview_fingerprint", "fieldtype": "Data", "label": "Preview Fingerprint", "reqd": 1, "read_only": 1},
+  {"fieldname": "status", "fieldtype": "Select", "label": "Status", "options": "Prepared\nSent", "reqd": 1, "read_only": 1},
+  {"fieldname": "queue_name", "fieldtype": "Link", "label": "Email Queue", "options": "Email Queue", "read_only": 1}
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "module": "Mail",
+ "name": "Suite MCP Email Request",
+ "naming_rule": "Random",
+ "permissions": [{"create": 1, "delete": 1, "read": 1, "role": "System Manager", "write": 1}],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
