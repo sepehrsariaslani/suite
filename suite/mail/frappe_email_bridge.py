@@ -137,19 +137,32 @@ def sync_sent_email_queue(queue_name: str) -> dict[str, Any]:
         return {"queue_name": queue.name, "state": "failed"}
 
 
+def _pending_queue_names(limit: int) -> list[str]:
+    email_queue = frappe.qb.DocType("Email Queue")
+    mirror = frappe.qb.DocType("Suite Frappe Email Mirror")
+    rows = (
+        frappe.qb.from_(email_queue)
+        .left_join(mirror)
+        .on(mirror.email_queue == email_queue.name)
+        .select(email_queue.name)
+        .where(
+            (email_queue.status == "Sent")
+            & email_queue.email_account.isnotnull()
+            & (email_queue.email_account != "")
+            & (mirror.name.isnull() | (mirror.status != "Synced"))
+        )
+        .orderby(email_queue.creation)
+        .limit(limit)
+    ).run(pluck=True)
+    return list(rows)
+
+
 def sync_pending_frappe_sent_emails(limit: int = MAX_SYNC_BATCH) -> dict[str, int]:
     """Scheduled bounded backfill for sent messages that do not have a Suite mirror."""
 
     limit = max(1, min(cint(limit), MAX_SYNC_BATCH))
-    queues = frappe.get_all(
-        "Email Queue",
-        filters={"status": "Sent", "email_account": ["is", "set"]},
-        fields=["name"],
-        order_by="creation asc",
-        limit_page_length=limit,
-    )
     outcomes = {"synced": 0, "already_synced": 0, "failed": 0, "skipped_not_sent": 0}
-    for row in queues:
-        result = sync_sent_email_queue(row.name)
+    for queue_name in _pending_queue_names(limit):
+        result = sync_sent_email_queue(queue_name)
         outcomes[result["state"]] = outcomes.get(result["state"], 0) + 1
     return outcomes

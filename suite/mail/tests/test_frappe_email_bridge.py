@@ -56,3 +56,20 @@ class TestFrappeEmailBridge(UnitTestCase):
         self.assertIn("To: recipient@example.com", message)
         self.assertIn("X-Frappe-Email-Queue: QUEUE-003", message)
         self.assertIn("\r\n\r\nBody", message)
+
+    def test_scheduled_sync_only_processes_unsynced_queue_names(self):
+        from suite.mail import frappe_email_bridge
+
+        with (
+            patch.object(frappe_email_bridge, "_pending_queue_names", return_value=["QUEUE-004"]),
+            patch.object(
+                frappe_email_bridge,
+                "sync_sent_email_queue",
+                return_value={"queue_name": "QUEUE-004", "state": "synced", "jmap_email_id": "jmap-email-4"},
+            ) as sync,
+        ):
+            result = frappe_email_bridge.sync_pending_frappe_sent_emails(limit=5)
+
+        sync.assert_called_once_with("QUEUE-004")
+        self.assertEqual(result["synced"], 1)
+        self.assertEqual(result["already_synced"], 0)
