@@ -8,6 +8,7 @@ import re
 from typing import Any
 
 import frappe
+from frappe.utils.html_utils import sanitize_html
 
 MAX_RECIPIENTS = 20
 MAX_ATTACHMENTS = 20
@@ -126,6 +127,17 @@ def _template_context(value: Any) -> dict[str, Any]:
     return json.loads(encoded)
 
 
+def _safe_message(value: Any) -> str:
+    """Sanitize rendered HTML and preserve readable right-to-left Persian mail."""
+    message = _text(value, "message", MAX_BODY)
+    cleaned = sanitize_html(message)
+    if not cleaned:
+        frappe.throw("message is invalid.", frappe.ValidationError)
+    if any("\u0600" <= character <= "\u06ff" for character in cleaned) and 'dir="rtl"' not in cleaned.lower():
+        cleaned = f'<div dir="rtl">{cleaned}</div>'
+    return cleaned
+
+
 @frappe.whitelist()
 def list_email_accounts() -> dict[str, Any]:
     _require_system_manager()
@@ -143,6 +155,19 @@ def get_default_outgoing_email() -> dict[str, Any]:
     _require_system_manager()
     rows = frappe.get_all("Email Account", filters={"enable_outgoing": 1, "default_outgoing": 1}, fields=["name", "email_id", "email_account_name", "enable_outgoing", "enable_incoming", "default_outgoing", "default_incoming", "service"], limit_page_length=1)
     return {"account": _account_summary(rows[0]) if rows else None}
+
+
+@frappe.whitelist()
+def get_default_outgoing_email_account() -> dict[str, Any]:
+    """Compatibility name used by clients that need an explicit account noun."""
+    return get_default_outgoing_email()
+
+
+@frappe.whitelist()
+def get_email_account(name: str) -> dict[str, Any]:
+    _require_system_manager()
+    account = frappe.get_doc("Email Account", _safe_name(name, "Email Account"))
+    return {"account": _account_summary(account)}
 
 
 @frappe.whitelist()
@@ -181,7 +206,7 @@ def prepare_email(sender: str, email_account: str, recipients: list[str], subjec
         "bcc": _emails(bcc, "bcc"),
         "reply_to": _email(reply_to, "reply_to") if reply_to else None,
         "subject": _text(subject, "subject", MAX_SUBJECT),
-        "message": _text(message, "message", MAX_BODY),
+        "message": _safe_message(message),
         "attachments": preview_attachments,
         "reference_doctype": reference[0],
         "reference_name": reference[1],
@@ -211,23 +236,67 @@ def send_email(sender: str, email_account: str, recipients: list[str], subject: 
         row = existing[0]
         if row.request_hash != request_hash:
             frappe.throw("Idempotency key was already used for another email.", frappe.ValidationError)
-        return {"state": "email_sent", "idempotent_replay": True, "queue_names": [row.queue_name] if row.queue_name else []}
+        return {"state": "queued", "idempotent_replay": True, "queue_names": [row.queue_name] if row.queue_name else []}
     preview = previewed["preview"]
     queue_attachments, _ = _attachments(attachment_file_names)
     request = frappe.get_doc({"doctype": "Suite MCP Email Request", "idempotency_key": key, "request_hash": request_hash, "preview_fingerprint": fingerprint, "status": "Prepared"}).insert(ignore_permissions=True)
     queue = frappe.sendmail(recipients=preview["recipients"], sender=preview["sender"], subject=preview["subject"], message=preview["message"], cc=preview["cc"], bcc=preview["bcc"], reply_to=preview["reply_to"], attachments=queue_attachments, reference_doctype=preview["reference_doctype"], reference_name=preview["reference_name"])
-    request.status = "Sent"
+    request.status = "Queued"
     request.queue_name = getattr(queue, "name", None)
     request.save(ignore_permissions=True)
-    return {"state": "email_sent", "idempotent_replay": False, "queue_names": [request.queue_name] if request.queue_name else []}
+    return {"state": "queued", "idempotent_replay": False, "queue_names": [request.queue_name] if request.queue_name else []}
+
+
+def _queue_summary(queue: Any) -> dict[str, Any]:
+    error = str(queue.error or "")
+    category = "none"
+    if error:
+        category = "authentication" if "auth" in error.lower() else "recipient" if "recipient" in error.lower() else "delivery_failed"
+    return {
+        "name": queue.name,
+        "status": queue.status,
+        "retry": int(queue.retry or 0),
+        "sender": queue.sender,
+        "email_account": queue.email_account,
+        "creation": str(queue.creation),
+        "modified": str(queue.modified),
+        "failure_category": category,
+    }
 
 
 @frappe.whitelist()
 def get_email_delivery_status(queue_name: str) -> dict[str, Any]:
     _require_system_manager()
     queue = frappe.get_doc("Email Queue", _safe_name(queue_name, "Email Queue"))
-    error = str(queue.error or "")
-    category = "none"
-    if error:
-        category = "authentication" if "auth" in error.lower() else "recipient" if "recipient" in error.lower() else "delivery_failed"
-    return {"queue": {"name": queue.name, "status": queue.status, "retry": int(queue.retry or 0), "sender": queue.sender, "email_account": queue.email_account, "creation": str(queue.creation), "modified": str(queue.modified), "failure_category": category}}
+    return {"queue": _queue_summary(queue)}
+
+
+@frappe.whitelist()
+def get_email_status(queue_name: str) -> dict[str, Any]:
+    return get_email_delivery_status(queue_name)
+
+
+@frappe.whitelist()
+def search_email_queue(
+    status: str | None = None,
+    sender: str | None = None,
+    limit: int = 20,
+    start: int = 0,
+) -> dict[str, Any]:
+    _require_system_manager()
+    if not 1 <= int(limit) <= 100 or not 0 <= int(start) <= 500:
+        frappe.throw("limit or start is outside the allowed range.", frappe.ValidationError)
+    filters: dict[str, Any] = {}
+    if status:
+        filters["status"] = _text(status, "status", 80)
+    if sender:
+        filters["sender"] = _email(sender, "sender")
+    rows = frappe.get_all(
+        "Email Queue",
+        filters=filters,
+        fields=["name", "status", "retry", "sender", "email_account", "creation", "modified", "error"],
+        order_by="modified desc",
+        limit_start=int(start),
+        limit_page_length=int(limit),
+    )
+    return {"queues": [_queue_summary(row) for row in rows], "bounded": True, "limit": int(limit), "start": int(start)}
