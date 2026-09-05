@@ -15,6 +15,11 @@ class TestMcpEmailApi(UnitTestCase):
 
         self.assertEqual(controller.__name__, "SuiteMCPEmailRequest")
 
+    def test_idempotency_doctype_accepts_queued_after_frappe_queue_creation(self):
+        status = mcp_api.frappe.get_meta("Suite MCP Email Request").get_field("status")
+
+        self.assertIn("Queued", status.options.splitlines())
+
     def test_prepare_email_returns_exact_sender_without_internal_queue_attachment_data(self):
         account = SimpleNamespace(name="Dehati Mail")
         with (
