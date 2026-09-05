@@ -4,11 +4,17 @@ from types import SimpleNamespace
 from unittest.mock import patch
 
 from frappe.tests import UnitTestCase
+from frappe.model.base_document import import_controller
 
 from suite.mail import mcp_api
 
 
 class TestMcpEmailApi(UnitTestCase):
+    def test_idempotency_doctype_uses_the_resolvable_controller_name(self):
+        controller = import_controller("Suite MCP Email Request")
+
+        self.assertEqual(controller.__name__, "SuiteMCPEmailRequest")
+
     def test_prepare_email_returns_exact_sender_without_internal_queue_attachment_data(self):
         account = SimpleNamespace(name="Dehati Mail")
         with (
