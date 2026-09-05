@@ -1,0 +1,26 @@
+{
+ "actions": [],
+ "autoname": "hash",
+ "creation": "2026-09-05 00:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": ["email_queue", "jmap_account", "jmap_email_id", "status", "attempts", "last_attempt_on", "error"],
+ "fields": [
+  {"fieldname": "email_queue", "fieldtype": "Link", "label": "Frappe Email Queue", "options": "Email Queue", "reqd": 1, "read_only": 1, "unique": 1},
+  {"fieldname": "jmap_account", "fieldtype": "Link", "label": "Suite JMAP Account", "options": "JMAP Account", "read_only": 1},
+  {"fieldname": "jmap_email_id", "fieldtype": "Data", "label": "Suite Email ID", "read_only": 1},
+  {"fieldname": "status", "fieldtype": "Select", "label": "Status", "options": "Pending\nSynced\nFailed", "reqd": 1, "read_only": 1},
+  {"fieldname": "attempts", "fieldtype": "Int", "label": "Attempts", "read_only": 1},
+  {"fieldname": "last_attempt_on", "fieldtype": "Datetime", "label": "Last Attempt", "read_only": 1},
+  {"fieldname": "error", "fieldtype": "Code", "label": "Error", "read_only": 1}
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "module": "Mail",
+ "name": "Suite Frappe Email Mirror",
+ "naming_rule": "Random",
+ "permissions": [{"create": 1, "delete": 1, "read": 1, "role": "System Manager", "write": 1}],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

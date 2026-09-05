@@ -311,6 +311,7 @@ scheduler_events = {
             # mail
             "suite.mail.doctype.server_job.server_job.retry_failed_jobs",
             "suite.mail.doctype.mail_queue.mail_queue.enqueue_process_pending_emails",
+            "suite.mail.frappe_email_bridge.sync_pending_frappe_sent_emails",
             "suite.mail.doctype.server_deployment.server_deployment.retry_failed_deployments",
             "suite.mail.doctype.server_ansible_play.server_ansible_play.retry_failed_ansible_plays",
         ],
